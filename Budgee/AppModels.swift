@@ -2,13 +2,14 @@ import Foundation
 import SwiftUI
 
 // MARK: - App Navigation
-public enum Sekme { // public yapıldı
+public enum Sekme {
     case panel, takvim, raporlar, ayarlar
 }
 
 // MARK: - App Settings
 class AppSettings: ObservableObject {
     @AppStorage("colorScheme") var colorSchemeValue: Int = 0
+    @AppStorage("language") var languageCode: String = "tr"
 
     var colorScheme: ColorScheme? {
         switch colorSchemeValue {
@@ -27,40 +28,66 @@ struct KategoriHarcamasi: Identifiable {
     var renk: Color
 }
 
-public enum IslemTuru: String, Codable, CaseIterable { // public yapıldı
-    case gelir = "Gelir"
-    case gider = "Gider"
+public enum IslemTuru: String, Codable, CaseIterable {
+    case gelir = "common.income"
+    case gider = "common.expense"
+    
+    // YENİDEN EKLENDİ: Yerelleştirilmiş metni döndüren değişken
+    var localized: String {
+        NSLocalizedString(self.rawValue, comment: "")
+    }
 }
 
-public enum TekrarTuru: String, CaseIterable, Identifiable, Codable { // public yapıldı
-    case tekSeferlik = "Tek Seferlik", herAy = "Her Ay", her3Ay = "Her 3 Ayda Bir", her6Ay = "Her 6 Ayda Bir", herYil = "Her Yıl"
+public enum TekrarTuru: String, CaseIterable, Identifiable, Codable {
+    case tekSeferlik = "enum.recurrence.once"
+    case herAy = "enum.recurrence.monthly"
+    case her3Ay = "enum.recurrence.quarterly"
+    case her6Ay = "enum.recurrence.semi_annually"
+    case herYil = "enum.recurrence.annually"
+    
     public var id: String { self.rawValue }
+
+    // YENİDEN EKLENDİ: Yerelleştirilmiş metni döndüren değişken
+    var localized: String {
+        NSLocalizedString(self.rawValue, comment: "")
+    }
 }
 
 // MARK: - Filtering & Sorting Structures
-public enum SortOrder: String, CaseIterable, Identifiable { // public yapıldı
-    case tarihAzalan = "Tarihe Göre (Yeniden)", tarihArtan = "Tarihe Göre (Eskiden)", tutarAzalan = "Tutara Göre (Çoktan)", tutarArtan = "Tutara Göre (Azdan)"
+public enum SortOrder: String, CaseIterable, Identifiable {
+    case tarihAzalan = "enum.sort.date_desc"
+    case tarihArtan = "enum.sort.date_asc"
+    case tutarAzalan = "enum.sort.amount_desc"
+    case tutarArtan = "enum.sort.amount_asc"
+    
     public var id: String { self.rawValue }
+
+    // YENİDEN EKLENDİ: Yerelleştirilmiş metni döndüren değişken
+    var localized: String {
+        NSLocalizedString(self.rawValue, comment: "")
+    }
 }
 
-public enum TarihAraligi: Hashable, Identifiable { // public yapıldı
-    case hepsi, buAy, son3Ay, son6Ay, buYil
+public enum TarihAraligi: String, Hashable, Identifiable {
+    case hepsi = "enum.date_range.all"
+    case buAy = "enum.date_range.this_month"
+    case son3Ay = "enum.date_range.last_3_months"
+    case son6Ay = "enum.date_range.last_6_months"
+    case buYil = "enum.date_range.this_year"
+    
     public var id: Self { self }
-    public var name: String {
-        switch self {
-        case .hepsi: "Tüm Zamanlar"
-        case .buAy: "Bu Ay"
-        case .son3Ay: "Son 3 Ay"
-        case .son6Ay: "Son 6 Ay"
-        case .buYil: "Bu Yıl"
-        }
+    
+    // YENİDEN EKLENDİ: Yerelleştirilmiş metni döndüren değişken
+    var localized: String {
+        NSLocalizedString(self.rawValue, comment: "")
     }
+    
     public static var allCases: [TarihAraligi] { [.hepsi, .buAy, .son3Ay, .son6Ay, .buYil] }
 }
 
 struct FiltreAyarlari {
     var tarihAraligi: TarihAraligi = .hepsi
     var secilenTurler: Set<IslemTuru> = [.gelir, .gider]
-    var secilenKategoriler: Set<UUID> = [] // <-- EN KRİTİK DEĞİŞİKLİK: Kategori.ID'den UUID'ye
+    var secilenKategoriler: Set<UUID> = []
     var sortOrder: SortOrder = .tarihAzalan
 }

@@ -1,11 +1,10 @@
 import SwiftUI
-import SwiftData
+import SwiftData // EKSİK OLAN VE HATAYI ÇÖZECEK OLAN SATIR
 
 struct RecentTransactionsView: View {
-    let modelContext: ModelContext // Üstten gelen context
+    let modelContext: ModelContext
     let islemler: [Islem]
     
-    // Düzenleme ve silme aksiyonlarını tetiklemek için Binding'ler ve closure'lar
     @Binding var duzenlenecekIslem: Islem?
     @Binding var duzenlemeEkraniGosteriliyor: Bool
     let onSilmeyiBaslat: (Islem) -> Void
@@ -14,11 +13,9 @@ struct RecentTransactionsView: View {
         if !islemler.isEmpty {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Text("Son İşlemler").font(.headline).fontWeight(.bold)
+                    Text("dashboard.recent_transactions").font(.headline).fontWeight(.bold)
                     Spacer()
-                    // DEĞİŞİKLİK BURADA: NavigationLink'in içeriği güncellendi.
-                    NavigationLink("Tümü") {
-                        // TumIslemlerView'i yaratırken ona hazır bir ViewModel veriyoruz.
+                    NavigationLink("dashboard.see_all") {
                         TumIslemlerView(modelContext: modelContext)
                     }
                 }.padding()
@@ -38,12 +35,12 @@ struct RecentTransactionsView: View {
                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                             Button(role: .destructive) {
                                 onSilmeyiBaslat(islem)
-                            } label: { Label("Sil", systemImage: "trash") }
+                            } label: { Label("common.delete", systemImage: "trash") }
                             
                             Button {
                                 duzenlenecekIslem = islem
                                 duzenlemeEkraniGosteriliyor = true
-                            } label: { Label("Düzenle", systemImage: "pencil") }
+                            } label: { Label("common.edit", systemImage: "pencil") }
                             .tint(.blue)
                         }
                         
@@ -59,7 +56,7 @@ struct RecentTransactionsView: View {
             VStack {
                 Spacer()
                 Image(systemName: "doc.text.magnifyingglass").font(.system(size: 60))
-                Text("Bu Ay İçin Kayıt Yok").font(.title3).padding(.top)
+                Text("dashboard.no_records_for_month").font(.title3).padding(.top)
                 Spacer()
             }
             .padding(.top, 50)

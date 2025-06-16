@@ -7,7 +7,6 @@ struct ContentView: View {
     }
 }
 
-
 struct MainTabView: View {
     @State private var seciliSekme: Sekme = .panel
     @State private var yeniIslemEkleShowing = false
@@ -17,9 +16,7 @@ struct MainTabView: View {
         ZStack(alignment: .bottom) {
             VStack {
                 switch seciliSekme {
-                    // ... MainTabView içindeki switch bloğu ...
                 case .panel:
-                    // DashboardView'a artık modelContext'i veriyoruz.
                     NavigationStack { DashboardView(modelContext: modelContext) }
                 case .takvim:
                     NavigationStack { TakvimView() }
@@ -31,11 +28,12 @@ struct MainTabView: View {
             }.padding(.bottom, 70)
 
             HStack {
-                CustomTabItem(iconName: "square.grid.2x2.fill", title: "Panel", sekme: .panel, seciliSekme: $seciliSekme)
-                CustomTabItem(iconName: "calendar", title: "Takvim", sekme: .takvim, seciliSekme: $seciliSekme)
+                // DEĞİŞİKLİK: Sabit metinler yerine anahtarları kullanıyoruz.
+                CustomTabItem(iconName: "square.grid.2x2.fill", titleKey: "tab.dashboard", sekme: .panel, seciliSekme: $seciliSekme)
+                CustomTabItem(iconName: "calendar", titleKey: "tab.calendar", sekme: .takvim, seciliSekme: $seciliSekme)
                 Spacer().frame(width: 60)
-                CustomTabItem(iconName: "chart.bar.xaxis", title: "Raporlar", sekme: .raporlar, seciliSekme: $seciliSekme)
-                CustomTabItem(iconName: "gearshape.fill", title: "Ayarlar", sekme: .ayarlar, seciliSekme: $seciliSekme)
+                CustomTabItem(iconName: "chart.bar.xaxis", titleKey: "tab.reports", sekme: .raporlar, seciliSekme: $seciliSekme)
+                CustomTabItem(iconName: "gearshape.fill", titleKey: "tab.settings", sekme: .ayarlar, seciliSekme: $seciliSekme)
             }
             .frame(height: 55)
             .padding(.horizontal)
@@ -56,17 +54,15 @@ struct MainTabView: View {
             }
         }
         .ignoresSafeArea(.keyboard)
-        // DÜZELTME: IslemEkleView artık parametre almıyor.
         .sheet(isPresented: $yeniIslemEkleShowing) {
             IslemEkleView()
         }
     }
 }
 
-
 struct CustomTabItem: View {
     let iconName: String
-    let title: String
+    let titleKey: LocalizedStringKey // DEĞİŞİKLİK: String yerine LocalizedStringKey alıyoruz.
     let sekme: Sekme
     @Binding var seciliSekme: Sekme
     
@@ -76,7 +72,7 @@ struct CustomTabItem: View {
         }) {
             VStack(spacing: 4) {
                 Image(systemName: iconName).font(.title3)
-                Text(title).font(.caption2)
+                Text(titleKey).font(.caption2) // Text artık anahtarı doğrudan kullanabilir.
             }.foregroundColor(seciliSekme == sekme ? .blue : .gray)
         }.frame(maxWidth: .infinity)
     }

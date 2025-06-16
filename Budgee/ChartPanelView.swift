@@ -1,24 +1,15 @@
-//
-//  ChartPanelView.swift
-//  Budgee
-//
-//  Created by Mustafa Turan on 15.06.2025.
-//
-
-
 import SwiftUI
 import Charts
 
 struct ChartPanelView: View {
     let pieChartVerisi: [KategoriHarcamasi]
-    // İkonları ve renkleri verimli bir şekilde bulmak için bu sözlüğü alıyoruz
     let kategoriDetaylari: [String: (renk: Color, ikon: String)]
     let toplamTutar: Double
 
     var body: some View {
         if !pieChartVerisi.isEmpty {
             VStack(alignment: .leading, spacing: 0) {
-                Text("Kategori Dağılımı")
+                Text("dashboard.category_distribution") // DEĞİŞTİ
                     .font(.headline)
                     .fontWeight(.bold)
                     .padding([.top, .leading, .trailing])

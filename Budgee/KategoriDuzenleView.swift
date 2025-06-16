@@ -5,7 +5,6 @@ struct KategoriDuzenleView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
 
-    // Düzenleme için
     var kategori: Kategori?
 
     @State private var isim: String = ""
@@ -13,29 +12,31 @@ struct KategoriDuzenleView: View {
     @State private var secilenTur: IslemTuru = .gider
     @State private var secilenRenk: Color = .blue
     
-    // İkon listesini genişlettik
     let ikonlar = [
         "tag.fill", "cart.fill", "fork.knife", "car.fill", "bolt.fill", "film.fill", "gift.fill", "house.fill", "airplane", "bus.fill", "fuelpump.fill", "gamecontroller.fill", "pills.fill", "tshirt.fill", "pawprint.fill", "ellipsis.circle.fill",
         "dollarsign.circle.fill", "chart.pie.fill", "banknote.fill", "briefcase.fill", "arrow.down.to.line.alt"
     ]
+    
+    private var navigationTitleKey: LocalizedStringKey {
+        kategori == nil ? "categories.new" : "categories.edit"
+    }
 
     var body: some View {
         NavigationStack {
             Form {
-                if kategori == nil { // Sadece yeni kategori eklerken tür seçilebilir
-                    Picker("Tür", selection: $secilenTur) {
-                        Text("Gider").tag(IslemTuru.gider)
-                        Text("Gelir").tag(IslemTuru.gelir)
+                if kategori == nil {
+                    Picker("common.type", selection: $secilenTur) {
+                        Text("common.expense").tag(IslemTuru.gider)
+                        Text("common.income").tag(IslemTuru.gelir)
                     }
                     .pickerStyle(.segmented)
                 }
                 
-                TextField("Kategori Adı", text: $isim)
+                TextField("categories.name", text: $isim)
                 
-                // YENİ: Renk Seçici
-                ColorPicker("Kategori Rengi", selection: $secilenRenk, supportsOpacity: false)
+                ColorPicker("categories.color", selection: $secilenRenk, supportsOpacity: false)
                 
-                Section("İkon Seç") {
+                Section("categories.select_icon") {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 44))], spacing: 16) {
                         ForEach(ikonlar, id: \.self) { ikon in
                             Image(systemName: ikon)
@@ -51,14 +52,14 @@ struct KategoriDuzenleView: View {
                     }
                 }
             }
-            .navigationTitle(kategori == nil ? "Yeni Kategori" : "Kategoriyi Düzenle")
+            .navigationTitle(navigationTitleKey)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("İptal") { dismiss() }
+                    Button("common.cancel") { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Kaydet") {
+                    Button("common.save") {
                         kaydet()
                     }
                     .disabled(isim.isEmpty)
@@ -79,12 +80,10 @@ struct KategoriDuzenleView: View {
     
     private func kaydet() {
         if let kategori = kategori {
-            // Düzenleme
             kategori.isim = isim
             kategori.ikonAdi = ikonAdi
             kategori.renkHex = secilenRenk.toHex() ?? "#FFFFFF"
         } else {
-            // Yeni Ekleme
             let yeniKategori = Kategori(isim: isim, ikonAdi: ikonAdi, tur: secilenTur, renkHex: secilenRenk.toHex() ?? "#FFFFFF")
             modelContext.insert(yeniKategori)
         }
@@ -92,7 +91,6 @@ struct KategoriDuzenleView: View {
     }
 }
 
-// Color'ı Hex'e çevirmek için ikinci yardımcı
 extension Color {
     func toHex() -> String? {
         guard let components = cgColor?.components, components.count >= 3 else {

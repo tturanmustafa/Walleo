@@ -1,6 +1,6 @@
 import Foundation
 import SwiftData
-import SwiftUI // SwiftUI'ı ekliyoruz
+import SwiftUI
 
 @Model
 class Kategori {
@@ -8,21 +8,22 @@ class Kategori {
     var isim: String
     var ikonAdi: String
     var tur: IslemTuru
-    var renkHex: String // YENİ: Rengi hex kodu olarak saklamak için
+    var renkHex: String
+    var localizationKey: String?
 
     @Relationship(deleteRule: .cascade, inverse: \Islem.kategori)
     var islemler: [Islem]?
     
-    // YENİ: Hex kodunu SwiftUI'ın anladığı Color tipine çevirir.
-    var renk: Color {
-        Color(hex: renkHex)
-    }
+    var renk: Color { Color(hex: renkHex) }
+    
+    // .displayName özelliği kaldırıldı.
 
-    init(id: UUID = UUID(), isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String) {
+    init(id: UUID = UUID(), isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String? = nil) {
         self.id = id
         self.isim = isim
         self.ikonAdi = ikonAdi
         self.tur = tur
         self.renkHex = renkHex
+        self.localizationKey = localizationKey
     }
 }

@@ -1,0 +1,119 @@
+/* Localizable.strings (Turkish)
+*/
+
+// Genel / Ortak Kullanım
+"common.save" = "Kaydet";
+"common.cancel" = "İptal";
+"common.edit" = "Düzenle";
+"common.delete" = "Sil";
+"common.done" = "Bitti";
+"common.reset" = "Sıfırla";
+"common.apply" = "Uygula";
+"common.all" = "Tümü";
+"common.income" = "Gelir";
+"common.expense" = "Gider";
+"common.category" = "Kategori";
+"common.categories" = "Kategoriler";
+"common.amount" = "Tutar";
+"common.date" = "Tarih";
+"common.type" = "Tür";
+
+// Ana Sekmeler
+"tab.dashboard" = "Panel";
+"tab.calendar" = "Takvim";
+"tab.reports" = "Raporlar";
+"tab.settings" = "Ayarlar";
+
+// Panel / Dashboard Ekranı
+"dashboard.category_distribution" = "Kategori Dağılımı";
+"dashboard.recent_transactions" = "Son İşlemler";
+"dashboard.see_all" = "Tümü";
+"dashboard.no_records_for_month" = "Bu Ay İçin Kayıt Yok";
+
+// Ayarlar Ekranı
+"settings.title" = "Ayarlar";
+"settings.section_general" = "GENEL";
+"settings.theme" = "Tema";
+"settings.theme_system" = "Sistem";
+"settings.theme_light" = "Açık";
+"settings.theme_dark" = "Koyu";
+"settings.language" = "Dil / Language";
+"settings.manage_categories" = "Kategorileri Yönet";
+"settings.section_info" = "BİLGİ";
+"settings.version" = "Versiyon";
+
+// Kategori Yönetimi
+"categories.title" = "Kategoriler";
+"categories.income_categories" = "Gelir Kategorileri";
+"categories.expense_categories" = "Gider Kategorileri";
+"categories.new" = "Yeni Kategori";
+"categories.edit" = "Kategoriyi Düzenle";
+"categories.name" = "Kategori Adı";
+"categories.color" = "Kategori Rengi";
+"categories.select_icon" = "İkon Seç";
+
+// İşlem Ekleme / Düzenleme
+"transaction.new" = "Yeni İşlem";
+"transaction.edit" = "İşlemi Düzenle";
+"transaction.type" = "İşlem Türü";
+"transaction.section_details" = "Detaylar";
+"transaction.name_placeholder" = "İşlem Adı (örn: Akşam Yemeği)";
+"transaction.select_category" = "Kategori Seçin";
+"transaction.recurrence" = "Tekrarlanma";
+
+// Tüm İşlemler & Filtreleme
+"all_transactions.title" = "Tüm İşlemler";
+"all_transactions.filter_button" = "Filtrele";
+"all_transactions.not_found" = "İşlem Bulunamadı";
+"all_transactions.not_found_desc" = "Filtre kriterlerinizi değiştirmeyi deneyin.";
+"filter.title" = "Filtrele ve Sırala";
+"filter.date_range" = "Tarih Aralığı";
+"filter.sort_by" = "Sırala";
+"filter.sort_order" = "Sıralama Düzeni";
+
+// Enum Değerleri
+"enum.recurrence.once" = "Tek Seferlik";
+"enum.recurrence.monthly" = "Her Ay";
+"enum.recurrence.quarterly" = "Her 3 Ayda Bir";
+"enum.recurrence.semi_annually" = "Her 6 Ayda Bir";
+"enum.recurrence.annually" = "Her Yıl";
+"enum.sort.date_desc" = "Tarihe Göre (Yeniden)";
+"enum.sort.date_asc" = "Tarihe Göre (Eskiden)";
+"enum.sort.amount_desc" = "Tutara Göre (Çoktan)";
+"enum.sort.amount_asc" = "Tutara Göre (Azdan)";
+"enum.date_range.all" = "Tüm Zamanlar";
+"enum.date_range.this_month" = "Bu Ay";
+"enum.date_range.last_3_months" = "Son 3 Ay";
+"enum.date_range.last_6_months" = "Son 6 Ay";
+"enum.date_range.this_year" = "Bu Yıl";
+
+// Uyarılar ve Mesajlar
+"alert.recurring_transaction" = "Bu tekrarlayan bir işlemdir.";
+"alert.update_this_only" = "Sadece Bu İşlemi Güncelle";
+"alert.update_future" = "Bu ve Gelecekteki İşlemleri Güncelle";
+"alert.delete_this_only" = "Sadece Bu İşlemi Sil";
+"alert.delete_series" = "Tüm Seriyi Sil";
+
+// Ekstra
+"month_picker.title" = "Tarih Seç";
+"month_picker.month" = "Ay";
+"month_picker.year" = "Yıl";
+
+// Yer Tutucu Ekranlar
+"calendar.coming_soon" = "Takvim Sayfası Yakında!";
+"reports.coming_soon" = "Raporlar Sayfası Yakında!";
+
+// Varsayılan Kategoriler
+"category.salary" = "Maaş";
+"category.extra_income" = "Ek Gelir";
+"category.investment" = "Yatırım";
+"category.groceries" = "Market";
+"category.restaurant" = "Restoran";
+"category.transport" = "Ulaşım";
+"category.bills" = "Faturalar";
+"category.entertainment" = "Eğlence";
+"category.health" = "Sağlık";
+"category.clothing" = "Giyim";
+"category.home" = "Ev";
+"category.gift" = "Hediye";
+"category.other" = "Diğer";

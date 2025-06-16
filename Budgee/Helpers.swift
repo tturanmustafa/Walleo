@@ -23,10 +23,10 @@ func formatDateForList(from date: Date) -> String {
     return formatter.string(from: date)
 }
 
-func monthYearString(from date: Date) -> String {
+func monthYearString(from date: Date, localeIdentifier: String) -> String { // DEĞİŞTİ
     let formatter = DateFormatter()
     formatter.dateFormat = "MMMM yyyy"
-    formatter.locale = Locale(identifier: "tr_TR")
+    formatter.locale = Locale(identifier: localeIdentifier) // DEĞİŞTİ
     return formatter.string(from: date)
 }
 
