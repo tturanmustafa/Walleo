@@ -1,0 +1,87 @@
+import Foundation
+import SwiftUI
+
+func colorFor(kategori: String) -> Color {
+    let hash = abs(kategori.hashValue)
+    let hue = fmod(Double(hash) * 0.61803398875, 1.0)
+    return Color(hue: hue, saturation: 0.8, brightness: 0.9)
+}
+
+func iconFor(tekrar: TekrarTuru) -> String {
+    switch tekrar {
+    case .tekSeferlik: return "arrow.right.circle.fill"
+    case .herAy: return "calendar"
+    case .her3Ay, .her6Ay: return "calendar.circle"
+    case .herYil: return "calendar.circle.fill"
+    }
+}
+
+func formatDateForList(from date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "E, d MMM"
+    formatter.locale = Locale(identifier: "tr_TR")
+    return formatter.string(from: date)
+}
+
+func monthYearString(from date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "MMMM yyyy"
+    formatter.locale = Locale(identifier: "tr_TR")
+    return formatter.string(from: date)
+}
+
+func formatCurrency(amount: Double, font: Font, color: Color) -> some View {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
+    formatter.locale = Locale(identifier: "tr_TR")
+    formatter.maximumFractionDigits = 2
+    formatter.minimumFractionDigits = 2
+    
+    let formattedString = formatter.string(from: NSNumber(value: amount)) ?? "0,00"
+    let parts = formattedString.split(separator: ",")
+    
+    var decimalFont: Font
+    if font == .title {
+        decimalFont = .body
+    } else {
+        decimalFont = .footnote
+    }
+    
+    return HStack(spacing: 0) {
+        Text(parts.first ?? "0").font(font.bold())
+        if parts.count > 1 {
+            Text(",").font(font.bold())
+            Text(parts[1]).font(decimalFont.weight(.semibold)).foregroundColor(color.opacity(0.7))
+        }
+        Text(" TL").font(decimalFont.bold())
+    }
+    .foregroundColor(color)
+}
+
+// Color'ı Hex String'den oluşturmak için yardımcı extension
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (1, 1, 1, 0)
+        }
+
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue:  Double(b) / 255,
+            opacity: Double(a) / 255
+        )
+    }
+}
