@@ -2,19 +2,17 @@ import SwiftUI
 import SwiftData
 import Charts
 
-// ÖNCE YENİ, KÜÇÜK VIEW'IMIZI TANIMLIYORUZ
-// Bu, derleme hatasını çözen en önemli adımdı.
 struct IslemTuruButonu: View {
     let tur: IslemTuru
     @Binding var secilenTur: IslemTuru
     let animation: Namespace.ID
 
     var body: some View {
-        Text(tur.rawValue)
+        // DEĞİŞİKLİK: rawValue'yu LocalizedStringKey içine alarak çeviriyi garanti ediyoruz.
+        Text(LocalizedStringKey(tur.rawValue))
             .font(.subheadline)
             .fontWeight(.semibold)
             .frame(maxWidth: .infinity)
-            // İki padding komutunu zincirleyerek derleyiciye yardımcı oluyoruz.
             .padding(.vertical, 10)
             .padding(.horizontal, 15)
             .foregroundColor(secilenTur == tur ? .primary : .secondary)
@@ -37,11 +35,12 @@ struct IslemTuruButonu: View {
     }
 }
 
-
+// DashboardView'in geri kalanı aynı, sadece yukarıdaki IslemTuruButonu güncellendi.
+// Tamlık açısından tüm dosyayı aşağıya ekliyorum.
 struct DashboardView: View {
+    @EnvironmentObject var appSettings: AppSettings
     @State private var viewModel: DashboardViewModel
     
-    // Diğer state'ler
     @State private var duzenlenecekIslem: Islem?
     @State private var duzenlemeEkraniGosteriliyor = false
     @State private var silinecekIslem: Islem?
@@ -54,7 +53,6 @@ struct DashboardView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // --- SABİT KALACAK ÜST KISIM ---
             monthNavigatorView
                 .padding(.bottom, 10)
             
@@ -66,7 +64,6 @@ struct DashboardView: View {
             
             dividerLine
             
-            // --- KAYDIRILABİLİR ALT KISIM ---
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 12) {
                     ChartPanelView(
@@ -93,33 +90,36 @@ struct DashboardView: View {
         .sheet(isPresented: $ayYilSeciciGosteriliyor) {
             AyYilSeciciView(currentDate: viewModel.currentDate) { yeniTarih in viewModel.currentDate = yeniTarih }
                 .presentationDetents([.height(300)])
+                .environmentObject(appSettings)
         }
         .sheet(isPresented: $duzenlemeEkraniGosteriliyor, onDismiss: { viewModel.fetchData() }) {
             IslemEkleView(duzenlenecekIslem: duzenlenecekIslem)
         }
-        .confirmationDialog("Bu tekrarlayan bir işlemdir.", isPresented: .constant(silinecekIslem != nil), titleVisibility: .visible) {
-            Button("Sadece Bu İşlemi Sil", role: .destructive) {
+        .confirmationDialog("alert.recurring_transaction", isPresented: .constant(silinecekIslem != nil), titleVisibility: .visible) {
+            Button("alert.delete_this_only", role: .destructive) {
                 if let islem = silinecekIslem { viewModel.modelContext.delete(islem) }
                 silinecekIslem = nil
             }
-            Button("Tüm Seriyi Sil", role: .destructive) {
+            Button("alert.delete_series", role: .destructive) {
                 if let islem = silinecekIslem { seriyiSil(islem: islem) }
                 silinecekIslem = nil
             }
-            Button("İptal", role: .cancel) { silinecekIslem = nil }
+            Button("common.cancel", role: .cancel) { silinecekIslem = nil }
         }
         .onAppear {
             viewModel.fetchData()
         }
     }
     
-    // Yardımcı view'lar ve fonksiyonlar...
     @ViewBuilder
     var monthNavigatorView: some View {
         HStack {
             Button(action: { viewModel.currentDate = Calendar.current.date(byAdding: .month, value: -1, to: viewModel.currentDate) ?? viewModel.currentDate }) { Image(systemName: "chevron.left") }
             Spacer()
-            Text(monthYearString(from: viewModel.currentDate)).fontWeight(.semibold).foregroundColor(.primary).onTapGesture { ayYilSeciciGosteriliyor = true }
+            Text(monthYearString(from: viewModel.currentDate, localeIdentifier: appSettings.languageCode))
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+                .onTapGesture { ayYilSeciciGosteriliyor = true }
             Spacer()
             Button(action: { viewModel.currentDate = Calendar.current.date(byAdding: .month, value: 1, to: viewModel.currentDate) ?? viewModel.currentDate }) { Image(systemName: "chevron.right") }
         }
@@ -129,7 +129,6 @@ struct DashboardView: View {
     var transactionTypePicker: some View {
         HStack(spacing: 0) {
             ForEach(IslemTuru.allCases, id: \.self) { tur in
-                // Karmaşık kod yerine artık basitçe yeni view'imizi çağırıyoruz.
                 IslemTuruButonu(tur: tur, secilenTur: $viewModel.secilenTur, animation: animation)
             }
         }
@@ -139,7 +138,7 @@ struct DashboardView: View {
     }
     
     var totalAmountView: some View {
-        formatCurrency(amount: viewModel.toplamTutar, font: .largeTitle, color: viewModel.secilenTur == .gelir ? .green : .red).padding(.vertical, 10)
+        formatCurrency(amount: viewModel.toplamTutar, font: .largeTitle, color: viewModel.secilenTur == .gelir ? .green : .red)
     }
     
     var dividerLine: some View {

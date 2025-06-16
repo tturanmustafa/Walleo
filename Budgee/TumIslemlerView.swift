@@ -2,24 +2,19 @@ import SwiftUI
 import SwiftData
 
 struct TumIslemlerView: View {
-    // DOĞRU KULLANIM: @Observable bir sınıf için @State kullanılır.
     @State private var viewModel: TumIslemlerViewModel
     
-    // Düzenleme ve Silme için state'ler
     @State private var filtreEkraniGosteriliyor = false
+    
     @State private var duzenlenecekIslem: Islem?
     @State private var duzenlemeEkraniGosteriliyor = false
     @State private var silinecekIslem: Islem?
     
-    // init metodu, ViewModel'i oluşturmak için dışarıdan context alır.
     init(modelContext: ModelContext) {
-        // @State için ilk değer ataması bu şekilde yapılır.
         _viewModel = State(initialValue: TumIslemlerViewModel(modelContext: modelContext))
     }
     
     var body: some View {
-        // Artık guard let, AnyView gibi karmaşık yapılara gerek yok.
-        // viewModel her zaman dolu ve kullanıma hazır.
         List {
             ForEach(viewModel.islemler) { islem in
                 IslemSatirView(
@@ -35,21 +30,21 @@ struct TumIslemlerView: View {
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
                         silmeyiBaslat(islem)
-                    } label: { Label("Sil", systemImage: "trash") }
+                    } label: { Label("common.delete", systemImage: "trash") }
                     
                     Button {
                         duzenlenecekIslem = islem
                         duzenlemeEkraniGosteriliyor = true
-                    } label: { Label("Düzenle", systemImage: "pencil") }
+                    } label: { Label("common.edit", systemImage: "pencil") }
                     .tint(.blue)
                 }
             }
         }
         .listStyle(.plain)
-        .navigationTitle("Tüm İşlemler")
+        .navigationTitle("all_transactions.title")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Filtrele") {
+                Button("all_transactions.filter_button") {
                     filtreEkraniGosteriliyor = true
                 }
             }
@@ -64,26 +59,21 @@ struct TumIslemlerView: View {
         }
         .overlay {
             if viewModel.islemler.isEmpty {
-                ContentUnavailableView("İşlem Bulunamadı", systemImage: "magnifyingglass", description: Text("Filtre kriterlerinizi değiştirmeyi deneyin."))
+                ContentUnavailableView("all_transactions.not_found", systemImage: "magnifyingglass", description: Text("all_transactions.not_found_desc"))
             }
         }
-        .confirmationDialog("Bu tekrarlayan bir işlemdir.", isPresented: .constant(silinecekIslem != nil), titleVisibility: .visible) {
-            Button("Sadece Bu İşlemi Sil", role: .destructive) {
+        .confirmationDialog("alert.recurring_transaction", isPresented: .constant(silinecekIslem != nil), titleVisibility: .visible) {
+            Button("alert.delete_this_only", role: .destructive) {
                 if let islem = silinecekIslem { viewModel.deleteIslem(islem) }
                 silinecekIslem = nil
             }
-            Button("Tüm Seriyi Sil", role: .destructive) {
+            Button("alert.delete_series", role: .destructive) {
                 if let islem = silinecekIslem { viewModel.deleteSeri(islem) }
                 silinecekIslem = nil
             }
-            Button("İptal", role: .cancel) {
+            Button("common.cancel", role: .cancel) {
                 silinecekIslem = nil
             }
-        }
-        .onAppear {
-            // TumIslemlerViewModel'in init'i zaten veri çektiği için
-            // burada tekrar çağırmaya gerek yok, ama kalsa da zararı olmaz.
-            // En temiz haliyle, ViewModel'in kendi içinde bu işi halletmesi daha iyidir.
         }
     }
     

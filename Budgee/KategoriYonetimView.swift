@@ -8,7 +8,7 @@ struct KategoriYonetimView: View {
 
     var body: some View {
         List {
-            Section("Gelir Kategorileri") {
+            Section("categories.income_categories") {
                 ForEach(kategoriler.filter { $0.tur == .gelir }) { kategori in
                     NavigationLink(destination: KategoriDuzenleView(kategori: kategori)) {
                         HStack {
@@ -17,16 +17,15 @@ struct KategoriYonetimView: View {
                                 .background(kategori.renk.opacity(0.2))
                                 .foregroundColor(kategori.renk)
                                 .cornerRadius(6)
-                            Text(kategori.isim)
+                            // DEĞİŞİKLİK: LocalizedStringKey ile çeviriyi garanti altına alıyoruz.
+                            Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim))
                         }
                     }
                 }
-                .onDelete { indexSet in
-                    deleteKategori(at: indexSet, for: .gelir)
-                }
+                .onDelete { indexSet in deleteKategori(at: indexSet, for: .gelir) }
             }
             
-            Section("Gider Kategorileri") {
+            Section("categories.expense_categories") {
                 ForEach(kategoriler.filter { $0.tur == .gider }) { kategori in
                     NavigationLink(destination: KategoriDuzenleView(kategori: kategori)) {
                         HStack {
@@ -35,46 +34,41 @@ struct KategoriYonetimView: View {
                                 .background(kategori.renk.opacity(0.2))
                                 .foregroundColor(kategori.renk)
                                 .cornerRadius(6)
-                            Text(kategori.isim)
+                            // DEĞİŞİKLİK: LocalizedStringKey ile çeviriyi garanti altına alıyoruz.
+                            Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim))
                         }
                     }
                 }
-                .onDelete { indexSet in
-                    deleteKategori(at: indexSet, for: .gider)
-                }
+                .onDelete { indexSet in deleteKategori(at: indexSet, for: .gider) }
             }
         }
-        .navigationTitle("Kategoriler")
+        .navigationTitle("categories.title")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { yeniKategoriEkleGoster = true }) {
-                    Image(systemName: "plus")
-                }
+                Button(action: { yeniKategoriEkleGoster = true }) { Image(systemName: "plus") }
             }
         }
-        .sheet(isPresented: $yeniKategoriEkleGoster) {
-            KategoriDuzenleView()
-        }
+        .sheet(isPresented: $yeniKategoriEkleGoster) { KategoriDuzenleView() }
         .onAppear(perform: addDefaultCategoriesIfNeeded)
     }
     
+    
     private func addDefaultCategoriesIfNeeded() {
         if kategoriler.isEmpty {
-            // Gelir
-            modelContext.insert(Kategori(isim: "Maaş", ikonAdi: "dollarsign.circle.fill", tur: .gelir, renkHex: "#34C759"))
-            modelContext.insert(Kategori(isim: "Ek Gelir", ikonAdi: "chart.pie.fill", tur: .gelir, renkHex: "#007AFF"))
-            modelContext.insert(Kategori(isim: "Yatırım", ikonAdi: "chart.line.uptrend.xyaxis", tur: .gelir, renkHex: "#AF52DE"))
-            // Gider
-            modelContext.insert(Kategori(isim: "Market", ikonAdi: "cart.fill", tur: .gider, renkHex: "#FF9500"))
-            modelContext.insert(Kategori(isim: "Restoran", ikonAdi: "fork.knife", tur: .gider, renkHex: "#FF3B30"))
-            modelContext.insert(Kategori(isim: "Ulaşım", ikonAdi: "car.fill", tur: .gider, renkHex: "#5E5CE6"))
-            modelContext.insert(Kategori(isim: "Faturalar", ikonAdi: "bolt.fill", tur: .gider, renkHex: "#FFCC00"))
-            modelContext.insert(Kategori(isim: "Eğlence", ikonAdi: "film.fill", tur: .gider, renkHex: "#32ADE6"))
-            modelContext.insert(Kategori(isim: "Sağlık", ikonAdi: "pills.fill", tur: .gider, renkHex: "#64D2FF"))
-            modelContext.insert(Kategori(isim: "Giyim", ikonAdi: "tshirt.fill", tur: .gider, renkHex: "#FF2D55"))
-            modelContext.insert(Kategori(isim: "Ev", ikonAdi: "house.fill", tur: .gider, renkHex: "#A2845E"))
-            modelContext.insert(Kategori(isim: "Hediye", ikonAdi: "gift.fill", tur: .gider, renkHex: "#BF5AF2"))
-            modelContext.insert(Kategori(isim: "Diğer", ikonAdi: "ellipsis.circle.fill", tur: .gider, renkHex: "#8E8E93"))
+            // Artık hem 'isim' hem de 'localizationKey' ile oluşturuluyorlar
+            modelContext.insert(Kategori(isim: "Maaş", ikonAdi: "dollarsign.circle.fill", tur: .gelir, renkHex: "#34C759", localizationKey: "category.salary"))
+            modelContext.insert(Kategori(isim: "Ek Gelir", ikonAdi: "chart.pie.fill", tur: .gelir, renkHex: "#007AFF", localizationKey: "category.extra_income"))
+            modelContext.insert(Kategori(isim: "Yatırım", ikonAdi: "chart.line.uptrend.xyaxis", tur: .gelir, renkHex: "#AF52DE", localizationKey: "category.investment"))
+            modelContext.insert(Kategori(isim: "Market", ikonAdi: "cart.fill", tur: .gider, renkHex: "#FF9500", localizationKey: "category.groceries"))
+            modelContext.insert(Kategori(isim: "Restoran", ikonAdi: "fork.knife", tur: .gider, renkHex: "#FF3B30", localizationKey: "category.restaurant"))
+            modelContext.insert(Kategori(isim: "Ulaşım", ikonAdi: "car.fill", tur: .gider, renkHex: "#5E5CE6", localizationKey: "category.transport"))
+            modelContext.insert(Kategori(isim: "Faturalar", ikonAdi: "bolt.fill", tur: .gider, renkHex: "#FFCC00", localizationKey: "category.bills"))
+            modelContext.insert(Kategori(isim: "Eğlence", ikonAdi: "film.fill", tur: .gider, renkHex: "#32ADE6", localizationKey: "category.entertainment"))
+            modelContext.insert(Kategori(isim: "Sağlık", ikonAdi: "pills.fill", tur: .gider, renkHex: "#64D2FF", localizationKey: "category.health"))
+            modelContext.insert(Kategori(isim: "Giyim", ikonAdi: "tshirt.fill", tur: .gider, renkHex: "#FF2D55", localizationKey: "category.clothing"))
+            modelContext.insert(Kategori(isim: "Ev", ikonAdi: "house.fill", tur: .gider, renkHex: "#A2845E", localizationKey: "category.home"))
+            modelContext.insert(Kategori(isim: "Hediye", ikonAdi: "gift.fill", tur: .gider, renkHex: "#BF5AF2", localizationKey: "category.gift"))
+            modelContext.insert(Kategori(isim: "Diğer", ikonAdi: "ellipsis.circle.fill", tur: .gider, renkHex: "#8E8E93", localizationKey: "category.other"))
         }
     }
     

@@ -5,15 +5,28 @@ struct AyarlarView: View {
     
     var body: some View {
         Form {
-            Section("GENEL") {
+            Section("settings.section_general") { // DEĞİŞTİ
                 HStack {
                     AyarIkonu(iconName: "circle.righthalf.filled", color: .gray)
-                    Text("Tema")
+                    Text("settings.theme") // DEĞİŞTİ
                     Spacer()
-                    Picker("", selection: $appSettings.colorSchemeValue) {
-                        Text("Sistem").tag(0)
-                        Text("Açık").tag(1)
-                        Text("Koyu").tag(2)
+                    Picker("Tema", selection: $appSettings.colorSchemeValue) {
+                        Text("settings.theme_system").tag(0) // DEĞİŞTİ
+                        Text("settings.theme_light").tag(1) // DEĞİŞTİ
+                        Text("settings.theme_dark").tag(2) // DEĞİŞTİ
+                    }
+                    .pickerStyle(.menu)
+                    .labelsHidden()
+                }
+                .padding(.vertical, 4)
+                
+                HStack {
+                    AyarIkonu(iconName: "globe", color: .blue)
+                    Text("settings.language") // DEĞİŞTİ
+                    Spacer()
+                    Picker("Dil", selection: $appSettings.languageCode) {
+                        Text("Türkçe").tag("tr")
+                        Text("English").tag("en")
                     }
                     .pickerStyle(.menu)
                     .labelsHidden()
@@ -22,12 +35,21 @@ struct AyarlarView: View {
                 
                 NavigationLink(destination: KategoriYonetimView()) {
                     AyarIkonu(iconName: "folder.fill", color: .orange)
-                    Text("Kategorileri Yönet")
+                    Text("settings.manage_categories") // DEĞİŞTİ
                 }
                 .padding(.vertical, 4)
             }
+            
+            Section("settings.section_info") { // DEĞİŞTİ
+                HStack {
+                    Text("settings.version") // DEĞİŞTİ
+                    Spacer()
+                    Text("1.0.0")
+                        .foregroundColor(.secondary)
+                }
+            }
         }
-        .navigationTitle("Ayarlar")
+        .navigationTitle("settings.title") // DEĞİŞTİ
     }
 }
 
@@ -37,7 +59,7 @@ struct AyarIkonu: View {
     
     var body: some View {
         Image(systemName: iconName)
-            .font(.title3)
+            .font(.callout) // İkonları biraz küçülttüm
             .foregroundColor(.white)
             .frame(width: 32, height: 32)
             .background(color)

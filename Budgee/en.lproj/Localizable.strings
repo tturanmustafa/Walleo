@@ -1,0 +1,119 @@
+/* Localizable.strings (English)
+*/
+
+// General / Common Use
+"common.save" = "Save";
+"common.cancel" = "Cancel";
+"common.edit" = "Edit";
+"common.delete" = "Delete";
+"common.done" = "Done";
+"common.reset" = "Reset";
+"common.apply" = "Apply";
+"common.all" = "All";
+"common.income" = "Income";
+"common.expense" = "Expense";
+"common.category" = "Category";
+"common.categories" = "Categories";
+"common.amount" = "Amount";
+"common.date" = "Date";
+"common.type" = "Type";
+
+// Main Tabs
+"tab.dashboard" = "Dashboard";
+"tab.calendar" = "Calendar";
+"tab.reports" = "Reports";
+"tab.settings" = "Settings";
+
+// Dashboard Screen
+"dashboard.category_distribution" = "Category Distribution";
+"dashboard.recent_transactions" = "Recent Transactions";
+"dashboard.see_all" = "See All";
+"dashboard.no_records_for_month" = "No Records for This Month";
+
+// Settings Screen
+"settings.title" = "Settings";
+"settings.section_general" = "GENERAL";
+"settings.theme" = "Theme";
+"settings.theme_system" = "System";
+"settings.theme_light" = "Light";
+"settings.theme_dark" = "Dark";
+"settings.language" = "Language";
+"settings.manage_categories" = "Manage Categories";
+"settings.section_info" = "INFORMATION";
+"settings.version" = "Version";
+
+// Category Management
+"categories.title" = "Categories";
+"categories.income_categories" = "Income Categories";
+"categories.expense_categories" = "Expense Categories";
+"categories.new" = "New Category";
+"categories.edit" = "Edit Category";
+"categories.name" = "Category Name";
+"categories.color" = "Category Color";
+"categories.select_icon" = "Select Icon";
+
+// Add / Edit Transaction
+"transaction.new" = "New Transaction";
+"transaction.edit" = "Edit Transaction";
+"transaction.type" = "Transaction Type";
+"transaction.section_details" = "Details";
+"transaction.name_placeholder" = "Transaction Name (e.g., Dinner)";
+"transaction.select_category" = "Select Category";
+"transaction.recurrence" = "Recurrence";
+
+// All Transactions & Filtering
+"all_transactions.title" = "All Transactions";
+"all_transactions.filter_button" = "Filter";
+"all_transactions.not_found" = "No Transactions Found";
+"all_transactions.not_found_desc" = "Try changing your filter criteria.";
+"filter.title" = "Filter and Sort";
+"filter.date_range" = "Date Range";
+"filter.sort_by" = "Sort By";
+"filter.sort_order" = "Sort Order";
+
+// Enum Values
+"enum.recurrence.once" = "One Time";
+"enum.recurrence.monthly" = "Every Month";
+"enum.recurrence.quarterly" = "Every 3 Months";
+"enum.recurrence.semi_annually" = "Every 6 Months";
+"enum.recurrence.annually" = "Every Year";
+"enum.sort.date_desc" = "Date (Newest First)";
+"enum.sort.date_asc" = "Date (Oldest First)";
+"enum.sort.amount_desc" = "Amount (Highest First)";
+"enum.sort.amount_asc" = "Amount (Lowest First)";
+"enum.date_range.all" = "All Time";
+"enum.date_range.this_month" = "This Month";
+"enum.date_range.last_3_months" = "Last 3 Months";
+"enum.date_range.last_6_months" = "Last 6 Months";
+"enum.date_range.this_year" = "This Year";
+
+// Alerts and Messages
+"alert.recurring_transaction" = "This is a recurring transaction.";
+"alert.update_this_only" = "Update Only This One";
+"alert.update_future" = "Update This & Future Ones";
+"alert.delete_this_only" = "Delete Only This One";
+"alert.delete_series" = "Delete Entire Series";
+
+// Extra
+"month_picker.title" = "Select Date";
+"month_picker.month" = "Month";
+"month_picker.year" = "Year";
+
+// Placeholder Screens
+"calendar.coming_soon" = "Calendar Page Coming Soon!";
+"reports.coming_soon" = "Reports Page Coming Soon!";
+
+// Default Categories
+"category.salary" = "Salary";
+"category.extra_income" = "Side Income";
+"category.investment" = "Investment";
+"category.groceries" = "Groceries";
+"category.restaurant" = "Restaurant";
+"category.transport" = "Transport";
+"category.bills" = "Bills";
+"category.entertainment" = "Entertainment";
+"category.health" = "Health";
+"category.clothing" = "Clothing";
+"category.home" = "Home";
+"category.gift" = "Gift";
+"category.other" = "Other";
