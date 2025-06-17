@@ -2,6 +2,8 @@ import SwiftUI
 import SwiftData
 
 struct TumIslemlerView: View {
+    @EnvironmentObject var appSettings: AppSettings
+    // DEĞİŞİKLİK: @StateObject yerine @State kullanıyoruz.
     @State private var viewModel: TumIslemlerViewModel
     
     @State private var filtreEkraniGosteriliyor = false
@@ -10,6 +12,7 @@ struct TumIslemlerView: View {
     @State private var duzenlemeEkraniGosteriliyor = false
     @State private var silinecekIslem: Islem?
     
+    // DEĞİŞİKLİK: init metodunu @State'e uygun hale getiriyoruz.
     init(modelContext: ModelContext) {
         _viewModel = State(initialValue: TumIslemlerViewModel(modelContext: modelContext))
     }
@@ -27,17 +30,6 @@ struct TumIslemlerView: View {
                         silmeyiBaslat(islem)
                     }
                 )
-                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                    Button(role: .destructive) {
-                        silmeyiBaslat(islem)
-                    } label: { Label("common.delete", systemImage: "trash") }
-                    
-                    Button {
-                        duzenlenecekIslem = islem
-                        duzenlemeEkraniGosteriliyor = true
-                    } label: { Label("common.edit", systemImage: "pencil") }
-                    .tint(.blue)
-                }
             }
         }
         .listStyle(.plain)
@@ -51,11 +43,13 @@ struct TumIslemlerView: View {
         }
         .sheet(isPresented: $filtreEkraniGosteriliyor) {
             FiltreAyarView(ayarlar: $viewModel.filtreAyarlari)
+                .environmentObject(appSettings)
         }
         .sheet(isPresented: $duzenlemeEkraniGosteriliyor, onDismiss: {
             viewModel.fetchData()
         }) {
             IslemEkleView(duzenlenecekIslem: duzenlenecekIslem)
+                .environmentObject(appSettings)
         }
         .overlay {
             if viewModel.islemler.isEmpty {

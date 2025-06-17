@@ -6,10 +6,47 @@ public enum Sekme {
     case panel, takvim, raporlar, ayarlar
 }
 
+// YENİ: Desteklenen para birimlerini tanımlayan genişletilmiş enum
+public enum Currency: String, CaseIterable, Identifiable {
+    case TRY, USD, EUR, GBP, JPY, CAD, AUD, CHF, CNY, SEK, NOK, RUB, INR, BRL, ZAR, AED, SAR, KRW, SGD
+
+    public var id: String { self.rawValue }
+
+    var symbol: String {
+        switch self {
+        case .TRY: return "₺"
+        case .USD: return "$"
+        case .EUR: return "€"
+        case .GBP: return "£"
+        case .JPY: return "¥"
+        case .CAD: return "CA$"
+        case .AUD: return "A$"
+        case .CHF: return "CHF"
+        case .CNY: return "CN¥"
+        case .SEK: return "kr"
+        case .NOK: return "kr"
+        case .RUB: return "₽"
+        case .INR: return "₹"
+        case .BRL: return "R$"
+        case .ZAR: return "R"
+        case .AED: return "د.إ"
+        case .SAR: return "﷼"
+        case .KRW: return "₩"
+        case .SGD: return "S$"
+        }
+    }
+    
+    var localizedNameKey: String {
+        return "currency.name.\(self.rawValue)"
+    }
+}
+
 // MARK: - App Settings
 class AppSettings: ObservableObject {
     @AppStorage("colorScheme") var colorSchemeValue: Int = 0
     @AppStorage("language") var languageCode: String = "tr"
+    // YENİ: Kullanıcının para birimi tercihini saklamak için eklendi.
+    @AppStorage("currencyCode") var currencyCode: String = Currency.TRY.rawValue
 
     var colorScheme: ColorScheme? {
         switch colorSchemeValue {
@@ -26,7 +63,10 @@ struct KategoriHarcamasi: Identifiable {
     var kategori: String
     var tutar: Double
     var renk: Color
+    var localizationKey: String? // YENİ: Çeviri anahtarını taşımak için
 }
+
+
 
 public enum IslemTuru: String, Codable, CaseIterable {
     case gelir = "common.income"
@@ -91,3 +131,4 @@ struct FiltreAyarlari {
     var secilenKategoriler: Set<UUID> = []
     var sortOrder: SortOrder = .tarihAzalan
 }
+

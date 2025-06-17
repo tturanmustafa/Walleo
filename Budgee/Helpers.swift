@@ -23,42 +23,32 @@ func formatDateForList(from date: Date) -> String {
     return formatter.string(from: date)
 }
 
-func monthYearString(from date: Date, localeIdentifier: String) -> String { // DEĞİŞTİ
+func monthYearString(from date: Date, localeIdentifier: String) -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "MMMM yyyy"
-    formatter.locale = Locale(identifier: localeIdentifier) // DEĞİŞTİ
+    formatter.locale = Locale(identifier: localeIdentifier)
     return formatter.string(from: date)
 }
 
-func formatCurrency(amount: Double, font: Font, color: Color) -> some View {
+func formatCurrency(amount: Double, currencyCode: String, localeIdentifier: String) -> String {
     let formatter = NumberFormatter()
-    formatter.numberStyle = .decimal
-    formatter.locale = Locale(identifier: "tr_TR")
+    formatter.numberStyle = .currency
+    formatter.currencyCode = currencyCode
+    formatter.locale = Locale(identifier: localeIdentifier)
     formatter.maximumFractionDigits = 2
     formatter.minimumFractionDigits = 2
     
-    let formattedString = formatter.string(from: NSNumber(value: amount)) ?? "0,00"
-    let parts = formattedString.split(separator: ",")
-    
-    var decimalFont: Font
-    if font == .title {
-        decimalFont = .body
-    } else {
-        decimalFont = .footnote
+    guard let formattedString = formatter.string(from: NSNumber(value: amount)) else {
+        return "\(amount)"
     }
     
-    return HStack(spacing: 0) {
-        Text(parts.first ?? "0").font(font.bold())
-        if parts.count > 1 {
-            Text(",").font(font.bold())
-            Text(parts[1]).font(decimalFont.weight(.semibold)).foregroundColor(color.opacity(0.7))
-        }
-        Text(" TL").font(decimalFont.bold())
+    if let currency = Currency(rawValue: currencyCode) {
+        return formattedString.replacingOccurrences(of: currency.rawValue, with: currency.symbol)
     }
-    .foregroundColor(color)
+    
+    return formattedString
 }
 
-// Color'ı Hex String'den oluşturmak için yardımcı extension
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
@@ -66,11 +56,11 @@ extension Color {
         Scanner(string: hex).scanHexInt64(&int)
         let a, r, g, b: UInt64
         switch hex.count {
-        case 3: // RGB (12-bit)
+        case 3:
             (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
+        case 6:
             (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
+        case 8:
             (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
         default:
             (a, r, g, b) = (1, 1, 1, 0)
