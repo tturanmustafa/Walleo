@@ -132,3 +132,9 @@ struct FiltreAyarlari {
     var sortOrder: SortOrder = .tarihAzalan
 }
 
+// AppModels.swift dosyasının sonuna ekleyin
+
+extension Notification.Name {
+    static let yeniIslemEklendi = Notification.Name("yeniIslemEklendi")
+}
+

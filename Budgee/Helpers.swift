@@ -16,10 +16,11 @@ func iconFor(tekrar: TekrarTuru) -> String {
     }
 }
 
-func formatDateForList(from date: Date) -> String {
+func formatDateForList(from date: Date, localeIdentifier: String) -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "E, d MMM"
-    formatter.locale = Locale(identifier: "tr_TR")
+    // DEĞİŞİKLİK: Locale artık sabit değil, parametreden geliyor.
+    formatter.locale = Locale(identifier: localeIdentifier)
     return formatter.string(from: date)
 }
 

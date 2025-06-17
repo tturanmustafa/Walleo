@@ -1,3 +1,5 @@
+// IslemSatirView.swift
+
 import SwiftUI
 
 struct IslemSatirView: View {
@@ -20,7 +22,9 @@ struct IslemSatirView: View {
             }
             VStack(alignment: .leading, spacing: 2) {
                 Text(islem.isim).fontWeight(.semibold)
-                Text(formatDateForList(from: islem.tarih)).font(.caption).foregroundColor(.secondary)
+                // DEĞİŞİKLİK: Fonksiyona appSettings'ten gelen dil kodu eklendi.
+                Text(formatDateForList(from: islem.tarih, localeIdentifier: appSettings.languageCode))
+                    .font(.caption).foregroundColor(.secondary)
             }
             Spacer()
             
@@ -29,7 +33,7 @@ struct IslemSatirView: View {
                 currencyCode: appSettings.currencyCode,
                 localeIdentifier: appSettings.languageCode
             ))
-            .font(.callout.bold()) // TEK BİR FONT KULLANILIYOR
+            .font(.callout.bold())
             .foregroundColor(islem.tur == .gelir ? .green : .primary)
             
             Menu {

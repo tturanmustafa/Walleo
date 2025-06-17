@@ -118,6 +118,7 @@ struct IslemEkleView: View {
             if secilenTekrar != .tekSeferlik {
                 yeniSeriOlustur(islem: islemToUpdate)
             }
+            NotificationCenter.default.post(name: .yeniIslemEklendi, object: nil)
             dismiss()
             return
         }

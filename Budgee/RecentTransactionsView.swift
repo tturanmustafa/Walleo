@@ -2,12 +2,11 @@ import SwiftUI
 import SwiftData
 
 struct RecentTransactionsView: View {
-    @EnvironmentObject var appSettings: AppSettings // YENİ: Ayar panosuna erişim
+    @EnvironmentObject var appSettings: AppSettings
     let modelContext: ModelContext
     let islemler: [Islem]
     
     @Binding var duzenlenecekIslem: Islem?
-    @Binding var duzenlemeEkraniGosteriliyor: Bool
     let onSilmeyiBaslat: (Islem) -> Void
     
     var body: some View {
@@ -18,18 +17,20 @@ struct RecentTransactionsView: View {
                     Spacer()
                     NavigationLink("dashboard.see_all") {
                         TumIslemlerView(modelContext: modelContext)
-                            .environmentObject(appSettings) // Ayarları bir sonraki ekrana da aktarıyoruz
+                            .environmentObject(appSettings)
                     }
                 }.padding()
+                
                 Divider()
+                
                 VStack(spacing: 0) {
                     ForEach(islemler.prefix(5)) { islem in
-                        // IslemSatirView artık ortamdan appSettings'i kendi bulacak
                         IslemSatirView(
                             islem: islem,
                             onEdit: {
+                                // Sadece düzenlenecek işlemi set ediyoruz.
+                                // Sheet'in açılmasını bu state'in değişmesi tetikleyecek.
                                 duzenlenecekIslem = islem
-                                duzenlemeEkraniGosteriliyor = true
                             },
                             onDelete: {
                                 onSilmeyiBaslat(islem)

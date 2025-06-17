@@ -39,7 +39,6 @@ struct DashboardView: View {
     @State private var viewModel: DashboardViewModel
     
     @State private var duzenlenecekIslem: Islem?
-    @State private var duzenlemeEkraniGosteriliyor = false
     @State private var silinecekIslem: Islem?
     @State private var ayYilSeciciGosteriliyor = false
     @Namespace private var animation
@@ -57,7 +56,6 @@ struct DashboardView: View {
                 .padding(.bottom, 10)
             
             totalAmountView
-                // Animasyonlu geçiş için eklendi
                 .transition(.opacity.animation(.easeInOut))
                 .id("totalAmount_\(viewModel.secilenTur.rawValue)")
                 .padding(.bottom, 12)
@@ -65,7 +63,6 @@ struct DashboardView: View {
             dividerLine
             
             ScrollView(.vertical, showsIndicators: false) {
-                // Değişen içeriği bir Vstack içinde gruplayarak genel bir animasyon veriyoruz
                 VStack(spacing: 12) {
                     ChartPanelView(
                         pieChartVerisi: viewModel.pieChartVerisi,
@@ -79,7 +76,6 @@ struct DashboardView: View {
                         modelContext: viewModel.modelContext,
                         islemler: viewModel.filtrelenmisIslemler,
                         duzenlenecekIslem: $duzenlenecekIslem,
-                        duzenlemeEkraniGosteriliyor: $duzenlemeEkraniGosteriliyor,
                         onSilmeyiBaslat: { islem in
                             self.silmeyiBaslat(islem)
                         }
@@ -95,21 +91,19 @@ struct DashboardView: View {
                 .presentationDetents([.height(300)])
                 .environmentObject(appSettings)
         }
-        .sheet(isPresented: $duzenlemeEkraniGosteriliyor, onDismiss: { viewModel.fetchData() }) {
-            IslemEkleView(duzenlenecekIslem: duzenlenecekIslem)
+        .sheet(item: $duzenlenecekIslem, onDismiss: { viewModel.fetchData() }) { islem in
+            IslemEkleView(duzenlenecekIslem: islem)
                 .environmentObject(appSettings)
         }
-        .confirmationDialog("alert.recurring_transaction", isPresented: .constant(silinecekIslem != nil), titleVisibility: .visible) {
-            Button("alert.delete_this_only", role: .destructive) {
-                if let islem = silinecekIslem { viewModel.modelContext.delete(islem) }
-                silinecekIslem = nil
+        .recurringTransactionAlert(
+            for: $silinecekIslem,
+            onDeleteSingle: { islem in
+                viewModel.deleteIslem(islem)
+            },
+            onDeleteSeries: { islem in
+                viewModel.deleteSeri(for: islem)
             }
-            Button("alert.delete_series", role: .destructive) {
-                if let islem = silinecekIslem { seriyiSil(islem: islem) }
-                silinecekIslem = nil
-            }
-            Button("common.cancel", role: .cancel) { silinecekIslem = nil }
-        }
+        )
         .onAppear {
             viewModel.fetchData()
         }
@@ -163,12 +157,7 @@ struct DashboardView: View {
         if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
             silinecekIslem = islem
         } else {
-            viewModel.modelContext.delete(islem)
+            viewModel.deleteIslem(islem)
         }
-    }
-
-    private func seriyiSil(islem: Islem) {
-        let tekrarID = islem.tekrarID
-        try? viewModel.modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
     }
 }

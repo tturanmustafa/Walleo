@@ -22,9 +22,18 @@ class DashboardViewModel {
 
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
+        
+        // "yeniIslemEklendi" bildirimini dinlemek için gözlemci ekleniyor.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchData), // Bildirim gelince bu fonksiyonu çalıştır
+            name: .yeniIslemEklendi,
+            object: nil
+        )
     }
     
-    func fetchData() {
+    // fetchData fonksiyonu artık @objc olmalı çünkü selector olarak kullanılıyor.
+    @objc func fetchData() {
         do {
             let calendar = Calendar.current
             guard let monthInterval = calendar.dateInterval(of: .month, for: currentDate) else { return }
@@ -58,10 +67,10 @@ class DashboardViewModel {
         toplamTutar = filtrelenmisIslemler.reduce(0) { $0 + $1.tutar }
         
         // Bu sözlük artık ikon, renk ve çeviri anahtarını bir arada tutuyor.
-        let detaylar = Dictionary(uniqueKeysWithValues: filtrelenmisIslemler.compactMap { islem -> (String, (renk: Color, ikon: String, key: String?))? in
+        let detaylar = Dictionary(filtrelenmisIslemler.compactMap { islem -> (String, (renk: Color, ikon: String, key: String?))? in
             guard let kategori = islem.kategori else { return nil }
             return (kategori.isim, (kategori.renk, kategori.ikonAdi, kategori.localizationKey))
-        })
+        }, uniquingKeysWith: { (ilkBulunan, _) in ilkBulunan })
         
         // ChartPanelView sadece ikon ve renk beklediği için ona uygun bir sözlük daha hazırlıyoruz.
         self.kategoriDetaylari = detaylar.mapValues { ($0.renk, $0.ikon) }
@@ -73,13 +82,11 @@ class DashboardViewModel {
         var digerTutar: Double = 0.0
         
         for (kategoriAdi, tutar) in siraliToplamlar {
-            // "Diğer" kategorisini sona bırakmak için özel durum yönetimi
             if kategoriAdi == "Diğer" {
                 digerTutar += tutar
                 continue
             }
             
-            // "Diğer" kategorisi için grafikte yer ayırmak amacıyla sınırı 4 yapıyoruz.
             if yeniPieChartVerisi.count < 4 {
                 let renk = detaylar[kategoriAdi]?.renk ?? .gray
                 let key = detaylar[kategoriAdi]?.key
@@ -89,11 +96,28 @@ class DashboardViewModel {
             }
         }
         
-        // Eğer "Diğer" kategorisine giren harcama varsa, onu en sona ekliyoruz.
         if digerTutar > 0 {
             yeniPieChartVerisi.append(KategoriHarcamasi(kategori: "Diğer", tutar: digerTutar, renk: .gray, localizationKey: "category.other"))
         }
         
         self.pieChartVerisi = yeniPieChartVerisi
+    }
+    
+    /// Tek bir işlemi siler ve ardından listeyi yeniler.
+    func deleteIslem(_ islem: Islem) {
+        modelContext.delete(islem)
+        fetchData()
+    }
+    
+    /// Tekrarlayan bir işlem serisinin tamamını siler ve listeyi yeniler.
+    func deleteSeri(for islem: Islem) {
+        let tekrarID = islem.tekrarID
+        guard tekrarID != UUID() else {
+            deleteIslem(islem)
+            return
+        }
+        
+        try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
+        fetchData()
     }
 }
