@@ -1,3 +1,5 @@
+// Kategori.swift
+
 import Foundation
 import SwiftData
 import SwiftUI
@@ -11,13 +13,12 @@ class Kategori {
     var renkHex: String
     var localizationKey: String?
 
-    @Relationship(deleteRule: .cascade, inverse: \Islem.kategori)
+    // DEĞİŞİKLİK BURADA: .cascade yerine .nullify kullanıldı.
+    @Relationship(deleteRule: .nullify, inverse: \Islem.kategori)
     var islemler: [Islem]?
     
     var renk: Color { Color(hex: renkHex) }
     
-    // .displayName özelliği kaldırıldı.
-
     init(id: UUID = UUID(), isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String? = nil) {
         self.id = id
         self.isim = isim

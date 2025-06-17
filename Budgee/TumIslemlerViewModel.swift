@@ -13,10 +13,19 @@ class TumIslemlerViewModel {
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
-        fetchData()
+        fetchData() // İlk açılış için veriyi çek
+        
+        // "yeniIslemEklendi" bildirimini dinlemek için gözlemci ekleniyor.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchData), // Bildirim gelince bu fonksiyonu çalıştır
+            name: .yeniIslemEklendi,
+            object: nil
+        )
     }
     
-    func fetchData() {
+    // fetchData fonksiyonu artık @objc olmalı çünkü selector olarak kullanılıyor.
+    @objc func fetchData() {
         let calendar = Calendar.current
         var baslangicTarihi: Date?
         var bitisTarihi: Date?
@@ -45,7 +54,6 @@ class TumIslemlerViewModel {
             (
                 (baslangicTarihi == nil || islem.tarih >= baslangicTarihi!) &&
                 (bitisTarihi == nil || islem.tarih < bitisTarihi!) &&
-                // DEĞİŞİKLİK: Sorguyu artık doğrudan veritabanındaki 'turRawValue' alanına atıyoruz.
                 (!turFiltresiAktif || islem.turRawValue == secilenTurRawValue!) &&
                 (!kategoriFiltresiAktif || (islem.kategori != nil && secilenKategoriIDleri.contains(islem.kategori!.id)))
             )

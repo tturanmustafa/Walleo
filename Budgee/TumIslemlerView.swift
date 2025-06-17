@@ -3,16 +3,14 @@ import SwiftData
 
 struct TumIslemlerView: View {
     @EnvironmentObject var appSettings: AppSettings
-    // DEĞİŞİKLİK: @StateObject yerine @State kullanıyoruz.
     @State private var viewModel: TumIslemlerViewModel
     
     @State private var filtreEkraniGosteriliyor = false
     
+    // 'duzenlemeEkraniGosteriliyor' boolean state'i kaldırıldı.
     @State private var duzenlenecekIslem: Islem?
-    @State private var duzenlemeEkraniGosteriliyor = false
     @State private var silinecekIslem: Islem?
     
-    // DEĞİŞİKLİK: init metodunu @State'e uygun hale getiriyoruz.
     init(modelContext: ModelContext) {
         _viewModel = State(initialValue: TumIslemlerViewModel(modelContext: modelContext))
     }
@@ -23,8 +21,8 @@ struct TumIslemlerView: View {
                 IslemSatirView(
                     islem: islem,
                     onEdit: {
+                        // Sadece düzenlenecek işlemi set ediyoruz.
                         duzenlenecekIslem = islem
-                        duzenlemeEkraniGosteriliyor = true
                     },
                     onDelete: {
                         silmeyiBaslat(islem)
@@ -45,10 +43,8 @@ struct TumIslemlerView: View {
             FiltreAyarView(ayarlar: $viewModel.filtreAyarlari)
                 .environmentObject(appSettings)
         }
-        .sheet(isPresented: $duzenlemeEkraniGosteriliyor, onDismiss: {
-            viewModel.fetchData()
-        }) {
-            IslemEkleView(duzenlenecekIslem: duzenlenecekIslem)
+        .sheet(item: $duzenlenecekIslem, onDismiss: { viewModel.fetchData() }) { islem in
+            IslemEkleView(duzenlenecekIslem: islem)
                 .environmentObject(appSettings)
         }
         .overlay {
@@ -56,19 +52,15 @@ struct TumIslemlerView: View {
                 ContentUnavailableView("all_transactions.not_found", systemImage: "magnifyingglass", description: Text("all_transactions.not_found_desc"))
             }
         }
-        .confirmationDialog("alert.recurring_transaction", isPresented: .constant(silinecekIslem != nil), titleVisibility: .visible) {
-            Button("alert.delete_this_only", role: .destructive) {
-                if let islem = silinecekIslem { viewModel.deleteIslem(islem) }
-                silinecekIslem = nil
+        .recurringTransactionAlert(
+            for: $silinecekIslem,
+            onDeleteSingle: { islem in
+                viewModel.deleteIslem(islem)
+            },
+            onDeleteSeries: { islem in
+                viewModel.deleteSeri(islem)
             }
-            Button("alert.delete_series", role: .destructive) {
-                if let islem = silinecekIslem { viewModel.deleteSeri(islem) }
-                silinecekIslem = nil
-            }
-            Button("common.cancel", role: .cancel) {
-                silinecekIslem = nil
-            }
-        }
+        )
     }
     
     private func silmeyiBaslat(_ islem: Islem) {
