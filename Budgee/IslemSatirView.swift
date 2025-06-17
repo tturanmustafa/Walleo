@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct IslemSatirView: View {
+    @EnvironmentObject var appSettings: AppSettings
     let islem: Islem
     
     var onEdit: () -> Void = {}
@@ -9,14 +10,12 @@ struct IslemSatirView: View {
     var body: some View {
         HStack(spacing: 12) {
             ZStack {
-                // Kategorinin kendi rengini %10 opaklıkta arka plan olarak kullan
                 Circle()
                     .fill(islem.kategori?.renk.opacity(0.1) ?? Color.gray.opacity(0.1))
                     .frame(width: 45, height: 45)
                 
-                // Kategorinin kendi ikonunu ve rengini kullan
                 Image(systemName: islem.kategori?.ikonAdi ?? "tag.fill")
-                    .font(.callout)
+                    .font(.headline)
                     .foregroundColor(islem.kategori?.renk ?? .gray)
             }
             VStack(alignment: .leading, spacing: 2) {
@@ -25,11 +24,17 @@ struct IslemSatirView: View {
             }
             Spacer()
             
-            formatCurrency(amount: islem.tutar, font: .callout, color: islem.tur == .gelir ? .green : .primary)
+            Text(formatCurrency(
+                amount: islem.tutar,
+                currencyCode: appSettings.currencyCode,
+                localeIdentifier: appSettings.languageCode
+            ))
+            .font(.callout.bold()) // TEK BİR FONT KULLANILIYOR
+            .foregroundColor(islem.tur == .gelir ? .green : .primary)
             
             Menu {
-                Button("Düzenle", systemImage: "pencil", action: onEdit)
-                Button("Sil", systemImage: "trash", role: .destructive, action: onDelete)
+                Button(LocalizedStringKey("common.edit"), systemImage: "pencil", action: onEdit)
+                Button(LocalizedStringKey("common.delete"), systemImage: "trash", role: .destructive, action: onDelete)
             } label: {
                 Image(systemName: "ellipsis")
                     .font(.callout)

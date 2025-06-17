@@ -1,7 +1,8 @@
 import SwiftUI
-import SwiftData // EKSİK OLAN VE HATAYI ÇÖZECEK OLAN SATIR
+import SwiftData
 
 struct RecentTransactionsView: View {
+    @EnvironmentObject var appSettings: AppSettings // YENİ: Ayar panosuna erişim
     let modelContext: ModelContext
     let islemler: [Islem]
     
@@ -17,11 +18,13 @@ struct RecentTransactionsView: View {
                     Spacer()
                     NavigationLink("dashboard.see_all") {
                         TumIslemlerView(modelContext: modelContext)
+                            .environmentObject(appSettings) // Ayarları bir sonraki ekrana da aktarıyoruz
                     }
                 }.padding()
                 Divider()
                 VStack(spacing: 0) {
                     ForEach(islemler.prefix(5)) { islem in
+                        // IslemSatirView artık ortamdan appSettings'i kendi bulacak
                         IslemSatirView(
                             islem: islem,
                             onEdit: {
@@ -32,17 +35,6 @@ struct RecentTransactionsView: View {
                                 onSilmeyiBaslat(islem)
                             }
                         )
-                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                            Button(role: .destructive) {
-                                onSilmeyiBaslat(islem)
-                            } label: { Label("common.delete", systemImage: "trash") }
-                            
-                            Button {
-                                duzenlenecekIslem = islem
-                                duzenlemeEkraniGosteriliyor = true
-                            } label: { Label("common.edit", systemImage: "pencil") }
-                            .tint(.blue)
-                        }
                         
                         if islem.id != islemler.prefix(5).last?.id { Divider().padding(.leading, 60) }
                     }

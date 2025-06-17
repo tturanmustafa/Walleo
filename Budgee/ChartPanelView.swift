@@ -7,13 +7,16 @@ struct ChartPanelView: View {
     let toplamTutar: Double
 
     var body: some View {
+        // Bu "if" kontrolü, hiç veri olmadığında kartın hiç görünmemesini sağlar.
+        // Eğer gelir veya giderde hiç işlem yoksa bu doğrudur.
+        // Zıplama sorununu içerideki .frame ile çözeceğiz.
         if !pieChartVerisi.isEmpty {
             VStack(alignment: .leading, spacing: 0) {
-                Text("dashboard.category_distribution") // DEĞİŞTİ
+                Text("dashboard.category_distribution")
                     .font(.headline)
                     .fontWeight(.bold)
                     .padding([.top, .leading, .trailing])
-                    .padding(.bottom, 8)
+                    .padding(.bottom, 14)
                 
                 HStack(alignment: .center, spacing: 15) {
                     Chart(pieChartVerisi) { veri in
@@ -36,9 +39,9 @@ struct ChartPanelView: View {
                                     .foregroundColor(veri.renk)
                                     .frame(width: 20)
                                 
-                                Text(veri.kategori)
+                                Text(LocalizedStringKey(veri.localizationKey ?? veri.kategori))
                                     .font(.callout)
-                                    .lineLimit(2)
+                                    .lineLimit(1)
                                 
                                 Spacer()
                                 
@@ -49,9 +52,13 @@ struct ChartPanelView: View {
                             }
                         }
                     }
-                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading) // Listenin sola yaslanmasını garantiler
+                    .padding(.trailing)
                 }
-                .padding([.horizontal, .bottom])
+                .padding([.leading, .bottom])
+                // DEĞİŞİKLİK BURADA:
+                // Bu HStack'e sabit bir yükseklik vererek zıplamayı önlüyoruz.
+                .frame(height: 150)
             }
             .background(Color(.systemGray6).opacity(0.4))
             .cornerRadius(12)

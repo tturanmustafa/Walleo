@@ -37,7 +37,7 @@
 "settings.theme_system" = "Sistem";
 "settings.theme_light" = "Açık";
 "settings.theme_dark" = "Koyu";
-"settings.language" = "Dil / Language";
+"settings.language" = "Dil";
 "settings.manage_categories" = "Kategorileri Yönet";
 "settings.section_info" = "BİLGİ";
 "settings.version" = "Versiyon";
@@ -117,3 +117,25 @@
 "category.home" = "Ev";
 "category.gift" = "Hediye";
 "category.other" = "Diğer";
+
+// Para Birimi
+"settings.currency" = "Para Birimi";
+"currency.name.TRY" = "Türk Lirası";
+"currency.name.USD" = "ABD Doları";
+"currency.name.EUR" = "Euro";
+"currency.name.GBP" = "İngiliz Sterlini";
+"currency.name.JPY" = "Japon Yeni";
+"currency.name.CAD" = "Kanada Doları";
+"currency.name.AUD" = "Avustralya Doları";
+"currency.name.CHF" = "İsviçre Frangı";
+"currency.name.CNY" = "Çin Yuanı";
+"currency.name.SEK" = "İsveç Kronu";
+"currency.name.NOK" = "Norveç Kronu";
+"currency.name.RUB" = "Rus Rublesi";
+"currency.name.INR" = "Hindistan Rupisi";
+"currency.name.BRL" = "Brezilya Reali";
+"currency.name.ZAR" = "Güney Afrika Randı";
+"currency.name.AED" = "BAE Dirhemi";
+"currency.name.SAR" = "Suudi Arabistan Riyali";
+"currency.name.KRW" = "Güney Kore Wonu";
+"currency.name.SGD" = "Singapur Doları";

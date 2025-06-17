@@ -117,3 +117,25 @@
 "category.home" = "Home";
 "category.gift" = "Gift";
 "category.other" = "Other";
+
+// Currency
+"settings.currency" = "Currency";
+"currency.name.TRY" = "Turkish Lira";
+"currency.name.USD" = "US Dollar";
+"currency.name.EUR" = "Euro";
+"currency.name.GBP" = "British Pound";
+"currency.name.JPY" = "Japanese Yen";
+"currency.name.CAD" = "Canadian Dollar";
+"currency.name.AUD" = "Australian Dollar";
+"currency.name.CHF" = "Swiss Franc";
+"currency.name.CNY" = "Chinese Yuan";
+"currency.name.SEK" = "Swedish Krona";
+"currency.name.NOK" = "Norwegian Krone";
+"currency.name.RUB" = "Russian Ruble";
+"currency.name.INR" = "Indian Rupee";
+"currency.name.BRL" = "Brazilian Real";
+"currency.name.ZAR" = "South African Rand";
+"currency.name.AED" = "UAE Dirham";
+"currency.name.SAR" = "Saudi Riyal";
+"currency.name.KRW" = "South Korean Won";
+"currency.name.SGD" = "Singapore Dollar";

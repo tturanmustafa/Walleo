@@ -8,7 +8,6 @@ struct IslemTuruButonu: View {
     let animation: Namespace.ID
 
     var body: some View {
-        // DEĞİŞİKLİK: rawValue'yu LocalizedStringKey içine alarak çeviriyi garanti ediyoruz.
         Text(LocalizedStringKey(tur.rawValue))
             .font(.subheadline)
             .fontWeight(.semibold)
@@ -35,8 +34,6 @@ struct IslemTuruButonu: View {
     }
 }
 
-// DashboardView'in geri kalanı aynı, sadece yukarıdaki IslemTuruButonu güncellendi.
-// Tamlık açısından tüm dosyayı aşağıya ekliyorum.
 struct DashboardView: View {
     @EnvironmentObject var appSettings: AppSettings
     @State private var viewModel: DashboardViewModel
@@ -60,11 +57,15 @@ struct DashboardView: View {
                 .padding(.bottom, 10)
             
             totalAmountView
+                // Animasyonlu geçiş için eklendi
+                .transition(.opacity.animation(.easeInOut))
+                .id("totalAmount_\(viewModel.secilenTur.rawValue)")
                 .padding(.bottom, 12)
             
             dividerLine
             
             ScrollView(.vertical, showsIndicators: false) {
+                // Değişen içeriği bir Vstack içinde gruplayarak genel bir animasyon veriyoruz
                 VStack(spacing: 12) {
                     ChartPanelView(
                         pieChartVerisi: viewModel.pieChartVerisi,
@@ -83,7 +84,9 @@ struct DashboardView: View {
                             self.silmeyiBaslat(islem)
                         }
                     )
+                    .environmentObject(appSettings)
                 }
+                .animation(.easeInOut(duration: 0.2), value: viewModel.filtrelenmisIslemler)
                 .padding(.vertical)
             }
         }
@@ -94,6 +97,7 @@ struct DashboardView: View {
         }
         .sheet(isPresented: $duzenlemeEkraniGosteriliyor, onDismiss: { viewModel.fetchData() }) {
             IslemEkleView(duzenlenecekIslem: duzenlenecekIslem)
+                .environmentObject(appSettings)
         }
         .confirmationDialog("alert.recurring_transaction", isPresented: .constant(silinecekIslem != nil), titleVisibility: .visible) {
             Button("alert.delete_this_only", role: .destructive) {
@@ -107,6 +111,9 @@ struct DashboardView: View {
             Button("common.cancel", role: .cancel) { silinecekIslem = nil }
         }
         .onAppear {
+            viewModel.fetchData()
+        }
+        .onChange(of: viewModel.secilenTur) {
             viewModel.fetchData()
         }
     }
@@ -138,7 +145,14 @@ struct DashboardView: View {
     }
     
     var totalAmountView: some View {
-        formatCurrency(amount: viewModel.toplamTutar, font: .largeTitle, color: viewModel.secilenTur == .gelir ? .green : .red)
+        Text(formatCurrency(
+            amount: viewModel.toplamTutar,
+            currencyCode: appSettings.currencyCode,
+            localeIdentifier: appSettings.languageCode
+        ))
+        .font(.title.bold())
+        .foregroundColor(viewModel.secilenTur == .gelir ? .green : .red)
+        .padding(.vertical, 10)
     }
     
     var dividerLine: some View {
