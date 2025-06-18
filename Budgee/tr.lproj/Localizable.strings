@@ -143,3 +143,9 @@
 "currency.name.SGD" = "Singapur Doları";
 
 "common.back" = "Geri";
+
+"calendar.no_transactions_on_date" = "Bu Tarihte İşlem Yok";
+
+// Takvim Özeti
+"calendar.monthly_summary" = "Aylık Özet";
+"common.net" = "Net";

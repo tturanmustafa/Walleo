@@ -143,3 +143,9 @@
 "currency.name.SGD" = "Singapore Dollar";
 
 "common.back" = "Back";
+
+"calendar.no_transactions_on_date" = "No Transactions on This Date";
+
+// Calendar Summary
+"calendar.monthly_summary" = "Monthly Summary";
+"common.net" = "Net";

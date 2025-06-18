@@ -26,11 +26,11 @@ class TumIslemlerViewModel {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(fetchData),
-            name: .yeniIslemEklendi,
+            name: .transactionsDidChange,
             object: nil
         )
     }
-
+    
     @objc func fetchData() {
         let calendar = Calendar.current
         var baslangicTarihi: Date?
@@ -112,12 +112,12 @@ class TumIslemlerViewModel {
     
     func deleteIslem(_ islem: Islem) {
         modelContext.delete(islem)
-        fetchData()
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
     }
     
     func deleteSeri(_ islem: Islem) {
         let tekrarID = islem.tekrarID
         try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
-        fetchData()
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
     }
 }

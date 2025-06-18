@@ -19,7 +19,8 @@ struct MainTabView: View {
                 case .panel:
                     NavigationStack { DashboardView(modelContext: modelContext) }
                 case .takvim:
-                    NavigationStack { TakvimView() }
+        // DEĞİŞİKLİK: TakvimView'a artık doğru context'i veriyoruz.
+                    NavigationStack { TakvimView(modelContext: modelContext) }
                 case .raporlar:
                     NavigationStack { RaporlarView() }
                 case .ayarlar:
