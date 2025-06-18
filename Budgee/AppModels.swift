@@ -134,5 +134,13 @@ struct FiltreAyarlari {
 
 // Bu bildirimi anlık veri güncellemesi için kullanıyoruz
 extension Notification.Name {
-    static let yeniIslemEklendi = Notification.Name("yeniIslemEklendi")
+    // ESKİ: static let yeniIslemEklendi = Notification.Name("yeniIslemEklendi")
+    // YENİ:
+    static let transactionsDidChange = Notification.Name("transactionsDidChange")
+}
+
+// AppModels.swift dosyasının en altına ekleyin
+
+extension Date: @retroactive Identifiable {
+    public var id: Date { self }
 }

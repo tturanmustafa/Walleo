@@ -40,7 +40,6 @@ struct DashboardView: View {
     
     @State private var duzenlenecekIslem: Islem?
     @State private var silinecekIslem: Islem?
-    @State private var ayYilSeciciGosteriliyor = false
     @Namespace private var animation
 
     init(modelContext: ModelContext) {
@@ -49,7 +48,8 @@ struct DashboardView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            monthNavigatorView
+            // Ortak bileşen olan MonthNavigatorView burada kullanılıyor.
+            MonthNavigatorView(currentDate: $viewModel.currentDate)
                 .padding(.bottom, 10)
             
             transactionTypePicker
@@ -86,11 +86,6 @@ struct DashboardView: View {
                 .padding(.vertical)
             }
         }
-        .sheet(isPresented: $ayYilSeciciGosteriliyor) {
-            AyYilSeciciView(currentDate: viewModel.currentDate) { yeniTarih in viewModel.currentDate = yeniTarih }
-                .presentationDetents([.height(300)])
-                .environmentObject(appSettings)
-        }
         .sheet(item: $duzenlenecekIslem, onDismiss: { viewModel.fetchData() }) { islem in
             IslemEkleView(duzenlenecekIslem: islem)
                 .environmentObject(appSettings)
@@ -110,21 +105,6 @@ struct DashboardView: View {
         .onChange(of: viewModel.secilenTur) {
             viewModel.fetchData()
         }
-    }
-    
-    @ViewBuilder
-    var monthNavigatorView: some View {
-        HStack {
-            Button(action: { viewModel.currentDate = Calendar.current.date(byAdding: .month, value: -1, to: viewModel.currentDate) ?? viewModel.currentDate }) { Image(systemName: "chevron.left") }
-            Spacer()
-            Text(monthYearString(from: viewModel.currentDate, localeIdentifier: appSettings.languageCode))
-                .fontWeight(.semibold)
-                .foregroundColor(.primary)
-                .onTapGesture { ayYilSeciciGosteriliyor = true }
-            Spacer()
-            Button(action: { viewModel.currentDate = Calendar.current.date(byAdding: .month, value: 1, to: viewModel.currentDate) ?? viewModel.currentDate }) { Image(systemName: "chevron.right") }
-        }
-        .font(.title3).foregroundColor(.secondary).padding(.horizontal, 30).padding(.top)
     }
     
     var transactionTypePicker: some View {

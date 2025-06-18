@@ -6,7 +6,6 @@ import SwiftData
 class DashboardViewModel {
     var modelContext: ModelContext
     
-    // View'ın durumunu tutan değişkenler
     var secilenTur: IslemTuru = .gider {
         didSet { fetchData() }
     }
@@ -14,7 +13,6 @@ class DashboardViewModel {
         didSet { fetchData() }
     }
     
-    // View'a sunulacak olan, işlenmiş veriler
     var filtrelenmisIslemler: [Islem] = []
     var toplamTutar: Double = 0
     var pieChartVerisi: [KategoriHarcamasi] = []
@@ -23,16 +21,14 @@ class DashboardViewModel {
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
         
-        // "yeniIslemEklendi" bildirimini dinlemek için gözlemci ekleniyor.
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(fetchData), // Bildirim gelince bu fonksiyonu çalıştır
-            name: .yeniIslemEklendi,
+            selector: #selector(fetchData),
+            name: .transactionsDidChange,
             object: nil
         )
     }
     
-    // fetchData fonksiyonu artık @objc olmalı çünkü selector olarak kullanılıyor.
     @objc func fetchData() {
         do {
             let calendar = Calendar.current
@@ -66,13 +62,11 @@ class DashboardViewModel {
     private func hesaplamalariGuncelle() {
         toplamTutar = filtrelenmisIslemler.reduce(0) { $0 + $1.tutar }
         
-        // Bu sözlük artık ikon, renk ve çeviri anahtarını bir arada tutuyor.
         let detaylar = Dictionary(filtrelenmisIslemler.compactMap { islem -> (String, (renk: Color, ikon: String, key: String?))? in
             guard let kategori = islem.kategori else { return nil }
             return (kategori.isim, (kategori.renk, kategori.ikonAdi, kategori.localizationKey))
         }, uniquingKeysWith: { (ilkBulunan, _) in ilkBulunan })
         
-        // ChartPanelView sadece ikon ve renk beklediği için ona uygun bir sözlük daha hazırlıyoruz.
         self.kategoriDetaylari = detaylar.mapValues { ($0.renk, $0.ikon) }
         let gruplanmis = Dictionary(grouping: filtrelenmisIslemler, by: { $0.kategori?.isim ?? "Diğer" })
         let toplamlar = gruplanmis.mapValues { $0.reduce(0) { $0 + $1.tutar } }
@@ -103,13 +97,11 @@ class DashboardViewModel {
         self.pieChartVerisi = yeniPieChartVerisi
     }
     
-    /// Tek bir işlemi siler ve ardından listeyi yeniler.
     func deleteIslem(_ islem: Islem) {
         modelContext.delete(islem)
-        fetchData()
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
     }
     
-    /// Tekrarlayan bir işlem serisinin tamamını siler ve listeyi yeniler.
     func deleteSeri(for islem: Islem) {
         let tekrarID = islem.tekrarID
         guard tekrarID != UUID() else {
@@ -118,6 +110,6 @@ class DashboardViewModel {
         }
         
         try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
-        fetchData()
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
     }
 }
