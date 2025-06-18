@@ -10,21 +10,27 @@ class TumIslemlerViewModel {
     }
     
     var islemler: [Islem] = []
+
+    var aktifFiltreSayisi: Int {
+        var count = 0
+        if filtreAyarlari.tarihAraligi != .hepsi { count += 1 }
+        if filtreAyarlari.secilenTurler.count == 1 { count += 1 }
+        if !filtreAyarlari.secilenKategoriler.isEmpty { count += 1 }
+        return count
+    }
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
-        fetchData() // İlk açılış için veriyi çek
+        fetchData()
         
-        // "yeniIslemEklendi" bildirimini dinlemek için gözlemci ekleniyor.
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(fetchData), // Bildirim gelince bu fonksiyonu çalıştır
+            selector: #selector(fetchData),
             name: .yeniIslemEklendi,
             object: nil
         )
     }
-    
-    // fetchData fonksiyonu artık @objc olmalı çünkü selector olarak kullanılıyor.
+
     @objc func fetchData() {
         let calendar = Calendar.current
         var baslangicTarihi: Date?
@@ -32,15 +38,30 @@ class TumIslemlerViewModel {
         
         if filtreAyarlari.tarihAraligi != .hepsi {
              switch filtreAyarlari.tarihAraligi {
+             case .buHafta:
+                 if let interval = calendar.dateInterval(of: .weekOfYear, for: Date()) {
+                     baslangicTarihi = interval.start
+                     bitisTarihi = interval.end
+                 }
             case .buAy:
                 if let interval = calendar.dateInterval(of: .month, for: Date()) {
                     baslangicTarihi = interval.start
                     bitisTarihi = interval.end
                 }
-            case .son3Ay: baslangicTarihi = calendar.date(byAdding: .month, value: -3, to: Date())
-            case .son6Ay: baslangicTarihi = calendar.date(byAdding: .month, value: -6, to: Date())
-            case .buYil: baslangicTarihi = calendar.date(from: calendar.dateComponents([.year], from: Date()))
-            case .hepsi: break
+            case .son3Ay:
+                baslangicTarihi = calendar.date(byAdding: .month, value: -3, to: Date())
+                bitisTarihi = Date()
+            case .son6Ay:
+                baslangicTarihi = calendar.date(byAdding: .month, value: -6, to: Date())
+                bitisTarihi = Date()
+            case .yilBasindanBeri:
+                 baslangicTarihi = calendar.date(from: calendar.dateComponents([.year], from: Date()))
+                 bitisTarihi = Date()
+            case .sonYil:
+                baslangicTarihi = calendar.date(byAdding: .year, value: -1, to: Date())
+                bitisTarihi = Date()
+            case .hepsi:
+                break
             }
         }
         
@@ -54,8 +75,7 @@ class TumIslemlerViewModel {
             (
                 (baslangicTarihi == nil || islem.tarih >= baslangicTarihi!) &&
                 (bitisTarihi == nil || islem.tarih < bitisTarihi!) &&
-                (!turFiltresiAktif || islem.turRawValue == secilenTurRawValue!) &&
-                (!kategoriFiltresiAktif || (islem.kategori != nil && secilenKategoriIDleri.contains(islem.kategori!.id)))
+                (!turFiltresiAktif || islem.turRawValue == secilenTurRawValue!)
             )
         }
         
@@ -73,7 +93,17 @@ class TumIslemlerViewModel {
         )
         
         do {
-            islemler = try modelContext.fetch(descriptor)
+            var filtrelenmisSonuclar = try modelContext.fetch(descriptor)
+            
+            if kategoriFiltresiAktif {
+                filtrelenmisSonuclar = filtrelenmisSonuclar.filter { islem in
+                    guard let kategori = islem.kategori else { return false }
+                    return secilenKategoriIDleri.contains(kategori.id)
+                }
+            }
+            
+            self.islemler = filtrelenmisSonuclar
+            
         } catch {
             print("Filtreli veri çekme hatası (NİHAİ): \(error)")
             islemler = []

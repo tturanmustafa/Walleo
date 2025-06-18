@@ -77,15 +77,17 @@
 "enum.recurrence.quarterly" = "Her 3 Ayda Bir";
 "enum.recurrence.semi_annually" = "Her 6 Ayda Bir";
 "enum.recurrence.annually" = "Her Yıl";
-"enum.sort.date_desc" = "Tarihe Göre (Yeniden)";
-"enum.sort.date_asc" = "Tarihe Göre (Eskiden)";
-"enum.sort.amount_desc" = "Tutara Göre (Çoktan)";
-"enum.sort.amount_asc" = "Tutara Göre (Azdan)";
+"enum.sort.date_desc" = "Tarihe Göre (Yeniden Eskiye)";
+"enum.sort.date_asc" = "Tarihe Göre (Eskiden Yeniye)";
+"enum.sort.amount_desc" = "Tutara Göre (Çoktan Aza)";
+"enum.sort.amount_asc" = "Tutara Göre (Azdan Çoğa)";
 "enum.date_range.all" = "Tüm Zamanlar";
+"enum.date_range.this_week" = "Bu Hafta";
+"enum.date_range.ytd" = "Yıl Başından Beri";
 "enum.date_range.this_month" = "Bu Ay";
 "enum.date_range.last_3_months" = "Son 3 Ay";
 "enum.date_range.last_6_months" = "Son 6 Ay";
-"enum.date_range.this_year" = "Bu Yıl";
+"enum.date_range.last_year" = "Son 12 Ay";
 
 // Uyarılar ve Mesajlar
 "alert.recurring_transaction" = "Bu tekrarlayan bir işlemdir.";
@@ -139,3 +141,5 @@
 "currency.name.SAR" = "Suudi Arabistan Riyali";
 "currency.name.KRW" = "Güney Kore Wonu";
 "currency.name.SGD" = "Singapur Doları";
+
+"common.back" = "Geri";
