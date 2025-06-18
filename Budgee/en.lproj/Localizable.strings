@@ -77,15 +77,17 @@
 "enum.recurrence.quarterly" = "Every 3 Months";
 "enum.recurrence.semi_annually" = "Every 6 Months";
 "enum.recurrence.annually" = "Every Year";
-"enum.sort.date_desc" = "Date (Newest First)";
-"enum.sort.date_asc" = "Date (Oldest First)";
-"enum.sort.amount_desc" = "Amount (Highest First)";
-"enum.sort.amount_asc" = "Amount (Lowest First)";
+"enum.sort.date_desc" = "Date (Newest to Oldest)";
+"enum.sort.date_asc" = "Date (Oldest to Newest)";
+"enum.sort.amount_desc" = "Amount (Highest to Lowest)";
+"enum.sort.amount_asc" = "Amount (Lowest to Highest)";
 "enum.date_range.all" = "All Time";
+"enum.date_range.this_week" = "This Week";
+"enum.date_range.ytd" = "Year-to-Date";
 "enum.date_range.this_month" = "This Month";
 "enum.date_range.last_3_months" = "Last 3 Months";
 "enum.date_range.last_6_months" = "Last 6 Months";
-"enum.date_range.this_year" = "This Year";
+"enum.date_range.last_year" = "Last 12 Months";
 
 // Alerts and Messages
 "alert.recurring_transaction" = "This is a recurring transaction.";
@@ -139,3 +141,5 @@
 "currency.name.SAR" = "Saudi Riyal";
 "currency.name.KRW" = "South Korean Won";
 "currency.name.SGD" = "Singapore Dollar";
+
+"common.back" = "Back";

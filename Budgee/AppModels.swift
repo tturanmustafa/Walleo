@@ -45,7 +45,6 @@ public enum Currency: String, CaseIterable, Identifiable {
 class AppSettings: ObservableObject {
     @AppStorage("colorScheme") var colorSchemeValue: Int = 0
     @AppStorage("language") var languageCode: String = "tr"
-    // YENİ: Kullanıcının para birimi tercihini saklamak için eklendi.
     @AppStorage("currencyCode") var currencyCode: String = Currency.TRY.rawValue
 
     var colorScheme: ColorScheme? {
@@ -63,16 +62,13 @@ struct KategoriHarcamasi: Identifiable {
     var kategori: String
     var tutar: Double
     var renk: Color
-    var localizationKey: String? // YENİ: Çeviri anahtarını taşımak için
+    var localizationKey: String?
 }
-
-
 
 public enum IslemTuru: String, Codable, CaseIterable {
     case gelir = "common.income"
     case gider = "common.expense"
     
-    // YENİDEN EKLENDİ: Yerelleştirilmiş metni döndüren değişken
     var localized: String {
         NSLocalizedString(self.rawValue, comment: "")
     }
@@ -87,7 +83,6 @@ public enum TekrarTuru: String, CaseIterable, Identifiable, Codable {
     
     public var id: String { self.rawValue }
 
-    // YENİDEN EKLENDİ: Yerelleştirilmiş metni döndüren değişken
     var localized: String {
         NSLocalizedString(self.rawValue, comment: "")
     }
@@ -102,27 +97,32 @@ public enum SortOrder: String, CaseIterable, Identifiable {
     
     public var id: String { self.rawValue }
 
-    // YENİDEN EKLENDİ: Yerelleştirilmiş metni döndüren değişken
     var localized: String {
         NSLocalizedString(self.rawValue, comment: "")
     }
 }
 
+// **************************************************
+// DEĞİŞİKLİK BURADA: TarihAraligi enum'ı güncellendi.
+// **************************************************
 public enum TarihAraligi: String, Hashable, Identifiable {
     case hepsi = "enum.date_range.all"
+    case buHafta = "enum.date_range.this_week"
     case buAy = "enum.date_range.this_month"
     case son3Ay = "enum.date_range.last_3_months"
     case son6Ay = "enum.date_range.last_6_months"
-    case buYil = "enum.date_range.this_year"
+    case yilBasindanBeri = "enum.date_range.ytd"
+    case sonYil = "enum.date_range.last_year"
     
     public var id: Self { self }
     
-    // YENİDEN EKLENDİ: Yerelleştirilmiş metni döndüren değişken
     var localized: String {
         NSLocalizedString(self.rawValue, comment: "")
     }
     
-    public static var allCases: [TarihAraligi] { [.hepsi, .buAy, .son3Ay, .son6Ay, .buYil] }
+    public static var allCases: [TarihAraligi] {
+        [.hepsi, .buHafta, .buAy, .son3Ay, .son6Ay, .yilBasindanBeri, .sonYil]
+    }
 }
 
 struct FiltreAyarlari {
@@ -132,9 +132,7 @@ struct FiltreAyarlari {
     var sortOrder: SortOrder = .tarihAzalan
 }
 
-// AppModels.swift dosyasının sonuna ekleyin
-
+// Bu bildirimi anlık veri güncellemesi için kullanıyoruz
 extension Notification.Name {
     static let yeniIslemEklendi = Notification.Name("yeniIslemEklendi")
 }
-

@@ -17,7 +17,7 @@ struct AyarlarView: View {
                         Text("settings.theme_dark").tag(2)
                     }
                     .pickerStyle(.menu)
-                    .labelsHidden() // DOĞRU KULLANIM
+                    .labelsHidden()
                 }
                 .padding(.vertical, 4)
                 
@@ -31,7 +31,7 @@ struct AyarlarView: View {
                         Text("English").tag("en")
                     }
                     .pickerStyle(.menu)
-                    .labelsHidden() // DOĞRU KULLANIM
+                    .labelsHidden()
                 }
                 .padding(.vertical, 4)
                 
@@ -42,14 +42,21 @@ struct AyarlarView: View {
                     Spacer()
                     Picker("settings.currency", selection: $appSettings.currencyCode) {
                         ForEach(Currency.allCases) { currency in
-                            let localizedName = NSLocalizedString(currency.localizedNameKey, comment: "")
-                            let label = "\(currency.symbol)  \(localizedName)"
-                            Text(label)
+                            // ESKİ KOD:
+                            // let localizedName = NSLocalizedString(currency.localizedNameKey, comment: "")
+                            // let label = "\(currency.symbol)  \(localizedName)"
+                            // Text(label)
+                            //     .tag(currency.rawValue)
+                            
+                            // YENİ KOD:
+                            // Text'in çeviriyi kendisinin yapmasına izin veriyoruz.
+                            // Bu, dil değişimlerinin anında yansımasını sağlar.
+                            (Text(currency.symbol) + Text("  ") + Text(LocalizedStringKey(currency.localizedNameKey)))
                                 .tag(currency.rawValue)
                         }
                     }
                     .pickerStyle(.menu)
-                    .labelsHidden() // DOĞRU KULLANIM
+                    .labelsHidden()
                 }
                 .padding(.vertical, 4)
                 
