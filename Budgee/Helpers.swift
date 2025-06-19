@@ -76,3 +76,11 @@ extension Color {
         )
     }
 }
+
+// Bu kodu Helpers.swift veya View+Extensions.swift gibi genel bir dosyaya ekleyebilirsiniz.
+
+// Bu extension, Swift'e her bir UUID'nin kendi kendisinin kimliği olduğunu söyler.
+// Böylece SwiftUI'ın .sheet(item: ...) gibi fonksiyonları UUID ile sorunsuz çalışır.
+extension UUID: @retroactive Identifiable {
+    public var id: UUID { self }
+}

@@ -18,34 +18,35 @@ struct CalendarDay: Identifiable {
 class TakvimViewModel {
     var modelContext: ModelContext
     
-    // currentDate değişkeni buradan kaldırıldı.
-    
     var calendarDays: [CalendarDay] = []
     var aylikToplamGelir: Double = 0.0
     var aylikToplamGider: Double = 0.0
     var aylikNetFark: Double { aylikToplamGelir - aylikToplamGider }
     
+    // YENİ: Hangi tarihi güncelleyeceğimizi bilmek için bu değişkeni ekliyoruz.
+    private var sonGuncellenenTarih: Date = Date()
+    
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
-        // Başlangıçta boş bir takvim oluşturabiliriz veya mevcut ay için.
-        generateCalendar(forDate: Date())
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(handleDataChange),
+            selector: #selector(handleDataChange), // Bu fonksiyon artık iş yapacak
             name: .transactionsDidChange,
             object: nil
         )
     }
     
+    // YENİ: Bildirim geldiğinde bu fonksiyon tetiklenecek
     @objc private func handleDataChange() {
-        // Bu fonksiyon artık doğrudan generateCalendar çağırmak yerine
-        // View'ın yeniden tetiklenmesini bekleyecek. Veya son tarihi saklayıp onu çağırabilir.
-        // Şimdilik en temizi, View'ın bunu yönetmesi.
+        // En son hangi ayda kaldıysak, o ay için takvimi yeniden oluştur.
+        generateCalendar(forDate: sonGuncellenenTarih)
     }
 
-    // GÜNCELLEME: Fonksiyon artık dışarıdan bir tarih alıyor.
     func generateCalendar(forDate date: Date) {
+        // Hangi tarihi güncellediğimizi kaydediyoruz.
+        self.sonGuncellenenTarih = date
+        
         var calendar = Calendar.current
         calendar.firstWeekday = 2 // Pazartesi
         
@@ -56,7 +57,8 @@ class TakvimViewModel {
         for i in 0..<42 {
             if let day = calendar.date(byAdding: .day, value: i, to: firstDayOfMonth) {
                 let isCurrent = calendar.isDate(day, equalTo: date, toGranularity: .month)
-                days.append(CalendarDay(date: day, isCurrentMonth: isCurrent))
+                // Her gün için net tutarı sıfırlayarak başlıyoruz.
+                days.append(CalendarDay(date: day, isCurrentMonth: isCurrent, netAmount: 0.0))
             }
         }
         

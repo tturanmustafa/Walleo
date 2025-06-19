@@ -1,3 +1,5 @@
+// Dosya: Islem.swift (GÜNCELLENMİŞ HALİ)
+
 import Foundation
 import SwiftData
 
@@ -7,32 +9,33 @@ class Islem {
     var isim: String
     var tutar: Double
     var tarih: Date
-    
-    // DEĞİŞİKLİK 1: Veritabanında türü artık String olarak saklıyoruz.
     var turRawValue: String
-    
     var tekrar: TekrarTuru
     var tekrarID: UUID
     
     @Relationship(deleteRule: .nullify)
     var kategori: Kategori?
+    
+    // === YENİ SATIR ===
+    // Her işlem artık bir 'Hesap' nesnesine bağlanabilir.
+    @Relationship(deleteRule: .nullify)
+    var hesap: Hesap?
 
-    // DEĞİŞİKLİK 2: Kodun geri kalanında kolaylık olması için 'tur' adında bir hesaplanmış değişken ekliyoruz.
-    // Bu değişken veritabanına kaydedilmez, sadece anlık olarak string'i enum'a çevirir.
     var tur: IslemTuru {
         get { IslemTuru(rawValue: turRawValue) ?? .gider }
         set { turRawValue = newValue.rawValue }
     }
     
-    // DEĞİŞİKLİK 3: init metodunu yeni yapıya uygun güncelliyoruz.
-    init(id: UUID = UUID(), isim: String, tutar: Double, tarih: Date, tur: IslemTuru, tekrar: TekrarTuru = .tekSeferlik, tekrarID: UUID = UUID(), kategori: Kategori?) {
+    // === GÜNCELLENMİŞ INIT ===
+    init(id: UUID = UUID(), isim: String, tutar: Double, tarih: Date, tur: IslemTuru, tekrar: TekrarTuru = .tekSeferlik, tekrarID: UUID = UUID(), kategori: Kategori?, hesap: Hesap? = nil) {
         self.id = id
         self.isim = isim
         self.tutar = tutar
         self.tarih = tarih
-        self.turRawValue = tur.rawValue // Gelen enum'ı string'e çevirip saklıyoruz.
+        self.turRawValue = tur.rawValue
         self.tekrar = tekrar
         self.tekrarID = tekrarID
         self.kategori = kategori
+        self.hesap = hesap
     }
 }

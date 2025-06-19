@@ -1,0 +1,93 @@
+// Dosya Adı: HesapKartView.swift
+
+import SwiftUI
+
+struct HesapKartView: View {
+    let gosterilecekHesap: GosterilecekHesap
+    @EnvironmentObject var appSettings: AppSettings
+    var onEdit: () -> Void = {}
+    var onDelete: () -> Void = {}
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Image(systemName: gosterilecekHesap.hesap.ikonAdi).font(.headline).foregroundColor(.white).frame(width: 38, height: 38).background(gosterilecekHesap.hesap.renk).cornerRadius(8)
+                Text(gosterilecekHesap.hesap.isim).font(.headline)
+                Spacer()
+                Menu {
+                    Button(action: onEdit) { Label(LocalizedStringKey("common.edit"), systemImage: "pencil") }
+                    Button(role: .destructive, action: onDelete) { Label(LocalizedStringKey("common.delete"), systemImage: "trash") }
+                } label: {
+                    Image(systemName: "ellipsis").font(.callout).foregroundColor(.secondary).frame(width: 40, height: 40).contentShape(Rectangle())
+                }
+            }
+            
+            switch gosterilecekHesap.hesap.detay {
+            case .cuzdan:
+                cuzdanView()
+            case .krediKarti(let limit, _):
+                krediKartiView(limit: limit)
+            
+            // --- HATANIN DÜZELTİLDİĞİ YER ---
+            // Değişkenleri doğru sırada yakalıyoruz. taksitSayisi 4. sırada.
+            case .kredi(_, _, _, let taksitSayisi, _, _):
+                krediView(toplamTaksit: taksitSayisi)
+            // ---
+            }
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(12)
+    }
+    
+    // Diğer yardımcı View'larda (cuzdanView, krediKartiView, krediView) herhangi bir değişiklik yoktur.
+    // Sadece yukarıdaki 'case .kredi' satırı düzeltilmiştir.
+    // Kodun tam ve tutarlı olması için onları da aşağıya ekliyorum.
+    
+    @ViewBuilder private func cuzdanView() -> some View {
+        HStack {
+            Text(LocalizedStringKey("accounts.add.wallet")).font(.subheadline).foregroundStyle(.secondary)
+            Spacer()
+            Text(formatCurrency(amount: gosterilecekHesap.guncelBakiye, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)).font(.title2.bold()).foregroundColor(gosterilecekHesap.guncelBakiye < 0 ? .red : .primary)
+        }
+    }
+    
+    @ViewBuilder private func krediKartiView(limit: Double) -> some View {
+        if let detay = gosterilecekHesap.krediKartiDetay {
+            VStack(spacing: 12) {
+                ProgressView(value: detay.guncelBorc, total: limit > 0 ? limit : 1).tint(.red)
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(LocalizedStringKey("accounts.card.current_debt")).font(.caption).foregroundColor(.secondary)
+                        Text(formatCurrency(amount: detay.guncelBorc, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)).font(.callout.bold()).foregroundStyle(.red)
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing) {
+                        Text(LocalizedStringKey("accounts.card.available_limit")).font(.caption).foregroundColor(.secondary)
+                        Text(formatCurrency(amount: detay.kullanilabilirLimit, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)).font(.callout.bold()).foregroundStyle(.green)
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder private func krediView(toplamTaksit: Int) -> some View {
+        if let detay = gosterilecekHesap.krediDetay {
+            VStack(spacing: 12) {
+                ProgressView(value: Double(detay.odenenTaksitSayisi), total: Double(toplamTaksit) > 0 ? Double(toplamTaksit) : 1).tint(gosterilecekHesap.hesap.renk)
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(LocalizedStringKey("accounts.card.paid_installments")).font(.caption).foregroundColor(.secondary)
+                        Text("\(detay.odenenTaksitSayisi) / \(toplamTaksit)").font(.callout.bold())
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing) {
+                        Text(LocalizedStringKey("accounts.card.remaining_debt")).font(.caption).foregroundColor(.secondary)
+                        Text(formatCurrency(amount: abs(gosterilecekHesap.guncelBakiye), currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
+                            .font(.callout.bold()).foregroundStyle(.red)
+                    }
+                }
+            }
+        }
+    }
+}

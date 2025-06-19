@@ -1,12 +1,16 @@
+// Dosya Adı: AyarlarView.swift (GÜNCELLENMİŞ HALİ)
+
 import SwiftUI
 
 struct AyarlarView: View {
     @EnvironmentObject var appSettings: AppSettings
-    
+    @Environment(\.dismiss) var dismiss // EKLENDİ: Ekranı kapatmak için
+
     var body: some View {
+        // Form'un kendisinde bir değişiklik yok.
         Form {
             Section("settings.section_general") {
-                // Tema Satırı
+                // ... mevcut tüm ayar satırları aynı kalıyor ...
                 HStack {
                     AyarIkonu(iconName: "circle.righthalf.filled", color: .gray)
                     Text("settings.theme")
@@ -21,7 +25,6 @@ struct AyarlarView: View {
                 }
                 .padding(.vertical, 4)
                 
-                // Dil Satırı
                 HStack {
                     AyarIkonu(iconName: "globe", color: .blue)
                     Text("settings.language")
@@ -35,7 +38,6 @@ struct AyarlarView: View {
                 }
                 .padding(.vertical, 4)
                 
-                // Para Birimi Satırı
                 HStack {
                     AyarIkonu(iconName: "coloncurrencysign.circle.fill", color: .green)
                     Text("settings.currency")
@@ -51,7 +53,6 @@ struct AyarlarView: View {
                 }
                 .padding(.vertical, 4)
                 
-                // Kategorileri Yönet Satırı
                 NavigationLink(destination: KategoriYonetimView()) {
                     AyarIkonu(iconName: "folder.fill", color: .orange)
                     Text("settings.manage_categories")
@@ -69,8 +70,18 @@ struct AyarlarView: View {
             }
         }
         .navigationTitle("settings.title")
+        // --- YENİ EKLENEN KOD ---
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button(LocalizedStringKey("common.done")) {
+                    dismiss()
+                }
+            }
+        }
+        // ---
     }
 }
+
 
 struct AyarIkonu: View {
     let iconName: String
