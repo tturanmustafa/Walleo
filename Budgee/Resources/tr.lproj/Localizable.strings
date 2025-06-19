@@ -209,3 +209,50 @@
 "reports.trend.series_net_flow" = "Net Akış";
 
 "notifications.title" = "Bildirimler";
+
+// Hesaplar
+"accounts.title" = "Hesaplar";
+"accounts.add.menu_title" = "Hesap Türü Seç";
+"accounts.add.bank_wallet" = "Banka / Cüzdan";
+"accounts.add.credit_card" = "Kredi Kartı";
+"accounts.add.loan" = "Kredi";
+
+// Hesap Ekleme Ekranları
+"accounts.add.new_account" = "Yeni Hesap Ekle";
+"accounts.add.new_credit_card" = "Yeni Kredi Kartı Ekle";
+"accounts.add.new_loan" = "Yeni Kredi Ekle";
+"accounts.add.account_type" = "Hesap Türü";
+"accounts.add.account_name" = "Hesap Adı";
+"accounts.add.account_name_placeholder" = "örn: Maaş Hesabım";
+"accounts.add.card_name_placeholder" = "örn: Bonus Card";
+"accounts.add.loan_name_placeholder" = "örn: Taşıt Kredisi";
+"accounts.add.initial_balance" = "Başlangıç Bakiyesi";
+"accounts.add.account_color" = "Hesap Rengi";
+"accounts.add.bank" = "Banka Hesabı";
+"accounts.add.wallet" = "Cüzdan (Nakit)";
+"accounts.add.card_limit" = "Kart Limiti";
+"accounts.add.statement_day" = "Hesap Kesim Günü";
+"accounts.add.statement_day_stepper" = "Ayın %d. günü";
+"accounts.add.due_day" = "Son Ödeme Günü";
+"accounts.add.loan_amount" = "Çekilen Tutar (Anapara)";
+"accounts.add.interest_rate" = "Yıllık Faiz Oranı (%)";
+"accounts.add.installments" = "Taksit Sayısı";
+"accounts.add.installments_stepper" = "%d ay";
+"accounts.add.create_installments_button" = "Kaydet ve Taksitleri Oluştur";
+
+"tab.budgets" = "Bütçeler";
+
+"accounts.card.current_debt" = "Güncel Borç";
+"accounts.card.available_limit" = "Kullanılabilir Limit";
+"accounts.card.paid_installments" = "Ödenen Taksit";
+"accounts.card.remaining_debt" = "Kalan Borç";
+
+"category.loan_payment" = "Kredi Ödemesi";
+
+"transaction.loan_payment_name_format" = "%@ Taksit Ödemesi";
+
+"alert.add_as_expense.title" = "Gider Olarak Ekle";
+"alert.add_as_expense.button_yes" = "Evet, Gider Olarak Ekle";
+"alert.add_as_expense.button_no" = "Hayır, Sadece İşaretle";
+"alert.add_as_expense.message_format" = "%@ tutarındaki taksit ödemesini gider olarak eklemek istiyor musunuz?";
+"transaction.loan_payment_name_format" = "%@ Taksit Ödemesi";

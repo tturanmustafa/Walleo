@@ -1,20 +1,20 @@
+// Dosya Adı: ContentView.swift
+
 import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    // Sekme seçimi için enum'ı güncelliyoruz, artık 'ekle' diye bir durum yok.
-    enum Sekme: Hashable {
-        case panel, hesaplar, butceler, raporlar
-    }
-    
     @State private var seciliSekme: Sekme = .panel
     @State private var yeniIslemEkleShowing = false
     @Environment(\.modelContext) private var modelContext
 
+    // Sekmeler için enum yapısı güncellendi.
+    enum Sekme: Hashable {
+        case panel, hesaplar, butceler, raporlar
+    }
+
     var body: some View {
-        // YENİ YAPI: ZStack ile TabView ve butonu üst üste bindiriyoruz.
         ZStack(alignment: .bottom) {
-            // 1. KATMAN: Standart TabView
             TabView(selection: $seciliSekme) {
                 
                 DashboardView(modelContext: modelContext)
@@ -25,17 +25,18 @@ struct ContentView: View {
 
                 HesaplarView()
                     .tabItem {
-                        Label("Hesaplar", systemImage: "wallet.pass.fill")
+                        // DÜZELTME: Sabit metin yerine LocalizedStringKey kullanılıyor.
+                        Label(LocalizedStringKey("accounts.title"), systemImage: "wallet.pass.fill")
                     }
                     .tag(Sekme.hesaplar)
                 
-                // ORTADAKİ BOŞLUK İÇİN GİZLİ BİR SEKME
-                // Bu sekme, butonun arkasında bir boşluk hissi yaratır.
-                Text("").tabItem { Text("") }.tag(4) // Bu sekmeyi boş bırakıyoruz
+                // Ortadaki boşluk için gizli sekme
+                Text("").tabItem { Text("") }.disabled(true)
 
                 ButcelerView()
                     .tabItem {
-                        Label("Bütçeler", systemImage: "chart.pie.fill")
+                        // TODO: "tab.budgets" anahtarı Localizable.strings'e eklenmeli
+                        Label(LocalizedStringKey("tab.budgets"), systemImage: "chart.pie.fill")
                     }
                     .tag(Sekme.butceler)
 
@@ -46,7 +47,7 @@ struct ContentView: View {
                     .tag(Sekme.raporlar)
             }
             
-            // 2. KATMAN: Özel '+' Butonumuz
+            // Özel '+' Butonu
             Button(action: {
                 yeniIslemEkleShowing = true
             }) {
@@ -61,10 +62,9 @@ struct ContentView: View {
                         .foregroundColor(.white)
                 }
             }
-            // Butonu dikey olarak yukarı kaydırarak Tab Bar'ın üzerine taşıyoruz.
-            .offset(y: 0)
+            .offset(y: 0) // Butonu Tab Bar'ın hafif üzerine taşır
         }
-        .ignoresSafeArea(.keyboard) // Klavyenin ZStack'i yukarı itmesini engeller.
+        .ignoresSafeArea(.keyboard)
         .sheet(isPresented: $yeniIslemEkleShowing) {
             IslemEkleView()
         }

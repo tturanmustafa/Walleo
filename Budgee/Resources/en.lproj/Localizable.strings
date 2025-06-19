@@ -210,3 +210,51 @@
 "reports.trend.series_net_flow" = "Net Flow";
 
 "notifications.title" = "Notifications";
+
+// Accounts
+"accounts.title" = "Accounts";
+"accounts.add.menu_title" = "Select Account Type";
+"accounts.add.bank_wallet" = "Bank / Wallet";
+"accounts.add.credit_card" = "Credit Card";
+"accounts.add.loan" = "Loan";
+
+// Add Account Screens
+"accounts.add.new_account" = "New Account";
+"accounts.add.new_credit_card" = "New Credit Card";
+"accounts.add.new_loan" = "New Loan";
+"accounts.add.account_type" = "Account Type";
+"accounts.add.account_name" = "Account Name";
+"accounts.add.account_name_placeholder" = "e.g., Salary Account";
+"accounts.add.card_name_placeholder" = "e.g., Visa Gold";
+"accounts.add.loan_name_placeholder" = "e.g., Car Loan";
+"accounts.add.initial_balance" = "Initial Balance";
+"accounts.add.account_color" = "Account Color";
+"accounts.add.bank" = "Bank Account";
+"accounts.add.wallet" = "Wallet (Cash)";
+"accounts.add.card_limit" = "Card Limit";
+"accounts.add.statement_day" = "Statement Day";
+"accounts.add.statement_day_stepper" = "Day %d of month";
+"accounts.add.due_day" = "Payment Due Day";
+"accounts.add.loan_amount" = "Principal Amount";
+"accounts.add.interest_rate" = "Annual Interest Rate (%)";
+"accounts.add.installments" = "Number of Installments";
+"accounts.add.installments_stepper" = "%d months";
+"accounts.add.create_installments_button" = "Save & Create Installments";
+
+"tab.budgets" = "Budgets";
+
+"accounts.card.current_debt" = "Current Debt";
+"accounts.card.available_limit" = "Available Limit";
+"accounts.card.paid_installments" = "Paid Installments";
+"accounts.card.remaining_debt" = "Remaining Debt";
+
+"category.loan_payment" = "Loan Payment";
+
+"transaction.loan_payment_name_format" = "%@ Installment Payment";
+
+"alert.add_as_expense.title" = "Add as Expense";
+"alert.add_as_expense.button_yes" = "Yes, Add as Expense";
+"alert.add_as_expense.button_no" = "No, Just Mark as Paid";
+"alert.add_as_expense.message_format" = "Do you want to add the installment payment of %@ as an expense?";
+
+"transaction.loan_payment_name_format" = "%@ Installment Payment";
