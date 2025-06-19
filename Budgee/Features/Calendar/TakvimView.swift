@@ -5,6 +5,9 @@ struct TakvimView: View {
     @EnvironmentObject var appSettings: AppSettings
     @State private var viewModel: TakvimViewModel
     
+    // GÜNCELLEME: Artık tarihi bir Binding olarak dışarıdan alacak.
+    @Binding var currentDate: Date
+    
     @State private var secilenGun: Date?
     
     private let sutunlar: [GridItem] = Array(repeating: GridItem(.flexible()), count: 7)
@@ -12,8 +15,7 @@ struct TakvimView: View {
     private var weekdaySymbols: [String] {
         var calendar = Calendar.current
         calendar.locale = Locale(identifier: appSettings.languageCode)
-        calendar.firstWeekday = 2 // Pazartesi haftanın ilk günü
-
+        calendar.firstWeekday = 2
         var symbols = calendar.shortWeekdaySymbols
         if !symbols.isEmpty {
             let sunday = symbols.removeFirst()
@@ -22,15 +24,15 @@ struct TakvimView: View {
         return symbols
     }
     
-    init(modelContext: ModelContext) {
+    // GÜNCELLEME: init metodu artık bir Binding alıyor.
+    init(modelContext: ModelContext, currentDate: Binding<Date>) {
         _viewModel = State(initialValue: TakvimViewModel(modelContext: modelContext))
+        _currentDate = currentDate
     }
 
     var body: some View {
         VStack {
-            MonthNavigatorView(currentDate: $viewModel.currentDate)
-                .environmentObject(appSettings)
-                .padding(.bottom, 10)
+            // MonthNavigatorView buradan kaldırıldı.
             
             HStack {
                 ForEach(weekdaySymbols, id: \.self) { day in
@@ -70,11 +72,18 @@ struct TakvimView: View {
             
             Spacer()
         }
-        .navigationTitle("tab.calendar")
-        .sheet(item: $secilenGun, onDismiss: { viewModel.generateCalendar() }) { gun in
+        .sheet(item: $secilenGun) { gun in
             GunDetayView(secilenTarih: gun)
                 .environmentObject(appSettings)
                 .presentationDetents([.medium, .large])
+        }
+        // GÜNCELLEME: Dışarıdan gelen tarih değiştiğinde takvimi yeniden oluştur.
+        .onChange(of: currentDate) {
+            viewModel.generateCalendar(forDate: currentDate)
+        }
+        // Ekran ilk açıldığında da takvimin doğru ay için oluştuğundan emin ol.
+        .onAppear {
+            viewModel.generateCalendar(forDate: currentDate)
         }
     }
 }

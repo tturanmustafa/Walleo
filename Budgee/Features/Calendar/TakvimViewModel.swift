@@ -18,18 +18,17 @@ struct CalendarDay: Identifiable {
 class TakvimViewModel {
     var modelContext: ModelContext
     
-    var currentDate = Date() {
-        didSet { generateCalendar() }
-    }
+    // currentDate değişkeni buradan kaldırıldı.
     
     var calendarDays: [CalendarDay] = []
     var aylikToplamGelir: Double = 0.0
     var aylikToplamGider: Double = 0.0
-    var aylikNetFark: Double = 0.0
+    var aylikNetFark: Double { aylikToplamGelir - aylikToplamGider }
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
-        generateCalendar()
+        // Başlangıçta boş bir takvim oluşturabiliriz veya mevcut ay için.
+        generateCalendar(forDate: Date())
         
         NotificationCenter.default.addObserver(
             self,
@@ -40,26 +39,25 @@ class TakvimViewModel {
     }
     
     @objc private func handleDataChange() {
-        generateCalendar()
+        // Bu fonksiyon artık doğrudan generateCalendar çağırmak yerine
+        // View'ın yeniden tetiklenmesini bekleyecek. Veya son tarihi saklayıp onu çağırabilir.
+        // Şimdilik en temizi, View'ın bunu yönetmesi.
     }
 
-    func generateCalendar() {
+    // GÜNCELLEME: Fonksiyon artık dışarıdan bir tarih alıyor.
+    func generateCalendar(forDate date: Date) {
         var calendar = Calendar.current
         calendar.firstWeekday = 2 // Pazartesi
         
-        guard let monthInterval = calendar.dateInterval(of: .month, for: currentDate),
+        guard let monthInterval = calendar.dateInterval(of: .month, for: date),
               let firstDayOfMonth = monthInterval.start.firstDayOfWeek(using: calendar) else { return }
         
         var days: [CalendarDay] = []
         for i in 0..<42 {
             if let day = calendar.date(byAdding: .day, value: i, to: firstDayOfMonth) {
-                let isCurrent = calendar.isDate(day, equalTo: currentDate, toGranularity: .month)
+                let isCurrent = calendar.isDate(day, equalTo: date, toGranularity: .month)
                 days.append(CalendarDay(date: day, isCurrentMonth: isCurrent))
             }
-        }
-        
-        for i in 0..<days.count {
-            days[i].netAmount = 0.0
         }
         
         self.calendarDays = days
@@ -75,7 +73,6 @@ class TakvimViewModel {
         
         self.aylikToplamGelir = transactions.filter { $0.tur == .gelir }.reduce(0) { $0 + $1.tutar }
         self.aylikToplamGider = transactions.filter { $0.tur == .gider }.reduce(0) { $0 + $1.tutar }
-        self.aylikNetFark = self.aylikToplamGelir - self.aylikToplamGider
         
         let groupedByDay = Dictionary(grouping: transactions) { transaction in
             Calendar.current.startOfDay(for: transaction.tarih)

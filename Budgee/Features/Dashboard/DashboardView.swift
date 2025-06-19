@@ -18,7 +18,7 @@ struct IslemTuruButonu: View {
             .background {
                 if secilenTur == tur {
                     Capsule()
-                        .fill(.background)
+                        .fill(Color(.systemBackground))
                         .matchedGeometryEffect(id: "ACTIVETAB", in: animation)
                         .overlay(
                             Capsule().stroke(tur == .gelir ? .green : .red, lineWidth: 1.5)
@@ -40,6 +40,10 @@ struct DashboardView: View {
     
     @State private var duzenlenecekIslem: Islem?
     @State private var silinecekIslem: Islem?
+    
+    @State private var isShowingSettings = false
+    @State private var isShowingNotifications = false
+    
     @Namespace private var animation
 
     init(modelContext: ModelContext) {
@@ -47,44 +51,74 @@ struct DashboardView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            // Ortak bileşen olan MonthNavigatorView burada kullanılıyor.
-            MonthNavigatorView(currentDate: $viewModel.currentDate)
-                .padding(.bottom, 10)
-            
-            transactionTypePicker
-                .padding(.bottom, 10)
-            
-            totalAmountView
-                .transition(.opacity.animation(.easeInOut))
-                .id("totalAmount_\(viewModel.secilenTur.rawValue)")
-                .padding(.bottom, 12)
-            
-            dividerLine
-            
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 12) {
-                    ChartPanelView(
-                        pieChartVerisi: viewModel.pieChartVerisi,
-                        kategoriDetaylari: viewModel.kategoriDetaylari,
-                        toplamTutar: viewModel.toplamTutar
-                    )
-                    
-                    if !viewModel.pieChartVerisi.isEmpty && !viewModel.filtrelenmisIslemler.isEmpty { dividerLine }
-                    
-                    RecentTransactionsView(
-                        modelContext: viewModel.modelContext,
-                        islemler: viewModel.filtrelenmisIslemler,
-                        duzenlenecekIslem: $duzenlenecekIslem,
-                        onSilmeyiBaslat: { islem in
-                            self.silmeyiBaslat(islem)
-                        }
-                    )
-                    .environmentObject(appSettings)
+        NavigationStack {
+            VStack(spacing: 0) {
+                MonthNavigatorView(currentDate: $viewModel.currentDate)
+                    .padding(.bottom, 10)
+                
+                transactionTypePicker
+                    .padding(.bottom, 10)
+                
+                totalAmountView
+                    .transition(.opacity.animation(.easeInOut))
+                    .id("totalAmount_\(viewModel.secilenTur.rawValue)")
+                    .padding(.bottom, 12)
+                
+                dividerLine
+                
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 12) {
+                        ChartPanelView(
+                            pieChartVerisi: viewModel.pieChartVerisi,
+                            kategoriDetaylari: viewModel.kategoriDetaylari,
+                            toplamTutar: viewModel.toplamTutar
+                        )
+                        
+                        if !viewModel.pieChartVerisi.isEmpty && !viewModel.filtrelenmisIslemler.isEmpty { dividerLine }
+                        
+                        RecentTransactionsView(
+                            modelContext: viewModel.modelContext,
+                            islemler: viewModel.filtrelenmisIslemler,
+                            duzenlenecekIslem: $duzenlenecekIslem,
+                            onSilmeyiBaslat: { islem in
+                                self.silmeyiBaslat(islem)
+                            }
+                        )
+                        .environmentObject(appSettings)
+                    }
+                    .animation(.easeInOut(duration: 0.2), value: viewModel.filtrelenmisIslemler)
+                    .padding(.vertical)
                 }
-                .animation(.easeInOut(duration: 0.2), value: viewModel.filtrelenmisIslemler)
-                .padding(.vertical)
             }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: { isShowingNotifications = true }) {
+                        Image(systemName: "bell.fill")
+                            .font(.title3)
+                            // RENK GÜNCELLEMESİ
+                            .foregroundColor(.secondary)
+                    }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: { isShowingSettings = true }) {
+                        Image(systemName: "gearshape.fill")
+                            .font(.title3)
+                            // RENK GÜNCELLEMESİ
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            .navigationTitle(LocalizedStringKey("tab.dashboard"))
+            .navigationBarTitleDisplayMode(.inline)
+        }
+        .sheet(isPresented: $isShowingSettings) {
+            NavigationStack {
+                AyarlarView()
+            }
+        }
+        .sheet(isPresented: $isShowingNotifications) {
+            BildirimlerView()
         }
         .sheet(item: $duzenlenecekIslem, onDismiss: { viewModel.fetchData() }) { islem in
             IslemEkleView(duzenlenecekIslem: islem)
@@ -92,19 +126,11 @@ struct DashboardView: View {
         }
         .recurringTransactionAlert(
             for: $silinecekIslem,
-            onDeleteSingle: { islem in
-                viewModel.deleteIslem(islem)
-            },
-            onDeleteSeries: { islem in
-                viewModel.deleteSeri(for: islem)
-            }
+            onDeleteSingle: { islem in viewModel.deleteIslem(islem) },
+            onDeleteSeries: { islem in viewModel.deleteSeri(for: islem) }
         )
-        .onAppear {
-            viewModel.fetchData()
-        }
-        .onChange(of: viewModel.secilenTur) {
-            viewModel.fetchData()
-        }
+        .onAppear { viewModel.fetchData() }
+        .onChange(of: viewModel.secilenTur) { viewModel.fetchData() }
     }
     
     var transactionTypePicker: some View {
