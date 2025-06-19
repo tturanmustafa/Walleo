@@ -149,3 +149,61 @@
 // Takvim Özeti
 "calendar.monthly_summary" = "Aylık Özet";
 "common.net" = "Net";
+
+// Raporlar Ekranı
+"reports.type.summary" = "Özet";
+"reports.type.distribution" = "Dağılım";
+"reports.type.trend" = "Trend";
+
+// Özet Kartları
+"reports.summary.card.main_metrics" = "Ana Metrikler";
+"reports.summary.card.comparison" = "Karşılaştırmalı Analiz";
+"reports.summary.top_expenses" = "En Çok Harcananlar";
+"reports.summary.statistics" = "İstatistikler";
+
+// Karşılaştırma Metinleri (Formatlı)
+"reports.comparison.income_increased" = "Gelirleriniz bir önceki döneme göre %@ arttı.";
+"reports.comparison.income_decreased" = "Gelirleriniz bir önceki döneme göre %@ azaldı.";
+"reports.comparison.no_data" = "Karşılaştırma için önceki dönem verisi yok.";
+"reports.comparison.expenses_increased" = "Giderleriniz bir önceki döneme göre %@ arttı.";
+"reports.comparison.expenses_decreased" = "Giderleriniz bir önceki döneme göre %@ azaldı.";
+"reports.comparison.net_flow_positive" = "Önceki döneme göre %@ daha fazla tasarruf ettiniz.";
+"reports.comparison.net_flow_negative" = "Önceki döneme göre %@ daha fazla harcadınız.";
+
+// Karşılaştırma Kartı - Parçalı Metinler
+"reports.comparison.prefix_net_flow_positive" = "Önceki döneme göre ";
+"reports.comparison.suffix_net_flow_positive" = " daha fazla tasarruf ettiniz.";
+
+"reports.comparison.prefix_net_flow_negative" = "Önceki döneme göre ";
+"reports.comparison.suffix_net_flow_negative" = " daha fazla harcadınız.";
+
+"reports.comparison.prefix_expenses_increased" = "Giderleriniz bir önceki döneme göre ";
+"reports.comparison.suffix_expenses_increased" = " arttı.";
+
+"reports.comparison.prefix_expenses_decreased" = "Giderleriniz bir önceki döneme göre ";
+"reports.comparison.suffix_expenses_decreased" = " azaldı.";
+
+// Dağılım Raporu
+"reports.distribution.title" = "Dağılım";
+"reports.distribution.income_distribution" = "Gelir Dağılımı";
+"reports.distribution.expense_distribution" = "Gider Dağılımı";
+"reports.distribution.no_data" = "Bu dönem için gösterilecek veri yok.";
+"reports.distribution.total_amount" = "Toplam Tutar";
+
+"common.total" = "Total";
+
+
+// İstatistikler Kartı
+"reports.statistics.daily_avg_expense" = "Günlük Ortalama Gider";
+"reports.statistics.daily_avg_income" = "Günlük Ortalama Gelir";
+"reports.statistics.highest_expense" = "En Yüksek Tekil Gider";
+"reports.statistics.highest_income" = "En Yüksek Tekil Gelir";
+
+"reports.summary.net_flow" = "Net Akış"; // Türkçe için
+
+// Trend Raporu
+"reports.trend.title" = "Finansal Trend";
+"reports.trend.no_data_title" = "Trend Verisi Bulunamadı";
+"reports.trend.series_income" = "Gelir";
+"reports.trend.series_expense" = "Gider";
+"reports.trend.series_net_flow" = "Net Akış";
