@@ -144,3 +144,70 @@ extension Notification.Name {
 extension Date: @retroactive Identifiable {
     public var id: Date { self }
 }
+
+// AppModels.swift dosyasının en altına ekleyin
+
+// TarihAraligi enum'ına, seçilen aralığa göre gerçek tarih aralığını (DateInterval) hesaplayan bir fonksiyon ekliyoruz.
+extension TarihAraligi {
+    func dateInterval(for date: Date = Date()) -> DateInterval? {
+        let calendar = Calendar.current
+        switch self {
+        case .hepsi:
+            // "Tüm zamanlar" için çok geniş bir aralık veya nil döndürebiliriz.
+            // nil şimdilik daha iyi, çünkü bu durumu ViewModel'da özel olarak ele alacağız.
+            return nil
+        case .buHafta:
+            return calendar.dateInterval(of: .weekOfYear, for: date)
+        case .buAy:
+            return calendar.dateInterval(of: .month, for: date)
+        case .son3Ay:
+            guard let baslangic = calendar.date(byAdding: .month, value: -3, to: date) else { return nil }
+            return DateInterval(start: baslangic, end: date)
+        case .son6Ay:
+            guard let baslangic = calendar.date(byAdding: .month, value: -6, to: date) else { return nil }
+            return DateInterval(start: baslangic, end: date)
+        case .yilBasindanBeri:
+            guard let yilBasi = calendar.date(from: calendar.dateComponents([.year], from: date)) else { return nil }
+            return DateInterval(start: yilBasi, end: date)
+        case .sonYil:
+            guard let baslangic = calendar.date(byAdding: .year, value: -1, to: date) else { return nil }
+            return DateInterval(start: baslangic, end: date)
+        }
+    }
+}
+
+// AppModels.swift dosyasındaki mevcut extension DateInterval bloğunu bununla değiştirin
+
+extension DateInterval {
+    // Mevcut aralığın hemen öncesindeki eşdeğer aralığı döndüren düzeltilmiş fonksiyon
+    func previous() -> DateInterval {
+        let calendar = Calendar.current
+        
+        // DÜZELTME: 'byAdding:value:to:' fonksiyonu tek bir bileşen (.day, .month) bekler.
+        // Bizim elimizde ise birden çok bileşen içeren bir 'DateComponents' nesnesi var.
+        // Bu yüzden, 'DateComponents' alan 'calendar.date(byAdding:to:)' fonksiyonunu kullanmalıyız.
+        // Bunun için de 'duration' bileşenlerini negatife çevirmemiz gerekiyor.
+
+        // Aralığın süresini hesapla (örn: 1 ay, 1 hafta, 1 yıl)
+        let duration = calendar.dateComponents([.year, .month, .weekOfYear, .day], from: start, to: end)
+
+        // Bu süreyi başlangıç tarihinden çıkararak bir önceki aralığın başlangıcını bul.
+        // Bunun için önce duration'ı negatife çevirelim.
+        var invertedDuration = DateComponents()
+        invertedDuration.year = -(duration.year ?? 0)
+        invertedDuration.month = -(duration.month ?? 0)
+        invertedDuration.weekOfYear = -(duration.weekOfYear ?? 0)
+        invertedDuration.day = -(duration.day ?? 0)
+
+        // Şimdi doğru fonksiyonu kullanarak tarihi hesapla.
+        guard let previousStart = calendar.date(byAdding: invertedDuration, to: start) else {
+            // Hata durumunda mevcut aralığı döndür, çökmesin.
+            return self
+        }
+        
+        // Bir önceki aralığın bitişi, mevcut aralığın başlangıcıdır.
+        let previousEnd = start
+        
+        return DateInterval(start: previousStart, end: previousEnd)
+    }
+}

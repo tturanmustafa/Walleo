@@ -42,15 +42,6 @@ struct AyarlarView: View {
                     Spacer()
                     Picker("settings.currency", selection: $appSettings.currencyCode) {
                         ForEach(Currency.allCases) { currency in
-                            // ESKİ KOD:
-                            // let localizedName = NSLocalizedString(currency.localizedNameKey, comment: "")
-                            // let label = "\(currency.symbol)  \(localizedName)"
-                            // Text(label)
-                            //     .tag(currency.rawValue)
-                            
-                            // YENİ KOD:
-                            // Text'in çeviriyi kendisinin yapmasına izin veriyoruz.
-                            // Bu, dil değişimlerinin anında yansımasını sağlar.
                             (Text(currency.symbol) + Text("  ") + Text(LocalizedStringKey(currency.localizedNameKey)))
                                 .tag(currency.rawValue)
                         }

@@ -149,3 +149,62 @@
 // Calendar Summary
 "calendar.monthly_summary" = "Monthly Summary";
 "common.net" = "Net";
+
+// Reports Screen
+"reports.type.summary" = "Summary";
+"reports.type.distribution" = "Distribution";
+"reports.type.trend" = "Trend";
+
+// Summary Cards
+"reports.summary.card.main_metrics" = "Main Metrics";
+"reports.summary.card.comparison" = "Comparative Analysis";
+"reports.summary.top_expenses" = "Top Expenses";
+"reports.summary.statistics" = "Statistics";
+
+// Comparison Texts (Formatted)
+"reports.comparison.expenses_increased" = "Your expenses increased by %@ compared to the previous period.";
+"reports.comparison.expenses_decreased" = "Your expenses decreased by %@ compared to the previous period.";
+"reports.comparison.income_increased" = "Your income increased by %@ compared to the previous period.";
+"reports.comparison.income_decreased" = "Your income decreased by %@ compared to the previous period.";
+"reports.comparison.net_flow_positive" = "You saved %@ more than the previous period.";
+"reports.comparison.net_flow_negative" = "You spent %@ more than the previous period.";
+"reports.comparison.no_data" = "No data from the previous period for comparison.";
+
+// Comparison Card - Fragmented Texts
+"reports.comparison.prefix_net_flow_positive" = "You saved ";
+"reports.comparison.suffix_net_flow_positive" = " more than the previous period.";
+
+"reports.comparison.prefix_net_flow_negative" = "You spent ";
+"reports.comparison.suffix_net_flow_negative" = " more than the previous period.";
+
+"reports.comparison.prefix_expenses_increased" = "Your expenses increased by ";
+"reports.comparison.suffix_expenses_increased" = " compared to the previous period.";
+
+"reports.comparison.prefix_expenses_decreased" = "Your expenses decreased by ";
+"reports.comparison.suffix_expenses_decreased" = " compared to the previous period.";
+
+
+// Distribution Report
+"reports.distribution.title" = "Distribution";
+"reports.distribution.income_distribution" = "Income Distribution";
+"reports.distribution.expense_distribution" = "Expense Distribution";
+"reports.distribution.no_data" = "No data to display for this period.";
+"reports.distribution.total_amount" = "Total Amount";
+
+// Dağılım Grafiği Ortası
+"common.total" = "Total";
+
+// Statistics Card
+"reports.statistics.daily_avg_expense" = "Daily Average Expense";
+"reports.statistics.daily_avg_income" = "Daily Average Income";
+"reports.statistics.highest_expense" = "Highest Single Expense";
+"reports.statistics.highest_income" = "Highest Single Income";
+
+"reports.summary.net_flow" = "Net Flow"; // İngilizce için
+
+// Trend Report
+"reports.trend.title" = "Financial Trend";
+"reports.trend.no_data_title" = "Trend Data Not Found";
+"reports.trend.series_income" = "Income";
+"reports.trend.series_expense" = "Expense";
+"reports.trend.series_net_flow" = "Net Flow";
