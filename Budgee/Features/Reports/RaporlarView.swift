@@ -3,15 +3,19 @@ import SwiftData
 
 struct RaporlarView: View {
     @State private var viewModel: RaporlarViewModel
+    @Environment(\.modelContext) private var modelContext
+    
     @State private var secilenRaporTuru: RaporTuru = .ozet
     
     enum RaporTuru: CaseIterable {
-        case ozet, dagilim
+        case ozet, takvim, dagilim
         
         var localizedKey: LocalizedStringKey {
             switch self {
             case .ozet:
                 return "reports.type.summary"
+            case .takvim:
+                return "tab.calendar"
             case .dagilim:
                 return "reports.type.distribution"
             }
@@ -26,11 +30,11 @@ struct RaporlarView: View {
         NavigationStack {
             VStack(spacing: 0) {
                 
-                // YENİ: Ay/Yıl Navigasyon barı eklendi.
+                // Bu navigator artık tüm sekmeleri kontrol edecek.
                 MonthNavigatorView(currentDate: $viewModel.currentDate)
                     .padding(.bottom, 10)
                 
-                Picker("Rapor Türü", selection: $secilenRaporTuru) {
+                Picker("Rapor Türü", selection: $secilenRaporTuru.animation()) {
                     ForEach(RaporTuru.allCases, id: \.self) { tur in
                         Text(tur.localizedKey).tag(tur)
                     }
@@ -38,17 +42,17 @@ struct RaporlarView: View {
                 .pickerStyle(.segmented)
                 .padding([.horizontal, .bottom])
                 
-                // Seçime göre ilgili View'ı göster.
-                // Artık bu view'lar da seçilen aya göre dinamik olarak güncellenecek.
                 switch secilenRaporTuru {
                 case .ozet:
                     OzetView(viewModel: viewModel)
+                case .takvim:
+                    // Takvim'e artık ViewModel'daki ana tarihi bir binding olarak veriyoruz.
+                    TakvimView(modelContext: modelContext, currentDate: $viewModel.currentDate)
                 case .dagilim:
                     DagilimView(viewModel: viewModel)
                 }
             }
             .task {
-                // Ekran ilk açıldığında veriyi çekmek için
                 await viewModel.fetchData()
             }
         }

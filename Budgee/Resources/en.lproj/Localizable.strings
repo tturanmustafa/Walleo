@@ -208,3 +208,5 @@
 "reports.trend.series_income" = "Income";
 "reports.trend.series_expense" = "Expense";
 "reports.trend.series_net_flow" = "Net Flow";
+
+"notifications.title" = "Notifications";

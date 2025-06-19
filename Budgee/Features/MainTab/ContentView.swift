@@ -2,85 +2,71 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    var body: some View {
-        MainTabView()
+    // Sekme seçimi için enum'ı güncelliyoruz, artık 'ekle' diye bir durum yok.
+    enum Sekme: Hashable {
+        case panel, hesaplar, butceler, raporlar
     }
-}
-
-struct MainTabView: View {
+    
     @State private var seciliSekme: Sekme = .panel
     @State private var yeniIslemEkleShowing = false
     @Environment(\.modelContext) private var modelContext
-    
-    var body: some View {
-        ZStack(alignment: .bottom) {
-            VStack {
-                switch seciliSekme {
-                case .panel:
-                    NavigationStack { DashboardView(modelContext: modelContext) }
-                case .takvim:
-        // DEĞİŞİKLİK: TakvimView'a artık doğru context'i veriyoruz.
-                    NavigationStack { TakvimView(modelContext: modelContext) }
-                case .raporlar:
-                    NavigationStack { RaporlarView(modelContext: modelContext) }
-                case .ayarlar:
-                    NavigationStack { AyarlarView() }
-                }
-            }.padding(.bottom, 70)
 
-            HStack {
-                // DEĞİŞİKLİK: Sabit metinler yerine anahtarları kullanıyoruz.
-                CustomTabItem(iconName: "square.grid.2x2.fill", titleKey: "tab.dashboard", sekme: .panel, seciliSekme: $seciliSekme)
-                CustomTabItem(iconName: "calendar", titleKey: "tab.calendar", sekme: .takvim, seciliSekme: $seciliSekme)
-                Spacer().frame(width: 60)
-                CustomTabItem(iconName: "chart.bar.xaxis", titleKey: "tab.reports", sekme: .raporlar, seciliSekme: $seciliSekme)
-                CustomTabItem(iconName: "gearshape.fill", titleKey: "tab.settings", sekme: .ayarlar, seciliSekme: $seciliSekme)
-            }
-            .frame(height: 55)
-            .padding(.horizontal)
-            .background(.ultraThinMaterial)
-            .cornerRadius(30)
-            .padding(.horizontal)
-            .shadow(radius: 5)
-            .overlay(alignment: .center) {
-                Button(action: {
-                    yeniIslemEkleShowing = true
-                }) {
-                    ZStack {
-                        Circle().fill(Color.blue).frame(width: 60, height: 60).shadow(radius: 4, y: 4)
-                        Image(systemName: "plus").font(.title2.bold()).foregroundColor(.white)
+    var body: some View {
+        // YENİ YAPI: ZStack ile TabView ve butonu üst üste bindiriyoruz.
+        ZStack(alignment: .bottom) {
+            // 1. KATMAN: Standart TabView
+            TabView(selection: $seciliSekme) {
+                
+                DashboardView(modelContext: modelContext)
+                    .tabItem {
+                        Label(LocalizedStringKey("tab.dashboard"), systemImage: "square.grid.2x2.fill")
                     }
-                }
-                .offset(y: -5)
+                    .tag(Sekme.panel)
+
+                HesaplarView()
+                    .tabItem {
+                        Label("Hesaplar", systemImage: "wallet.pass.fill")
+                    }
+                    .tag(Sekme.hesaplar)
+                
+                // ORTADAKİ BOŞLUK İÇİN GİZLİ BİR SEKME
+                // Bu sekme, butonun arkasında bir boşluk hissi yaratır.
+                Text("").tabItem { Text("") }.tag(4) // Bu sekmeyi boş bırakıyoruz
+
+                ButcelerView()
+                    .tabItem {
+                        Label("Bütçeler", systemImage: "chart.pie.fill")
+                    }
+                    .tag(Sekme.butceler)
+
+                RaporlarView(modelContext: modelContext)
+                    .tabItem {
+                        Label(LocalizedStringKey("tab.reports"), systemImage: "chart.bar.xaxis")
+                    }
+                    .tag(Sekme.raporlar)
             }
+            
+            // 2. KATMAN: Özel '+' Butonumuz
+            Button(action: {
+                yeniIslemEkleShowing = true
+            }) {
+                ZStack {
+                    Circle()
+                        .fill(Color.blue)
+                        .frame(width: 60, height: 60)
+                        .shadow(radius: 4, y: 4)
+                    
+                    Image(systemName: "plus")
+                        .font(.title2.bold())
+                        .foregroundColor(.white)
+                }
+            }
+            // Butonu dikey olarak yukarı kaydırarak Tab Bar'ın üzerine taşıyoruz.
+            .offset(y: 0)
         }
-        .ignoresSafeArea(.keyboard)
+        .ignoresSafeArea(.keyboard) // Klavyenin ZStack'i yukarı itmesini engeller.
         .sheet(isPresented: $yeniIslemEkleShowing) {
             IslemEkleView()
         }
     }
-}
-
-struct CustomTabItem: View {
-    let iconName: String
-    let titleKey: LocalizedStringKey // DEĞİŞİKLİK: String yerine LocalizedStringKey alıyoruz.
-    let sekme: Sekme
-    @Binding var seciliSekme: Sekme
-    
-    var body: some View {
-        Button(action: {
-            seciliSekme = sekme
-        }) {
-            VStack(spacing: 4) {
-                Image(systemName: iconName).font(.title3)
-                Text(titleKey).font(.caption2) // Text artık anahtarı doğrudan kullanabilir.
-            }.foregroundColor(seciliSekme == sekme ? .blue : .gray)
-        }.frame(maxWidth: .infinity)
-    }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: [Islem.self, Kategori.self], inMemory: true)
-        .environmentObject(AppSettings())
 }

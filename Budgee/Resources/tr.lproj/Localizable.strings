@@ -207,3 +207,5 @@
 "reports.trend.series_income" = "Gelir";
 "reports.trend.series_expense" = "Gider";
 "reports.trend.series_net_flow" = "Net Akış";
+
+"notifications.title" = "Bildirimler";
