@@ -1,67 +1,83 @@
-//
-//  TaksitDuzenleView.swift
-//  Budgee
-//
-//  Created by Mustafa Turan on 19.06.2025.
-//
-
-
-// Dosya Adı: TaksitDuzenleView.swift
+// Dosya Adı: TaksitDuzenleView.swift (NİHAİ - HANE KONTROLLÜ)
 
 import SwiftUI
 
 struct TaksitDuzenleView: View {
     @Environment(\.dismiss) var dismiss
     
-    // Düzenlenecek taksidin kendisi değil, ID'si ve ana hesap nesnesi ile çalışıyoruz.
     let hesap: Hesap
     let taksitID: UUID
     
-    // Form için yerel state'ler
     @State private var tutarString: String = ""
     @State private var odemeTarihi: Date = Date()
+    
+    // YENİ: Tutar alanı için doğrulama durumu
+    @State private var isTutarGecersiz = false
+    
+    // YENİ: Form geçerliliği kontrolü
+    private var isFormValid: Bool {
+        !tutarString.isEmpty && !isTutarGecersiz
+    }
     
     var body: some View {
         NavigationStack {
             Form {
-                Section("Taksit Bilgileri") {
-                    TextField("Tutar", text: $tutarString)
-                        .keyboardType(.decimalPad)
-                    DatePicker("Ödeme Tarihi", selection: $odemeTarihi, displayedComponents: .date)
+                Section(LocalizedStringKey("installment.edit.details_header")) {
+                    VStack(alignment: .leading) {
+                        TextField(LocalizedStringKey("common.amount"), text: $tutarString)
+                            .keyboardType(.decimalPad)
+                            .onChange(of: tutarString, perform: haneKontrolluDogrula)
+                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? .red : .clear, lineWidth: 1))
+                        
+                        if isTutarGecersiz {
+                            Text(LocalizedStringKey("validation.error.invalid_amount_format"))
+                                .font(.caption).foregroundColor(.red).padding(.top, 2)
+                        }
+                    }
+                    DatePicker(LocalizedStringKey("common.date"), selection: $odemeTarihi, displayedComponents: .date)
                 }
             }
-            .navigationTitle("Taksiti Düzenle")
+            .navigationTitle(LocalizedStringKey("installment.edit.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button(LocalizedStringKey("common.cancel")) { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(LocalizedStringKey("common.save"), action: kaydet)
+                        .disabled(!isFormValid) // GÜNCELLENDİ
                 }
             }
             .onAppear(perform: formuDoldur)
         }
     }
     
+    private func haneKontrolluDogrula(newValue: String) {
+        if newValue.isEmpty { isTutarGecersiz = false; return }
+        let normalizedString = newValue.replacingOccurrences(of: ",", with: ".")
+        guard normalizedString.components(separatedBy: ".").count <= 2, Double(normalizedString) != nil else { isTutarGecersiz = true; return }
+        let parts = normalizedString.components(separatedBy: ".")
+        if parts[0].count > 9 { isTutarGecersiz = true; return }
+        if parts.count == 2 && parts[1].count > 2 { isTutarGecersiz = true; return }
+        isTutarGecersiz = false
+    }
+    
     private func formuDoldur() {
-        guard case .kredi(_, _, _, _, _, let taksitler) = hesap.detay else { return }
-        guard let taksit = taksitler.first(where: { $0.id == taksitID }) else { return }
+        guard case .kredi(_, _, _, _, _, let taksitler) = hesap.detay,
+              let taksit = taksitler.first(where: { $0.id == taksitID }) else { return }
         
-        self.tutarString = String(taksit.taksitTutari)
-        self.odemeTarihi = taksit.odemeTarihi
+        tutarString = String(format: "%.2f", taksit.taksitTutari).replacingOccurrences(of: ".", with: ",")
+        haneKontrolluDogrula(newValue: tutarString) // GÜNCELLENDİ
+        odemeTarihi = taksit.odemeTarihi
     }
     
     private func kaydet() {
-        // Struct'ın içindeki bir değeri değiştirmek için tüm enum'ı yeniden oluşturmalıyız.
         guard case .kredi(let cekilenTutar, let faizTipi, let faizOrani, let taksitSayisi, let ilkTaksitTarihi, var taksitler) = hesap.detay else { return }
         guard let index = taksitler.firstIndex(where: { $0.id == taksitID }) else { return }
         
         let yeniTutar = Double(tutarString.replacingOccurrences(of: ",", with: ".")) ?? 0
         
-        // İlgili taksidin değerlerini güncelle
         taksitler[index].taksitTutari = yeniTutar
         taksitler[index].odemeTarihi = odemeTarihi
         
-        // Ana hesap nesnesindeki detayı, güncellenmiş taksit listesiyle yeniden ata
         hesap.detay = .kredi(
             cekilenTutar: cekilenTutar,
             faizTipi: faizTipi,
@@ -71,7 +87,6 @@ struct TaksitDuzenleView: View {
             taksitler: taksitler
         )
         
-        // Değişikliklerin ana listeye yansıması için bildirim gönder
         NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
         dismiss()
     }

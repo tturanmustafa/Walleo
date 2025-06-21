@@ -40,13 +40,30 @@ class Hesap {
     var baslangicBakiyesi: Double
     private var detayData: Data
     
-    var detay: HesapDetayi {
-        get { try! JSONDecoder().decode(HesapDetayi.self, from: detayData) }
-        set { detayData = try! JSONEncoder().encode(newValue) }
-    }
-    
+    // --> HATA BU SATIRIN EKSİK OLMASINDAN KAYNAKLANIYOR:
+    // Her hesabın kendisine bağlı işlemleri tutabilmesi için bu ilişki gereklidir.
+    // Bu, bir hesap silindiğinde, ilişkili işlemlerin 'hesap' alanının nil olmasını sağlar.
     @Relationship(deleteRule: .nullify, inverse: \Islem.hesap)
     var islemler: [Islem]? = []
+    
+    // Önceki adımda güvenli hale getirdiğimiz 'detay' değişkeni
+    var detay: HesapDetayi {
+        get {
+            do {
+                return try JSONDecoder().decode(HesapDetayi.self, from: detayData)
+            } catch {
+                print("KRİTİK HATA: HesapDetayi deşifre edilemedi. Hesap ID: \(id). Hata: \(error)")
+                return .cuzdan
+            }
+        }
+        set {
+            do {
+                detayData = try JSONEncoder().encode(newValue)
+            } catch {
+                print("KRİTİK HATA: HesapDetayi şifrelenemedi. Hesap ID: \(id). Hata: \(error)")
+            }
+        }
+    }
     
     var renk: Color { Color(hex: renkHex) }
     

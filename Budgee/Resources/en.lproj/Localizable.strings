@@ -258,3 +258,57 @@
 "alert.add_as_expense.message_format" = "Do you want to add the installment payment of %@ as an expense?";
 
 "transaction.loan_payment_name_format" = "%@ Installment Payment";
+
+"validation.error.invalid_amount_format" = "Invalid format. Must be a maximum of 9 integer and 2 decimal places.";
+
+// ... existing keys ...
+
+"common.account" = "Account";
+"common.select_account" = "Select Account";
+"validation.error.invalid_amount_format" = "Invalid format. Max 9 integer and 2 decimal places.";
+
+"notifications.no_notifications_title" = "No notifications yet";
+"notifications.no_notifications_desc" = "Your important in-app notifications will appear here.";
+
+"accounts.empty.title" = "No Accounts Yet";
+"accounts.empty.description" = "Tap the '+' icon to add a new account to get started.";
+
+"loan.form.details_header" = "Loan Information";
+"loan.form.first_payment_header" = "First Installment Date";
+"loan.form.interest_type" = "Interest Type";
+
+"credit_card.form.current_debt_optional" = "Current Debt (Optional)";
+"credit_card.form.statement_date_header" = "Statement Date";
+
+"installment.edit.title" = "Edit Installment";
+"installment.edit.details_header" = "Installment Details";
+"installment.paid.label" = "Mark as Paid";
+
+// ... existing keys ...
+
+"common.account" = "Account";
+"common.select_account" = "Select Account";
+"validation.error.invalid_amount_format" = "Invalid format. Max 9 integer and 2 decimal places.";
+
+"notifications.no_notifications_title" = "No notifications yet";
+"notifications.no_notifications_desc" = "Your important in-app notifications will appear here.";
+
+"accounts.empty.title" = "No Accounts Yet";
+"accounts.empty.description" = "Tap the '+' icon to add a new account to get started.";
+
+"loan.form.details_header" = "Loan Information";
+"loan.form.first_payment_header" = "First Installment Date";
+"loan.form.interest_type" = "Interest Type";
+
+"credit_card.form.current_debt_optional" = "Current Debt (Optional)";
+"credit_card.form.statement_date_header" = "Statement Date";
+
+"installment.edit.title" = "Edit Installment";
+"installment.edit.details_header" = "Installment Details";
+"installment.paid.label" = "Mark as Paid";
+
+// ... other keys ...
+"loan_details.summary_header" = "Loan Summary";
+"loan_details.installment_plan_header" = "Installment Plan";
+"loan.form.first_installment_date" = "First Installment Date";
+"credit_card.form.statement_date" = "Statement Date";

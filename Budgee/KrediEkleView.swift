@@ -20,13 +20,13 @@ struct KrediEkleView: View {
     var body: some View {
          NavigationStack {
             Form {
-                Section(header: Text("Kredi Bilgileri")) {
+                Section(header: Text(LocalizedStringKey("loan.form.details_header"))) {
                     TextField(LocalizedStringKey("accounts.add.loan_name_placeholder"), text: $isim)
                     TextField(LocalizedStringKey("accounts.add.loan_amount"), text: $cekilenTutarString).keyboardType(.decimalPad)
                     
                     HStack {
                         TextField(LocalizedStringKey("accounts.add.interest_rate"), text: $faizOraniString).keyboardType(.decimalPad)
-                        Picker("Faiz Tipi", selection: $faizTipi) {
+                        Picker(LocalizedStringKey("loan.form.interest_type"), selection: $faizTipi) {
                             ForEach(FaizTipi.allCases, id: \.self) { tip in
                                 Text(tip.rawValue).tag(tip)
                             }
@@ -38,8 +38,8 @@ struct KrediEkleView: View {
                     Stepper(String.localizedStringWithFormat(NSLocalizedString("accounts.add.installments_stepper", comment: ""), taksitSayisi), value: $taksitSayisi, in: 1...360)
                 }
                 
-                Section(header: Text("İlk Taksit Ödeme Günü")) {
-                     DatePicker("İlk Taksit Tarihi", selection: $ilkTaksitTarihi, displayedComponents: .date)
+                Section(header: Text(LocalizedStringKey("loan.form.first_payment_header"))) {
+                     DatePicker(LocalizedStringKey("loan.form.first_installment_date"), selection: $ilkTaksitTarihi, displayedComponents: .date)
                 }
             }
             .navigationTitle(duzenlenecekHesap == nil ? LocalizedStringKey("accounts.add.new_loan") : LocalizedStringKey("common.edit"))

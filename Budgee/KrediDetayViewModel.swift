@@ -1,8 +1,9 @@
-// Dosya Adı: KrediDetayViewModel.swift
+// Dosya Adı: KrediDetayViewModel.swift (NİHAİ - TÜM DEĞİŞİKLİKLER UYGULANMIŞ)
 
 import SwiftUI
 import SwiftData
 
+// GÜNCELLEME: Sınıf, çökme riskini ortadan kaldırmak için @MainActor olarak işaretlendi.
 @MainActor
 @Observable
 class KrediDetayViewModel {
@@ -33,37 +34,45 @@ class KrediDetayViewModel {
 
         if onayla {
             guard let kategori = krediKategorisiniGetir() else {
-                fatalError("'Kredi Ödemesi' kategorisi bulunamadı.")
+                // Bu kategori varsayılan olarak eklendiği için normalde bulunması gerekir.
+                // Eğer bulunamazsa bir hata oluşmuş demektir.
+                print("KRİTİK HATA: 'Kredi Ödemesi' kategorisi veritabanında bulunamadı.")
+                return
             }
             
-            // --- DEĞİŞİKLİK BURADA ---
-            // Lokalize edilebilir formatı alıyoruz
-            let formatString = NSLocalizedString("transaction.loan_payment_name_format", comment: "")
-            // Kredinin adını formatın içine yerleştiriyoruz
-            let islemAdi = String(format: formatString, hesap.isim)
-
             let yeniIslem = Islem(
-                isim: islemAdi, // Lokalize edilmiş adı kullanıyoruz
+                // --- GÜNCELLEME: İsteğiniz doğrultusunda isimlendirme mantığı değiştirildi ---
+                // Artık "Deneme Taksit Ödemesi" yerine doğrudan kredinin adı "Deneme" olarak atanıyor.
+                isim: hesap.isim,
                 tutar: taksit.taksitTutari,
-                tarih: Date(),
+                tarih: Date(), // Ödemenin yapıldığı anki tarih
                 tur: .gider,
                 kategori: kategori,
-                hesap: nil
+                hesap: nil // Kredi ödemeleri genellikle bir cüzdan/banka hesabından yapılır,
+                           // bu yüzden bu işlem başka bir hesaba bağlanmamalı.
+                           // Kullanıcı isterse bunu işlem detayından düzenleyebilir.
             )
             modelContext.insert(yeniIslem)
         }
         
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
-        }
+        // Değişiklikleri tüm uygulamaya bildirelim.
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+        
+        // Uyarıyı kapatmak için state'i sıfırla
         islemOlusturulacakTaksit = nil
     }
     
-    // Fonksiyon artık sadece kategoriyi bulup getiriyor, oluşturma mantığı kaldırıldı.
     private func krediKategorisiniGetir() -> Kategori? {
         let kategoriAdi = "Kredi Ödemesi"
         let predicate = #Predicate<Kategori> { $0.isim == kategoriAdi }
         let descriptor = FetchDescriptor(predicate: predicate)
-        return try? modelContext.fetch(descriptor).first
+        
+        // fetch işlemi potansiyel olarak hata fırlatabilir, güvenli hale getirelim.
+        do {
+            return try modelContext.fetch(descriptor).first
+        } catch {
+            print("Kredi kategorisi çekilirken hata oluştu: \(error)")
+            return nil
+        }
     }
 }

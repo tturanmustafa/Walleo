@@ -190,8 +190,6 @@
 "reports.distribution.no_data" = "Bu dönem için gösterilecek veri yok.";
 "reports.distribution.total_amount" = "Toplam Tutar";
 
-"common.total" = "Total";
-
 
 // İstatistikler Kartı
 "reports.statistics.daily_avg_expense" = "Günlük Ortalama Gider";
@@ -256,3 +254,38 @@
 "alert.add_as_expense.button_no" = "Hayır, Sadece İşaretle";
 "alert.add_as_expense.message_format" = "%@ tutarındaki taksit ödemesini gider olarak eklemek istiyor musunuz?";
 "transaction.loan_payment_name_format" = "%@ Taksit Ödemesi";
+
+"validation.error.invalid_amount_format" = "Geçersiz format. En fazla 9 tam ve 2 ondalık basamak olabilir.";
+
+// ... mevcut anahtarlar ...
+
+// Hatalı Çeviri Düzeltmesi
+"common.total" = "Toplam";
+
+// Yeni Eklenen Anahtarlar
+"common.account" = "Hesap";
+"common.select_account" = "Hesap Seç";
+"validation.error.invalid_amount_format" = "Geçersiz format. En fazla 9 tam ve 2 ondalık basamak olabilir.";
+
+"notifications.no_notifications_title" = "Henüz bildirim yok";
+"notifications.no_notifications_desc" = "Uygulama içi önemli bildirimleriniz burada görünecektir.";
+
+"accounts.empty.title" = "Henüz Hesap Yok";
+"accounts.empty.description" = "Başlamak için '+' ikonuna dokunarak yeni bir hesap ekleyin.";
+
+"loan.form.details_header" = "Kredi Bilgileri";
+"loan.form.first_payment_header" = "İlk Taksit Ödeme Günü";
+"loan.form.interest_type" = "Faiz Tipi";
+
+"credit_card.form.current_debt_optional" = "Güncel Borç (Opsiyonel)";
+"credit_card.form.statement_date_header" = "Hesap Kesim Tarihi";
+
+"installment.edit.title" = "Taksiti Düzenle";
+"installment.edit.details_header" = "Taksit Bilgileri";
+"installment.paid.label" = "Ödendi İşaretle";
+
+// ... diğer anahtarlar ...
+"loan_details.summary_header" = "Kredi Özeti";
+"loan_details.installment_plan_header" = "Taksit Planı";
+"loan.form.first_installment_date" = "İlk Taksit Tarihi";
+"credit_card.form.statement_date" = "Hesap Kesim Tarihi";

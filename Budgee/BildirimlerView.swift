@@ -1,22 +1,22 @@
+// Dosya Adı: BildirimlerView.swift (NİHAİ - LOKALİZE EDİLMİŞ)
+
 import SwiftUI
 
 struct BildirimlerView: View {
-    // Bu View'ı kapatmak için Environment'tan dismiss eylemini alıyoruz.
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
         NavigationStack {
-            // Şimdilik boş bir içerik.
             ContentUnavailableView(
-                "Henüz bildirim yok",
+                LocalizedStringKey("notifications.no_notifications_title"),
                 systemImage: "bell.slash",
-                description: Text("Uygulama içi önemli bildirimleriniz burada görünecektir.")
+                description: Text(LocalizedStringKey("notifications.no_notifications_desc"))
             )
             .navigationTitle(LocalizedStringKey("notifications.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Bitti") { // Bu metin de localize edilebilir ("common.done")
+                    Button(LocalizedStringKey("common.done")) {
                         dismiss()
                     }
                 }

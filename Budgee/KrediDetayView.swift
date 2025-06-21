@@ -1,4 +1,4 @@
-// Dosya Adı: KrediDetayView.swift
+// Dosya Adı: KrediDetayView.swift (GÜNCEL HALİ)
 
 import SwiftUI
 import SwiftData
@@ -17,19 +17,19 @@ struct KrediDetayView: View {
         return []
     }
     
-    init(hesap: Hesap) {
-        let container = try! ModelContainer(for: Hesap.self, Islem.self, Kategori.self)
-        _viewModel = State(initialValue: KrediDetayViewModel(modelContext: container.mainContext, hesap: hesap))
+    // GÜNCEL VE GÜVENLİ INIT:
+    // Artık 'modelContext'i parametre olarak alıyor, kendisi oluşturmuyor.
+    init(hesap: Hesap, modelContext: ModelContext) {
+        _viewModel = State(initialValue: KrediDetayViewModel(modelContext: modelContext, hesap: hesap))
     }
     
     var body: some View {
         List {
             krediOzetiSection
             
-            Section("Taksit Planı") {
+            Section(LocalizedStringKey("loan_details.installment_plan_header")) {
                 ForEach(taksitler) { taksit in
                     HStack(spacing: 16) {
-                        // --- DÜZELTME 1: 'Button' yerine 'Image' ve '.onTapGesture' ---
                         Image(systemName: taksit.odendiMi ? "checkmark.circle.fill" : "circle")
                             .font(.title2)
                             .foregroundColor(taksit.odendiMi ? .green : .accentColor)
@@ -49,7 +49,6 @@ struct KrediDetayView: View {
                         
                         Spacer()
                         
-                        // --- DÜZELTME 2: 'Button' yerine 'Image' ve '.onTapGesture' ---
                         Image(systemName: "pencil")
                             .foregroundColor(taksit.odendiMi ? .secondary.opacity(0.5) : .accentColor)
                             .onTapGesture {
@@ -63,7 +62,7 @@ struct KrediDetayView: View {
                             Button {
                                 viewModel.taksidiOde(taksit: taksit)
                             } label: {
-                                Label("Ödendi İşaretle", systemImage: "checkmark")
+                                Label(LocalizedStringKey("installment.paid.label"), systemImage: "checkmark")
                             }
                             .tint(.green)
                         }
@@ -71,9 +70,7 @@ struct KrediDetayView: View {
                 }
             }
         }
-        .task {
-            viewModel.modelContext = self.modelContext
-        }
+        // GEREKSİZ HALE GELDİĞİ İÇİN .task MODIFIER'I KALDIRILDI.
         .sheet(item: $duzenlenecekTaksitID) { taksitID in
             TaksitDuzenleView(hesap: viewModel.hesap, taksitID: taksitID)
         }
@@ -82,7 +79,6 @@ struct KrediDetayView: View {
             Button(LocalizedStringKey("alert.add_as_expense.button_no")) { viewModel.taksidiOnaylaVeGiderEkle(onayla: false) }
             Button(LocalizedStringKey("common.cancel"), role: .cancel) { }
         } message: { taksit in
-            // Lokalize edilmiş formatı kullanarak mesajı oluşturuyoruz
             let tutarString = formatCurrency(amount: taksit.taksitTutari, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
             let formatString = NSLocalizedString("alert.add_as_expense.message_format", comment: "")
             Text(String(format: formatString, tutarString))
@@ -92,7 +88,7 @@ struct KrediDetayView: View {
     }
     
     private var krediOzetiSection: some View {
-        Section("Kredi Özeti") {
+        Section(LocalizedStringKey("loan_details.summary_header")) {
             if case .kredi(let cekilenTutar, let faizTipi, let faizOrani, let taksitSayisi, _, _) = viewModel.hesap.detay {
                 HStack { Text(LocalizedStringKey("accounts.add.loan_amount")); Spacer(); Text(formatCurrency(amount: cekilenTutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)) }
                 HStack { Text(LocalizedStringKey("accounts.add.interest_rate")); Spacer(); Text("\(faizTipi.rawValue) %\(String(format: "%.2f", faizOrani))") }
