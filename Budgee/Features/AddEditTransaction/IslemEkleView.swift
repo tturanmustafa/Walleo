@@ -9,11 +9,9 @@ struct IslemEkleView: View {
     
     var duzenlenecekIslem: Islem?
     
-    // MARK: - Veritabanı Sorguları
     @Query(sort: \Kategori.isim) private var kategoriler: [Kategori]
     @Query(sort: \Hesap.olusturmaTarihi) private var tumHesaplar: [Hesap]
     
-    // MARK: - State Değişkenleri
     @State private var isim = ""
     @State private var tutarString = ""
     @State private var tarih = Date()
@@ -25,45 +23,32 @@ struct IslemEkleView: View {
     @State private var orijinalTekrar: TekrarTuru = .tekSeferlik
     @State private var guncellemeSecenekleriGoster = false
 
-    // MARK: - Hesaplanmış Değişkenler
-    
-    // Formun kaydedilebilir olup olmadığını kontrol eder.
+    @State private var isTutarGecersiz = false
+
     private var isFormValid: Bool {
         !isim.trimmingCharacters(in: .whitespaces).isEmpty &&
         !tutarString.isEmpty &&
+        !isTutarGecersiz &&
         secilenKategoriID != nil &&
         secilenHesapID != nil
     }
     
-    // Seçilen işlem türüne göre kategorileri filtreler.
     var filtrelenmisKategoriler: [Kategori] {
         kategoriler.filter { $0.tur == secilenTur }
     }
     
-    // --- YENİ: HESAPLARI FİLTRELEYEN YAPI ---
-    // Seçilen işlem türüne göre hesapları filtreler.
     private var filtrelenmisHesaplar: [Hesap] {
         if secilenTur == .gelir {
-            // Gelir eklenirken sadece 'Cüzdan' tipi hesaplar gösterilir.
-            return tumHesaplar.filter {
-                if case .cuzdan = $0.detay { return true }
-                return false
-            }
-        } else { // Gider eklenirken
-            // 'Kredi' tipi hesaplar GÖSTERİLMEZ.
-            return tumHesaplar.filter {
-                if case .kredi = $0.detay { return false }
-                return true
-            }
+            return tumHesaplar.filter { if case .cuzdan = $0.detay { return true }; return false }
+        } else {
+            return tumHesaplar.filter { if case .kredi = $0.detay { return false }; return true }
         }
     }
     
-    // Navigasyon başlığını dinamik olarak belirler.
     private var navigationTitleKey: LocalizedStringKey {
         duzenlenecekIslem == nil ? "transaction.new" : "transaction.edit"
     }
 
-    // MARK: - Body
     var body: some View {
         NavigationStack {
             Form {
@@ -77,24 +62,30 @@ struct IslemEkleView: View {
                 
                 Section(header: Text(LocalizedStringKey("transaction.section_details"))) {
                     TextField(LocalizedStringKey("transaction.name_placeholder"), text: $isim)
-                    TextField(LocalizedStringKey("common.amount"), text: $tutarString).keyboardType(.decimalPad)
+                    
+                    VStack(alignment: .leading) {
+                        TextField(LocalizedStringKey("common.amount"), text: $tutarString)
+                            .keyboardType(.decimalPad)
+                            .onChange(of: tutarString, perform: haneKontrolluDogrula)
+                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? Color.red : Color.clear, lineWidth: 1))
+                        
+                        if isTutarGecersiz {
+                            Text(LocalizedStringKey("validation.error.invalid_amount_format"))
+                                .font(.caption).foregroundColor(.red).padding(.top, 2)
+                        }
+                    }
                 }
                 
                 Section {
                     Picker(LocalizedStringKey("common.category"), selection: $secilenKategoriID) {
                         Text(LocalizedStringKey("transaction.select_category")).tag(nil as Kategori.ID?)
                         ForEach(filtrelenmisKategoriler) { kategori in
-                            Label {
-                                Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim))
-                            } icon: {
-                                Image(systemName: kategori.ikonAdi)
-                            }.tag(kategori.id as Kategori.ID?)
+                            Label { Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim)) } icon: { Image(systemName: kategori.ikonAdi) }.tag(kategori.id as Kategori.ID?)
                         }
                     }
                     
-                    Picker("Hesap", selection: $secilenHesapID) {
-                        Text("Hesap Seç").tag(nil as Hesap.ID?)
-                        // Picker artık filtrelenmiş listeyi kullanıyor.
+                    Picker(LocalizedStringKey("common.account"), selection: $secilenHesapID) {
+                        Text(LocalizedStringKey("common.select_account")).tag(nil as Hesap.ID?)
                         ForEach(filtrelenmisHesaplar) { hesap in
                             Label(hesap.isim, systemImage: hesap.ikonAdi).tag(hesap.id as Hesap.ID?)
                         }
@@ -106,11 +97,7 @@ struct IslemEkleView: View {
                 Section {
                     Picker(LocalizedStringKey("transaction.recurrence"), selection: $secilenTekrar) {
                         ForEach(TekrarTuru.allCases) { tekrar in
-                            Label {
-                                Text(LocalizedStringKey(tekrar.rawValue))
-                            } icon: {
-                                Image(systemName: iconFor(tekrar: tekrar))
-                            }.tag(tekrar)
+                            Label { Text(LocalizedStringKey(tekrar.rawValue)) } icon: { Image(systemName: iconFor(tekrar: tekrar)) }.tag(tekrar)
                         }
                     }
                 }
@@ -118,18 +105,11 @@ struct IslemEkleView: View {
             .navigationTitle(navigationTitleKey).navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button(LocalizedStringKey("common.cancel")) { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button(LocalizedStringKey("common.save")) { kaydetmeIsleminiBaslat() }.disabled(!isFormValid)
-                }
+                ToolbarItem(placement: .confirmationAction) { Button(LocalizedStringKey("common.save")) { kaydetmeIsleminiBaslat() }.disabled(!isFormValid) }
             }
             .onChange(of: secilenTur) {
-                // Tür değiştiğinde, seçili kategori ve hesap uyumsuz kalabilir, sıfırlayalım.
-                if !filtrelenmisKategoriler.contains(where: { $0.id == secilenKategoriID }) {
-                    secilenKategoriID = nil
-                }
-                if !filtrelenmisHesaplar.contains(where: { $0.id == secilenHesapID }) {
-                    secilenHesapID = nil
-                }
+                if !filtrelenmisKategoriler.contains(where: { $0.id == secilenKategoriID }) { secilenKategoriID = nil }
+                if !filtrelenmisHesaplar.contains(where: { $0.id == secilenHesapID }) { secilenHesapID = nil }
             }
             .onAppear(perform: formuDoldur)
             .confirmationDialog(LocalizedStringKey("alert.recurring_transaction"), isPresented: $guncellemeSecenekleriGoster, titleVisibility: .visible) {
@@ -140,12 +120,21 @@ struct IslemEkleView: View {
         }
     }
     
-    // MARK: - Fonksiyonlar
+    private func haneKontrolluDogrula(newValue: String) {
+        if newValue.isEmpty { isTutarGecersiz = false; return }
+        let normalizedString = newValue.replacingOccurrences(of: ",", with: ".")
+        guard normalizedString.components(separatedBy: ".").count <= 2, Double(normalizedString) != nil else { isTutarGecersiz = true; return }
+        let parts = normalizedString.components(separatedBy: ".")
+        if parts[0].count > 9 { isTutarGecersiz = true; return }
+        if parts.count == 2 && parts[1].count > 2 { isTutarGecersiz = true; return }
+        isTutarGecersiz = false
+    }
     
     private func formuDoldur() {
         guard let islem = duzenlenecekIslem else { return }
         isim = islem.isim
         tutarString = String(format: "%.2f", islem.tutar).replacingOccurrences(of: ".", with: ",")
+        haneKontrolluDogrula(newValue: tutarString)
         tarih = islem.tarih
         secilenTur = islem.tur
         secilenKategoriID = islem.kategori?.id
@@ -209,8 +198,6 @@ struct IslemEkleView: View {
     }
     
     private func seriyiSil(islem: Islem, sadeceGelecek: Bool) {
-        // --- DÜZELTME BURADA ---
-        // Predicate içinde kullanacağımız tüm değerleri önce yerel sabitlere atıyoruz.
         let anaIslemID = islem.id
         let tekrarID = islem.tekrarID
         guard tekrarID != UUID() else { return }
@@ -218,20 +205,17 @@ struct IslemEkleView: View {
         let predicate: Predicate<Islem>
         if sadeceGelecek {
             let baslangicTarihi = islem.tarih
-            // Predicate artık dışarıdaki sabitleri kullanıyor.
             predicate = #Predicate<Islem> { islem in
                 islem.tekrarID == tekrarID &&
                 islem.id != anaIslemID &&
                 islem.tarih > baslangicTarihi
             }
         } else {
-            // Predicate artık dışarıdaki sabitleri kullanıyor.
             predicate = #Predicate<Islem> { islem in
                 islem.tekrarID == tekrarID &&
                 islem.id != anaIslemID
             }
         }
-        // ---
         
         try? modelContext.delete(model: Islem.self, where: predicate)
     }

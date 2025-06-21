@@ -1,19 +1,15 @@
-// Dosya Adı: KrediKartiDetayView.swift
+// Dosya Adı: KrediKartiDetayView.swift (GÜNCEL HALİ)
 
 import SwiftUI
 import SwiftData
 
 struct KrediKartiDetayView: View {
-    @Environment(\.modelContext) private var modelContext
     @State private var viewModel: KrediKartiDetayViewModel
     
-    init(kartHesabi: Hesap) {
-        // --- DÜZELTME BURADA ---
-        // ModelContainer'a artık tüm modellerimizi tanıtıyoruz.
-        let container = try! ModelContainer(for: Hesap.self, Islem.self, Kategori.self)
-        // ---
-        
-        _viewModel = State(initialValue: KrediKartiDetayViewModel(modelContext: container.mainContext, kartHesabi: kartHesabi))
+    // GÜNCEL VE GÜVENLİ INIT:
+    // Artık 'modelContext'i parametre olarak alıyor, kendisi oluşturmuyor.
+    init(kartHesabi: Hesap, modelContext: ModelContext) {
+        _viewModel = State(initialValue: KrediKartiDetayViewModel(modelContext: modelContext, kartHesabi: kartHesabi))
     }
 
     var body: some View {
@@ -30,7 +26,7 @@ struct KrediKartiDetayView: View {
         }
         .navigationTitle(viewModel.kartHesabi.isim)
         .task {
-            viewModel.modelContext = self.modelContext
+            // Context atamasına gerek kalmadı, sadece veri çekme işlemi yapılıyor.
             viewModel.islemleriGetir()
         }
     }
