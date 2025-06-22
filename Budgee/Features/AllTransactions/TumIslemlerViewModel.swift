@@ -110,14 +110,24 @@ class TumIslemlerViewModel {
         }
     }
     
+    // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
     func deleteIslem(_ islem: Islem) {
+        var userInfo: [String: Any]?
+        if let hesapID = islem.hesap?.id {
+            userInfo = ["affectedAccountIDs": [hesapID]]
+        }
         modelContext.delete(islem)
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
     }
     
+    // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
     func deleteSeri(_ islem: Islem) {
+        var userInfo: [String: Any]?
+        if let hesapID = islem.hesap?.id {
+            userInfo = ["affectedAccountIDs": [hesapID]]
+        }
         let tekrarID = islem.tekrarID
         try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
     }
 }

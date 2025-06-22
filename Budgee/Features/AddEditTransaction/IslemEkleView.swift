@@ -157,16 +157,24 @@ struct IslemEkleView: View {
         let secilenKategori = kategoriler.first(where: { $0.id == secilenKategoriID })
         let secilenHesap = tumHesaplar.first { $0.id == secilenHesapID }
         
+        var affectedAccountIDs: Set<UUID> = []
+        if let hesapID = secilenHesap?.id {
+            affectedAccountIDs.insert(hesapID)
+        }
+        
         let islemToUpdate: Islem
         if let islem = duzenlenecekIslem {
-            islemToUpdate = islem
-        } else {
+            if let eskiHesapID = islem.hesap?.id {
+                affectedAccountIDs.insert(eskiHesapID)
+            }
+            islemToUpdate = islem        }
+        else {
             islemToUpdate = Islem(isim: isim, tutar: tutar, tarih: tarih, tur: secilenTur, tekrar: secilenTekrar, kategori: secilenKategori, hesap: secilenHesap)
             modelContext.insert(islemToUpdate)
             if secilenTekrar != .tekSeferlik {
                 yeniSeriOlustur(islem: islemToUpdate)
             }
-            NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+            NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["affectedAccountIDs": Array(affectedAccountIDs)])
             dismiss()
             return
         }
@@ -193,7 +201,7 @@ struct IslemEkleView: View {
              yeniSeriOlustur(islem: islemToUpdate)
         }
         
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["affectedAccountIDs": Array(affectedAccountIDs)])
         dismiss()
     }
     

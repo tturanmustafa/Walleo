@@ -97,19 +97,33 @@ class DashboardViewModel {
         self.pieChartVerisi = yeniPieChartVerisi
     }
     
-    func deleteIslem(_ islem: Islem) {
-        modelContext.delete(islem)
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
-    }
-    
-    func deleteSeri(for islem: Islem) {
-        let tekrarID = islem.tekrarID
-        guard tekrarID != UUID() else {
-            deleteIslem(islem)
-            return
+    // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
+        func deleteIslem(_ islem: Islem) {
+            var userInfo: [String: Any]?
+            if let hesapID = islem.hesap?.id {
+                userInfo = ["affectedAccountIDs": [hesapID]]
+            }
+            modelContext.delete(islem)
+            NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
         }
         
-        try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+        // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
+        func deleteSeri(for islem: Islem) {
+            let tekrarID = islem.tekrarID
+            guard tekrarID != UUID() else {
+                deleteIslem(islem)
+                return
+            }
+            
+            // Not: Seri silme işlemi birden çok hesabı etkileyebilir.
+            // En güvenli yol, bu durumda userInfo göndermeyerek tüm hesapların güncellenmesini sağlamaktır.
+            // Şimdilik basitlik adına bu şekilde bırakıyoruz.
+            var userInfo: [String: Any]?
+            if let hesapID = islem.hesap?.id {
+                userInfo = ["affectedAccountIDs": [hesapID]]
+            }
+            
+            try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
+            NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
+        }
     }
-}

@@ -1,14 +1,12 @@
-// Dosya Adı: HesaplarView.swift (MİMARİSİ DÜZELTİLMİŞ NİHAİ HALİ)
+// Dosya Adı: HesaplarView.swift
 
 import SwiftUI
 import SwiftData
 
 struct HesaplarView: View {
-    // 1. ADIM: Artık context'i tüm uygulama gibi environment'tan alıyoruz.
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var appSettings: AppSettings
     
-    // 2. ADIM: ViewModel'ı, context'i aldıktan sonra oluşturabilmek için opsiyonel yapıyoruz.
     @State private var viewModel: HesaplarViewModel?
     
     enum SheetTuru: Identifiable {
@@ -28,12 +26,8 @@ struct HesaplarView: View {
     }
     @State private var gosterilecekSheet: SheetTuru?
 
-    // 3. ADIM: HATALI INIT METODU TAMAMEN KALDIRILDI.
-    // Artık bu view kendi başına veritabanı bağlantısı oluşturmuyor.
-
     var body: some View {
         NavigationStack {
-            // 4. ADIM: ViewModel oluşturulana kadar bir yükleme ekranı gösteriyoruz.
             if let viewModel = viewModel {
                 hesapListesi(viewModel: viewModel)
                     .overlay {
@@ -43,7 +37,12 @@ struct HesaplarView: View {
                     }
                     .navigationTitle(LocalizedStringKey("accounts.title"))
                     .toolbar { toolbarIcerigi(viewModel: viewModel) }
-                    .sheet(item: $gosterilecekSheet, onDismiss: viewModel.hesaplamalariTetikle) { sheet in
+                    // GÜNCELLEME: onDismiss, artık doğru fonksiyonu çağırıyor ve derleme hatasını gideriyor.
+                    .sheet(item: $gosterilecekSheet, onDismiss: {
+                        Task {
+                            await viewModel.hesaplamalariYap()
+                        }
+                    }) { sheet in
                         sheet.view
                     }
             } else {
@@ -51,7 +50,6 @@ struct HesaplarView: View {
             }
         }
         .task {
-            // 5. ADIM: View ekrana geldiğinde, environment'tan alınan doğru context ile ViewModel'ı oluşturuyoruz.
             if viewModel == nil {
                 viewModel = HesaplarViewModel(modelContext: self.modelContext)
                 await viewModel?.hesaplamalariYap()
@@ -59,7 +57,6 @@ struct HesaplarView: View {
         }
     }
     
-    // View'ın parçaları artık viewModel'ı parametre olarak alıyor.
     private func hesapListesi(viewModel: HesaplarViewModel) -> some View {
         ScrollView {
             LazyVStack(spacing: 16) {
