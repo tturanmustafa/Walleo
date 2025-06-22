@@ -1,9 +1,8 @@
-// Dosya Adı: KrediDetayViewModel.swift (NİHAİ - TÜM DEĞİŞİKLİKLER UYGULANMIŞ)
+// Dosya Adı: KrediDetayViewModel.swift
 
 import SwiftUI
 import SwiftData
 
-// GÜNCELLEME: Sınıf, çökme riskini ortadan kaldırmak için @MainActor olarak işaretlendi.
 @MainActor
 @Observable
 class KrediDetayViewModel {
@@ -34,31 +33,26 @@ class KrediDetayViewModel {
 
         if onayla {
             guard let kategori = krediKategorisiniGetir() else {
-                // Bu kategori varsayılan olarak eklendiği için normalde bulunması gerekir.
-                // Eğer bulunamazsa bir hata oluşmuş demektir.
                 print("KRİTİK HATA: 'Kredi Ödemesi' kategorisi veritabanında bulunamadı.")
                 return
             }
             
             let yeniIslem = Islem(
-                // --- GÜNCELLEME: İsteğiniz doğrultusunda isimlendirme mantığı değiştirildi ---
-                // Artık "Deneme Taksit Ödemesi" yerine doğrudan kredinin adı "Deneme" olarak atanıyor.
                 isim: hesap.isim,
                 tutar: taksit.taksitTutari,
-                tarih: Date(), // Ödemenin yapıldığı anki tarih
+                tarih: Date(),
                 tur: .gider,
                 kategori: kategori,
-                hesap: nil // Kredi ödemeleri genellikle bir cüzdan/banka hesabından yapılır,
-                           // bu yüzden bu işlem başka bir hesaba bağlanmamalı.
-                           // Kullanıcı isterse bunu işlem detayından düzenleyebilir.
+                hesap: nil
             )
             modelContext.insert(yeniIslem)
         }
         
-        // Değişiklikleri tüm uygulamaya bildirelim.
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+        // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
+        // Taksit ödemesi kredi hesabının kendisini etkiler.
+        let userInfo: [String: Any] = ["affectedAccountIDs": [hesap.id]]
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
         
-        // Uyarıyı kapatmak için state'i sıfırla
         islemOlusturulacakTaksit = nil
     }
     
@@ -66,8 +60,6 @@ class KrediDetayViewModel {
         let kategoriAdi = "Kredi Ödemesi"
         let predicate = #Predicate<Kategori> { $0.isim == kategoriAdi }
         let descriptor = FetchDescriptor(predicate: predicate)
-        
-        // fetch işlemi potansiyel olarak hata fırlatabilir, güvenli hale getirelim.
         do {
             return try modelContext.fetch(descriptor).first
         } catch {

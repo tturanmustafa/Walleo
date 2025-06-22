@@ -1,3 +1,5 @@
+// Dosya Adı: GunDetayView.swift
+
 import SwiftUI
 import SwiftData
 
@@ -44,29 +46,40 @@ struct GunDetayView: View {
             IslemEkleView(duzenlenecekIslem: islem)
                 .environmentObject(appSettings)
         }
+        // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
         .recurringTransactionAlert(
             for: $silinecekIslem,
             onDeleteSingle: { islem in
+                var userInfo: [String: Any]?
+                if let hesapID = islem.hesap?.id {
+                    userInfo = ["affectedAccountIDs": [hesapID]]
+                }
                 modelContext.delete(islem)
-                // DEĞİŞİKLİK: Bildirim gönderiliyor.
-                NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+                NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
             },
             onDeleteSeries: { islem in
+                var userInfo: [String: Any]?
+                if let hesapID = islem.hesap?.id {
+                    userInfo = ["affectedAccountIDs": [hesapID]]
+                }
                 let tekrarID = islem.tekrarID
                 try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
-                // DEĞİŞİKLİK: Bildirim gönderiliyor.
-                NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+                NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
             }
         )
     }
     
+    // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
     private func silmeyiBaslat(_ islem: Islem) {
         if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
             silinecekIslem = islem
         } else {
+            var userInfo: [String: Any]?
+            if let hesapID = islem.hesap?.id {
+                userInfo = ["affectedAccountIDs": [hesapID]]
+            }
             modelContext.delete(islem)
-            // DEĞİŞİKLİK: Bildirim gönderiliyor.
-            NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+            NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
         }
     }
 }
