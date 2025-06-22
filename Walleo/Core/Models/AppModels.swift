@@ -43,6 +43,7 @@ public enum Currency: String, CaseIterable, Identifiable {
 
 // MARK: - App Settings
 class AppSettings: ObservableObject {
+    // MARK: - General Settings
     @AppStorage("colorScheme") var colorSchemeValue: Int = 0
     @AppStorage("language") var languageCode: String = "tr"
     @AppStorage("currencyCode") var currencyCode: String = Currency.TRY.rawValue
@@ -54,6 +55,23 @@ class AppSettings: ObservableObject {
         default: nil
         }
     }
+    
+    // MARK: - Notification Settings
+    
+    /// Tüm bildirimleri açıp kapatan ana anahtar.
+    @AppStorage("notifications_master_enabled") var masterNotificationsEnabled: Bool = true
+    
+    /// Bütçe ile ilgili uyarıların açık olup olmadığını kontrol eder.
+    @AppStorage("notifications_budget_alerts_enabled") var budgetAlertsEnabled: Bool = true
+    
+    /// Bütçe limiti yaklaşım uyarısının hangi oranda tetikleneceğini belirler (örn: 0.90 = %90).
+    @AppStorage("notifications_budget_threshold") var budgetAlertThreshold: Double = 0.90
+    
+    /// Kredi taksidi hatırlatıcılarının açık olup olmadığını kontrol eder.
+    @AppStorage("notifications_loan_reminders_enabled") var loanRemindersEnabled: Bool = true
+    
+    /// Kredi taksidi hatırlatıcısının vadeden kaç gün önce gönderileceğini belirler.
+    @AppStorage("notifications_loan_reminder_days") var loanReminderDays: Int = 3
 }
 
 // MARK: - Data Structures for Views
@@ -88,7 +106,6 @@ public enum TekrarTuru: String, CaseIterable, Identifiable, Codable {
     }
 }
 
-// MARK: - Filtering & Sorting Structures
 public enum SortOrder: String, CaseIterable, Identifiable {
     case tarihAzalan = "enum.sort.date_desc"
     case tarihArtan = "enum.sort.date_asc"
@@ -102,9 +119,6 @@ public enum SortOrder: String, CaseIterable, Identifiable {
     }
 }
 
-// **************************************************
-// DEĞİŞİKLİK BURADA: TarihAraligi enum'ı güncellendi.
-// **************************************************
 public enum TarihAraligi: String, Hashable, Identifiable {
     case hepsi = "enum.date_range.all"
     case buHafta = "enum.date_range.this_week"
@@ -132,29 +146,19 @@ struct FiltreAyarlari {
     var sortOrder: SortOrder = .tarihAzalan
 }
 
-// Bu bildirimi anlık veri güncellemesi için kullanıyoruz
 extension Notification.Name {
-    // ESKİ: static let yeniIslemEklendi = Notification.Name("yeniIslemEklendi")
-    // YENİ:
     static let transactionsDidChange = Notification.Name("transactionsDidChange")
 }
-
-// AppModels.swift dosyasının en altına ekleyin
 
 extension Date: @retroactive Identifiable {
     public var id: Date { self }
 }
 
-// AppModels.swift dosyasının en altına ekleyin
-
-// TarihAraligi enum'ına, seçilen aralığa göre gerçek tarih aralığını (DateInterval) hesaplayan bir fonksiyon ekliyoruz.
 extension TarihAraligi {
     func dateInterval(for date: Date = Date()) -> DateInterval? {
         let calendar = Calendar.current
         switch self {
         case .hepsi:
-            // "Tüm zamanlar" için çok geniş bir aralık veya nil döndürebiliriz.
-            // nil şimdilik daha iyi, çünkü bu durumu ViewModel'da özel olarak ele alacağız.
             return nil
         case .buHafta:
             return calendar.dateInterval(of: .weekOfYear, for: date)
@@ -176,52 +180,27 @@ extension TarihAraligi {
     }
 }
 
-// AppModels.swift dosyasındaki mevcut extension DateInterval bloğunu bununla değiştirin
-
 extension DateInterval {
-    // Mevcut aralığın hemen öncesindeki eşdeğer aralığı döndüren düzeltilmiş fonksiyon
     func previous() -> DateInterval {
         let calendar = Calendar.current
-        
-        // DÜZELTME: 'byAdding:value:to:' fonksiyonu tek bir bileşen (.day, .month) bekler.
-        // Bizim elimizde ise birden çok bileşen içeren bir 'DateComponents' nesnesi var.
-        // Bu yüzden, 'DateComponents' alan 'calendar.date(byAdding:to:)' fonksiyonunu kullanmalıyız.
-        // Bunun için de 'duration' bileşenlerini negatife çevirmemiz gerekiyor.
-
-        // Aralığın süresini hesapla (örn: 1 ay, 1 hafta, 1 yıl)
         let duration = calendar.dateComponents([.year, .month, .weekOfYear, .day], from: start, to: end)
-
-        // Bu süreyi başlangıç tarihinden çıkararak bir önceki aralığın başlangıcını bul.
-        // Bunun için önce duration'ı negatife çevirelim.
         var invertedDuration = DateComponents()
         invertedDuration.year = -(duration.year ?? 0)
         invertedDuration.month = -(duration.month ?? 0)
         invertedDuration.weekOfYear = -(duration.weekOfYear ?? 0)
         invertedDuration.day = -(duration.day ?? 0)
-
-        // Şimdi doğru fonksiyonu kullanarak tarihi hesapla.
         guard let previousStart = calendar.date(byAdding: invertedDuration, to: start) else {
-            // Hata durumunda mevcut aralığı döndür, çökmesin.
             return self
         }
-        
-        // Bir önceki aralığın bitişi, mevcut aralığın başlangıcıdır.
         let previousEnd = start
-        
         return DateInterval(start: previousStart, end: previousEnd)
     }
 }
 
 enum ButceTekrarAraligi: String, Codable, CaseIterable {
     case aylik = "enum.budget_period.monthly"
-    // Gelecekte eklenebilir:
-    // case haftalik = "enum.budget_period.weekly"
-    // case yillik = "enum.budget_period.annually"
 }
 
-
-// Bu struct, hesaplanmış harcama tutarını da içeren,
-// View katmanında gösterime hazır bir bütçe modelidir.
 struct GosterilecekButce: Identifiable {
     let butce: Butce
     var harcananTutar: Double

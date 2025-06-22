@@ -114,7 +114,9 @@ struct HesaplarView: View {
         switch hesap.detay {
         case .kredi: KrediDetayView(hesap: hesap, modelContext: self.modelContext)
         case .krediKarti: KrediKartiDetayView(kartHesabi: hesap, modelContext: self.modelContext)
-        default: Text("\(hesap.isim) Detay Ekranı")
+        default:
+            let title = String.localizedStringWithFormat(NSLocalizedString("account_details.generic_title", comment: ""), hesap.isim)
+            Text(title)
         }
     }
 }

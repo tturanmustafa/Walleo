@@ -38,6 +38,9 @@ struct DashboardView: View {
     @EnvironmentObject var appSettings: AppSettings
     @State private var viewModel: DashboardViewModel
     
+    // Sadece okunmamış bildirimleri veritabanından çeken sorgu.
+    @Query(filter: #Predicate<Bildirim> { !$0.okunduMu }) private var unreadNotifications: [Bildirim]
+    
     @State private var duzenlenecekIslem: Islem?
     @State private var silinecekIslem: Islem?
     
@@ -90,12 +93,27 @@ struct DashboardView: View {
                     .padding(.vertical)
                 }
             }
+            // --- GÜNCELLENEN BÖLÜM: TOOLBAR ---
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: { isShowingNotifications = true }) {
-                        Image(systemName: "bell.fill")
-                            .font(.title3)
-                            .foregroundColor(.secondary)
+                        // Zil ikonunu, rozeti gösterebilmek için bir ZStack içine alıyoruz.
+                        ZStack {
+                            Image(systemName: "bell.fill")
+                                .font(.title3)
+                                .foregroundColor(.secondary)
+                            
+                            // Eğer okunmamış bildirim varsa rozeti göster.
+                            if !unreadNotifications.isEmpty {
+                                Text("\(unreadNotifications.count)")
+                                    .font(.caption2.bold())
+                                    .foregroundColor(.white)
+                                    .padding(5)
+                                    .background(Circle().fill(Color.red))
+                                    .offset(x: 12, y: -10) // Rozeti konumlandır
+                                    .transition(.scale)
+                            }
+                        }
                     }
                 }
                 
@@ -114,6 +132,7 @@ struct DashboardView: View {
             NavigationStack {
                 AyarlarView()
             }
+            .id(appSettings.languageCode)
         }
         .sheet(isPresented: $isShowingNotifications) {
             BildirimlerView()

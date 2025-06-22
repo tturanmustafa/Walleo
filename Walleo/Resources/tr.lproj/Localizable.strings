@@ -308,3 +308,50 @@
 "budgets.card.total_limit" = "Toplam Limit";
 "budgets.card.amount_spent" = "Harcanan Tutar";
 "budgets.card.amount_remaining" = "Kalan Tutar";
+
+// MARK: - Bildirim Ayarları
+"settings.notifications" = "Bildirim Ayarları";
+"settings.notifications.title" = "Bildirim Ayarları";
+"settings.notifications.master_section" = "ANA KONTROL";
+"settings.notifications.master_toggle" = "Tüm Bildirimler";
+"settings.notifications.budget_section" = "BÜTÇE UYARILARI";
+"settings.notifications.budget_toggle" = "Bütçe Bildirimlerini Göster";
+"settings.notifications.threshold_picker" = "Uyarı Eşiği";
+"settings.notifications.threshold.option_80" = "%80'e Ulaşınca";
+"settings.notifications.threshold.option_85" = "%85'e Ulaşınca";
+"settings.notifications.threshold.option_90" = "%90'a Ulaşınca";
+"settings.notifications.threshold.option_95" = "%95'e Ulaşınca";
+"settings.notifications.loan_section" = "ÖDEME HATIRLATICILARI";
+"settings.notifications.loan_toggle" = "Kredi Taksitlerini Hatırlat";
+"settings.notifications.loan_stepper" = "Vadeden %d gün önce";
+"credit_card_details.recent_expenses" = "Son Dönem Harcamaları";
+"credit_card_details.no_transactions" = "Bu Dönem İşlem Yok";
+"account_details.generic_title" = "%@ Detayları";
+"credit_card.form.payment_due_date_header" = "Son Ödeme Günü Ayarı";
+"credit_card.form.payment_due_date_stepper" = "Hesap kesiminden %d gün sonra";
+
+"credit_card_details.recent_expenses" = "Son Dönem Harcamaları";
+"credit_card_details.no_transactions" = "Bu Dönem İşlem Yok";
+"account_details.generic_title" = "%@ Detayları";
+
+"notification.budget.over_limit.title" = "Bütçe Aşıldı";
+"notification.budget.over_limit.body_format" = "%@ bütçenizdeki %@ limitini %@ aştınız.";
+"notification.budget.approaching_limit.title" = "Bütçe Limiti Yaklaşıyor";
+"notification.budget.approaching_limit.body_format" = "%@ bütçenizdeki %@ limitinin %@'ına ulaştınız.";
+"notification.credit_card.due_date.title" = "Kredi Kartı Ödemesi Yaklaşıyor";
+"notification.credit_card.due_date.body_format" = "%@ kartınızın son ödeme tarihi: %@.";
+
+// Kredi Kartı Ayarları
+"settings.notifications.credit_card_section" = "KREDİ KARTI HATIRLATICILARI";
+"settings.notifications.credit_card_toggle" = "Son Ödeme Gününü Hatırlat";
+
+"notification.budget.over_limit.title" = "Budget Exceeded";
+"notification.budget.over_limit.body_format" = "You exceeded the %@ limit of your %@ budget by %@.";
+"notification.budget.approaching_limit.title" = "Budget Limit Approaching";
+"notification.budget.approaching_limit.body_format" = "You have reached %@ of your %@ budget limit of %@.";
+"notification.credit_card.due_date.title" = "Credit Card Payment Due";
+"notification.credit_card.due_date.body_format" = "The payment for your %@ card is due on %@.";
+
+// Credit Card Settings
+"settings.notifications.credit_card_section" = "CREDIT CARD REMINDERS";
+"settings.notifications.credit_card_toggle" = "Remind for Due Date";

@@ -1,13 +1,3 @@
-//
-//  KrediKartiDetayViewModel.swift
-//  Budgee
-//
-//  Created by Mustafa Turan on 19.06.2025.
-//
-
-
-// Dosya Adı: KrediKartiDetayViewModel.swift
-
 import SwiftUI
 import SwiftData
 
@@ -25,18 +15,22 @@ class KrediKartiDetayViewModel {
     }
     
     func islemleriGetir() {
-        guard case .krediKarti(_, let kesimTarihi) = kartHesabi.detay else { return }
+        // --- DÜZELTME BURADA ---
+        // Artık 3 parametreli (limit, kesimTarihi, ofset) case'i doğru şekilde karşılıyoruz.
+        // Limit ve ofset'i kullanmadığımız için _ ile atlıyoruz.
+        guard case .krediKarti(_, let kesimTarihi, _) = kartHesabi.detay else { return }
         
         // Bu dönemin başlangıç ve bitiş tarihlerini hesapla
-        // Örnek: Kesim tarihi ayın 20'si ise, bir önceki ayın 21'inden bu ayın 20'sine kadar olan işlemleri alırız.
         let takvim = Calendar.current
         let bugun = takvim.startOfDay(for: Date())
         var bilesenler = takvim.dateComponents([.year, .month], from: bugun)
         bilesenler.day = takvim.component(.day, from: kesimTarihi)
 
-        let buAykiKesimGunu = takvim.date(from: bilesenler)!
+        guard let buAykiKesimGunu = takvim.date(from: bilesenler) else { return }
         let donemBitisTarihi = buAykiKesimGunu > bugun ? takvim.date(byAdding: .month, value: -1, to: buAykiKesimGunu)! : buAykiKesimGunu
-        let donemBaslangicTarihi = takvim.date(byAdding: .month, value: -1, to: donemBitisTarihi)!
+        
+        // donemBitisTarihi'nden bir ay geriye giderek başlangıç tarihini bulma (daha güvenli yol)
+        guard let donemBaslangicTarihi = takvim.date(byAdding: .month, value: -1, to: donemBitisTarihi) else { return }
         
         let kartID = kartHesabi.id
         let predicate = #Predicate<Islem> { islem in

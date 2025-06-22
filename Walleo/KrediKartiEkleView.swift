@@ -1,5 +1,3 @@
-// Dosya Adı: KrediKartiEkleView.swift (NİHAİ - HANE KONTROLLÜ)
-
 import SwiftUI
 import SwiftData
 
@@ -7,18 +5,20 @@ struct KrediKartiEkleView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
 
+    // MARK: - State Properties
     @State private var isim: String = ""
     @State private var limitString: String = ""
     @State private var guncelBorcString: String = "" // Opsiyonel alan
     @State private var kesimTarihi = Date()
+    @State private var sonOdemeGunuOfseti: Int = 10 // Varsayılan değer: kesimden 10 gün sonra
     @State private var secilenRenk: Color = .red
+    
     var duzenlenecekHesap: Hesap?
     
-    // YENİ: Her alan için ayrı doğrulama durumları
     @State private var isLimitGecersiz = false
     @State private var isBorcGecersiz = false
     
-    // GÜNCELLENDİ: Formun geçerliliği tüm alanları kontrol ediyor
+    // MARK: - Computed Properties
     private var isFormValid: Bool {
         !isim.trimmingCharacters(in: .whitespaces).isEmpty &&
         !limitString.isEmpty &&
@@ -26,6 +26,7 @@ struct KrediKartiEkleView: View {
         !isBorcGecersiz
     }
 
+    // MARK: - Body
     var body: some View {
         NavigationStack {
             Form {
@@ -35,7 +36,7 @@ struct KrediKartiEkleView: View {
                     VStack(alignment: .leading) {
                         TextField(LocalizedStringKey("accounts.add.card_limit"), text: $limitString)
                             .keyboardType(.decimalPad)
-                            .validateAmountInput(text: $limitString, isInvalid: $isLimitGecersiz) // Değişiklik burada
+                            .validateAmountInput(text: $limitString, isInvalid: $isLimitGecersiz)
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isLimitGecersiz ? .red : .clear, lineWidth: 1))
                         if isLimitGecersiz {
                             Text(LocalizedStringKey("validation.error.invalid_amount_format"))
@@ -46,7 +47,7 @@ struct KrediKartiEkleView: View {
                     VStack(alignment: .leading) {
                         TextField(LocalizedStringKey("credit_card.form.current_debt_optional"), text: $guncelBorcString)
                             .keyboardType(.decimalPad)
-                            .validateAmountInput(text: $guncelBorcString, isInvalid: $isBorcGecersiz) // Değişiklik burada
+                            .validateAmountInput(text: $guncelBorcString, isInvalid: $isBorcGecersiz)
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isBorcGecersiz ? .red : .clear, lineWidth: 1))
                         if isBorcGecersiz {
                             Text(LocalizedStringKey("validation.error.invalid_amount_format"))
@@ -54,9 +55,19 @@ struct KrediKartiEkleView: View {
                         }
                     }
                 }
+                
                 Section(header: Text(LocalizedStringKey("credit_card.form.statement_date_header"))) {
                     DatePicker(LocalizedStringKey("credit_card.form.statement_date"), selection: $kesimTarihi, displayedComponents: .date)
                 }
+                
+                Section(header: Text(LocalizedStringKey("credit_card.form.payment_due_date_header"))) {
+                    Stepper(
+                        String.localizedStringWithFormat(NSLocalizedString("credit_card.form.payment_due_date_stepper", comment: ""), sonOdemeGunuOfseti),
+                        value: $sonOdemeGunuOfseti,
+                        in: 1...28
+                    )
+                }
+                
                 Section(LocalizedStringKey("categories.color")) {
                     ColorPicker(LocalizedStringKey("accounts.add.account_color"), selection: $secilenRenk, supportsOpacity: false)
                 }
@@ -73,35 +84,15 @@ struct KrediKartiEkleView: View {
         }
     }
     
-    // YENİ: Hangi alanın doğrulandığını ayırt etmek için enum
-    enum AlanTuru { case limit, borc }
-    private func haneKontrolluDogrula(newValue: String, tur: AlanTuru) {
-        // Hangi state değişkeninin güncelleneceğini belirle
-        let isInvalidFlag: (Bool) -> Void = { tur == .limit ? (isLimitGecersiz = $0) : (isBorcGecersiz = $0) }
-        
-        if newValue.isEmpty { isInvalidFlag(false); return }
-        
-        let normalizedString = newValue.replacingOccurrences(of: ",", with: ".")
-        guard normalizedString.components(separatedBy: ".").count <= 2, Double(normalizedString) != nil else { isInvalidFlag(true); return }
-        
-        let parts = normalizedString.components(separatedBy: ".")
-        if parts[0].count > 9 { isInvalidFlag(true); return }
-        if parts.count == 2 && parts[1].count > 2 { isInvalidFlag(true); return }
-        
-        isInvalidFlag(false)
-    }
-    
+    // MARK: - Functions
     private func formuDoldur() {
-        guard let hesap = duzenlenecekHesap, case .krediKarti(let limit, let tarih) = hesap.detay else { return }
+        guard let hesap = duzenlenecekHesap, case .krediKarti(let limit, let tarih, let ofset) = hesap.detay else { return }
+        
         isim = hesap.isim
         limitString = String(format: "%.2f", limit).replacingOccurrences(of: ".", with: ",")
         guncelBorcString = hesap.baslangicBakiyesi != 0 ? String(format: "%.2f", abs(hesap.baslangicBakiyesi)).replacingOccurrences(of: ".", with: ",") : ""
-        
-        // GÜNCELLENDİ: Düzenleme modunda her iki alan için de doğrulama yapılır.
-        haneKontrolluDogrula(newValue: limitString, tur: .limit)
-        haneKontrolluDogrula(newValue: guncelBorcString, tur: .borc)
-        
         kesimTarihi = tarih
+        sonOdemeGunuOfseti = ofset
         secilenRenk = hesap.renk
     }
     
@@ -109,7 +100,8 @@ struct KrediKartiEkleView: View {
         let limit = Double(limitString.replacingOccurrences(of: ",", with: ".")) ?? 0
         let guncelBorc = Double(guncelBorcString.replacingOccurrences(of: ",", with: ".")) ?? 0
         let renkHex = secilenRenk.toHex() ?? "#FF3B30"
-        let kartDetayi = HesapDetayi.krediKarti(limit: limit, kesimTarihi: kesimTarihi)
+        
+        let kartDetayi = HesapDetayi.krediKarti(limit: limit, kesimTarihi: kesimTarihi, sonOdemeGunuOfseti: sonOdemeGunuOfseti)
         
         if let hesap = duzenlenecekHesap {
             hesap.isim = isim

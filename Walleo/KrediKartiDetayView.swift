@@ -14,9 +14,13 @@ struct KrediKartiDetayView: View {
 
     var body: some View {
         List {
-            Section("Son Dönem Harcamaları") {
+            // --- DÜZELTME BURADA ---
+            Section(LocalizedStringKey("credit_card_details.recent_expenses")) {
                 if viewModel.donemIslemleri.isEmpty {
-                    ContentUnavailableView("Bu Dönem İşlem Yok", systemImage: "creditcard.slash")
+                    ContentUnavailableView(
+                        LocalizedStringKey("credit_card_details.no_transactions"),
+                        systemImage: "creditcard.slash"
+                    )
                 } else {
                     ForEach(viewModel.donemIslemleri) { islem in
                         IslemSatirView(islem: islem)
