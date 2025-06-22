@@ -1,16 +1,12 @@
-// Dosya Adı: AyarlarView.swift (GÜNCELLENMİŞ HALİ)
-
 import SwiftUI
 
 struct AyarlarView: View {
     @EnvironmentObject var appSettings: AppSettings
-    @Environment(\.dismiss) var dismiss // EKLENDİ: Ekranı kapatmak için
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        // Form'un kendisinde bir değişiklik yok.
         Form {
             Section("settings.section_general") {
-                // ... mevcut tüm ayar satırları aynı kalıyor ...
                 HStack {
                     AyarIkonu(iconName: "circle.righthalf.filled", color: .gray)
                     Text("settings.theme")
@@ -58,6 +54,14 @@ struct AyarlarView: View {
                     Text("settings.manage_categories")
                 }
                 .padding(.vertical, 4)
+                
+                // --- YENİ EKLENEN SATIR ---
+                NavigationLink(destination: BildirimAyarlariView()) {
+                    AyarIkonu(iconName: "bell.badge.fill", color: .red)
+                    Text("settings.notifications") // Yeni eklenecek çeviri anahtarı
+                }
+                .padding(.vertical, 4)
+                // --- YENİ SATIR SONU ---
             }
             
             Section("settings.section_info") {
@@ -70,7 +74,6 @@ struct AyarlarView: View {
             }
         }
         .navigationTitle("settings.title")
-        // --- YENİ EKLENEN KOD ---
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button(LocalizedStringKey("common.done")) {
@@ -78,7 +81,6 @@ struct AyarlarView: View {
                 }
             }
         }
-        // ---
     }
 }
 
@@ -94,13 +96,5 @@ struct AyarIkonu: View {
             .frame(width: 32, height: 32)
             .background(color)
             .cornerRadius(7)
-    }
-}
-
-#Preview {
-    NavigationStack {
-        AyarlarView()
-            .environmentObject(AppSettings())
-            .environment(\.locale, .init(identifier: "tr"))
     }
 }

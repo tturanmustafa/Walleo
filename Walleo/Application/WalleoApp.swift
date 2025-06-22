@@ -4,13 +4,17 @@ import SwiftData
 @main
 struct WalleoApp: App {
     @StateObject private var appSettings = AppSettings()
-    // sharedState nesnesi kaldırıldı.
     let modelContainer: ModelContainer
 
     init() {
         do {
-            // YENİ: Butce.self modelini containera ekliyoruz.
-            modelContainer = try ModelContainer(for: Hesap.self, Islem.self, Kategori.self, Butce.self)
+            modelContainer = try ModelContainer(for: Hesap.self, Islem.self, Kategori.self, Butce.self, Bildirim.self) // YENİ: Bildirim modeli eklendi
+            
+            // --- YENİ EKLENEN SATIR ---
+            // NotificationManager'ı uygulama açılırken yapılandırıyoruz.
+            NotificationManager.shared.configure(modelContext: modelContainer.mainContext, appSettings: appSettings)
+            // --- YENİ SATIR SONU ---
+            
         } catch {
             fatalError("ModelContainer oluşturulamadı: \(error)")
         }
@@ -22,13 +26,18 @@ struct WalleoApp: App {
                 .environmentObject(appSettings)
                 .preferredColorScheme(appSettings.colorScheme)
                 .environment(\.locale, Locale(identifier: appSettings.languageCode))
-                // .environmentObject(sharedState) satırı kaldırıldı.
                 .task {
+                    // --- YENİ EKLENEN SATIRLAR ---
+                    // Uygulama açıldığında varsayılan kategorileri ve taksit hatırlatıcılarını kontrol et.
                     await addDefaultCategoriesIfNeeded()
+                    NotificationManager.shared.checkLoanInstallments() // Zamana bağlı kontroller burada yapılır.
+                    NotificationManager.shared.checkCreditCardDueDates()
+                    // --- YENİ SATIRLAR SONU ---
                 }
         }
         .modelContainer(modelContainer)
     }
+
     
     @MainActor
     private func addDefaultCategoriesIfNeeded() async {

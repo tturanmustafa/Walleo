@@ -1,5 +1,3 @@
-// Dosya Adı: IslemEkleView.swift
-
 import SwiftUI
 import SwiftData
 
@@ -66,7 +64,7 @@ struct IslemEkleView: View {
                     VStack(alignment: .leading) {
                         TextField(LocalizedStringKey("common.amount"), text: $tutarString)
                             .keyboardType(.decimalPad)
-                            .validateAmountInput(text: $tutarString, isInvalid: $isTutarGecersiz) // Sadece bu satır yeterli olacak.
+                            .validateAmountInput(text: $tutarString, isInvalid: $isTutarGecersiz)
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? Color.red : Color.clear, lineWidth: 1))
                         
                         if isTutarGecersiz {
@@ -167,10 +165,14 @@ struct IslemEkleView: View {
             if let eskiHesapID = islem.hesap?.id {
                 affectedAccountIDs.insert(eskiHesapID)
             }
-            islemToUpdate = islem        }
-        else {
+            islemToUpdate = islem
+        } else {
             islemToUpdate = Islem(isim: isim, tutar: tutar, tarih: tarih, tur: secilenTur, tekrar: secilenTekrar, kategori: secilenKategori, hesap: secilenHesap)
             modelContext.insert(islemToUpdate)
+            
+            // NotificationManager çağrısı (yeni işlem)
+            NotificationManager.shared.checkBudget(for: islemToUpdate)
+            
             if secilenTekrar != .tekSeferlik {
                 yeniSeriOlustur(islem: islemToUpdate)
             }
@@ -190,6 +192,9 @@ struct IslemEkleView: View {
         islemToUpdate.kategori = secilenKategori
         islemToUpdate.hesap = secilenHesap
         islemToUpdate.tekrar = secilenTekrar
+        
+        // NotificationManager çağrısı (güncellenen işlem)
+        NotificationManager.shared.checkBudget(for: islemToUpdate)
         
         if secilenTekrar == .tekSeferlik {
             islemToUpdate.tekrarID = UUID()

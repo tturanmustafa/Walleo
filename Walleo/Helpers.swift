@@ -34,20 +34,17 @@ func monthYearString(from date: Date, localeIdentifier: String) -> String {
 func formatCurrency(amount: Double, currencyCode: String, localeIdentifier: String) -> String {
     let formatter = NumberFormatter()
     formatter.numberStyle = .currency
-    formatter.currencyCode = currencyCode
     formatter.locale = Locale(identifier: localeIdentifier)
+    formatter.currencyCode = currencyCode
+    
+    // Bu ayarlar, yerelleştirmeye uygun binlik ve ondalık ayraçlarının
+    // her zaman doğru kullanılmasını garantiler.
+    formatter.usesGroupingSeparator = true
     formatter.maximumFractionDigits = 2
     formatter.minimumFractionDigits = 2
     
-    guard let formattedString = formatter.string(from: NSNumber(value: amount)) else {
-        return "\(amount)"
-    }
-    
-    if let currency = Currency(rawValue: currencyCode) {
-        return formattedString.replacingOccurrences(of: currency.rawValue, with: currency.symbol)
-    }
-    
-    return formattedString
+    // Eğer formatlama başarısız olursa, en azından bir değer gösterelim.
+    return formatter.string(from: NSNumber(value: amount)) ?? "\(amount) \(currencyCode)"
 }
 
 extension Color {

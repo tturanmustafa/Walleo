@@ -1,5 +1,3 @@
-// Dosya Adı: HesapKartView.swift
-
 import SwiftUI
 
 struct HesapKartView: View {
@@ -22,28 +20,33 @@ struct HesapKartView: View {
                 }
             }
             
-            switch gosterilecekHesap.hesap.detay {
-            case .cuzdan:
-                cuzdanView()
-            case .krediKarti(let limit, _):
-                krediKartiView(limit: limit)
-            
-            // --- HATANIN DÜZELTİLDİĞİ YER ---
-            // Değişkenleri doğru sırada yakalıyoruz. taksitSayisi 4. sırada.
-            case .kredi(_, _, _, let taksitSayisi, _, _):
-                krediView(toplamTaksit: taksitSayisi)
-            // ---
-            }
+            // YENİ: Karmaşık switch ifadesini ayrı bir bileşene taşıdık
+            // ve burada sadece o bileşeni çağırıyoruz. Bu, derleyiciyi rahatlatır.
+            hesapDetayView
         }
         .padding()
         .background(Color(.systemGray6))
         .cornerRadius(12)
     }
     
-    // Diğer yardımcı View'larda (cuzdanView, krediKartiView, krediView) herhangi bir değişiklik yoktur.
-    // Sadece yukarıdaki 'case .kredi' satırı düzeltilmiştir.
-    // Kodun tam ve tutarlı olması için onları da aşağıya ekliyorum.
+    // --- YENİ EKLENEN BÖLÜM ---
+    // Switch ifadesini, kendi başına bir View döndüren bu bileşene taşıyoruz.
+    @ViewBuilder
+    private var hesapDetayView: some View {
+        switch gosterilecekHesap.hesap.detay {
+        case .cuzdan:
+            cuzdanView()
+            
+        case .krediKarti(let limit, _, _): // Ofset'i de alıyoruz ama kullanmıyoruz
+            krediKartiView(limit: limit)
+        
+        case .kredi(_, _, _, let taksitSayisi, _, _):
+            krediView(toplamTaksit: taksitSayisi)
+        }
+    }
+    // --- YENİ BÖLÜM SONU ---
     
+    // Geri kalan yardımcı View'lar (cuzdanView, krediKartiView, krediView) aynı kalıyor.
     @ViewBuilder private func cuzdanView() -> some View {
         HStack {
             Text(LocalizedStringKey("accounts.add.wallet")).font(.subheadline).foregroundStyle(.secondary)
@@ -55,15 +58,10 @@ struct HesapKartView: View {
     @ViewBuilder private func krediKartiView(limit: Double) -> some View {
         if let detay = gosterilecekHesap.krediKartiDetay {
             VStack(spacing: 12) {
-                
-                // Limit aşımı durumunu kontrol et
                 let isOverLimit = detay.guncelBorc > limit && limit > 0
-                
-                // Değeri, limitten büyükse limit olarak ayarla, değilse borcun kendisi olsun.
                 let progressValue = min(detay.guncelBorc, limit)
                 
                 ProgressView(value: progressValue, total: limit > 0 ? limit : 1)
-                    // Limit aşımında rengi mora, normal durumda kırmızıya ayarla.
                     .tint(isOverLimit ? .purple : .red)
                 HStack {
                     VStack(alignment: .leading) {

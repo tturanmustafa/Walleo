@@ -331,3 +331,28 @@
 "budgets.card.total_limit" = "Total Limit";
 "budgets.card.amount_spent" = "Amount Spent";
 "budgets.card.amount_remaining" = "Amount Remaining";
+
+// MARK: - Notification Settings
+"settings.notifications" = "Notification Settings";
+"settings.notifications.title" = "Notification Settings";
+"settings.notifications.master_section" = "MASTER CONTROL";
+"settings.notifications.master_toggle" = "Enable All Notifications";
+"settings.notifications.budget_section" = "BUDGET ALERTS";
+"settings.notifications.budget_toggle" = "Show Budget Notifications";
+"settings.notifications.threshold_picker" = "Alert Threshold";
+"settings.notifications.threshold.option_80" = "When 80% is reached";
+"settings.notifications.threshold.option_85" = "When 85% is reached";
+"settings.notifications.threshold.option_90" = "When 90% is reached";
+"settings.notifications.threshold.option_95" = "When 95% is reached";
+"settings.notifications.loan_section" = "PAYMENT REMINDERS";
+"settings.notifications.loan_toggle" = "Remind for Loan Installments";
+"settings.notifications.loan_stepper" = "%d days before due date";
+"credit_card_details.recent_expenses" = "Recent Period Expenses";
+"credit_card_details.no_transactions" = "No Transactions in This Period";
+"account_details.generic_title" = "%@ Details";
+"credit_card.form.payment_due_date_header" = "Payment Due Date Setting";
+"credit_card.form.payment_due_date_stepper" = "%d days after statement date";
+
+"credit_card_details.recent_expenses" = "Recent Period Expenses";
+"credit_card_details.no_transactions" = "No Transactions in This Period";
+"account_details.generic_title" = "%@ Details";

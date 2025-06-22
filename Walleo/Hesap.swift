@@ -1,5 +1,3 @@
-// Dosya Adı: Hesap.swift (NİHAİ ÇÖZÜM)
-
 import Foundation
 import SwiftData
 import SwiftUI
@@ -18,12 +16,14 @@ struct KrediTaksitDetayi: Codable, Identifiable {
 
 enum HesapDetayi: Codable {
     case cuzdan
-    case krediKarti(limit: Double, kesimTarihi: Date)
+    // --- GÜNCELLEME BURADA ---
+    // sonOdemeGunuOfseti: Hesap kesim tarihinden kaç gün sonra son ödeme günü olduğunu tutar.
+    case krediKarti(limit: Double, kesimTarihi: Date, sonOdemeGunuOfseti: Int)
+    // --- GÜNCELLEME SONU ---
     case kredi(
         cekilenTutar: Double,
         faizTipi: FaizTipi,
         faizOrani: Double,
-        // --- 1. TEMEL KURAL: Taksit sayısı burada 'Int' olarak tanımlanmalıdır. ---
         taksitSayisi: Int,
         ilkTaksitTarihi: Date,
         taksitler: [KrediTaksitDetayi]
@@ -40,13 +40,9 @@ class Hesap {
     var baslangicBakiyesi: Double
     private var detayData: Data
     
-    // --> HATA BU SATIRIN EKSİK OLMASINDAN KAYNAKLANIYOR:
-    // Her hesabın kendisine bağlı işlemleri tutabilmesi için bu ilişki gereklidir.
-    // Bu, bir hesap silindiğinde, ilişkili işlemlerin 'hesap' alanının nil olmasını sağlar.
     @Relationship(deleteRule: .nullify, inverse: \Islem.hesap)
     var islemler: [Islem]? = []
     
-    // Önceki adımda güvenli hale getirdiğimiz 'detay' değişkeni
     var detay: HesapDetayi {
         get {
             do {
