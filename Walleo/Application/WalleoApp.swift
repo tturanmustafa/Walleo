@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct BudgeeApp: App {
+struct WalleoApp: App {
     @StateObject private var appSettings = AppSettings()
     // sharedState nesnesi kaldırıldı.
     let modelContainer: ModelContainer
