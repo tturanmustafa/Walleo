@@ -95,7 +95,6 @@ struct DashboardView: View {
                     Button(action: { isShowingNotifications = true }) {
                         Image(systemName: "bell.fill")
                             .font(.title3)
-                            // RENK GÜNCELLEMESİ
                             .foregroundColor(.secondary)
                     }
                 }
@@ -104,7 +103,6 @@ struct DashboardView: View {
                     Button(action: { isShowingSettings = true }) {
                         Image(systemName: "gearshape.fill")
                             .font(.title3)
-                            // RENK GÜNCELLEMESİ
                             .foregroundColor(.secondary)
                     }
                 }
@@ -165,5 +163,17 @@ struct DashboardView: View {
         } else {
             viewModel.deleteIslem(islem)
         }
+    }
+}
+
+#Preview {
+    do {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: Islem.self, Kategori.self, Hesap.self, configurations: config)
+        return DashboardView(modelContext: container.mainContext)
+            .modelContainer(container)
+            .environmentObject(AppSettings())
+    } catch {
+        fatalError("Preview için ModelContainer oluşturulamadı: \(error)")
     }
 }

@@ -7,26 +7,23 @@ import Foundation
 class RaporlarViewModel {
     var modelContext: ModelContext
     
-    // YENİ: Hangi ayın raporunun gösterileceğini bu değişken takip edecek.
+    // Kendi tarih state'i burada olmalı.
     var currentDate: Date = Date() {
         didSet { Task { await fetchData() } }
     }
     
-    // Filtre ayarlarını artık `init` içinde değil, burada varsayılan olarak tutuyoruz.
     var filtreAyarlari = FiltreAyarlari()
-    
     var ozetVerisi = OzetVerisi()
     var karsilastirmaVerisi = KarsilastirmaVerisi()
     var topGiderKategorileri: [KategoriOzetSatiri] = []
     var topGelirKategorileri: [KategoriOzetSatiri] = []
     var giderDagilimVerisi: [KategoriOzetSatiri] = []
     var gelirDagilimVerisi: [KategoriOzetSatiri] = []
-    
     var isLoading: Bool = true
     
+    // init metodu sadece modelContext almalı.
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
-        // `init` içerisindeki sabit tarih ataması kaldırıldı.
         
         NotificationCenter.default.addObserver(
             self,
@@ -43,9 +40,8 @@ class RaporlarViewModel {
     func fetchData() async {
         self.isLoading = true
         
-        // GÜNCELLEME: Raporun tarih aralığı artık `filtreAyarlari`'ndan değil,
-        // doğrudan `currentDate` değişkeninden belirleniyor.
         let calendar = Calendar.current
+        // Yerel 'currentDate' kullanılmalı.
         guard let anaDonem = calendar.dateInterval(of: .month, for: currentDate) else {
             self.isLoading = false
             return
@@ -86,10 +82,6 @@ class RaporlarViewModel {
         
         self.isLoading = false
     }
-    
-    // Diğer fonksiyonlar (fetchTransactions, calculateTopCategories) aynı kalıyor...
-    
-    // calculateTrendData() fonksiyonu tamamen silindi.
     
     private func fetchTransactions(for interval: DateInterval) async -> [Islem] {
         let predicate = #Predicate<Islem> { $0.tarih >= interval.start && $0.tarih < interval.end }

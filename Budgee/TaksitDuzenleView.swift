@@ -26,7 +26,7 @@ struct TaksitDuzenleView: View {
                     VStack(alignment: .leading) {
                         TextField(LocalizedStringKey("common.amount"), text: $tutarString)
                             .keyboardType(.decimalPad)
-                            .onChange(of: tutarString, perform: haneKontrolluDogrula)
+                            .validateAmountInput(text: $tutarString, isInvalid: $isTutarGecersiz) // Değişiklik burada
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? .red : .clear, lineWidth: 1))
                         
                         if isTutarGecersiz {

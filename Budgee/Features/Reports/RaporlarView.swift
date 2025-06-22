@@ -30,7 +30,6 @@ struct RaporlarView: View {
         NavigationStack {
             VStack(spacing: 0) {
                 
-                // Bu navigator artık tüm sekmeleri kontrol edecek.
                 MonthNavigatorView(currentDate: $viewModel.currentDate)
                     .padding(.bottom, 10)
                 
@@ -46,7 +45,6 @@ struct RaporlarView: View {
                 case .ozet:
                     OzetView(viewModel: viewModel)
                 case .takvim:
-                    // Takvim'e artık ViewModel'daki ana tarihi bir binding olarak veriyoruz.
                     TakvimView(modelContext: modelContext, currentDate: $viewModel.currentDate)
                 case .dagilim:
                     DagilimView(viewModel: viewModel)
@@ -56,5 +54,17 @@ struct RaporlarView: View {
                 await viewModel.fetchData()
             }
         }
+    }
+}
+
+#Preview {
+    do {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: Islem.self, Kategori.self, Hesap.self, configurations: config)
+        return RaporlarView(modelContext: container.mainContext)
+            .modelContainer(container)
+            .environmentObject(AppSettings())
+    } catch {
+        fatalError("Preview için ModelContainer oluşturulamadı: \(error)")
     }
 }

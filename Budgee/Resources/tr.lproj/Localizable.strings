@@ -289,3 +289,22 @@
 "loan_details.installment_plan_header" = "Taksit Planı";
 "loan.form.first_installment_date" = "İlk Taksit Tarihi";
 "credit_card.form.statement_date" = "Hesap Kesim Tarihi";
+
+"tab.budgets" = "Bütçeler";
+"budgets.title" = "Bütçeler";
+"budgets.empty.title" = "Henüz Bütçe Yok";
+"budgets.empty.description" = "Harcamalarınızı kontrol altına almak için '+' ikonuna dokunarak yeni bir bütçe oluşturun.";
+"budgets.add.title" = "Yeni Bütçe";
+"budgets.edit.title" = "Bütçeyi Düzenle";
+"budgets.form.name" = "Bütçe Adı";
+"budgets.form.name_placeholder" = "örn: Mutfak Giderleri";
+"budgets.form.limit_amount" = "Aylık Limit";
+"budgets.form.select_categories" = "Kategorileri Seç";
+"budgets.card.spent" = "Harcandı";
+"budgets.card.remaining" = "Kaldı";
+"budgets.card.over_limit" = "Limit Aşıldı";
+"enum.budget_period.monthly" = "Aylık";
+
+"budgets.card.total_limit" = "Toplam Limit";
+"budgets.card.amount_spent" = "Harcanan Tutar";
+"budgets.card.amount_remaining" = "Kalan Tutar";

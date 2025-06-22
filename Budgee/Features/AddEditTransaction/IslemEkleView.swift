@@ -66,7 +66,7 @@ struct IslemEkleView: View {
                     VStack(alignment: .leading) {
                         TextField(LocalizedStringKey("common.amount"), text: $tutarString)
                             .keyboardType(.decimalPad)
-                            .onChange(of: tutarString, perform: haneKontrolluDogrula)
+                            .validateAmountInput(text: $tutarString, isInvalid: $isTutarGecersiz) // Sadece bu satır yeterli olacak.
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? Color.red : Color.clear, lineWidth: 1))
                         
                         if isTutarGecersiz {

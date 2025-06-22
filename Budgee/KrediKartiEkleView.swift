@@ -35,7 +35,7 @@ struct KrediKartiEkleView: View {
                     VStack(alignment: .leading) {
                         TextField(LocalizedStringKey("accounts.add.card_limit"), text: $limitString)
                             .keyboardType(.decimalPad)
-                            .onChange(of: limitString) { haneKontrolluDogrula(newValue: $0, tur: .limit) }
+                            .validateAmountInput(text: $limitString, isInvalid: $isLimitGecersiz) // Değişiklik burada
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isLimitGecersiz ? .red : .clear, lineWidth: 1))
                         if isLimitGecersiz {
                             Text(LocalizedStringKey("validation.error.invalid_amount_format"))
@@ -46,7 +46,7 @@ struct KrediKartiEkleView: View {
                     VStack(alignment: .leading) {
                         TextField(LocalizedStringKey("credit_card.form.current_debt_optional"), text: $guncelBorcString)
                             .keyboardType(.decimalPad)
-                            .onChange(of: guncelBorcString) { haneKontrolluDogrula(newValue: $0, tur: .borc) }
+                            .validateAmountInput(text: $guncelBorcString, isInvalid: $isBorcGecersiz) // Değişiklik burada
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isBorcGecersiz ? .red : .clear, lineWidth: 1))
                         if isBorcGecersiz {
                             Text(LocalizedStringKey("validation.error.invalid_amount_format"))

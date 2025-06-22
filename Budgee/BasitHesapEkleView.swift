@@ -27,7 +27,7 @@ struct BasitHesapEkleView: View {
                     VStack(alignment: .leading) {
                         TextField(LocalizedStringKey("accounts.add.initial_balance"), text: $bakiyeString)
                             .keyboardType(.decimalPad)
-                            .onChange(of: bakiyeString, perform: haneKontrolluDogrula)
+                            .validateAmountInput(text: $bakiyeString, isInvalid: $isBakiyeGecersiz) // Değişiklik burada
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isBakiyeGecersiz ? Color.red : Color.clear, lineWidth: 1))
                         
                         if isBakiyeGecersiz {

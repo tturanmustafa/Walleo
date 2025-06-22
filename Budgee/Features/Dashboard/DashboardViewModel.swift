@@ -6,10 +6,11 @@ import SwiftData
 class DashboardViewModel {
     var modelContext: ModelContext
     
-    var secilenTur: IslemTuru = .gider {
+    var currentDate = Date() {
         didSet { fetchData() }
     }
-    var currentDate = Date() {
+    
+    var secilenTur: IslemTuru = .gider {
         didSet { fetchData() }
     }
     
@@ -48,7 +49,6 @@ class DashboardViewModel {
             )
             
             let islemler = try modelContext.fetch(descriptor)
-            
             self.filtrelenmisIslemler = islemler
             self.hesaplamalariGuncelle()
 
@@ -97,33 +97,28 @@ class DashboardViewModel {
         self.pieChartVerisi = yeniPieChartVerisi
     }
     
-    // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
-        func deleteIslem(_ islem: Islem) {
-            var userInfo: [String: Any]?
-            if let hesapID = islem.hesap?.id {
-                userInfo = ["affectedAccountIDs": [hesapID]]
-            }
-            modelContext.delete(islem)
-            NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
+    func deleteIslem(_ islem: Islem) {
+        var userInfo: [String: Any]?
+        if let hesapID = islem.hesap?.id {
+            userInfo = ["affectedAccountIDs": [hesapID]]
+        }
+        modelContext.delete(islem)
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
+    }
+    
+    func deleteSeri(for islem: Islem) {
+        let tekrarID = islem.tekrarID
+        guard tekrarID != UUID() else {
+            deleteIslem(islem)
+            return
         }
         
-        // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
-        func deleteSeri(for islem: Islem) {
-            let tekrarID = islem.tekrarID
-            guard tekrarID != UUID() else {
-                deleteIslem(islem)
-                return
-            }
-            
-            // Not: Seri silme işlemi birden çok hesabı etkileyebilir.
-            // En güvenli yol, bu durumda userInfo göndermeyerek tüm hesapların güncellenmesini sağlamaktır.
-            // Şimdilik basitlik adına bu şekilde bırakıyoruz.
-            var userInfo: [String: Any]?
-            if let hesapID = islem.hesap?.id {
-                userInfo = ["affectedAccountIDs": [hesapID]]
-            }
-            
-            try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
-            NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
+        var userInfo: [String: Any]?
+        if let hesapID = islem.hesap?.id {
+            userInfo = ["affectedAccountIDs": [hesapID]]
         }
+        
+        try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
     }
+}

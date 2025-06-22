@@ -1,16 +1,18 @@
 //
-//  KategoriListeCard.swift
+//  KategoriOzetleriCardView.swift
 //  Budgee
 //
-//  Created by Mustafa Turan on 19.06.2025.
+//  Created by Mustafa Turan on 22.06.2025.
 //
 
 
 import SwiftUI
 
-struct KategoriListeCard: View {
+struct KategoriOzetleriCardView: View {
+    // Parametreler
     let baslikKey: LocalizedStringKey
     let kategoriler: [KategoriOzetSatiri]
+    let showDivider: Bool // Farklılığı yönetecek yeni parametre
     
     @EnvironmentObject var appSettings: AppSettings
 
@@ -26,7 +28,8 @@ struct KategoriListeCard: View {
                         Image(systemName: kategori.ikonAdi)
                             .font(.callout)
                             .foregroundColor(kategori.renk)
-                            .frame(width: 38, height: 38)
+                            // Standartlaştırılmış ikon boyutu
+                            .frame(width: 38, height: 38) 
                             .background(kategori.renk.opacity(0.15))
                             .cornerRadius(8)
                         
@@ -42,7 +45,6 @@ struct KategoriListeCard: View {
                                 localeIdentifier: appSettings.languageCode
                             ))
                             .font(.callout.bold())
-                            .foregroundStyle(.primary)
                             
                             Text(String(format: "%.1f%%", kategori.yuzde))
                                 .font(.caption)
@@ -50,7 +52,8 @@ struct KategoriListeCard: View {
                         }
                     }
                     
-                    if kategori.id != kategoriler.last?.id {
+                    // Parametreye göre ayırıcıyı göster veya gizle
+                    if showDivider && kategori.id != kategoriler.last?.id {
                         Divider().padding(.leading, 50)
                     }
                 }

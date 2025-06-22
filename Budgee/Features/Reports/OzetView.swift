@@ -20,9 +20,10 @@ struct OzetView: View {
                         .environmentObject(appSettings)
                         
                     if !viewModel.topGiderKategorileri.isEmpty {
-                        KategoriListeCard(
+                        KategoriOzetleriCardView( // <-- YENİ KULLANIM
                             baslikKey: "reports.summary.top_expenses",
-                            kategoriler: viewModel.topGiderKategorileri
+                            kategoriler: viewModel.topGiderKategorileri,
+                            showDivider: true // Divider'lı versiyon
                         )
                         .environmentObject(appSettings)
                     }

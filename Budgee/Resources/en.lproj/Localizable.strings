@@ -312,3 +312,22 @@
 "loan_details.installment_plan_header" = "Installment Plan";
 "loan.form.first_installment_date" = "First Installment Date";
 "credit_card.form.statement_date" = "Statement Date";
+
+"tab.budgets" = "Budgets";
+"budgets.title" = "Budgets";
+"budgets.empty.title" = "No Budgets Yet";
+"budgets.empty.description" = "Tap the '+' icon to create a new budget and take control of your spending.";
+"budgets.add.title" = "New Budget";
+"budgets.edit.title" = "Edit Budget";
+"budgets.form.name" = "Budget Name";
+"budgets.form.name_placeholder" = "e.g., Groceries";
+"budgets.form.limit_amount" = "Monthly Limit";
+"budgets.form.select_categories" = "Select Categories";
+"budgets.card.spent" = "Spent";
+"budgets.card.remaining" = "Remaining";
+"budgets.card.over_limit" = "Over Limit";
+"enum.budget_period.monthly" = "Monthly";
+
+"budgets.card.total_limit" = "Total Limit";
+"budgets.card.amount_spent" = "Amount Spent";
+"budgets.card.amount_remaining" = "Amount Remaining";

@@ -55,7 +55,16 @@ struct HesapKartView: View {
     @ViewBuilder private func krediKartiView(limit: Double) -> some View {
         if let detay = gosterilecekHesap.krediKartiDetay {
             VStack(spacing: 12) {
-                ProgressView(value: detay.guncelBorc, total: limit > 0 ? limit : 1).tint(.red)
+                
+                // Limit aşımı durumunu kontrol et
+                let isOverLimit = detay.guncelBorc > limit && limit > 0
+                
+                // Değeri, limitten büyükse limit olarak ayarla, değilse borcun kendisi olsun.
+                let progressValue = min(detay.guncelBorc, limit)
+                
+                ProgressView(value: progressValue, total: limit > 0 ? limit : 1)
+                    // Limit aşımında rengi mora, normal durumda kırmızıya ayarla.
+                    .tint(isOverLimit ? .purple : .red)
                 HStack {
                     VStack(alignment: .leading) {
                         Text(LocalizedStringKey("accounts.card.current_debt")).font(.caption).foregroundColor(.secondary)

@@ -211,3 +211,19 @@ extension DateInterval {
         return DateInterval(start: previousStart, end: previousEnd)
     }
 }
+
+enum ButceTekrarAraligi: String, Codable, CaseIterable {
+    case aylik = "enum.budget_period.monthly"
+    // Gelecekte eklenebilir:
+    // case haftalik = "enum.budget_period.weekly"
+    // case yillik = "enum.budget_period.annually"
+}
+
+
+// Bu struct, hesaplanmış harcama tutarını da içeren,
+// View katmanında gösterime hazır bir bütçe modelidir.
+struct GosterilecekButce: Identifiable {
+    let butce: Butce
+    var harcananTutar: Double
+    var id: UUID { butce.id }
+}

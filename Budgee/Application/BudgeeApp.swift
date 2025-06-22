@@ -1,16 +1,16 @@
-// Dosya Adı: BudgeeApp.swift
-
 import SwiftUI
 import SwiftData
 
 @main
 struct BudgeeApp: App {
     @StateObject private var appSettings = AppSettings()
+    // sharedState nesnesi kaldırıldı.
     let modelContainer: ModelContainer
 
     init() {
         do {
-            modelContainer = try ModelContainer(for: Hesap.self, Islem.self, Kategori.self)
+            // YENİ: Butce.self modelini containera ekliyoruz.
+            modelContainer = try ModelContainer(for: Hesap.self, Islem.self, Kategori.self, Butce.self)
         } catch {
             fatalError("ModelContainer oluşturulamadı: \(error)")
         }
@@ -22,6 +22,7 @@ struct BudgeeApp: App {
                 .environmentObject(appSettings)
                 .preferredColorScheme(appSettings.colorScheme)
                 .environment(\.locale, Locale(identifier: appSettings.languageCode))
+                // .environmentObject(sharedState) satırı kaldırıldı.
                 .task {
                     await addDefaultCategoriesIfNeeded()
                 }
