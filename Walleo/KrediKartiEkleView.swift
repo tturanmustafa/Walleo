@@ -4,6 +4,7 @@ import SwiftData
 struct KrediKartiEkleView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var appSettings: AppSettings // YENİ: Dil ayarlarına erişim için
 
     // MARK: - State Properties
     @State private var isim: String = ""
@@ -24,6 +25,21 @@ struct KrediKartiEkleView: View {
         !limitString.isEmpty &&
         !isLimitGecersiz &&
         !isBorcGecersiz
+    }
+    
+    // --- YENİ EKLENEN YARDIMCI DEĞİŞKEN ---
+    // Stepper metnini doğru dilde oluşturan hesaplanmış değişken
+    private var stepperLabelText: String {
+        let dilKodu = appSettings.languageCode
+        
+        guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+              let languageBundle = Bundle(path: path) else {
+            return "\(sonOdemeGunuOfseti)" // Hata durumunda sadece sayıyı göster
+        }
+        
+        let formatString = languageBundle.localizedString(forKey: "credit_card.form.payment_due_date_stepper", value: "%d days after statement date", table: nil)
+        
+        return String(format: formatString, sonOdemeGunuOfseti)
     }
 
     // MARK: - Body
@@ -61,11 +77,8 @@ struct KrediKartiEkleView: View {
                 }
                 
                 Section(header: Text(LocalizedStringKey("credit_card.form.payment_due_date_header"))) {
-                    Stepper(
-                        String.localizedStringWithFormat(NSLocalizedString("credit_card.form.payment_due_date_stepper", comment: ""), sonOdemeGunuOfseti),
-                        value: $sonOdemeGunuOfseti,
-                        in: 1...28
-                    )
+                    // --- GÜNCELLENEN SATIR ---
+                    Stepper(stepperLabelText, value: $sonOdemeGunuOfseti, in: 1...28)
                 }
                 
                 Section(LocalizedStringKey("categories.color")) {

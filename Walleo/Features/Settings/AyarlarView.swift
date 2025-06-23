@@ -3,18 +3,21 @@ import SwiftUI
 struct AyarlarView: View {
     @EnvironmentObject var appSettings: AppSettings
     @Environment(\.dismiss) var dismiss
+    
+    // Başlığı manuel olarak güncellemek için.
+    @State private var currentTitle: String = ""
 
     var body: some View {
         Form {
-            Section("settings.section_general") {
+            Section(LocalizedStringKey("settings.section_general")) {
                 HStack {
                     AyarIkonu(iconName: "circle.righthalf.filled", color: .gray)
-                    Text("settings.theme")
+                    Text(LocalizedStringKey("settings.theme"))
                     Spacer()
                     Picker("Tema", selection: $appSettings.colorSchemeValue) {
-                        Text("settings.theme_system").tag(0)
-                        Text("settings.theme_light").tag(1)
-                        Text("settings.theme_dark").tag(2)
+                        Text(LocalizedStringKey("settings.theme_system")).tag(0)
+                        Text(LocalizedStringKey("settings.theme_light")).tag(1)
+                        Text(LocalizedStringKey("settings.theme_dark")).tag(2)
                     }
                     .pickerStyle(.menu)
                     .labelsHidden()
@@ -23,7 +26,7 @@ struct AyarlarView: View {
                 
                 HStack {
                     AyarIkonu(iconName: "globe", color: .blue)
-                    Text("settings.language")
+                    Text(LocalizedStringKey("settings.language"))
                     Spacer()
                     Picker("Dil", selection: $appSettings.languageCode) {
                         Text("Türkçe").tag("tr")
@@ -36,7 +39,7 @@ struct AyarlarView: View {
                 
                 HStack {
                     AyarIkonu(iconName: "coloncurrencysign.circle.fill", color: .green)
-                    Text("settings.currency")
+                    Text(LocalizedStringKey("settings.currency"))
                     Spacer()
                     Picker("settings.currency", selection: $appSettings.currencyCode) {
                         ForEach(Currency.allCases) { currency in
@@ -51,29 +54,27 @@ struct AyarlarView: View {
                 
                 NavigationLink(destination: KategoriYonetimView()) {
                     AyarIkonu(iconName: "folder.fill", color: .orange)
-                    Text("settings.manage_categories")
+                    Text(LocalizedStringKey("settings.manage_categories"))
                 }
                 .padding(.vertical, 4)
                 
-                // --- YENİ EKLENEN SATIR ---
                 NavigationLink(destination: BildirimAyarlariView()) {
                     AyarIkonu(iconName: "bell.badge.fill", color: .red)
-                    Text("settings.notifications") // Yeni eklenecek çeviri anahtarı
+                    Text(LocalizedStringKey("settings.notifications"))
                 }
                 .padding(.vertical, 4)
-                // --- YENİ SATIR SONU ---
             }
             
-            Section("settings.section_info") {
+            Section(LocalizedStringKey("settings.section_info")) {
                 HStack {
-                    Text("settings.version")
+                    Text(LocalizedStringKey("settings.version"))
                     Spacer()
                     Text("1.0.0")
                         .foregroundColor(.secondary)
                 }
             }
         }
-        .navigationTitle("settings.title")
+        .navigationTitle(currentTitle) // Başlık @State değişkeninden geliyor
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button(LocalizedStringKey("common.done")) {
@@ -81,6 +82,28 @@ struct AyarlarView: View {
                 }
             }
         }
+        .onAppear(perform: updateTitle)
+        .onChange(of: appSettings.languageCode) {
+            updateTitle()
+        }
+    }
+    
+    // --- DÜZELTİLMİŞ FONKSİYON ---
+    private func updateTitle() {
+        let key = "settings.title"
+        let dilKodu = appSettings.languageCode
+        
+        // Doğru dil paketini (bundle) buluyoruz.
+        guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+              let languageBundle = Bundle(path: path) else {
+            // Hata durumunda anahtarı olduğu gibi göster.
+            self.currentTitle = key
+            return
+        }
+        
+        // Metni, telefonun sistem dilinden bağımsız olarak,
+        // bizim seçtiğimiz dil paketinden alıyoruz.
+        self.currentTitle = languageBundle.localizedString(forKey: key, value: key, table: nil)
     }
 }
 
@@ -96,5 +119,16 @@ struct AyarIkonu: View {
             .frame(width: 32, height: 32)
             .background(color)
             .cornerRadius(7)
+    }
+}
+
+
+#Preview {
+    let settings = AppSettings()
+    
+    return NavigationStack {
+        AyarlarView()
+            .environmentObject(settings)
+            .environment(\.locale, .init(identifier: settings.languageCode))
     }
 }

@@ -4,7 +4,8 @@ import SwiftData
 struct ContentView: View {
     @State private var seciliSekme: Sekme = .panel
     @State private var yeniIslemEkleShowing = false
-    @Environment(\.modelContext) private var modelContext // modelContext'i environment'tan alıyoruz.
+    @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var appSettings: AppSettings
 
     enum Sekme: Hashable {
         case panel, hesaplar, butceler, raporlar
@@ -14,7 +15,6 @@ struct ContentView: View {
         ZStack(alignment: .bottom) {
             TabView(selection: $seciliSekme) {
                 
-                // init metoduna modelContext'i tekrar veriyoruz.
                 DashboardView(modelContext: modelContext)
                     .tabItem {
                         Label(LocalizedStringKey("tab.dashboard"), systemImage: "square.grid.2x2.fill")
@@ -35,13 +35,13 @@ struct ContentView: View {
                     }
                     .tag(Sekme.butceler)
 
-                // init metoduna modelContext'i tekrar veriyoruz.
                 RaporlarView(modelContext: modelContext)
                     .tabItem {
                         Label(LocalizedStringKey("tab.reports"), systemImage: "chart.bar.xaxis")
                     }
                     .tag(Sekme.raporlar)
             }
+            // .id(appSettings.languageCode) satırı buradan kaldırıldı.
             
             Button(action: {
                 yeniIslemEkleShowing = true

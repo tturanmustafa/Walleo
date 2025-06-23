@@ -31,20 +31,33 @@ func monthYearString(from date: Date, localeIdentifier: String) -> String {
     return formatter.string(from: date)
 }
 
+// --- NİHAİ DÜZELTME BURADA ---
 func formatCurrency(amount: Double, currencyCode: String, localeIdentifier: String) -> String {
     let formatter = NumberFormatter()
     formatter.numberStyle = .currency
     formatter.locale = Locale(identifier: localeIdentifier)
-    formatter.currencyCode = currencyCode
-    
+    formatter.currencyCode = currencyCode // Örn: "TRY"
+
     // Bu ayarlar, yerelleştirmeye uygun binlik ve ondalık ayraçlarının
     // her zaman doğru kullanılmasını garantiler.
     formatter.usesGroupingSeparator = true
     formatter.maximumFractionDigits = 2
     formatter.minimumFractionDigits = 2
     
-    // Eğer formatlama başarısız olursa, en azından bir değer gösterelim.
-    return formatter.string(from: NSNumber(value: amount)) ?? "\(amount) \(currencyCode)"
+    // Önce formatlayıcıdan temel string'i alalım (örn: "TRY1.500,50")
+    guard var formattedString = formatter.string(from: NSNumber(value: amount)) else {
+        return "\(amount) \(currencyCode)"
+    }
+    
+    // Şimdi, bizim enum'ımızdan gelen "garantili" simgeyi alalım.
+    if let currency = Currency(rawValue: currencyCode) {
+        // Eğer formatlanmış string içinde ISO kodu (örn: "TRY") varsa,
+        // onu bizim simgemizle ("₺") değiştir.
+        // Bu, ingilizce locale'in "TRY" basmasını engeller.
+        formattedString = formattedString.replacingOccurrences(of: currencyCode, with: currency.symbol)
+    }
+    
+    return formattedString
 }
 
 extension Color {

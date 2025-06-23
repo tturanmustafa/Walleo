@@ -1,5 +1,3 @@
-// Dosya Adı: KrediDetayView.swift (GÜNCEL HALİ)
-
 import SwiftUI
 import SwiftData
 
@@ -17,8 +15,6 @@ struct KrediDetayView: View {
         return []
     }
     
-    // GÜNCEL VE GÜVENLİ INIT:
-    // Artık 'modelContext'i parametre olarak alıyor, kendisi oluşturmuyor.
     init(hesap: Hesap, modelContext: ModelContext) {
         _viewModel = State(initialValue: KrediDetayViewModel(modelContext: modelContext, hesap: hesap))
     }
@@ -70,7 +66,6 @@ struct KrediDetayView: View {
                 }
             }
         }
-        // GEREKSİZ HALE GELDİĞİ İÇİN .task MODIFIER'I KALDIRILDI.
         .sheet(item: $duzenlenecekTaksitID) { taksitID in
             TaksitDuzenleView(hesap: viewModel.hesap, taksitID: taksitID)
         }
@@ -79,9 +74,19 @@ struct KrediDetayView: View {
             Button(LocalizedStringKey("alert.add_as_expense.button_no")) { viewModel.taksidiOnaylaVeGiderEkle(onayla: false) }
             Button(LocalizedStringKey("common.cancel"), role: .cancel) { }
         } message: { taksit in
+            let dilKodu = appSettings.languageCode
+            
+            guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+                  let languageBundle = Bundle(path: path) else {
+                return Text("Error creating message.")
+            }
+            
+            let formatString = languageBundle.localizedString(forKey: "alert.add_as_expense.message_format", value: "", table: nil)
             let tutarString = formatCurrency(amount: taksit.taksitTutari, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
-            let formatString = NSLocalizedString("alert.add_as_expense.message_format", comment: "")
-            Text(String(format: formatString, tutarString))
+            
+            // --- DÜZELTME BURADA ---
+            // Closure içinde birden fazla satır olduğu için 'return' ifadesi eklenmelidir.
+            return Text(String(format: formatString, tutarString))
         }
         .navigationTitle(viewModel.hesap.isim)
         .navigationBarTitleDisplayMode(.inline)
@@ -91,7 +96,10 @@ struct KrediDetayView: View {
         Section(LocalizedStringKey("loan_details.summary_header")) {
             if case .kredi(let cekilenTutar, let faizTipi, let faizOrani, let taksitSayisi, _, _) = viewModel.hesap.detay {
                 HStack { Text(LocalizedStringKey("accounts.add.loan_amount")); Spacer(); Text(formatCurrency(amount: cekilenTutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)) }
-                HStack { Text(LocalizedStringKey("accounts.add.interest_rate")); Spacer(); Text("\(faizTipi.rawValue) %\(String(format: "%.2f", faizOrani))") }
+                
+                // Faiz Tipi gösterimini de lokalize hale getiriyoruz
+                HStack { Text(LocalizedStringKey("accounts.add.interest_rate")); Spacer(); Text("\(NSLocalizedString(faizTipi.localizedKey, comment: "")) %\(String(format: "%.2f", faizOrani))") }
+                
                 HStack { Text(LocalizedStringKey("accounts.add.installments")); Spacer(); Text("\(taksitSayisi) Ay") }
             }
         }

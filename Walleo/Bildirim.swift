@@ -1,16 +1,6 @@
-//
-//  BildirimTuru.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 22.06.2025.
-//
-
-
 import Foundation
 import SwiftData
 
-// Uygulama içi bildirim türlerini tanımlayan enum.
-// Bu sayede her bildirimin amacını ve ikonunu kolayca yönetebiliriz.
 enum BildirimTuru: String, Codable {
     case butceLimitiYaklasti = "bütçe.limit.yaklaştı"
     case butceLimitiAsildi = "bütçe.limit.aşıldı"
@@ -18,44 +8,37 @@ enum BildirimTuru: String, Codable {
     case krediKartiOdemeGunu = "kart.ödeme.günü"
 }
 
-
 @Model
 class Bildirim {
     @Attribute(.unique) var id: UUID
-    
-    // Bildirimin amacını belirten tür.
     var turRawValue: String
-    
-    // Bildirim listesinde gösterilecek başlık.
-    var baslik: String
-    
-    // Bildirim listesinde başlığın altında görünecek daha detaylı açıklama.
-    var aciklama: String
-    
-    // Bildirimin ne zaman oluşturulduğu.
     var olusturmaTarihi: Date
-    
-    // Kullanıcının bildirimi görüp görmediğini anlamak için.
     var okunduMu: Bool
     
-    // Bildirime tıklandığında hangi detaya (bütçe, hesap vb.) gidileceğini
-    // belirlemek için ilgili nesnenin ID'si.
+    // YÖNLENDİRME İÇİN
     var hedefID: UUID?
     
-    // 'turRawValue' string'ini daha güvenli bir şekilde kullanmak için
-    // hesaplanmış değişken.
+    // --- DEĞİŞİKLİK: METİN YERİNE HAM VERİ SAKLAMA ---
+    // Her bildirim türü, sadece ihtiyacı olan alanları dolduracak.
+    var ilgiliIsim: String?      // Bütçe adı, Kredi kartı adı vb.
+    var tutar1: Double?          // Limit tutarı, vb.
+    var tutar2: Double?          // Aşan tutar, vb.
+    var tarih1: Date?            // Son ödeme tarihi, vb.
+    
     var tur: BildirimTuru {
         get { BildirimTuru(rawValue: turRawValue) ?? .butceLimitiAsildi }
         set { turRawValue = newValue.rawValue }
     }
     
-    init(tur: BildirimTuru, baslik: String, aciklama: String, hedefID: UUID? = nil) {
+    init(tur: BildirimTuru, olusturmaTarihi: Date = Date(), okunduMu: Bool = false, hedefID: UUID? = nil, ilgiliIsim: String? = nil, tutar1: Double? = nil, tutar2: Double? = nil, tarih1: Date? = nil) {
         self.id = UUID()
         self.turRawValue = tur.rawValue
-        self.baslik = baslik
-        self.aciklama = aciklama
-        self.olusturmaTarihi = Date()
-        self.okunduMu = false
+        self.olusturmaTarihi = olusturmaTarihi
+        self.okunduMu = okunduMu
         self.hedefID = hedefID
+        self.ilgiliIsim = ilgiliIsim
+        self.tutar1 = tutar1
+        self.tutar2 = tutar2
+        self.tarih1 = tarih1
     }
 }

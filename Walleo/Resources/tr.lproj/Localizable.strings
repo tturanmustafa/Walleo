@@ -1,7 +1,6 @@
-/* Localizable.strings (Turkish)
-*/
+/* Localizable.strings (Turkish) */
 
-// Genel / Ortak Kullanım
+// MARK: - Genel / Ortak Kullanım
 "common.save" = "Kaydet";
 "common.cancel" = "İptal";
 "common.edit" = "Düzenle";
@@ -17,20 +16,26 @@
 "common.amount" = "Tutar";
 "common.date" = "Tarih";
 "common.type" = "Tür";
+"common.account" = "Hesap";
+"common.select_account" = "Hesap Seç";
+"common.back" = "Geri";
+"common.total" = "Toplam";
+"common.net" = "Net";
 
-// Ana Sekmeler
+// MARK: - Ana Sekmeler
 "tab.dashboard" = "Panel";
 "tab.calendar" = "Takvim";
 "tab.reports" = "Raporlar";
 "tab.settings" = "Ayarlar";
+"tab.budgets" = "Bütçeler";
 
-// Panel / Dashboard Ekranı
+// MARK: - Panel / Dashboard Ekranı
 "dashboard.category_distribution" = "Kategori Dağılımı";
 "dashboard.recent_transactions" = "Son İşlemler";
 "dashboard.see_all" = "Tümü";
 "dashboard.no_records_for_month" = "Bu Ay İçin Kayıt Yok";
 
-// Ayarlar Ekranı
+// MARK: - Ayarlar Ekranı
 "settings.title" = "Ayarlar";
 "settings.section_general" = "GENEL";
 "settings.theme" = "Tema";
@@ -41,8 +46,35 @@
 "settings.manage_categories" = "Kategorileri Yönet";
 "settings.section_info" = "BİLGİ";
 "settings.version" = "Versiyon";
+"settings.currency" = "Para Birimi";
 
-// Kategori Yönetimi
+// MARK: - Bildirim Ayarları
+"settings.notifications" = "Bildirim Ayarları";
+"settings.notifications.title" = "Bildirim Ayarları";
+"settings.notifications.master_section" = "ANA KONTROL";
+"settings.notifications.master_toggle" = "Tüm Bildirimler";
+"settings.notifications.budget_section" = "BÜTÇE UYARILARI";
+"settings.notifications.budget_toggle" = "Bütçe Bildirimlerini Göster";
+"settings.notifications.threshold_picker" = "Uyarı Eşiği";
+"settings.notifications.threshold.option_80" = "%80'e Ulaşınca";
+"settings.notifications.threshold.option_85" = "%85'e Ulaşınca";
+"settings.notifications.threshold.option_90" = "%90'a Ulaşınca";
+"settings.notifications.threshold.option_95" = "%95'e Ulaşınca";
+"settings.notifications.loan_section" = "ÖDEME HATIRLATICILARI";
+"settings.notifications.loan_toggle" = "Kredi Taksitlerini Hatırlat";
+"settings.notifications.loan_stepper" = "Vadeden %d gün önce";
+"settings.notifications.credit_card_section" = "KREDİ KARTI HATIRLATICILARI";
+"settings.notifications.credit_card_toggle" = "Son Ödeme Gününü Hatırlat";
+
+// MARK: - Bildirim İçerikleri
+"notification.budget.over_limit.title" = "Bütçe Aşıldı";
+"notification.budget.over_limit.body_format" = "%@ bütçenizdeki %@ limitini %@ aştınız.";
+"notification.budget.approaching_limit.title" = "Bütçe Limiti Yaklaşıyor";
+"notification.budget.approaching_limit.body_format" = "%@ bütçenizdeki %@ limitinin %@'ına ulaştınız.";
+"notification.credit_card.due_date.title" = "Kredi Kartı Ödemesi Yaklaşıyor";
+"notification.credit_card.due_date.body_format" = "%@ kartınızın son ödeme tarihi: %@.";
+
+// MARK: - Kategori Yönetimi
 "categories.title" = "Kategoriler";
 "categories.income_categories" = "Gelir Kategorileri";
 "categories.expense_categories" = "Gider Kategorileri";
@@ -52,7 +84,7 @@
 "categories.color" = "Kategori Rengi";
 "categories.select_icon" = "İkon Seç";
 
-// İşlem Ekleme / Düzenleme
+// MARK: - İşlem Ekleme / Düzenleme
 "transaction.new" = "Yeni İşlem";
 "transaction.edit" = "İşlemi Düzenle";
 "transaction.type" = "İşlem Türü";
@@ -60,18 +92,114 @@
 "transaction.name_placeholder" = "İşlem Adı (örn: Akşam Yemeği)";
 "transaction.select_category" = "Kategori Seçin";
 "transaction.recurrence" = "Tekrarlanma";
+"transaction.loan_payment_name_format" = "%@ Taksit Ödemesi";
 
-// Tüm İşlemler & Filtreleme
+// MARK: - Hesaplar
+"accounts.title" = "Hesaplar";
+"accounts.empty.title" = "Henüz Hesap Yok";
+"accounts.empty.description" = "Başlamak için '+' ikonuna dokunarak yeni bir hesap ekleyin.";
+"accounts.add.wallet" = "Cüzdan (Nakit)";
+"accounts.add.credit_card" = "Kredi Kartı";
+"accounts.add.loan" = "Kredi";
+"accounts.add.new_credit_card" = "Yeni Kredi Kartı Ekle";
+"accounts.add.new_loan" = "Yeni Kredi Ekle";
+"accounts.add.account_name_placeholder" = "örn: Maaş Hesabım";
+"accounts.add.card_name_placeholder" = "örn: Bonus Card";
+"accounts.add.loan_name_placeholder" = "örn: Taşıt Kredisi";
+"accounts.add.initial_balance" = "Başlangıç Bakiyesi";
+"accounts.add.account_color" = "Hesap Rengi";
+"accounts.add.card_limit" = "Kart Limiti";
+"accounts.add.loan_amount" = "Çekilen Tutar (Anapara)";
+"accounts.add.interest_rate" = "Yıllık Faiz Oranı (%)";
+"accounts.add.installments" = "Taksit Sayısı";
+"accounts.add.installments_stepper" = "%d ay";
+"accounts.add.create_installments_button" = "Kaydet ve Taksitleri Oluştur";
+"credit_card.form.current_debt_optional" = "Güncel Borç (Opsiyonel)";
+"credit_card.form.statement_date_header" = "Hesap Kesim Tarihi";
+"credit_card.form.statement_date" = "Hesap Kesim Tarihi";
+"credit_card.form.payment_due_date_header" = "Son Ödeme Günü Ayarı";
+"credit_card.form.payment_due_date_stepper" = "Hesap kesiminden %d gün sonra";
+"loan.form.details_header" = "Kredi Bilgileri";
+"loan.form.first_payment_header" = "İlk Taksit Ödeme Günü";
+"loan.form.interest_type" = "Faiz Tipi";
+"loan.form.first_installment_date" = "İlk Taksit Tarihi";
+"loan_details.summary_header" = "Kredi Özeti";
+"loan_details.installment_plan_header" = "Taksit Planı";
+"installment.edit.title" = "Taksiti Düzenle";
+"installment.edit.details_header" = "Taksit Bilgileri";
+"installment.paid.label" = "Ödendi İşaretle";
+"accounts.card.current_debt" = "Güncel Borç";
+"accounts.card.available_limit" = "Kullanılabilir Limit";
+"accounts.card.paid_installments" = "Ödenen Taksit";
+"accounts.card.remaining_debt" = "Kalan Borç";
+"credit_card_details.recent_expenses" = "Son Dönem Harcamaları";
+"credit_card_details.no_transactions" = "Bu Dönem İşlem Yok";
+"account_details.generic_title" = "%@ Detayları";
+"enum.interest_type.yearly" = "Yıllık";
+"enum.interest_type.monthly" = "Aylık";
+
+// MARK: - Diğer Ekranlar ve Uyarılar
 "all_transactions.title" = "Tüm İşlemler";
-"all_transactions.filter_button" = "Filtrele";
 "all_transactions.not_found" = "İşlem Bulunamadı";
 "all_transactions.not_found_desc" = "Filtre kriterlerinizi değiştirmeyi deneyin.";
-"filter.title" = "Filtrele ve Sırala";
 "filter.date_range" = "Tarih Aralığı";
 "filter.sort_by" = "Sırala";
-"filter.sort_order" = "Sıralama Düzeni";
+"alert.recurring_transaction" = "Bu tekrarlayan bir işlemdir.";
+"alert.update_this_only" = "Sadece Bu İşlemi Güncelle";
+"alert.update_future" = "Bu ve Gelecekteki İşlemleri Güncelle";
+"alert.delete_this_only" = "Sadece Bu İşlemi Sil";
+"alert.delete_series" = "Tüm Seriyi Sil";
+"alert.add_as_expense.title" = "Gider Olarak Ekle";
+"alert.add_as_expense.button_yes" = "Evet, Gider Olarak Ekle";
+"alert.add_as_expense.button_no" = "Hayır, Sadece İşaretle";
+"alert.add_as_expense.message_format" = "%@ tutarındaki taksit ödemesini gider olarak eklemek istiyor musunuz?";
+"month_picker.title" = "Tarih Seç";
+"month_picker.month" = "Ay";
+"month_picker.year" = "Yıl";
+"calendar.no_transactions_on_date" = "Bu Tarihte İşlem Yok";
+"calendar.monthly_summary" = "Aylık Özet";
+"notifications.title" = "Bildirimler";
+"notifications.no_notifications_title" = "Henüz bildirim yok";
+"notifications.no_notifications_desc" = "Uygulama içi önemli bildirimleriniz burada görünecektir.";
+"validation.error.invalid_amount_format" = "Geçersiz format. En fazla 9 tam ve 2 ondalık basamak olabilir.";
 
-// Enum Değerleri
+// MARK: - Raporlar
+"reports.type.summary" = "Özet";
+"reports.type.distribution" = "Dağılım";
+"reports.summary.card.main_metrics" = "Ana Metrikler";
+"reports.summary.card.comparison" = "Karşılaştırmalı Analiz";
+"reports.summary.top_expenses" = "En Çok Harcananlar";
+"reports.summary.statistics" = "İstatistikler";
+"reports.summary.net_flow" = "Net Akış";
+"reports.comparison.no_data" = "Karşılaştırma için önceki dönem verisi yok.";
+"reports.comparison.prefix_net_flow_positive" = "Önceki döneme göre ";
+"reports.comparison.suffix_net_flow_positive" = " daha fazla tasarruf ettiniz.";
+"reports.comparison.prefix_net_flow_negative" = "Önceki döneme göre ";
+"reports.comparison.suffix_net_flow_negative" = " daha fazla harcadınız.";
+"reports.comparison.prefix_expenses_increased" = "Giderleriniz bir önceki döneme göre ";
+"reports.comparison.suffix_expenses_increased" = " arttı.";
+"reports.comparison.prefix_expenses_decreased" = "Giderleriniz bir önceki döneme göre ";
+"reports.comparison.suffix_expenses_decreased" = " azaldı.";
+"reports.distribution.no_data" = "Bu dönem için gösterilecek veri yok.";
+"reports.statistics.daily_avg_expense" = "Günlük Ortalama Gider";
+"reports.statistics.daily_avg_income" = "Günlük Ortalama Gelir";
+"reports.statistics.highest_expense" = "En Yüksek Tekil Gider";
+"reports.statistics.highest_income" = "En Yüksek Tekil Gelir";
+
+// MARK: - Bütçeler
+"budgets.title" = "Bütçeler";
+"budgets.empty.title" = "Henüz Bütçe Yok";
+"budgets.empty.description" = "Harcamalarınızı kontrol altına almak için '+' ikonuna dokunarak yeni bir bütçe oluşturun.";
+"budgets.add.title" = "Yeni Bütçe";
+"budgets.edit.title" = "Bütçeyi Düzenle";
+"budgets.form.name_placeholder" = "örn: Mutfak Giderleri";
+"budgets.form.limit_amount" = "Aylık Limit";
+"budgets.form.select_categories" = "Kategorileri Seç";
+"budgets.card.total_limit" = "Toplam Limit";
+"budgets.card.amount_spent" = "Harcanan Tutar";
+"budgets.card.amount_remaining" = "Kalan Tutar";
+
+// MARK: - Enum Değerleri ve Kategoriler
 "enum.recurrence.once" = "Tek Seferlik";
 "enum.recurrence.monthly" = "Her Ay";
 "enum.recurrence.quarterly" = "Her 3 Ayda Bir";
@@ -88,24 +216,7 @@
 "enum.date_range.last_3_months" = "Son 3 Ay";
 "enum.date_range.last_6_months" = "Son 6 Ay";
 "enum.date_range.last_year" = "Son 12 Ay";
-
-// Uyarılar ve Mesajlar
-"alert.recurring_transaction" = "Bu tekrarlayan bir işlemdir.";
-"alert.update_this_only" = "Sadece Bu İşlemi Güncelle";
-"alert.update_future" = "Bu ve Gelecekteki İşlemleri Güncelle";
-"alert.delete_this_only" = "Sadece Bu İşlemi Sil";
-"alert.delete_series" = "Tüm Seriyi Sil";
-
-// Ekstra
-"month_picker.title" = "Tarih Seç";
-"month_picker.month" = "Ay";
-"month_picker.year" = "Yıl";
-
-// Yer Tutucu Ekranlar
-"calendar.coming_soon" = "Takvim Sayfası Yakında!";
-"reports.coming_soon" = "Raporlar Sayfası Yakında!";
-
-// Varsayılan Kategoriler
+"enum.budget_period.monthly" = "Aylık";
 "category.salary" = "Maaş";
 "category.extra_income" = "Ek Gelir";
 "category.investment" = "Yatırım";
@@ -118,10 +229,10 @@
 "category.clothing" = "Giyim";
 "category.home" = "Ev";
 "category.gift" = "Hediye";
+"category.loan_payment" = "Kredi Ödemesi";
 "category.other" = "Diğer";
 
-// Para Birimi
-"settings.currency" = "Para Birimi";
+// MARK: - Para Birimleri
 "currency.name.TRY" = "Türk Lirası";
 "currency.name.USD" = "ABD Doları";
 "currency.name.EUR" = "Euro";
@@ -141,217 +252,3 @@
 "currency.name.SAR" = "Suudi Arabistan Riyali";
 "currency.name.KRW" = "Güney Kore Wonu";
 "currency.name.SGD" = "Singapur Doları";
-
-"common.back" = "Geri";
-
-"calendar.no_transactions_on_date" = "Bu Tarihte İşlem Yok";
-
-// Takvim Özeti
-"calendar.monthly_summary" = "Aylık Özet";
-"common.net" = "Net";
-
-// Raporlar Ekranı
-"reports.type.summary" = "Özet";
-"reports.type.distribution" = "Dağılım";
-"reports.type.trend" = "Trend";
-
-// Özet Kartları
-"reports.summary.card.main_metrics" = "Ana Metrikler";
-"reports.summary.card.comparison" = "Karşılaştırmalı Analiz";
-"reports.summary.top_expenses" = "En Çok Harcananlar";
-"reports.summary.statistics" = "İstatistikler";
-
-// Karşılaştırma Metinleri (Formatlı)
-"reports.comparison.income_increased" = "Gelirleriniz bir önceki döneme göre %@ arttı.";
-"reports.comparison.income_decreased" = "Gelirleriniz bir önceki döneme göre %@ azaldı.";
-"reports.comparison.no_data" = "Karşılaştırma için önceki dönem verisi yok.";
-"reports.comparison.expenses_increased" = "Giderleriniz bir önceki döneme göre %@ arttı.";
-"reports.comparison.expenses_decreased" = "Giderleriniz bir önceki döneme göre %@ azaldı.";
-"reports.comparison.net_flow_positive" = "Önceki döneme göre %@ daha fazla tasarruf ettiniz.";
-"reports.comparison.net_flow_negative" = "Önceki döneme göre %@ daha fazla harcadınız.";
-
-// Karşılaştırma Kartı - Parçalı Metinler
-"reports.comparison.prefix_net_flow_positive" = "Önceki döneme göre ";
-"reports.comparison.suffix_net_flow_positive" = " daha fazla tasarruf ettiniz.";
-
-"reports.comparison.prefix_net_flow_negative" = "Önceki döneme göre ";
-"reports.comparison.suffix_net_flow_negative" = " daha fazla harcadınız.";
-
-"reports.comparison.prefix_expenses_increased" = "Giderleriniz bir önceki döneme göre ";
-"reports.comparison.suffix_expenses_increased" = " arttı.";
-
-"reports.comparison.prefix_expenses_decreased" = "Giderleriniz bir önceki döneme göre ";
-"reports.comparison.suffix_expenses_decreased" = " azaldı.";
-
-// Dağılım Raporu
-"reports.distribution.title" = "Dağılım";
-"reports.distribution.income_distribution" = "Gelir Dağılımı";
-"reports.distribution.expense_distribution" = "Gider Dağılımı";
-"reports.distribution.no_data" = "Bu dönem için gösterilecek veri yok.";
-"reports.distribution.total_amount" = "Toplam Tutar";
-
-
-// İstatistikler Kartı
-"reports.statistics.daily_avg_expense" = "Günlük Ortalama Gider";
-"reports.statistics.daily_avg_income" = "Günlük Ortalama Gelir";
-"reports.statistics.highest_expense" = "En Yüksek Tekil Gider";
-"reports.statistics.highest_income" = "En Yüksek Tekil Gelir";
-
-"reports.summary.net_flow" = "Net Akış"; // Türkçe için
-
-// Trend Raporu
-"reports.trend.title" = "Finansal Trend";
-"reports.trend.no_data_title" = "Trend Verisi Bulunamadı";
-"reports.trend.series_income" = "Gelir";
-"reports.trend.series_expense" = "Gider";
-"reports.trend.series_net_flow" = "Net Akış";
-
-"notifications.title" = "Bildirimler";
-
-// Hesaplar
-"accounts.title" = "Hesaplar";
-"accounts.add.menu_title" = "Hesap Türü Seç";
-"accounts.add.bank_wallet" = "Banka / Cüzdan";
-"accounts.add.credit_card" = "Kredi Kartı";
-"accounts.add.loan" = "Kredi";
-
-// Hesap Ekleme Ekranları
-"accounts.add.new_account" = "Yeni Hesap Ekle";
-"accounts.add.new_credit_card" = "Yeni Kredi Kartı Ekle";
-"accounts.add.new_loan" = "Yeni Kredi Ekle";
-"accounts.add.account_type" = "Hesap Türü";
-"accounts.add.account_name" = "Hesap Adı";
-"accounts.add.account_name_placeholder" = "örn: Maaş Hesabım";
-"accounts.add.card_name_placeholder" = "örn: Bonus Card";
-"accounts.add.loan_name_placeholder" = "örn: Taşıt Kredisi";
-"accounts.add.initial_balance" = "Başlangıç Bakiyesi";
-"accounts.add.account_color" = "Hesap Rengi";
-"accounts.add.bank" = "Banka Hesabı";
-"accounts.add.wallet" = "Cüzdan (Nakit)";
-"accounts.add.card_limit" = "Kart Limiti";
-"accounts.add.statement_day" = "Hesap Kesim Günü";
-"accounts.add.statement_day_stepper" = "Ayın %d. günü";
-"accounts.add.due_day" = "Son Ödeme Günü";
-"accounts.add.loan_amount" = "Çekilen Tutar (Anapara)";
-"accounts.add.interest_rate" = "Yıllık Faiz Oranı (%)";
-"accounts.add.installments" = "Taksit Sayısı";
-"accounts.add.installments_stepper" = "%d ay";
-"accounts.add.create_installments_button" = "Kaydet ve Taksitleri Oluştur";
-
-"tab.budgets" = "Bütçeler";
-
-"accounts.card.current_debt" = "Güncel Borç";
-"accounts.card.available_limit" = "Kullanılabilir Limit";
-"accounts.card.paid_installments" = "Ödenen Taksit";
-"accounts.card.remaining_debt" = "Kalan Borç";
-
-"category.loan_payment" = "Kredi Ödemesi";
-
-"transaction.loan_payment_name_format" = "%@ Taksit Ödemesi";
-
-"alert.add_as_expense.title" = "Gider Olarak Ekle";
-"alert.add_as_expense.button_yes" = "Evet, Gider Olarak Ekle";
-"alert.add_as_expense.button_no" = "Hayır, Sadece İşaretle";
-"alert.add_as_expense.message_format" = "%@ tutarındaki taksit ödemesini gider olarak eklemek istiyor musunuz?";
-"transaction.loan_payment_name_format" = "%@ Taksit Ödemesi";
-
-"validation.error.invalid_amount_format" = "Geçersiz format. En fazla 9 tam ve 2 ondalık basamak olabilir.";
-
-// ... mevcut anahtarlar ...
-
-// Hatalı Çeviri Düzeltmesi
-"common.total" = "Toplam";
-
-// Yeni Eklenen Anahtarlar
-"common.account" = "Hesap";
-"common.select_account" = "Hesap Seç";
-"validation.error.invalid_amount_format" = "Geçersiz format. En fazla 9 tam ve 2 ondalık basamak olabilir.";
-
-"notifications.no_notifications_title" = "Henüz bildirim yok";
-"notifications.no_notifications_desc" = "Uygulama içi önemli bildirimleriniz burada görünecektir.";
-
-"accounts.empty.title" = "Henüz Hesap Yok";
-"accounts.empty.description" = "Başlamak için '+' ikonuna dokunarak yeni bir hesap ekleyin.";
-
-"loan.form.details_header" = "Kredi Bilgileri";
-"loan.form.first_payment_header" = "İlk Taksit Ödeme Günü";
-"loan.form.interest_type" = "Faiz Tipi";
-
-"credit_card.form.current_debt_optional" = "Güncel Borç (Opsiyonel)";
-"credit_card.form.statement_date_header" = "Hesap Kesim Tarihi";
-
-"installment.edit.title" = "Taksiti Düzenle";
-"installment.edit.details_header" = "Taksit Bilgileri";
-"installment.paid.label" = "Ödendi İşaretle";
-
-// ... diğer anahtarlar ...
-"loan_details.summary_header" = "Kredi Özeti";
-"loan_details.installment_plan_header" = "Taksit Planı";
-"loan.form.first_installment_date" = "İlk Taksit Tarihi";
-"credit_card.form.statement_date" = "Hesap Kesim Tarihi";
-
-"tab.budgets" = "Bütçeler";
-"budgets.title" = "Bütçeler";
-"budgets.empty.title" = "Henüz Bütçe Yok";
-"budgets.empty.description" = "Harcamalarınızı kontrol altına almak için '+' ikonuna dokunarak yeni bir bütçe oluşturun.";
-"budgets.add.title" = "Yeni Bütçe";
-"budgets.edit.title" = "Bütçeyi Düzenle";
-"budgets.form.name" = "Bütçe Adı";
-"budgets.form.name_placeholder" = "örn: Mutfak Giderleri";
-"budgets.form.limit_amount" = "Aylık Limit";
-"budgets.form.select_categories" = "Kategorileri Seç";
-"budgets.card.spent" = "Harcandı";
-"budgets.card.remaining" = "Kaldı";
-"budgets.card.over_limit" = "Limit Aşıldı";
-"enum.budget_period.monthly" = "Aylık";
-
-"budgets.card.total_limit" = "Toplam Limit";
-"budgets.card.amount_spent" = "Harcanan Tutar";
-"budgets.card.amount_remaining" = "Kalan Tutar";
-
-// MARK: - Bildirim Ayarları
-"settings.notifications" = "Bildirim Ayarları";
-"settings.notifications.title" = "Bildirim Ayarları";
-"settings.notifications.master_section" = "ANA KONTROL";
-"settings.notifications.master_toggle" = "Tüm Bildirimler";
-"settings.notifications.budget_section" = "BÜTÇE UYARILARI";
-"settings.notifications.budget_toggle" = "Bütçe Bildirimlerini Göster";
-"settings.notifications.threshold_picker" = "Uyarı Eşiği";
-"settings.notifications.threshold.option_80" = "%80'e Ulaşınca";
-"settings.notifications.threshold.option_85" = "%85'e Ulaşınca";
-"settings.notifications.threshold.option_90" = "%90'a Ulaşınca";
-"settings.notifications.threshold.option_95" = "%95'e Ulaşınca";
-"settings.notifications.loan_section" = "ÖDEME HATIRLATICILARI";
-"settings.notifications.loan_toggle" = "Kredi Taksitlerini Hatırlat";
-"settings.notifications.loan_stepper" = "Vadeden %d gün önce";
-"credit_card_details.recent_expenses" = "Son Dönem Harcamaları";
-"credit_card_details.no_transactions" = "Bu Dönem İşlem Yok";
-"account_details.generic_title" = "%@ Detayları";
-"credit_card.form.payment_due_date_header" = "Son Ödeme Günü Ayarı";
-"credit_card.form.payment_due_date_stepper" = "Hesap kesiminden %d gün sonra";
-
-"credit_card_details.recent_expenses" = "Son Dönem Harcamaları";
-"credit_card_details.no_transactions" = "Bu Dönem İşlem Yok";
-"account_details.generic_title" = "%@ Detayları";
-
-"notification.budget.over_limit.title" = "Bütçe Aşıldı";
-"notification.budget.over_limit.body_format" = "%@ bütçenizdeki %@ limitini %@ aştınız.";
-"notification.budget.approaching_limit.title" = "Bütçe Limiti Yaklaşıyor";
-"notification.budget.approaching_limit.body_format" = "%@ bütçenizdeki %@ limitinin %@'ına ulaştınız.";
-"notification.credit_card.due_date.title" = "Kredi Kartı Ödemesi Yaklaşıyor";
-"notification.credit_card.due_date.body_format" = "%@ kartınızın son ödeme tarihi: %@.";
-
-// Kredi Kartı Ayarları
-"settings.notifications.credit_card_section" = "KREDİ KARTI HATIRLATICILARI";
-"settings.notifications.credit_card_toggle" = "Son Ödeme Gününü Hatırlat";
-
-"notification.budget.over_limit.title" = "Budget Exceeded";
-"notification.budget.over_limit.body_format" = "You exceeded the %@ limit of your %@ budget by %@.";
-"notification.budget.approaching_limit.title" = "Budget Limit Approaching";
-"notification.budget.approaching_limit.body_format" = "You have reached %@ of your %@ budget limit of %@.";
-"notification.credit_card.due_date.title" = "Credit Card Payment Due";
-"notification.credit_card.due_date.body_format" = "The payment for your %@ card is due on %@.";
-
-// Credit Card Settings
-"settings.notifications.credit_card_section" = "CREDIT CARD REMINDERS";
-"settings.notifications.credit_card_toggle" = "Remind for Due Date";

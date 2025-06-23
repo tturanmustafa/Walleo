@@ -1,7 +1,6 @@
-/* Localizable.strings (English)
-*/
+/* Localizable.strings (English) */
 
-// General / Common Use
+// MARK: - General / Common Use
 "common.save" = "Save";
 "common.cancel" = "Cancel";
 "common.edit" = "Edit";
@@ -17,20 +16,26 @@
 "common.amount" = "Amount";
 "common.date" = "Date";
 "common.type" = "Type";
+"common.account" = "Account";
+"common.select_account" = "Select Account";
+"common.back" = "Back";
+"common.total" = "Total";
+"common.net" = "Net";
 
-// Main Tabs
+// MARK: - Main Tabs
 "tab.dashboard" = "Dashboard";
 "tab.calendar" = "Calendar";
 "tab.reports" = "Reports";
 "tab.settings" = "Settings";
+"tab.budgets" = "Budgets";
 
-// Dashboard Screen
+// MARK: - Dashboard Screen
 "dashboard.category_distribution" = "Category Distribution";
 "dashboard.recent_transactions" = "Recent Transactions";
 "dashboard.see_all" = "See All";
 "dashboard.no_records_for_month" = "No Records for This Month";
 
-// Settings Screen
+// MARK: - Settings Screen
 "settings.title" = "Settings";
 "settings.section_general" = "GENERAL";
 "settings.theme" = "Theme";
@@ -41,8 +46,35 @@
 "settings.manage_categories" = "Manage Categories";
 "settings.section_info" = "INFORMATION";
 "settings.version" = "Version";
+"settings.currency" = "Currency";
 
-// Category Management
+// MARK: - Notification Settings
+"settings.notifications" = "Notification Settings";
+"settings.notifications.title" = "Notification Settings";
+"settings.notifications.master_section" = "MASTER CONTROL";
+"settings.notifications.master_toggle" = "Enable All Notifications";
+"settings.notifications.budget_section" = "BUDGET ALERTS";
+"settings.notifications.budget_toggle" = "Show Budget Notifications";
+"settings.notifications.threshold_picker" = "Alert Threshold";
+"settings.notifications.threshold.option_80" = "When 80% is reached";
+"settings.notifications.threshold.option_85" = "When 85% is reached";
+"settings.notifications.threshold.option_90" = "When 90% is reached";
+"settings.notifications.threshold.option_95" = "When 95% is reached";
+"settings.notifications.loan_section" = "PAYMENT REMINDERS";
+"settings.notifications.loan_toggle" = "Remind for Loan Installments";
+"settings.notifications.loan_stepper" = "%d days before due date";
+"settings.notifications.credit_card_section" = "CREDIT CARD REMINDERS";
+"settings.notifications.credit_card_toggle" = "Remind for Due Date";
+
+// MARK: - Notification Content
+"notification.budget.over_limit.title" = "Budget Exceeded";
+"notification.budget.over_limit.body_format" = "You exceeded the %@ limit of your %@ budget by %@.";
+"notification.budget.approaching_limit.title" = "Budget Limit Approaching";
+"notification.budget.approaching_limit.body_format" = "You have reached %@ of your %@ budget limit of %@.";
+"notification.credit_card.due_date.title" = "Credit Card Payment Due";
+"notification.credit_card.due_date.body_format" = "The payment for your %@ card is due on %@.";
+
+// MARK: - Category Management
 "categories.title" = "Categories";
 "categories.income_categories" = "Income Categories";
 "categories.expense_categories" = "Expense Categories";
@@ -52,7 +84,7 @@
 "categories.color" = "Category Color";
 "categories.select_icon" = "Select Icon";
 
-// Add / Edit Transaction
+// MARK: - Add / Edit Transaction
 "transaction.new" = "New Transaction";
 "transaction.edit" = "Edit Transaction";
 "transaction.type" = "Transaction Type";
@@ -60,18 +92,114 @@
 "transaction.name_placeholder" = "Transaction Name (e.g., Dinner)";
 "transaction.select_category" = "Select Category";
 "transaction.recurrence" = "Recurrence";
+"transaction.loan_payment_name_format" = "%@ Installment Payment";
 
-// All Transactions & Filtering
+// MARK: - Accounts
+"accounts.title" = "Accounts";
+"accounts.empty.title" = "No Accounts Yet";
+"accounts.empty.description" = "Tap the '+' icon to add a new account to get started.";
+"accounts.add.wallet" = "Wallet (Cash)";
+"accounts.add.credit_card" = "Credit Card";
+"accounts.add.loan" = "Loan";
+"accounts.add.new_credit_card" = "New Credit Card";
+"accounts.add.new_loan" = "New Loan";
+"accounts.add.account_name_placeholder" = "e.g., Salary Account";
+"accounts.add.card_name_placeholder" = "e.g., Visa Gold";
+"accounts.add.loan_name_placeholder" = "e.g., Car Loan";
+"accounts.add.initial_balance" = "Initial Balance";
+"accounts.add.account_color" = "Account Color";
+"accounts.add.card_limit" = "Card Limit";
+"accounts.add.loan_amount" = "Principal Amount";
+"accounts.add.interest_rate" = "Annual Interest Rate (%)";
+"accounts.add.installments" = "Number of Installments";
+"accounts.add.installments_stepper" = "%d months";
+"accounts.add.create_installments_button" = "Save & Create Installments";
+"credit_card.form.current_debt_optional" = "Current Debt (Optional)";
+"credit_card.form.statement_date_header" = "Statement Date";
+"credit_card.form.statement_date" = "Statement Date";
+"credit_card.form.payment_due_date_header" = "Payment Due Date Setting";
+"credit_card.form.payment_due_date_stepper" = "%d days after statement date";
+"loan.form.details_header" = "Loan Information";
+"loan.form.first_payment_header" = "First Installment Date";
+"loan.form.interest_type" = "Interest Type";
+"loan.form.first_installment_date" = "First Installment Date";
+"loan_details.summary_header" = "Loan Summary";
+"loan_details.installment_plan_header" = "Installment Plan";
+"installment.edit.title" = "Edit Installment";
+"installment.edit.details_header" = "Installment Details";
+"installment.paid.label" = "Mark as Paid";
+"accounts.card.current_debt" = "Current Debt";
+"accounts.card.available_limit" = "Available Limit";
+"accounts.card.paid_installments" = "Paid Installments";
+"accounts.card.remaining_debt" = "Remaining Debt";
+"credit_card_details.recent_expenses" = "Recent Period Expenses";
+"credit_card_details.no_transactions" = "No Transactions in This Period";
+"account_details.generic_title" = "%@ Details";
+"enum.interest_type.yearly" = "Annual";
+"enum.interest_type.monthly" = "Monthly";
+
+// MARK: - Other Screens & Alerts
 "all_transactions.title" = "All Transactions";
-"all_transactions.filter_button" = "Filter";
 "all_transactions.not_found" = "No Transactions Found";
 "all_transactions.not_found_desc" = "Try changing your filter criteria.";
-"filter.title" = "Filter and Sort";
 "filter.date_range" = "Date Range";
 "filter.sort_by" = "Sort By";
-"filter.sort_order" = "Sort Order";
+"alert.recurring_transaction" = "This is a recurring transaction.";
+"alert.update_this_only" = "Update Only This One";
+"alert.update_future" = "Update This & Future Ones";
+"alert.delete_this_only" = "Delete Only This One";
+"alert.delete_series" = "Delete Entire Series";
+"alert.add_as_expense.title" = "Add as Expense";
+"alert.add_as_expense.button_yes" = "Yes, Add as Expense";
+"alert.add_as_expense.button_no" = "No, Just Mark as Paid";
+"alert.add_as_expense.message_format" = "Do you want to add the installment payment of %@ as an expense?";
+"month_picker.title" = "Select Date";
+"month_picker.month" = "Month";
+"month_picker.year" = "Year";
+"calendar.no_transactions_on_date" = "No Transactions on This Date";
+"calendar.monthly_summary" = "Monthly Summary";
+"notifications.title" = "Notifications";
+"notifications.no_notifications_title" = "No notifications yet";
+"notifications.no_notifications_desc" = "Your important in-app notifications will appear here.";
+"validation.error.invalid_amount_format" = "Invalid format. Max 9 integer and 2 decimal places.";
 
-// Enum Values
+// MARK: - Reports
+"reports.type.summary" = "Summary";
+"reports.type.distribution" = "Distribution";
+"reports.summary.card.main_metrics" = "Main Metrics";
+"reports.summary.card.comparison" = "Comparative Analysis";
+"reports.summary.top_expenses" = "Top Expenses";
+"reports.summary.statistics" = "Statistics";
+"reports.summary.net_flow" = "Net Flow";
+"reports.comparison.no_data" = "No data from the previous period for comparison.";
+"reports.comparison.prefix_net_flow_positive" = "You saved ";
+"reports.comparison.suffix_net_flow_positive" = " more than the previous period.";
+"reports.comparison.prefix_net_flow_negative" = "You spent ";
+"reports.comparison.suffix_net_flow_negative" = " more than the previous period.";
+"reports.comparison.prefix_expenses_increased" = "Your expenses increased by ";
+"reports.comparison.suffix_expenses_increased" = " compared to the previous period.";
+"reports.comparison.prefix_expenses_decreased" = "Your expenses decreased by ";
+"reports.comparison.suffix_expenses_decreased" = " compared to the previous period.";
+"reports.distribution.no_data" = "No data to display for this period.";
+"reports.statistics.daily_avg_expense" = "Daily Average Expense";
+"reports.statistics.daily_avg_income" = "Daily Average Income";
+"reports.statistics.highest_expense" = "Highest Single Expense";
+"reports.statistics.highest_income" = "Highest Single Income";
+
+// MARK: - Budgets
+"budgets.title" = "Budgets";
+"budgets.empty.title" = "No Budgets Yet";
+"budgets.empty.description" = "Tap the '+' icon to create a new budget and take control of your spending.";
+"budgets.add.title" = "New Budget";
+"budgets.edit.title" = "Edit Budget";
+"budgets.form.name_placeholder" = "e.g., Groceries";
+"budgets.form.limit_amount" = "Monthly Limit";
+"budgets.form.select_categories" = "Select Categories";
+"budgets.card.total_limit" = "Total Limit";
+"budgets.card.amount_spent" = "Amount Spent";
+"budgets.card.amount_remaining" = "Amount Remaining";
+
+// MARK: - Enum Values & Categories
 "enum.recurrence.once" = "One Time";
 "enum.recurrence.monthly" = "Every Month";
 "enum.recurrence.quarterly" = "Every 3 Months";
@@ -88,24 +216,7 @@
 "enum.date_range.last_3_months" = "Last 3 Months";
 "enum.date_range.last_6_months" = "Last 6 Months";
 "enum.date_range.last_year" = "Last 12 Months";
-
-// Alerts and Messages
-"alert.recurring_transaction" = "This is a recurring transaction.";
-"alert.update_this_only" = "Update Only This One";
-"alert.update_future" = "Update This & Future Ones";
-"alert.delete_this_only" = "Delete Only This One";
-"alert.delete_series" = "Delete Entire Series";
-
-// Extra
-"month_picker.title" = "Select Date";
-"month_picker.month" = "Month";
-"month_picker.year" = "Year";
-
-// Placeholder Screens
-"calendar.coming_soon" = "Calendar Page Coming Soon!";
-"reports.coming_soon" = "Reports Page Coming Soon!";
-
-// Default Categories
+"enum.budget_period.monthly" = "Monthly";
 "category.salary" = "Salary";
 "category.extra_income" = "Side Income";
 "category.investment" = "Investment";
@@ -118,10 +229,10 @@
 "category.clothing" = "Clothing";
 "category.home" = "Home";
 "category.gift" = "Gift";
+"category.loan_payment" = "Loan Payment";
 "category.other" = "Other";
 
-// Currency
-"settings.currency" = "Currency";
+// MARK: - Currencies
 "currency.name.TRY" = "Turkish Lira";
 "currency.name.USD" = "US Dollar";
 "currency.name.EUR" = "Euro";
@@ -141,218 +252,3 @@
 "currency.name.SAR" = "Saudi Riyal";
 "currency.name.KRW" = "South Korean Won";
 "currency.name.SGD" = "Singapore Dollar";
-
-"common.back" = "Back";
-
-"calendar.no_transactions_on_date" = "No Transactions on This Date";
-
-// Calendar Summary
-"calendar.monthly_summary" = "Monthly Summary";
-"common.net" = "Net";
-
-// Reports Screen
-"reports.type.summary" = "Summary";
-"reports.type.distribution" = "Distribution";
-"reports.type.trend" = "Trend";
-
-// Summary Cards
-"reports.summary.card.main_metrics" = "Main Metrics";
-"reports.summary.card.comparison" = "Comparative Analysis";
-"reports.summary.top_expenses" = "Top Expenses";
-"reports.summary.statistics" = "Statistics";
-
-// Comparison Texts (Formatted)
-"reports.comparison.expenses_increased" = "Your expenses increased by %@ compared to the previous period.";
-"reports.comparison.expenses_decreased" = "Your expenses decreased by %@ compared to the previous period.";
-"reports.comparison.income_increased" = "Your income increased by %@ compared to the previous period.";
-"reports.comparison.income_decreased" = "Your income decreased by %@ compared to the previous period.";
-"reports.comparison.net_flow_positive" = "You saved %@ more than the previous period.";
-"reports.comparison.net_flow_negative" = "You spent %@ more than the previous period.";
-"reports.comparison.no_data" = "No data from the previous period for comparison.";
-
-// Comparison Card - Fragmented Texts
-"reports.comparison.prefix_net_flow_positive" = "You saved ";
-"reports.comparison.suffix_net_flow_positive" = " more than the previous period.";
-
-"reports.comparison.prefix_net_flow_negative" = "You spent ";
-"reports.comparison.suffix_net_flow_negative" = " more than the previous period.";
-
-"reports.comparison.prefix_expenses_increased" = "Your expenses increased by ";
-"reports.comparison.suffix_expenses_increased" = " compared to the previous period.";
-
-"reports.comparison.prefix_expenses_decreased" = "Your expenses decreased by ";
-"reports.comparison.suffix_expenses_decreased" = " compared to the previous period.";
-
-
-// Distribution Report
-"reports.distribution.title" = "Distribution";
-"reports.distribution.income_distribution" = "Income Distribution";
-"reports.distribution.expense_distribution" = "Expense Distribution";
-"reports.distribution.no_data" = "No data to display for this period.";
-"reports.distribution.total_amount" = "Total Amount";
-
-// Dağılım Grafiği Ortası
-"common.total" = "Total";
-
-// Statistics Card
-"reports.statistics.daily_avg_expense" = "Daily Average Expense";
-"reports.statistics.daily_avg_income" = "Daily Average Income";
-"reports.statistics.highest_expense" = "Highest Single Expense";
-"reports.statistics.highest_income" = "Highest Single Income";
-
-"reports.summary.net_flow" = "Net Flow"; // İngilizce için
-
-// Trend Report
-"reports.trend.title" = "Financial Trend";
-"reports.trend.no_data_title" = "Trend Data Not Found";
-"reports.trend.series_income" = "Income";
-"reports.trend.series_expense" = "Expense";
-"reports.trend.series_net_flow" = "Net Flow";
-
-"notifications.title" = "Notifications";
-
-// Accounts
-"accounts.title" = "Accounts";
-"accounts.add.menu_title" = "Select Account Type";
-"accounts.add.bank_wallet" = "Bank / Wallet";
-"accounts.add.credit_card" = "Credit Card";
-"accounts.add.loan" = "Loan";
-
-// Add Account Screens
-"accounts.add.new_account" = "New Account";
-"accounts.add.new_credit_card" = "New Credit Card";
-"accounts.add.new_loan" = "New Loan";
-"accounts.add.account_type" = "Account Type";
-"accounts.add.account_name" = "Account Name";
-"accounts.add.account_name_placeholder" = "e.g., Salary Account";
-"accounts.add.card_name_placeholder" = "e.g., Visa Gold";
-"accounts.add.loan_name_placeholder" = "e.g., Car Loan";
-"accounts.add.initial_balance" = "Initial Balance";
-"accounts.add.account_color" = "Account Color";
-"accounts.add.bank" = "Bank Account";
-"accounts.add.wallet" = "Wallet (Cash)";
-"accounts.add.card_limit" = "Card Limit";
-"accounts.add.statement_day" = "Statement Day";
-"accounts.add.statement_day_stepper" = "Day %d of month";
-"accounts.add.due_day" = "Payment Due Day";
-"accounts.add.loan_amount" = "Principal Amount";
-"accounts.add.interest_rate" = "Annual Interest Rate (%)";
-"accounts.add.installments" = "Number of Installments";
-"accounts.add.installments_stepper" = "%d months";
-"accounts.add.create_installments_button" = "Save & Create Installments";
-
-"tab.budgets" = "Budgets";
-
-"accounts.card.current_debt" = "Current Debt";
-"accounts.card.available_limit" = "Available Limit";
-"accounts.card.paid_installments" = "Paid Installments";
-"accounts.card.remaining_debt" = "Remaining Debt";
-
-"category.loan_payment" = "Loan Payment";
-
-"transaction.loan_payment_name_format" = "%@ Installment Payment";
-
-"alert.add_as_expense.title" = "Add as Expense";
-"alert.add_as_expense.button_yes" = "Yes, Add as Expense";
-"alert.add_as_expense.button_no" = "No, Just Mark as Paid";
-"alert.add_as_expense.message_format" = "Do you want to add the installment payment of %@ as an expense?";
-
-"transaction.loan_payment_name_format" = "%@ Installment Payment";
-
-"validation.error.invalid_amount_format" = "Invalid format. Must be a maximum of 9 integer and 2 decimal places.";
-
-// ... existing keys ...
-
-"common.account" = "Account";
-"common.select_account" = "Select Account";
-"validation.error.invalid_amount_format" = "Invalid format. Max 9 integer and 2 decimal places.";
-
-"notifications.no_notifications_title" = "No notifications yet";
-"notifications.no_notifications_desc" = "Your important in-app notifications will appear here.";
-
-"accounts.empty.title" = "No Accounts Yet";
-"accounts.empty.description" = "Tap the '+' icon to add a new account to get started.";
-
-"loan.form.details_header" = "Loan Information";
-"loan.form.first_payment_header" = "First Installment Date";
-"loan.form.interest_type" = "Interest Type";
-
-"credit_card.form.current_debt_optional" = "Current Debt (Optional)";
-"credit_card.form.statement_date_header" = "Statement Date";
-
-"installment.edit.title" = "Edit Installment";
-"installment.edit.details_header" = "Installment Details";
-"installment.paid.label" = "Mark as Paid";
-
-// ... existing keys ...
-
-"common.account" = "Account";
-"common.select_account" = "Select Account";
-"validation.error.invalid_amount_format" = "Invalid format. Max 9 integer and 2 decimal places.";
-
-"notifications.no_notifications_title" = "No notifications yet";
-"notifications.no_notifications_desc" = "Your important in-app notifications will appear here.";
-
-"accounts.empty.title" = "No Accounts Yet";
-"accounts.empty.description" = "Tap the '+' icon to add a new account to get started.";
-
-"loan.form.details_header" = "Loan Information";
-"loan.form.first_payment_header" = "First Installment Date";
-"loan.form.interest_type" = "Interest Type";
-
-"credit_card.form.current_debt_optional" = "Current Debt (Optional)";
-"credit_card.form.statement_date_header" = "Statement Date";
-
-"installment.edit.title" = "Edit Installment";
-"installment.edit.details_header" = "Installment Details";
-"installment.paid.label" = "Mark as Paid";
-
-// ... other keys ...
-"loan_details.summary_header" = "Loan Summary";
-"loan_details.installment_plan_header" = "Installment Plan";
-"loan.form.first_installment_date" = "First Installment Date";
-"credit_card.form.statement_date" = "Statement Date";
-
-"tab.budgets" = "Budgets";
-"budgets.title" = "Budgets";
-"budgets.empty.title" = "No Budgets Yet";
-"budgets.empty.description" = "Tap the '+' icon to create a new budget and take control of your spending.";
-"budgets.add.title" = "New Budget";
-"budgets.edit.title" = "Edit Budget";
-"budgets.form.name" = "Budget Name";
-"budgets.form.name_placeholder" = "e.g., Groceries";
-"budgets.form.limit_amount" = "Monthly Limit";
-"budgets.form.select_categories" = "Select Categories";
-"budgets.card.spent" = "Spent";
-"budgets.card.remaining" = "Remaining";
-"budgets.card.over_limit" = "Over Limit";
-"enum.budget_period.monthly" = "Monthly";
-
-"budgets.card.total_limit" = "Total Limit";
-"budgets.card.amount_spent" = "Amount Spent";
-"budgets.card.amount_remaining" = "Amount Remaining";
-
-// MARK: - Notification Settings
-"settings.notifications" = "Notification Settings";
-"settings.notifications.title" = "Notification Settings";
-"settings.notifications.master_section" = "MASTER CONTROL";
-"settings.notifications.master_toggle" = "Enable All Notifications";
-"settings.notifications.budget_section" = "BUDGET ALERTS";
-"settings.notifications.budget_toggle" = "Show Budget Notifications";
-"settings.notifications.threshold_picker" = "Alert Threshold";
-"settings.notifications.threshold.option_80" = "When 80% is reached";
-"settings.notifications.threshold.option_85" = "When 85% is reached";
-"settings.notifications.threshold.option_90" = "When 90% is reached";
-"settings.notifications.threshold.option_95" = "When 95% is reached";
-"settings.notifications.loan_section" = "PAYMENT REMINDERS";
-"settings.notifications.loan_toggle" = "Remind for Loan Installments";
-"settings.notifications.loan_stepper" = "%d days before due date";
-"credit_card_details.recent_expenses" = "Recent Period Expenses";
-"credit_card_details.no_transactions" = "No Transactions in This Period";
-"account_details.generic_title" = "%@ Details";
-"credit_card.form.payment_due_date_header" = "Payment Due Date Setting";
-"credit_card.form.payment_due_date_stepper" = "%d days after statement date";
-
-"credit_card_details.recent_expenses" = "Recent Period Expenses";
-"credit_card_details.no_transactions" = "No Transactions in This Period";
-"account_details.generic_title" = "%@ Details";

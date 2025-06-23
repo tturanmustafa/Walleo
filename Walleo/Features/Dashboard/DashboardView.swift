@@ -36,9 +36,10 @@ struct IslemTuruButonu: View {
 
 struct DashboardView: View {
     @EnvironmentObject var appSettings: AppSettings
+    @Environment(\.colorScheme) var systemColorScheme // Telefonun sistem temasını okur
+    
     @State private var viewModel: DashboardViewModel
     
-    // Sadece okunmamış bildirimleri veritabanından çeken sorgu.
     @Query(filter: #Predicate<Bildirim> { !$0.okunduMu }) private var unreadNotifications: [Bildirim]
     
     @State private var duzenlenecekIslem: Islem?
@@ -49,6 +50,19 @@ struct DashboardView: View {
     
     @Namespace private var animation
 
+    // Ayarlar sayfasının temasını belirleyen hesaplanmış değişken.
+    private var sheetColorScheme: ColorScheme {
+        switch appSettings.colorSchemeValue {
+        case 1:
+            return .light
+        case 2:
+            return .dark
+        default: // Case 0 (Sistem) için
+            // nil döndürmek yerine, o anki gerçek sistem temasını döndürür.
+            return systemColorScheme
+        }
+    }
+    
     init(modelContext: ModelContext) {
         _viewModel = State(initialValue: DashboardViewModel(modelContext: modelContext))
     }
@@ -93,24 +107,21 @@ struct DashboardView: View {
                     .padding(.vertical)
                 }
             }
-            // --- GÜNCELLENEN BÖLÜM: TOOLBAR ---
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: { isShowingNotifications = true }) {
-                        // Zil ikonunu, rozeti gösterebilmek için bir ZStack içine alıyoruz.
                         ZStack {
                             Image(systemName: "bell.fill")
                                 .font(.title3)
                                 .foregroundColor(.secondary)
                             
-                            // Eğer okunmamış bildirim varsa rozeti göster.
                             if !unreadNotifications.isEmpty {
                                 Text("\(unreadNotifications.count)")
                                     .font(.caption2.bold())
                                     .foregroundColor(.white)
                                     .padding(5)
                                     .background(Circle().fill(Color.red))
-                                    .offset(x: 12, y: -10) // Rozeti konumlandır
+                                    .offset(x: 12, y: -10)
                                     .transition(.scale)
                             }
                         }
@@ -132,7 +143,8 @@ struct DashboardView: View {
             NavigationStack {
                 AyarlarView()
             }
-            .id(appSettings.languageCode)
+            // Tema bilgisini doğrudan ve net bir şekilde sheet'e uyguluyoruz.
+            .preferredColorScheme(sheetColorScheme)
         }
         .sheet(isPresented: $isShowingNotifications) {
             BildirimlerView()
@@ -182,17 +194,5 @@ struct DashboardView: View {
         } else {
             viewModel.deleteIslem(islem)
         }
-    }
-}
-
-#Preview {
-    do {
-        let config = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: Islem.self, Kategori.self, Hesap.self, configurations: config)
-        return DashboardView(modelContext: container.mainContext)
-            .modelContainer(container)
-            .environmentObject(AppSettings())
-    } catch {
-        fatalError("Preview için ModelContainer oluşturulamadı: \(error)")
     }
 }
