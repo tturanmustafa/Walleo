@@ -28,7 +28,8 @@ struct KrediEkleView: View {
                         TextField(LocalizedStringKey("accounts.add.interest_rate"), text: $faizOraniString).keyboardType(.decimalPad)
                         Picker(LocalizedStringKey("loan.form.interest_type"), selection: $faizTipi) {
                             ForEach(FaizTipi.allCases, id: \.self) { tip in
-                                Text(tip.rawValue).tag(tip)
+                                // --- DÜZELTME BURADA ---
+                                Text(LocalizedStringKey(tip.localizedKey)).tag(tip)
                             }
                         }.pickerStyle(.menu).labelsHidden()
                     }

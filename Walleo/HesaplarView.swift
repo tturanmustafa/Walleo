@@ -1,5 +1,3 @@
-// Dosya Adı: HesaplarView.swift
-
 import SwiftUI
 import SwiftData
 
@@ -8,7 +6,8 @@ struct HesaplarView: View {
     @EnvironmentObject var appSettings: AppSettings
     
     @State private var viewModel: HesaplarViewModel?
-    
+    @State private var currentTitle: String = ""
+
     enum SheetTuru: Identifiable {
         case cuzdanEkle, krediKartiEkle, krediEkle
         case cuzdanDuzenle(Hesap), krediKartiDuzenle(Hesap), krediDuzenle(Hesap)
@@ -28,26 +27,32 @@ struct HesaplarView: View {
 
     var body: some View {
         NavigationStack {
-            if let viewModel = viewModel {
-                hesapListesi(viewModel: viewModel)
-                    .overlay {
-                        if viewModel.gosterilecekHesaplar.isEmpty {
-                            ContentUnavailableView(LocalizedStringKey("accounts.empty.title"), systemImage: "wallet.pass", description: Text(LocalizedStringKey("accounts.empty.description")))
+            Group {
+                if let viewModel = viewModel {
+                    hesapListesi(viewModel: viewModel)
+                        .overlay {
+                            if viewModel.gosterilecekHesaplar.isEmpty {
+                                ContentUnavailableView(LocalizedStringKey("accounts.empty.title"), systemImage: "wallet.pass", description: Text(LocalizedStringKey("accounts.empty.description")))
+                            }
                         }
-                    }
-                    .navigationTitle(LocalizedStringKey("accounts.title"))
-                    .toolbar { toolbarIcerigi(viewModel: viewModel) }
-                    // GÜNCELLEME: onDismiss, artık doğru fonksiyonu çağırıyor ve derleme hatasını gideriyor.
-                    .sheet(item: $gosterilecekSheet, onDismiss: {
-                        Task {
-                            await viewModel.hesaplamalariYap()
-                        }
-                    }) { sheet in
-                        sheet.view
-                    }
-            } else {
-                ProgressView()
+                } else {
+                    ProgressView()
+                }
             }
+            .navigationTitle(currentTitle)
+            .toolbar { toolbarIcerigi() } // Düzeltilmiş fonksiyonu çağırır
+        }
+        .onAppear(perform: updateTitle)
+        .onChange(of: appSettings.languageCode) {
+            updateTitle()
+        }
+        .sheet(item: $gosterilecekSheet, onDismiss: {
+            Task {
+                await viewModel?.hesaplamalariYap()
+            }
+        }) { sheet in
+            sheet.view
+                .environmentObject(appSettings)
         }
         .task {
             if viewModel == nil {
@@ -55,6 +60,10 @@ struct HesaplarView: View {
                 await viewModel?.hesaplamalariYap()
             }
         }
+    }
+    
+    private func updateTitle() {
+        self.currentTitle = NSLocalizedString("accounts.title", comment: "")
     }
     
     private func hesapListesi(viewModel: HesaplarViewModel) -> some View {
@@ -85,8 +94,10 @@ struct HesaplarView: View {
         .environmentObject(appSettings)
     }
     
-    private func toolbarIcerigi(viewModel: HesaplarViewModel) -> some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
+    // --- TOOLBAR HATASI DÜZELTMESİ BURADA ---
+    private func toolbarIcerigi() -> some ToolbarContent {
+        // ToolbarItem'ı bir ToolbarItemGroup içine alarak belirsizlik hatasını gideriyoruz.
+        ToolbarItemGroup(placement: .navigationBarTrailing) {
             Menu {
                 Button(action: { gosterilecekSheet = .cuzdanEkle }) {
                     Label(LocalizedStringKey("accounts.add.wallet"), systemImage: "wallet.pass.fill")

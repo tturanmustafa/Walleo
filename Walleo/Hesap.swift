@@ -5,6 +5,16 @@ import SwiftUI
 enum FaizTipi: String, Codable, CaseIterable {
     case yillik = "Yıllık"
     case aylik = "Aylık"
+
+    // --- YENİ EKLENEN ÖZELLİK ---
+    var localizedKey: String {
+        switch self {
+        case .yillik:
+            return "enum.interest_type.yearly"
+        case .aylik:
+            return "enum.interest_type.monthly"
+        }
+    }
 }
 
 struct KrediTaksitDetayi: Codable, Identifiable {

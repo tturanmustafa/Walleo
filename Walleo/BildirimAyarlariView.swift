@@ -11,55 +11,65 @@ import SwiftUI
 struct BildirimAyarlariView: View {
     @EnvironmentObject var appSettings: AppSettings
     
-    // Bütçe eşiği için seçenekler
     private let budgetThresholdOptions = [
         (key: "settings.notifications.threshold.option_80", value: 0.80),
         (key: "settings.notifications.threshold.option_85", value: 0.85),
         (key: "settings.notifications.threshold.option_90", value: 0.90),
         (key: "settings.notifications.threshold.option_95", value: 0.95)
     ]
+    
+    // --- YENİ EKLENEN YARDIMCI DEĞİŞKEN ---
+    // Stepper metnini doğru dilde oluşturan hesaplanmış değişken
+    private var loanStepperLabel: String {
+        let dilKodu = appSettings.languageCode
+        
+        guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+              let languageBundle = Bundle(path: path) else {
+            return "\(appSettings.loanReminderDays)" // Hata durumunda sadece sayıyı göster
+        }
+        
+        let formatString = languageBundle.localizedString(forKey: "settings.notifications.loan_stepper", value: "%d days before due date", table: nil)
+        
+        return String(format: formatString, appSettings.loanReminderDays)
+    }
+    // --- YENİ DEĞİŞKEN SONU ---
 
     var body: some View {
         Form {
-            Section(header: Text("settings.notifications.master_section")) {
-                Toggle("settings.notifications.master_toggle", isOn: $appSettings.masterNotificationsEnabled.animation())
+            Section(header: Text(LocalizedStringKey("settings.notifications.master_section"))) {
+                Toggle(LocalizedStringKey("settings.notifications.master_toggle"), isOn: $appSettings.masterNotificationsEnabled.animation())
             }
 
-            Section(header: Text("settings.notifications.budget_section")) {
-                Toggle("settings.notifications.budget_toggle", isOn: $appSettings.budgetAlertsEnabled)
+            Section(header: Text(LocalizedStringKey("settings.notifications.budget_section"))) {
+                Toggle(LocalizedStringKey("settings.notifications.budget_toggle"), isOn: $appSettings.budgetAlertsEnabled)
                 
-                // Bütçe uyarıları açıksa, eşik ayarını göster
                 if appSettings.budgetAlertsEnabled {
-                    Picker("settings.notifications.threshold_picker", selection: $appSettings.budgetAlertThreshold) {
+                    Picker(LocalizedStringKey("settings.notifications.threshold_picker"), selection: $appSettings.budgetAlertThreshold) {
                         ForEach(budgetThresholdOptions, id: \.value) { option in
                             Text(LocalizedStringKey(option.key)).tag(option.value)
                         }
                     }
                 }
             }
-            .disabled(!appSettings.masterNotificationsEnabled) // Ana anahtar kapalıysa bu bölümü pasif yap
+            .disabled(!appSettings.masterNotificationsEnabled)
 
-            Section(header: Text("settings.notifications.loan_section")) {
-                Toggle("settings.notifications.loan_toggle", isOn: $appSettings.loanRemindersEnabled)
+            Section(header: Text(LocalizedStringKey("settings.notifications.loan_section"))) {
+                Toggle(LocalizedStringKey("settings.notifications.loan_toggle"), isOn: $appSettings.loanRemindersEnabled)
 
-                // Kredi hatırlatıcısı açıksa, gün ayarını göster
                 if appSettings.loanRemindersEnabled {
-                    Stepper(
-                        String.localizedStringWithFormat(NSLocalizedString("settings.notifications.loan_stepper", comment: ""), appSettings.loanReminderDays),
-                        value: $appSettings.loanReminderDays,
-                        in: 1...10
-                    )
+                    // --- GÜNCELLENEN SATIR ---
+                    Stepper(loanStepperLabel, value: $appSettings.loanReminderDays, in: 1...10)
                 }
             }
-            .disabled(!appSettings.masterNotificationsEnabled) // Ana anahtar kapalıysa bu bölümü pasif yap
-            // --- YENİ EKLENEN BÖLÜM ---
+            .disabled(!appSettings.masterNotificationsEnabled)
+            
             Section(header: Text(LocalizedStringKey("settings.notifications.credit_card_section"))) {
-                // Bu ayarı AppSettings'e eklememiz gerekecek
-                Toggle("settings.notifications.credit_card_toggle", isOn: .constant(true))
+                // TODO: AppSettings'e kredi kartı için yeni bir @AppStorage eklenmeli
+                Toggle(LocalizedStringKey("settings.notifications.credit_card_toggle"), isOn: .constant(true))
             }
             .disabled(!appSettings.masterNotificationsEnabled)
         }
-        .navigationTitle("settings.notifications.title")
+        .navigationTitle(LocalizedStringKey("settings.notifications.title"))
         .navigationBarTitleDisplayMode(.inline)
     }
 }
