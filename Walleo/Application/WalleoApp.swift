@@ -8,14 +8,16 @@ struct WalleoApp: App {
 
     init() {
         do {
-            modelContainer = try ModelContainer(for: Hesap.self, Islem.self, Kategori.self, Butce.self, Bildirim.self) // YENİ: Bildirim modeli eklendi
+            modelContainer = try ModelContainer(for: Hesap.self, Islem.self, Kategori.self, Butce.self, Bildirim.self)
             
-            // --- YENİ EKLENEN SATIR ---
-            // NotificationManager'ı uygulama açılırken yapılandırıyoruz.
-            NotificationManager.shared.configure(modelContext: modelContainer.mainContext, appSettings: appSettings)
-            // --- YENİ SATIR SONU ---
+            // --- DÜZELTME ---
+            // NotificationManager konfigürasyonu gibi başlangıç işlemleri,
+            // view hiyerarşisi tam olarak kurulmadan önce çalıştığı için buradan kaldırıldı.
+            // Bu işlemler artık ContentView'daki .task modifikatörüne taşındı.
             
         } catch {
+            // Gerçek bir uygulamada burada çökme yerine bir hata ekranı göstermek daha iyi olabilir.
+            // Şimdilik kritik bir hata olduğu için fatalError kullanıyoruz.
             fatalError("ModelContainer oluşturulamadı: \(error)")
         }
     }
@@ -27,12 +29,18 @@ struct WalleoApp: App {
                 .preferredColorScheme(appSettings.colorScheme)
                 .environment(\.locale, Locale(identifier: appSettings.languageCode))
                 .task {
-                    // --- YENİ EKLENEN SATIRLAR ---
-                    // Uygulama açıldığında varsayılan kategorileri ve taksit hatırlatıcılarını kontrol et.
+                    // --- DÜZELTME & EN İYİ PRATİK ---
+                    // Uygulama başlarken yapılması gereken tüm konfigürasyon ve veri kontrolleri için
+                    // en doğru yer, ana görünümün .task modifikatörüdür.
+                    // Bu blok, görünüm ekrana geldiğinde asenkron olarak ve sadece bir kez çalışır.
+                    
+                    // 1. NotificationManager'ı burada, her şey yüklendikten sonra yapılandırıyoruz.
+                    NotificationManager.shared.configure(modelContext: modelContainer.mainContext, appSettings: appSettings)
+                    
+                    // 2. Diğer başlangıç görevlerini de burada yapıyoruz.
                     await addDefaultCategoriesIfNeeded()
-                    NotificationManager.shared.checkLoanInstallments() // Zamana bağlı kontroller burada yapılır.
+                    NotificationManager.shared.checkLoanInstallments()
                     NotificationManager.shared.checkCreditCardDueDates()
-                    // --- YENİ SATIRLAR SONU ---
                 }
         }
         .modelContainer(modelContainer)
@@ -47,13 +55,10 @@ struct WalleoApp: App {
             let existingCategories = try modelContext.fetch(descriptor)
             
             if existingCategories.isEmpty {
-                // --- KESİN ÇÖZÜM: TÜM KATEGORİLER BURADA OLUŞTURULUYOR ---
-                // Gelir Kategorileri
+                // Varsayılan kategoriler ekleniyor...
                 modelContext.insert(Kategori(isim: "Maaş", ikonAdi: "dollarsign.circle.fill", tur: .gelir, renkHex: "#34C759", localizationKey: "category.salary"))
                 modelContext.insert(Kategori(isim: "Ek Gelir", ikonAdi: "chart.pie.fill", tur: .gelir, renkHex: "#007AFF", localizationKey: "category.extra_income"))
                 modelContext.insert(Kategori(isim: "Yatırım", ikonAdi: "chart.line.uptrend.xyaxis", tur: .gelir, renkHex: "#AF52DE", localizationKey: "category.investment"))
-
-                // Gider Kategorileri
                 modelContext.insert(Kategori(isim: "Market", ikonAdi: "cart.fill", tur: .gider, renkHex: "#FF9500", localizationKey: "category.groceries"))
                 modelContext.insert(Kategori(isim: "Restoran", ikonAdi: "fork.knife", tur: .gider, renkHex: "#FF3B30", localizationKey: "category.restaurant"))
                 modelContext.insert(Kategori(isim: "Ulaşım", ikonAdi: "car.fill", tur: .gider, renkHex: "#5E5CE6", localizationKey: "category.transport"))
@@ -69,7 +74,7 @@ struct WalleoApp: App {
                 try modelContext.save()
             }
         } catch {
-            print("Varsayılan kategoriler kontrol edilirken hata oluştu: \(error)")
+            Logger.log("Varsayılan kategoriler kontrol edilirken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
     }
 }

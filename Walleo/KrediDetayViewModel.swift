@@ -63,7 +63,7 @@ class KrediDetayViewModel {
         do {
             return try modelContext.fetch(descriptor).first
         } catch {
-            print("Kredi kategorisi çekilirken hata oluştu: \(error)")
+            Logger.log("Kredi kategorisi çekilirken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
             return nil
         }
     }

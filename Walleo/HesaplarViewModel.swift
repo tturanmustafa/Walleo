@@ -79,7 +79,7 @@ class HesaplarViewModel {
             self.gosterilecekHesaplar = yeniListe
             
         } catch {
-            print("Hesap ViewModel hesaplama hatası: \(error)")
+            Logger.log("Hesap ViewModel genel hesaplama hatası: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
     }
 
@@ -117,7 +117,7 @@ class HesaplarViewModel {
                 }
                 
             } catch {
-                print("Hedefe yönelik hesaplama sırasında hata: \(error)")
+                Logger.log("Hedefe yönelik bakiye hesaplama sırasında hata: \(error.localizedDescription)", log: Logger.data, type: .error)
             }
         }
     }

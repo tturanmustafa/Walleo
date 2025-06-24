@@ -91,7 +91,7 @@ class ButcelerViewModel {
             self.gosterilecekButceler = yeniGosterilecekler
             
         } catch {
-            print("Bütçe durumları hesaplanırken hata oluştu: \(error)")
+            Logger.log("Bütçe durumları hesaplanırken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
     }
 }
