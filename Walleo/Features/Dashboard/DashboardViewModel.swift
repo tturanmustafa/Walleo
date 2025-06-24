@@ -98,27 +98,12 @@ class DashboardViewModel {
     }
     
     func deleteIslem(_ islem: Islem) {
-        var userInfo: [String: Any]?
-        if let hesapID = islem.hesap?.id {
-            userInfo = ["affectedAccountIDs": [hesapID]]
-        }
-        modelContext.delete(islem)
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
+        // Artık tüm mantık TransactionService'de. Sadece ilgili fonksiyonu çağırıyoruz.
+        TransactionService.shared.deleteTransaction(islem, in: modelContext, scope: .single)
     }
     
     func deleteSeri(for islem: Islem) {
-        let tekrarID = islem.tekrarID
-        guard tekrarID != UUID() else {
-            deleteIslem(islem)
-            return
-        }
-        
-        var userInfo: [String: Any]?
-        if let hesapID = islem.hesap?.id {
-            userInfo = ["affectedAccountIDs": [hesapID]]
-        }
-        
-        try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
+        // Seri silme mantığı da TransactionService'de.
+        TransactionService.shared.deleteTransaction(islem, in: modelContext, scope: .series)
     }
 }

@@ -7,21 +7,31 @@ struct ButceKartView: View {
     var onEdit: () -> Void = {}
     var onDelete: () -> Void = {}
 
-    // --- Hesaplanmış Değişkenler (Aynı kalıyor) ---
+    // --- Hesaplanmış Değişkenler ---
     private var limit: Double { gosterilecekButce.butce.limitTutar }
     private var harcanan: Double { gosterilecekButce.harcananTutar }
     private var kalan: Double { limit - harcanan }
-    private var yuzde: Double { limit > 0 ? (harcanan / limit) : 0 }
+    
+    // --- DÜZELTME: 'ProgressView' hatasını gidermek için yüzdeyi güvenli aralıkta hesaplıyoruz ---
+    private var yuzde: Double {
+        guard limit > 0 else { return 0 }
+        let hesaplananYuzde = harcanan / limit
+        // Değeri 0.0 ile 1.0 arasında kalacak şekilde kenetle
+        return max(0.0, min(1.0, hesaplananYuzde))
+    }
 
     private var progressBarColor: Color {
-        if yuzde >= 1.0 { return .red }
-        if yuzde > 0.8 { return .orange }
+        // Renk mantığı artık orijinal yüzdeye göre değil, 0-1 arasındaki değere göre çalışabilir.
+        // Orijinal hesaplamayı (yuzde > 1.0) korumak için 'harcanan / limit' kullanılabilir.
+        let gercekYuzde = limit > 0 ? harcanan / limit : 0
+        if gercekYuzde >= 1.0 { return .red }
+        if gercekYuzde > 0.8 { return .orange }
         return .green
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Sağ üst menü ve başlık (Aynı kalıyor)
+            // Sağ üst menü ve başlık
             HStack {
                 Text(gosterilecekButce.butce.isim)
                     .font(.headline)
@@ -42,15 +52,14 @@ struct ButceKartView: View {
                 }
             }
             
-            // Progress bar (Aynı kalıyor)
-            ProgressView(value: harcanan, total: limit > 0 ? limit : 1)
+            // --- DÜZELTME: ProgressView artık kenetlenmiş 'yuzde' değerini kullanıyor ---
+            ProgressView(value: yuzde)
                 .tint(progressBarColor)
                 .scaleEffect(x: 1, y: 2.0, anchor: .center)
                 .padding(.bottom, 4)
 
-            // Tutar bilgileri (Aynı kalıyor)
+            // Tutar bilgileri
             VStack(spacing: 8) {
-                // ... Toplam, Harcanan, Kalan satırları ...
                 HStack {
                     Text(LocalizedStringKey("budgets.card.total_limit"))
                         .font(.callout)
@@ -86,30 +95,28 @@ struct ButceKartView: View {
                 }
             }
             
-            // --- YENİ EKLENEN BÖLÜM ---
             // Kategorilerin ikonlarını gösteren bölüm
             if let kategoriler = gosterilecekButce.butce.kategoriler, !kategoriler.isEmpty {
-                            Divider().padding(.top, 4)
-                            
-                            // WrappingHStack ile etiketlerin alt satıra kaymasını sağlıyoruz.
-                            WrappingHStack(items: kategoriler) { kategori in
-                                HStack(spacing: 4) {
-                                    Image(systemName: kategori.ikonAdi)
-                                        .font(.caption)
-                                    Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim))
-                                        .font(.caption)
-                                }
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(kategori.renk.opacity(0.2))
-                                .foregroundColor(kategori.renk)
-                                .cornerRadius(12)
-                            }
-                            .padding(.top, 4)
+                Divider().padding(.top, 4)
+                
+                WrappingHStack(items: kategoriler) { kategori in
+                    HStack(spacing: 4) {
+                        Image(systemName: kategori.ikonAdi)
+                            .font(.caption)
+                        Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim))
+                            .font(.caption)
                     }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(kategori.renk.opacity(0.2))
+                    .foregroundColor(kategori.renk)
+                    .cornerRadius(12)
                 }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
+                .padding(.top, 4)
             }
+        }
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(12)
+    }
 }
