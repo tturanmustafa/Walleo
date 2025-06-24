@@ -1,23 +1,20 @@
-// Dosya: Islem.swift (GÜNCELLENMİŞ HALİ)
-
 import Foundation
 import SwiftData
 
 @Model
 class Islem {
-    var id: UUID
-    var isim: String
-    var tutar: Double
-    var tarih: Date
-    var turRawValue: String
-    var tekrar: TekrarTuru
-    var tekrarID: UUID
+    // Tüm özelliklere varsayılan değerler atandı.
+    var id: UUID = UUID()
+    var isim: String = ""
+    var tutar: Double = 0.0
+    var tarih: Date = Date()
+    var turRawValue: String = IslemTuru.gider.rawValue
+    var tekrar: TekrarTuru = TekrarTuru.tekSeferlik
+    var tekrarID: UUID = UUID()
     
     @Relationship(deleteRule: .nullify)
     var kategori: Kategori?
     
-    // === YENİ SATIR ===
-    // Her işlem artık bir 'Hesap' nesnesine bağlanabilir.
     @Relationship(deleteRule: .nullify)
     var hesap: Hesap?
 
@@ -26,7 +23,6 @@ class Islem {
         set { turRawValue = newValue.rawValue }
     }
     
-    // === GÜNCELLENMİŞ INIT ===
     init(id: UUID = UUID(), isim: String, tutar: Double, tarih: Date, tur: IslemTuru, tekrar: TekrarTuru = .tekSeferlik, tekrarID: UUID = UUID(), kategori: Kategori?, hesap: Hesap? = nil) {
         self.id = id
         self.isim = isim

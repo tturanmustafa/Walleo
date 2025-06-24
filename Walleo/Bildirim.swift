@@ -10,20 +10,18 @@ enum BildirimTuru: String, Codable {
 
 @Model
 class Bildirim {
-    @Attribute(.unique) var id: UUID
-    var turRawValue: String
-    var olusturmaTarihi: Date
-    var okunduMu: Bool
+    // @Attribute(.unique) kaldırıldı ve özelliklere varsayılan değerler atandı.
+    var id: UUID = UUID()
+    var turRawValue: String = ""
+    var olusturmaTarihi: Date = Date()
+    var okunduMu: Bool = false
     
-    // YÖNLENDİRME İÇİN
+    // Opsiyonel alanların varsayılan değeri zaten nil'dir.
     var hedefID: UUID?
-    
-    // --- DEĞİŞİKLİK: METİN YERİNE HAM VERİ SAKLAMA ---
-    // Her bildirim türü, sadece ihtiyacı olan alanları dolduracak.
-    var ilgiliIsim: String?      // Bütçe adı, Kredi kartı adı vb.
-    var tutar1: Double?          // Limit tutarı, vb.
-    var tutar2: Double?          // Aşan tutar, vb.
-    var tarih1: Date?            // Son ödeme tarihi, vb.
+    var ilgiliIsim: String?
+    var tutar1: Double?
+    var tutar2: Double?
+    var tarih1: Date?
     
     var tur: BildirimTuru {
         get { BildirimTuru(rawValue: turRawValue) ?? .butceLimitiAsildi }

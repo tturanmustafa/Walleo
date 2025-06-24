@@ -8,16 +8,19 @@ struct WalleoApp: App {
 
     init() {
         do {
-            modelContainer = try ModelContainer(for: Hesap.self, Islem.self, Kategori.self, Butce.self, Bildirim.self)
-            
-            // --- DÜZELTME ---
-            // NotificationManager konfigürasyonu gibi başlangıç işlemleri,
-            // view hiyerarşisi tam olarak kurulmadan önce çalıştığı için buradan kaldırıldı.
-            // Bu işlemler artık ContentView'daki .task modifikatörüne taşındı.
-            
+            let config = ModelConfiguration(
+                "WalleoDB",
+                cloudKitDatabase: .private("iCloud.com.mustafamt.walleo")
+            )
+
+            // --- DÜZELTME BURADA: Model tiplerinin etrafındaki köşeli parantezler kaldırıldı ---
+            modelContainer = try ModelContainer(
+                for: Hesap.self, Islem.self, Kategori.self, Butce.self, Bildirim.self,
+                configurations: config
+            )
+
         } catch {
-            // Gerçek bir uygulamada burada çökme yerine bir hata ekranı göstermek daha iyi olabilir.
-            // Şimdilik kritik bir hata olduğu için fatalError kullanıyoruz.
+            Logger.log("KRİTİK HATA: ModelContainer oluşturulamadı. Hata: \(error.localizedDescription)", log: Logger.data, type: .fault)
             fatalError("ModelContainer oluşturulamadı: \(error)")
         }
     }

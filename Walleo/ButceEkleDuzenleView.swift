@@ -4,6 +4,7 @@ import SwiftData
 struct ButceEkleDuzenleView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var appSettings: AppSettings // Dil ayarlarına erişim için eklendi
     
     var duzenlenecekButce: Butce?
 
@@ -24,9 +25,25 @@ struct ButceEkleDuzenleView: View {
     }
     
     private var seciliKategoriIsimleri: String {
+        // Uygulama içinden seçilen dil kodunu al
+        let dilKodu = appSettings.languageCode
+        
+        // Bu dil koduna ait dil paketini (bundle) bul
+        guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+              let languageBundle = Bundle(path: path) else {
+            // Eğer paket bulunamazsa, en azından ham veriyi göster
+            return tumKategoriler
+                .filter { secilenKategoriIDleri.contains($0.id) }
+                .map { $0.localizationKey ?? $0.isim }
+                .joined(separator: ", ")
+        }
+        
+        // Çeviriyi, bulduğumuz bu özel dil paketi üzerinden yap
         return tumKategoriler
             .filter { secilenKategoriIDleri.contains($0.id) }
-            .map { NSLocalizedString($0.localizationKey ?? $0.isim, comment: "") }
+            .map { kategori in
+                languageBundle.localizedString(forKey: kategori.localizationKey ?? kategori.isim, value: kategori.isim, table: nil)
+            }
             .joined(separator: ", ")
     }
     
@@ -36,19 +53,15 @@ struct ButceEkleDuzenleView: View {
                 Section {
                     TextField(LocalizedStringKey("budgets.form.name_placeholder"), text: $isim)
                     
-                    // --- DÜZELTME BURADA ---
-                    // Önceki hatalı .overlay() yapısı, VStack ile değiştirildi.
                     VStack(alignment: .leading) {
                         TextField(LocalizedStringKey("budgets.form.limit_amount"), text: $limitString)
                             .keyboardType(.decimalPad)
                             .validateAmountInput(text: $limitString, isInvalid: $isLimitGecersiz)
-                            // Diğer formlarla tutarlılık için kırmızı çerçeve eklendi.
                             .overlay(
                                 RoundedRectangle(cornerRadius: 5)
                                     .stroke(isLimitGecersiz ? Color.red : Color.clear, lineWidth: 1)
                             )
                         
-                        // Hata mesajı artık TextField'ın ALTINDA görünecek.
                         if isLimitGecersiz {
                             Text(LocalizedStringKey("validation.error.invalid_amount_format"))
                                 .font(.caption).foregroundColor(.red).padding(.top, 2)
@@ -97,7 +110,6 @@ struct ButceEkleDuzenleView: View {
         }
     }
     
-    // Geri kalan fonksiyonlarda değişiklik yok.
     private func formuDoldur() {
         guard let butce = duzenlenecekButce else { return }
         self.isim = butce.isim

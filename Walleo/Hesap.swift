@@ -2,53 +2,42 @@ import Foundation
 import SwiftData
 import SwiftUI
 
+// Enum tanımlamaları aynı kalıyor...
 enum FaizTipi: String, Codable, CaseIterable {
     case yillik = "Yıllık"
     case aylik = "Aylık"
-
-    // --- YENİ EKLENEN ÖZELLİK ---
     var localizedKey: String {
         switch self {
-        case .yillik:
-            return "enum.interest_type.yearly"
-        case .aylik:
-            return "enum.interest_type.monthly"
+        case .yillik: return "enum.interest_type.yearly"
+        case .aylik: return "enum.interest_type.monthly"
         }
     }
 }
-
 struct KrediTaksitDetayi: Codable, Identifiable {
     var id = UUID()
     var taksitTutari: Double
     var odemeTarihi: Date
     var odendiMi: Bool = false
 }
-
 enum HesapDetayi: Codable {
     case cuzdan
-    // --- GÜNCELLEME BURADA ---
-    // sonOdemeGunuOfseti: Hesap kesim tarihinden kaç gün sonra son ödeme günü olduğunu tutar.
     case krediKarti(limit: Double, kesimTarihi: Date, sonOdemeGunuOfseti: Int)
-    // --- GÜNCELLEME SONU ---
-    case kredi(
-        cekilenTutar: Double,
-        faizTipi: FaizTipi,
-        faizOrani: Double,
-        taksitSayisi: Int,
-        ilkTaksitTarihi: Date,
-        taksitler: [KrediTaksitDetayi]
-    )
+    case kredi(cekilenTutar: Double, faizTipi: FaizTipi, faizOrani: Double, taksitSayisi: Int, ilkTaksitTarihi: Date, taksitler: [KrediTaksitDetayi])
 }
+
 
 @Model
 class Hesap {
-    @Attribute(.unique) var id: UUID
-    var isim: String
-    var ikonAdi: String
-    var renkHex: String
-    var olusturmaTarihi: Date
-    var baslangicBakiyesi: Double
-    private var detayData: Data
+    // @Attribute(.unique) kaldırıldı ve özelliklere varsayılan değerler atandı.
+    var id: UUID = UUID()
+    var isim: String = ""
+    var ikonAdi: String = ""
+    var renkHex: String = ""
+    var olusturmaTarihi: Date = Date()
+    var baslangicBakiyesi: Double = 0.0
+    
+    // Güvenli bir varsayılan değer atıyoruz.
+    private var detayData: Data = try! JSONEncoder().encode(HesapDetayi.cuzdan)
     
     @Relationship(deleteRule: .nullify, inverse: \Islem.hesap)
     var islemler: [Islem]? = []
@@ -58,7 +47,7 @@ class Hesap {
             do {
                 return try JSONDecoder().decode(HesapDetayi.self, from: detayData)
             } catch {
-                print("KRİTİK HATA: HesapDetayi deşifre edilemedi. Hesap ID: \(id). Hata: \(error)")
+                // Varsayılan değere dönemediğinde kritik bir sorun var demektir.
                 return .cuzdan
             }
         }
@@ -66,7 +55,7 @@ class Hesap {
             do {
                 detayData = try JSONEncoder().encode(newValue)
             } catch {
-                print("KRİTİK HATA: HesapDetayi şifrelenemedi. Hesap ID: \(id). Hata: \(error)")
+                Logger.log("HesapDetayi şifrelenemedi: \(error.localizedDescription)", log: Logger.data, type: .error)
             }
         }
     }
@@ -80,6 +69,6 @@ class Hesap {
         self.renkHex = renkHex
         self.olusturmaTarihi = Date()
         self.baslangicBakiyesi = baslangicBakiyesi
-        self.detayData = try! JSONEncoder().encode(detay)
+        self.detay = detay
     }
 }
