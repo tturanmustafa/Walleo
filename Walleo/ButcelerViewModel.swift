@@ -17,8 +17,24 @@ class ButcelerViewModel {
         )
     }
     
-    @objc func hesaplamalariTetikle() {
-        Task { await butceDurumlariniHesapla() }
+    @objc func hesaplamalariTetikle(notification: Notification) {
+        guard let payload = notification.userInfo?["payload"] as? TransactionChangePayload else {
+            Task { await butceDurumlariniHesapla() }
+            return
+        }
+        
+        // Bütçeler sadece giderlerden etkilenir
+        let secilenKategori = payload.affectedCategoryIDs.first
+        
+        // Bütçelerimin içerdiği tüm kategori ID'lerini al
+        let budgetCategoryIDs = Set(gosterilecekButceler.flatMap { $0.butce.kategoriler?.map { $0.id } ?? [] })
+        
+        // Eğer etkilenen kategori, benim bütçelerimden herhangi birinde varsa güncelleme yap
+        if let kategoriID = secilenKategori, budgetCategoryIDs.contains(kategoriID) {
+            Task { await butceDurumlariniHesapla() }
+        } else {
+            print("ButcelerViewModel: Değişiklik fark edildi ancak ilgili kategori bulunmadığı için güncelleme yapılmadı.")
+        }
     }
 
     func deleteButce(_ butce: Butce) {

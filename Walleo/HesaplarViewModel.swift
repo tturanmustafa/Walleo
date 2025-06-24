@@ -19,14 +19,25 @@ class HesaplarViewModel {
     }
 
     @objc func hesaplamalariTetikle(notification: Notification) {
-        Task {
-            if let userInfo = notification.userInfo,
-               let accountIDs = userInfo["affectedAccountIDs"] as? [UUID],
-               !accountIDs.isEmpty {
-                await guncelBakiyeHesapla(for: accountIDs)
-            } else {
-                await hesaplamalariYap()
-            }
+        // Gelen bildirimin içinde yeni payload'ımız var mı diye kontrol et
+        guard let payload = notification.userInfo?["payload"] as? TransactionChangePayload else {
+            // Eğer yoksa (eski sistem veya genel bir bildirim), her şeyi yeniden hesapla
+            Task { await hesaplamalariYap() }
+            return
+        }
+        
+        // Mevcut hesaplarımızın ID'lerini bir set olarak alalım
+        let currentAccountIDs = Set(gosterilecekHesaplar.map { $0.id })
+        
+        // Etkilenen hesaplardan en az biri benim listemde var mı?
+        let isRelevantChange = !Set(payload.affectedAccountIDs).isDisjoint(with: currentAccountIDs)
+        
+        if isRelevantChange {
+            // Evet, değişiklik beni ilgilendiriyor. Sadece etkilenen hesapları güncelle.
+            Task { await guncelBakiyeHesapla(for: payload.affectedAccountIDs) }
+        } else {
+            // Hayır, bu değişiklik benim yönettiğim hesaplarla ilgili değil. Hiçbir şey yapma.
+            print("HesaplarViewModel: Değişiklik fark edildi ancak ilgili hesap bulunmadığı için güncelleme yapılmadı.")
         }
     }
 
