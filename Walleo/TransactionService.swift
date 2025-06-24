@@ -58,10 +58,23 @@ class TransactionService {
         }
         
         // Değişikliği tüm uygulamaya bildiriyoruz ki ilgili ekranlar kendilerini güncellesin.
+        var affectedCategoryIDs: Set<UUID> = []
+        if let kategoriID = islem.kategori?.id {
+            affectedCategoryIDs.insert(kategoriID)
+        }
+
+        // Yeni payload'ı oluştur
+        let payload = TransactionChangePayload(
+            type: .delete,
+            affectedAccountIDs: Array(affectedAccountIDs),
+            affectedCategoryIDs: Array(affectedCategoryIDs)
+        )
+        
+        // Bildirimi yeni payload ile gönder
         NotificationCenter.default.post(
             name: .transactionsDidChange,
             object: nil,
-            userInfo: ["affectedAccountIDs": Array(affectedAccountIDs)]
+            userInfo: ["payload": payload] // userInfo sözlüğünü payload'ı içerecek şekilde güncelledik
         )
     }
 }

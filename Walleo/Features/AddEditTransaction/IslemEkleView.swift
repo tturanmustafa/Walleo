@@ -206,7 +206,21 @@ struct IslemEkleView: View {
              yeniSeriOlustur(islem: islemToUpdate)
         }
         
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["affectedAccountIDs": Array(affectedAccountIDs)])
+        var affectedCategoryIDs: [UUID] = []
+        if let kategoriID = secilenKategori?.id {
+            affectedCategoryIDs.append(kategoriID)
+        }
+        
+        // Yeni payload'ı oluştur
+        let changeType: TransactionChangePayload.ChangeType = duzenlenecekIslem == nil ? .add : .update
+        let payload = TransactionChangePayload(
+            type: changeType,
+            affectedAccountIDs: Array(affectedAccountIDs),
+            affectedCategoryIDs: affectedCategoryIDs
+        )
+        
+        // Bildirimi yeni payload ile gönder
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["payload": payload])
         dismiss()
     }
     

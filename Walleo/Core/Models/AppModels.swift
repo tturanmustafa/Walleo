@@ -206,3 +206,12 @@ struct GosterilecekButce: Identifiable {
     var harcananTutar: Double
     var id: UUID { butce.id }
 }
+
+struct TransactionChangePayload {
+    /// Değişikliğin türü (ekleme, güncelleme, silme).
+    enum ChangeType { case add, update, delete }
+    
+    let type: ChangeType
+    let affectedAccountIDs: [UUID]
+    let affectedCategoryIDs: [UUID]
+}
