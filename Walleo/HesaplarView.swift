@@ -51,6 +51,7 @@ struct HesaplarView: View {
                 await viewModel?.hesaplamalariYap()
             }
         }) { sheet in
+            // Açılan her sheet'e AppSettings nesnesini environmentObject olarak ekliyoruz.
             sheet.view
                 .environmentObject(appSettings)
         }

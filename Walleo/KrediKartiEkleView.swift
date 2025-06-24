@@ -4,14 +4,14 @@ import SwiftData
 struct KrediKartiEkleView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var appSettings: AppSettings // YENİ: Dil ayarlarına erişim için
+    @EnvironmentObject var appSettings: AppSettings
 
     // MARK: - State Properties
     @State private var isim: String = ""
     @State private var limitString: String = ""
     @State private var guncelBorcString: String = "" // Opsiyonel alan
     @State private var kesimTarihi = Date()
-    @State private var sonOdemeGunuOfseti: Int = 10 // Varsayılan değer: kesimden 10 gün sonra
+    @State private var sonOdemeGunuOfseti: Int = 10
     @State private var secilenRenk: Color = .red
     
     var duzenlenecekHesap: Hesap?
@@ -27,14 +27,12 @@ struct KrediKartiEkleView: View {
         !isBorcGecersiz
     }
     
-    // --- YENİ EKLENEN YARDIMCI DEĞİŞKEN ---
-    // Stepper metnini doğru dilde oluşturan hesaplanmış değişken
     private var stepperLabelText: String {
         let dilKodu = appSettings.languageCode
         
         guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
               let languageBundle = Bundle(path: path) else {
-            return "\(sonOdemeGunuOfseti)" // Hata durumunda sadece sayıyı göster
+            return "\(sonOdemeGunuOfseti)"
         }
         
         let formatString = languageBundle.localizedString(forKey: "credit_card.form.payment_due_date_stepper", value: "%d days after statement date", table: nil)
@@ -45,46 +43,82 @@ struct KrediKartiEkleView: View {
     // MARK: - Body
     var body: some View {
         NavigationStack {
-            Form {
-                Section(LocalizedStringKey("transaction.section_details")) {
-                    TextField(LocalizedStringKey("accounts.add.card_name_placeholder"), text: $isim)
-                    
-                    VStack(alignment: .leading) {
-                        TextField(LocalizedStringKey("accounts.add.card_limit"), text: $limitString)
-                            .keyboardType(.decimalPad)
-                            .validateAmountInput(text: $limitString, isInvalid: $isLimitGecersiz)
-                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(isLimitGecersiz ? .red : .clear, lineWidth: 1))
-                        if isLimitGecersiz {
-                            Text(LocalizedStringKey("validation.error.invalid_amount_format"))
-                                .font(.caption).foregroundColor(.red).padding(.top, 2)
+            // --- DÜZELTME: 'Form' yerine 'ScrollView' ve 'VStack' kullanıyoruz ---
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Detaylar Bölümü
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(LocalizedStringKey("transaction.section_details"))
+                            .font(.caption).foregroundColor(.secondary).padding(.leading)
+                        
+                        VStack(spacing: 0) {
+                            TextField(LocalizedStringKey("accounts.add.card_name_placeholder"), text: $isim).padding()
+                            Divider().padding(.leading)
+                            
+                            // Limit TextField
+                            VStack(alignment: .leading) {
+                                TextField(LocalizedStringKey("accounts.add.card_limit"), text: $limitString)
+                                    .keyboardType(.decimalPad)
+                                    .validateAmountInput(text: $limitString, isInvalid: $isLimitGecersiz)
+                                if isLimitGecersiz {
+                                    Text(LocalizedStringKey("validation.error.invalid_amount_format"))
+                                        .font(.caption).foregroundColor(.red).padding(.top, 2)
+                                }
+                            }.padding()
+                            
+                            Divider().padding(.leading)
+                            
+                            // Güncel Borç TextField
+                            VStack(alignment: .leading) {
+                                TextField(LocalizedStringKey("credit_card.form.current_debt_optional"), text: $guncelBorcString)
+                                    .keyboardType(.decimalPad)
+                                    .validateAmountInput(text: $guncelBorcString, isInvalid: $isBorcGecersiz)
+                                if isBorcGecersiz {
+                                    Text(LocalizedStringKey("validation.error.invalid_amount_format"))
+                                        .font(.caption).foregroundColor(.red).padding(.top, 2)
+                                }
+                            }.padding()
                         }
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .cornerRadius(10)
+                    }
+
+                    // Hesap Kesim Tarihi Bölümü
+                    VStack(alignment: .leading, spacing: 5) {
+                         Text(LocalizedStringKey("credit_card.form.statement_date_header"))
+                            .font(.caption).foregroundColor(.secondary).padding(.leading)
+                        
+                        DatePicker(LocalizedStringKey("credit_card.form.statement_date"), selection: $kesimTarihi, displayedComponents: .date)
+                            .padding()
+                            .background(Color(.secondarySystemGroupedBackground))
+                            .cornerRadius(10)
+                    }
+
+                    // Son Ödeme Günü Bölümü
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(LocalizedStringKey("credit_card.form.payment_due_date_header"))
+                           .font(.caption).foregroundColor(.secondary).padding(.leading)
+                        
+                        Stepper(stepperLabelText, value: $sonOdemeGunuOfseti, in: 1...28)
+                            .padding()
+                            .background(Color(.secondarySystemGroupedBackground))
+                            .cornerRadius(10)
                     }
                     
-                    VStack(alignment: .leading) {
-                        TextField(LocalizedStringKey("credit_card.form.current_debt_optional"), text: $guncelBorcString)
-                            .keyboardType(.decimalPad)
-                            .validateAmountInput(text: $guncelBorcString, isInvalid: $isBorcGecersiz)
-                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(isBorcGecersiz ? .red : .clear, lineWidth: 1))
-                        if isBorcGecersiz {
-                            Text(LocalizedStringKey("validation.error.invalid_amount_format"))
-                                .font(.caption).foregroundColor(.red).padding(.top, 2)
-                        }
+                    // Renk Seçimi Bölümü
+                    VStack(alignment: .leading, spacing: 5) {
+                         Text(LocalizedStringKey("categories.color"))
+                            .font(.caption).foregroundColor(.secondary).padding(.leading)
+                        
+                        ColorPicker(LocalizedStringKey("accounts.add.account_color"), selection: $secilenRenk, supportsOpacity: false)
+                            .padding()
+                            .background(Color(.secondarySystemGroupedBackground))
+                            .cornerRadius(10)
                     }
                 }
-                
-                Section(header: Text(LocalizedStringKey("credit_card.form.statement_date_header"))) {
-                    DatePicker(LocalizedStringKey("credit_card.form.statement_date"), selection: $kesimTarihi, displayedComponents: .date)
-                }
-                
-                Section(header: Text(LocalizedStringKey("credit_card.form.payment_due_date_header"))) {
-                    // --- GÜNCELLENEN SATIR ---
-                    Stepper(stepperLabelText, value: $sonOdemeGunuOfseti, in: 1...28)
-                }
-                
-                Section(LocalizedStringKey("categories.color")) {
-                    ColorPicker(LocalizedStringKey("accounts.add.account_color"), selection: $secilenRenk, supportsOpacity: false)
-                }
+                .padding()
             }
+            .background(Color(.systemGroupedBackground))
             .navigationTitle(duzenlenecekHesap == nil ? LocalizedStringKey("accounts.add.new_credit_card") : LocalizedStringKey("common.edit"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -97,7 +131,7 @@ struct KrediKartiEkleView: View {
         }
     }
     
-    // MARK: - Functions
+    // MARK: - Functions (Aynı kalıyor)
     private func formuDoldur() {
         guard let hesap = duzenlenecekHesap, case .krediKarti(let limit, let tarih, let ofset) = hesap.detay else { return }
         

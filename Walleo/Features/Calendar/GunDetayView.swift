@@ -50,21 +50,10 @@ struct GunDetayView: View {
         .recurringTransactionAlert(
             for: $silinecekIslem,
             onDeleteSingle: { islem in
-                var userInfo: [String: Any]?
-                if let hesapID = islem.hesap?.id {
-                    userInfo = ["affectedAccountIDs": [hesapID]]
-                }
-                modelContext.delete(islem)
-                NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
+                TransactionService.shared.deleteTransaction(islem, in: modelContext, scope: .single)
             },
             onDeleteSeries: { islem in
-                var userInfo: [String: Any]?
-                if let hesapID = islem.hesap?.id {
-                    userInfo = ["affectedAccountIDs": [hesapID]]
-                }
-                let tekrarID = islem.tekrarID
-                try? modelContext.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
-                NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
+                TransactionService.shared.deleteTransaction(islem, in: modelContext, scope: .series)
             }
         )
     }
@@ -72,14 +61,10 @@ struct GunDetayView: View {
     // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
     private func silmeyiBaslat(_ islem: Islem) {
         if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
-            silinecekIslem = islem
+            silinecekIslem = islem // Tekrarlanan işlemse onay penceresini göster
         } else {
-            var userInfo: [String: Any]?
-            if let hesapID = islem.hesap?.id {
-                userInfo = ["affectedAccountIDs": [hesapID]]
-            }
-            modelContext.delete(islem)
-            NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
+            // Tek seferlik işlemse doğrudan servisi çağır
+            TransactionService.shared.deleteTransaction(islem, in: modelContext, scope: .single)
         }
     }
 }
