@@ -89,7 +89,7 @@ class RaporlarViewModel {
         do {
             return try modelContext.fetch(descriptor)
         } catch {
-            print("Veri çekme hatası: \(error)")
+            Logger.log("Raporlar için işlem verisi çekme hatası: \(error.localizedDescription)", log: Logger.data, type: .error)
             return []
         }
     }

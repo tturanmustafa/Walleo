@@ -61,7 +61,7 @@ class ButceDetayViewModel {
             self.gosterilecekButce = GosterilecekButce(butce: self.butce, harcananTutar: harcananTutar)
             
         } catch {
-            print("Bütçe detay verisi çekilirken hata oluştu: \(error)")
+            Logger.log("Bütçe detay verisi çekilirken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
     }
 }

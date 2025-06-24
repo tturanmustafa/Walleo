@@ -53,8 +53,12 @@ class TransactionService {
                 return
             }
             
-            try? context.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
-            print("TransactionService: Tüm seri silindi. TekrarID: \(tekrarID)")
+            do {
+                try context.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
+                Logger.log("TransactionService: Tüm seri silindi. TekrarID: \(tekrarID)", log: Logger.service, type: .info)
+            } catch {
+                Logger.log("TransactionService: Seri silinirken hata oluştu: \(error.localizedDescription)", log: Logger.service, type: .error)
+            }
         }
         
         // Değişikliği tüm uygulamaya bildiriyoruz ki ilgili ekranlar kendilerini güncellesin.

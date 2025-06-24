@@ -71,22 +71,27 @@ class TakvimViewModel {
             predicate: #Predicate { $0.tarih >= interval.start && $0.tarih < interval.end }
         )
         
-        guard let transactions = try? modelContext.fetch(descriptor) else { return }
-        
-        self.aylikToplamGelir = transactions.filter { $0.tur == .gelir }.reduce(0) { $0 + $1.tutar }
-        self.aylikToplamGider = transactions.filter { $0.tur == .gider }.reduce(0) { $0 + $1.tutar }
-        
-        let groupedByDay = Dictionary(grouping: transactions) { transaction in
-            Calendar.current.startOfDay(for: transaction.tarih)
-        }
-        
-        for i in 0..<calendarDays.count {
-            let dayDate = Calendar.current.startOfDay(for: calendarDays[i].date)
-            if let transactionsForDay = groupedByDay[dayDate] {
-                let income = transactionsForDay.filter { $0.tur == .gelir }.reduce(0) { $0 + $1.tutar }
-                let expense = transactionsForDay.filter { $0.tur == .gider }.reduce(0) { $0 + $1.tutar }
-                calendarDays[i].netAmount = income - expense
+        do {
+            let transactions = try modelContext.fetch(descriptor)
+            
+            self.aylikToplamGelir = transactions.filter { $0.tur == .gelir }.reduce(0) { $0 + $1.tutar }
+            self.aylikToplamGider = transactions.filter { $0.tur == .gider }.reduce(0) { $0 + $1.tutar }
+            
+            let groupedByDay = Dictionary(grouping: transactions) { transaction in
+                Calendar.current.startOfDay(for: transaction.tarih)
             }
+            
+            for i in 0..<calendarDays.count {
+                calendarDays[i].netAmount = 0 // Her döngüde sıfırla
+                let dayDate = Calendar.current.startOfDay(for: calendarDays[i].date)
+                if let transactionsForDay = groupedByDay[dayDate] {
+                    let income = transactionsForDay.filter { $0.tur == .gelir }.reduce(0) { $0 + $1.tutar }
+                    let expense = transactionsForDay.filter { $0.tur == .gider }.reduce(0) { $0 + $1.tutar }
+                    calendarDays[i].netAmount = income - expense
+                }
+            }
+        } catch {
+            Logger.log("Takvim için işlem verisi çekilemedi: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
     }
 }

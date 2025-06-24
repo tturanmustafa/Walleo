@@ -53,7 +53,7 @@ class DashboardViewModel {
             self.hesaplamalariGuncelle()
 
         } catch {
-            print("Dashboard veri çekme hatası: \(error)")
+            Logger.log("Dashboard veri çekme hatası: \(error.localizedDescription)", log: Logger.data, type: .error)
             self.filtrelenmisIslemler = []
             self.hesaplamalariGuncelle()
         }
