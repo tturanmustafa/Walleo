@@ -22,7 +22,11 @@ struct KrediEkleView: View {
             Form {
                 Section(header: Text(LocalizedStringKey("loan.form.details_header"))) {
                     TextField(LocalizedStringKey("accounts.add.loan_name_placeholder"), text: $isim)
-                    TextField(LocalizedStringKey("accounts.add.loan_amount"), text: $cekilenTutarString).keyboardType(.decimalPad)
+                    FormattedAmountField(
+                        "accounts.add.loan_amount",
+                        value: $cekilenTutarString,
+                        isInvalid: .constant(false) // Bu alanda özel bir 'isInvalid' state'i yoktu, geçici bir binding kullandık.
+                    )
                     
                     HStack {
                         TextField(LocalizedStringKey("accounts.add.interest_rate"), text: $faizOraniString).keyboardType(.decimalPad)

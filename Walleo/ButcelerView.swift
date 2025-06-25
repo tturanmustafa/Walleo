@@ -10,6 +10,8 @@ struct ButcelerView: View {
 
     @State private var yeniButceEkleGoster = false
     @State private var duzenlenecekButce: Butce?
+    @State private var silinecekButce: Butce?
+
 
     var body: some View {
         NavigationStack {
@@ -32,7 +34,8 @@ struct ButcelerView: View {
                                                 duzenlenecekButce = gosterilecekButce.butce
                                             },
                                             onDelete: {
-                                                viewModel.deleteButce(gosterilecekButce.butce)
+                                                // Silme işlemini başlatmak için state'i ayarlıyoruz
+                                                silinecekButce = gosterilecekButce.butce
                                             }
                                         )
                                     }

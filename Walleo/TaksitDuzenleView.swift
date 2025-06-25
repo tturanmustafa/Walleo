@@ -24,9 +24,11 @@ struct TaksitDuzenleView: View {
             Form {
                 Section(LocalizedStringKey("installment.edit.details_header")) {
                     VStack(alignment: .leading) {
-                        TextField(LocalizedStringKey("common.amount"), text: $tutarString)
-                            .keyboardType(.decimalPad)
-                            .validateAmountInput(text: $tutarString, isInvalid: $isTutarGecersiz) // Değişiklik burada
+                        FormattedAmountField(
+                            "common.amount",
+                            value: $tutarString,
+                            isInvalid: $isTutarGecersiz
+                        )
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? .red : .clear, lineWidth: 1))
                         
                         if isTutarGecersiz {

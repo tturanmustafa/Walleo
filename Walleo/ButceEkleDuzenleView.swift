@@ -54,14 +54,19 @@ struct ButceEkleDuzenleView: View {
                     TextField(LocalizedStringKey("budgets.form.name_placeholder"), text: $isim)
                     
                     VStack(alignment: .leading) {
-                        TextField(LocalizedStringKey("budgets.form.limit_amount"), text: $limitString)
-                            .keyboardType(.decimalPad)
-                            .validateAmountInput(text: $limitString, isInvalid: $isLimitGecersiz)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 5)
-                                    .stroke(isLimitGecersiz ? Color.red : Color.clear, lineWidth: 1)
-                            )
-                        
+                        // Artık eski TextField yerine yeni, akıllı bileşenimizi kullanıyoruz.
+                        // Formatlama ve doğrulama kendi içinde.
+                        FormattedAmountField(
+                            "budgets.form.limit_amount",
+                            value: $limitString,
+                            isInvalid: $isLimitGecersiz,
+                            locale: Locale(identifier: appSettings.languageCode) // Dil ayarını da veriyoruz
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(isLimitGecersiz ? Color.red : Color.clear, lineWidth: 1)
+                        )
+
                         if isLimitGecersiz {
                             Text(LocalizedStringKey("validation.error.invalid_amount_format"))
                                 .font(.caption).foregroundColor(.red).padding(.top, 2)

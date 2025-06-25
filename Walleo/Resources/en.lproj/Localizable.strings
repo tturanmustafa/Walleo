@@ -198,6 +198,8 @@
 "budgets.card.total_limit" = "Total Limit";
 "budgets.card.amount_spent" = "Amount Spent";
 "budgets.card.amount_remaining" = "Amount Remaining";
+"alert.delete_budget.message_format" = "Are you sure you want to permanently delete the budget named '%@'?";
+
 
 // MARK: - Enum Values & Categories
 "enum.recurrence.once" = "One Time";
@@ -254,5 +256,5 @@
 "currency.name.SGD" = "Singapore Dollar";
 
 "settings.section.data_management" = "Data Management";
-"settings.data.export" = "Export Data (CSV)";
+"settings.data.export" = "Export Data (.csv)";
 "settings.data.exporting" = "Exporting...";

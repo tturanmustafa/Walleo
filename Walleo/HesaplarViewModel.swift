@@ -3,6 +3,7 @@ import SwiftData
 
 @MainActor
 @Observable
+
 class HesaplarViewModel {
     var modelContext: ModelContext
     var gosterilecekHesaplar: [GosterilecekHesap] = []

@@ -41,8 +41,8 @@ struct ContentView: View {
                     }
                     .tag(Sekme.raporlar)
             }
-            // .id(appSettings.languageCode) satırı buradan kaldırıldı.
-            
+            //.id(appSettings.languageCode)
+
             Button(action: {
                 yeniIslemEkleShowing = true
             }) {
