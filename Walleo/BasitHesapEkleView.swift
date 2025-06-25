@@ -25,9 +25,11 @@ struct BasitHesapEkleView: View {
                     TextField(LocalizedStringKey("accounts.add.account_name_placeholder"), text: $isim)
                     
                     VStack(alignment: .leading) {
-                        TextField(LocalizedStringKey("accounts.add.initial_balance"), text: $bakiyeString)
-                            .keyboardType(.decimalPad)
-                            .validateAmountInput(text: $bakiyeString, isInvalid: $isBakiyeGecersiz) // Değişiklik burada
+                        FormattedAmountField(
+                            "accounts.add.initial_balance",
+                            value: $bakiyeString,
+                            isInvalid: $isBakiyeGecersiz
+                        )
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isBakiyeGecersiz ? Color.red : Color.clear, lineWidth: 1))
                         
                         if isBakiyeGecersiz {

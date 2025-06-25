@@ -198,6 +198,8 @@
 "budgets.card.total_limit" = "Toplam Limit";
 "budgets.card.amount_spent" = "Harcanan Tutar";
 "budgets.card.amount_remaining" = "Kalan Tutar";
+"alert.delete_budget.message_format" = "'%@' adlı bütçeyi kalıcı olarak silmek istediğinizden emin misiniz?";
+
 
 // MARK: - Enum Değerleri ve Kategoriler
 "enum.recurrence.once" = "Tek Seferlik";
@@ -254,5 +256,5 @@
 "currency.name.SGD" = "Singapur Doları";
 
 "settings.section.data_management" = "Veri Yönetimi";
-"settings.data.export" = "Verileri Dışa Aktar (CSV)";
+"settings.data.export" = "Verileri Dışa Aktar (.csv)";
 "settings.data.exporting" = "Dışa Aktarılıyor...";

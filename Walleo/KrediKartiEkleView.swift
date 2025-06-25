@@ -57,9 +57,11 @@ struct KrediKartiEkleView: View {
                             
                             // Limit TextField
                             VStack(alignment: .leading) {
-                                TextField(LocalizedStringKey("accounts.add.card_limit"), text: $limitString)
-                                    .keyboardType(.decimalPad)
-                                    .validateAmountInput(text: $limitString, isInvalid: $isLimitGecersiz)
+                                FormattedAmountField(
+                                    "accounts.add.card_limit",
+                                    value: $limitString,
+                                    isInvalid: $isLimitGecersiz
+                                )
                                 if isLimitGecersiz {
                                     Text(LocalizedStringKey("validation.error.invalid_amount_format"))
                                         .font(.caption).foregroundColor(.red).padding(.top, 2)
@@ -70,9 +72,11 @@ struct KrediKartiEkleView: View {
                             
                             // Güncel Borç TextField
                             VStack(alignment: .leading) {
-                                TextField(LocalizedStringKey("credit_card.form.current_debt_optional"), text: $guncelBorcString)
-                                    .keyboardType(.decimalPad)
-                                    .validateAmountInput(text: $guncelBorcString, isInvalid: $isBorcGecersiz)
+                                FormattedAmountField(
+                                    "credit_card.form.current_debt_optional",
+                                    value: $guncelBorcString,
+                                    isInvalid: $isBorcGecersiz
+                                )
                                 if isBorcGecersiz {
                                     Text(LocalizedStringKey("validation.error.invalid_amount_format"))
                                         .font(.caption).foregroundColor(.red).padding(.top, 2)

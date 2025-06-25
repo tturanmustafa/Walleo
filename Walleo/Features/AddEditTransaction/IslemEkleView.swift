@@ -4,6 +4,7 @@ import SwiftData
 struct IslemEkleView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var appSettings: AppSettings // <--- EKLENECEK SATIR BU
     
     var duzenlenecekIslem: Islem?
     
@@ -62,11 +63,14 @@ struct IslemEkleView: View {
                     TextField(LocalizedStringKey("transaction.name_placeholder"), text: $isim)
                     
                     VStack(alignment: .leading) {
-                        TextField(LocalizedStringKey("common.amount"), text: $tutarString)
-                            .keyboardType(.decimalPad)
-                            .validateAmountInput(text: $tutarString, isInvalid: $isTutarGecersiz)
-                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? Color.red : Color.clear, lineWidth: 1))
-                        
+                        FormattedAmountField(
+                            "common.amount",
+                            value: $tutarString,
+                            isInvalid: $isTutarGecersiz,
+                            locale: Locale(identifier: appSettings.languageCode)
+                        )
+                        .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? Color.red : Color.clear, lineWidth: 1))
+
                         if isTutarGecersiz {
                             Text(LocalizedStringKey("validation.error.invalid_amount_format"))
                                 .font(.caption).foregroundColor(.red).padding(.top, 2)
