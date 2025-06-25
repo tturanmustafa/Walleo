@@ -252,3 +252,7 @@
 "currency.name.SAR" = "Suudi Arabistan Riyali";
 "currency.name.KRW" = "Güney Kore Wonu";
 "currency.name.SGD" = "Singapur Doları";
+
+"settings.section.data_management" = "Veri Yönetimi";
+"settings.data.export" = "Verileri Dışa Aktar (CSV)";
+"settings.data.exporting" = "Dışa Aktarılıyor...";

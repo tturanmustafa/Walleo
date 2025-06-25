@@ -252,3 +252,7 @@
 "currency.name.SAR" = "Saudi Riyal";
 "currency.name.KRW" = "South Korean Won";
 "currency.name.SGD" = "Singapore Dollar";
+
+"settings.section.data_management" = "Data Management";
+"settings.data.export" = "Export Data (CSV)";
+"settings.data.exporting" = "Exporting...";

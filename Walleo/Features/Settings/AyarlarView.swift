@@ -1,15 +1,39 @@
 import SwiftUI
+import SwiftData
+
+// Paylaşım Ekranı için URL'i Identifiable yapan yardımcı struct
+struct ShareableURL: Identifiable {
+    let id = UUID()
+    let url: URL
+}
+
+// Ayarlar menüsündeki ikonları oluşturan yardımcı struct
+struct AyarIkonu: View {
+    let iconName: String
+    let color: Color
+    
+    var body: some View {
+        Image(systemName: iconName)
+            .font(.callout)
+            .foregroundColor(.white)
+            .frame(width: 32, height: 32)
+            .background(color)
+            .cornerRadius(7)
+    }
+}
 
 struct AyarlarView: View {
     @EnvironmentObject var appSettings: AppSettings
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) private var modelContext
     
-    // Başlığı manuel olarak güncellemek için.
-    @State private var currentTitle: String = ""
-
+    @State private var isExporting = false
+    @State private var shareableURL: ShareableURL?
+    
     var body: some View {
         Form {
             Section(LocalizedStringKey("settings.section_general")) {
+                // Tema Ayarı
                 HStack {
                     AyarIkonu(iconName: "circle.righthalf.filled", color: .gray)
                     Text(LocalizedStringKey("settings.theme"))
@@ -24,6 +48,7 @@ struct AyarlarView: View {
                 }
                 .padding(.vertical, 4)
                 
+                // Dil Ayarı
                 HStack {
                     AyarIkonu(iconName: "globe", color: .blue)
                     Text(LocalizedStringKey("settings.language"))
@@ -37,6 +62,7 @@ struct AyarlarView: View {
                 }
                 .padding(.vertical, 4)
                 
+                // Para Birimi Ayarı
                 HStack {
                     AyarIkonu(iconName: "coloncurrencysign.circle.fill", color: .green)
                     Text(LocalizedStringKey("settings.currency"))
@@ -52,17 +78,37 @@ struct AyarlarView: View {
                 }
                 .padding(.vertical, 4)
                 
+                // Kategori Yönetimi Linki
                 NavigationLink(destination: KategoriYonetimView()) {
                     AyarIkonu(iconName: "folder.fill", color: .orange)
                     Text(LocalizedStringKey("settings.manage_categories"))
                 }
                 .padding(.vertical, 4)
                 
+                // Bildirim Ayarları Linki
                 NavigationLink(destination: BildirimAyarlariView()) {
                     AyarIkonu(iconName: "bell.badge.fill", color: .red)
                     Text(LocalizedStringKey("settings.notifications"))
                 }
                 .padding(.vertical, 4)
+            }
+            
+            Section(LocalizedStringKey("settings.section.data_management")) {
+                Button(action: exportData) {
+                    HStack {
+                        AyarIkonu(iconName: "square.and.arrow.up", color: .purple)
+                        
+                        if isExporting {
+                            Text(LocalizedStringKey("settings.data.exporting"))
+                            Spacer()
+                            ProgressView()
+                        } else {
+                            Text(LocalizedStringKey("settings.data.export"))
+                        }
+                    }
+                }
+                .disabled(isExporting)
+                .foregroundColor(.primary)
             }
             
             Section(LocalizedStringKey("settings.section_info")) {
@@ -74,7 +120,7 @@ struct AyarlarView: View {
                 }
             }
         }
-        .navigationTitle(currentTitle) // Başlık @State değişkeninden geliyor
+        .navigationTitle(LocalizedStringKey("settings.title"))
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button(LocalizedStringKey("common.done")) {
@@ -82,53 +128,38 @@ struct AyarlarView: View {
                 }
             }
         }
-        .onAppear(perform: updateTitle)
-        .onChange(of: appSettings.languageCode) {
-            updateTitle()
+        .sheet(item: $shareableURL) { wrapper in
+            ActivityView(activityItems: [wrapper.url])
         }
     }
     
-    // --- DÜZELTİLMİŞ FONKSİYON ---
-    private func updateTitle() {
-        let key = "settings.title"
-        let dilKodu = appSettings.languageCode
+    private func exportData() {
+        isExporting = true
         
-        // Doğru dil paketini (bundle) buluyoruz.
-        guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
-              let languageBundle = Bundle(path: path) else {
-            // Hata durumunda anahtarı olduğu gibi göster.
-            self.currentTitle = key
+        let descriptor = FetchDescriptor<Islem>(sortBy: [SortDescriptor(\.tarih, order: .reverse)])
+        guard let islemler = try? modelContext.fetch(descriptor) else {
+            isExporting = false
+            Logger.log("Dışa aktarma için işlemler çekilemedi.", log: Logger.service, type: .error)
             return
         }
         
-        // Metni, telefonun sistem dilinden bağımsız olarak,
-        // bizim seçtiğimiz dil paketinden alıyoruz.
-        self.currentTitle = languageBundle.localizedString(forKey: key, value: key, table: nil)
-    }
-}
-
-
-struct AyarIkonu: View {
-    let iconName: String
-    let color: Color
-    
-    var body: some View {
-        Image(systemName: iconName)
-            .font(.callout)
-            .foregroundColor(.white)
-            .frame(width: 32, height: 32)
-            .background(color)
-            .cornerRadius(7)
-    }
-}
-
-
-#Preview {
-    let settings = AppSettings()
-    
-    return NavigationStack {
-        AyarlarView()
-            .environmentObject(settings)
-            .environment(\.locale, .init(identifier: settings.languageCode))
+        DispatchQueue.global(qos: .userInitiated).async {
+            let csvString = ExportService.generateCSV(from: islemler, languageCode: appSettings.languageCode)
+            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("Walleo_Export.csv")
+            
+            do {
+                try csvString.write(to: tempURL, atomically: true, encoding: .utf8)
+                
+                DispatchQueue.main.async {
+                    self.shareableURL = ShareableURL(url: tempURL)
+                    self.isExporting = false
+                }
+            } catch {
+                Logger.log("CSV dosyası geçici olarak kaydedilirken hata oluştu: \(error.localizedDescription)", log: Logger.service, type: .error)
+                DispatchQueue.main.async {
+                    self.isExporting = false
+                }
+            }
+        }
     }
 }
