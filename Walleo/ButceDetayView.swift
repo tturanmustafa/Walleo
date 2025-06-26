@@ -33,7 +33,7 @@ struct ButceDetayView: View {
             // 2. Bölüm: İşlem Listesi
             if viewModel.donemIslemleri.isEmpty {
                 ContentUnavailableView(
-                    "Bu Bütçe İçin İşlem Yok",
+                    LocalizedStringKey("budget_details.no_transactions"), // <-- DOĞRU KULLANIM
                     systemImage: "doc.text.magnifyingglass"
                 )
             } else {
