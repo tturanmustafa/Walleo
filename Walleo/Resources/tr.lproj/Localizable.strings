@@ -262,3 +262,16 @@
 "settings.language_change.title" = "Dil Değiştir";
 "settings.language_change.message" = "Dil ayarını değiştirmek için uygulamanın yeniden başlatılması gerekir. Devam edilsin mi?";
 "settings.language_change.restart_button" = "Yeniden Başlat";
+
+"alert.delete_confirmation.title" = "Silme Onayı";
+"alert.delete_wallet.message_format" = "'%@' adlı cüzdan/hesabı kalıcı olarak silmek istediğinizden emin misiniz? Bu hesaba bağlı işlemler silinmeyecek, sadece hesap bağlantıları kaldırılacaktır.";
+"alert.delete_credit_card.message_format" = "'%@' adlı kredi kartını kalıcı olarak silmek istediğinizden emin misiniz? Bu hesaba bağlı işlemler silinmeyecek, sadece hesap bağlantıları kaldırılacaktır.";
+"alert.delete_loan.message_format" = "'%@' adlı krediyi ve taksit planını kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.";
+"alert.delete_category.message_format" = "'%@' adlı kategoriyi silmek istediğinizden emin misiniz? Bu kategoriye ait işlemlerin kategorisi kaldırılacaktır.";
+"alert.delete_transaction.message" = "Bu işlemi kalıcı olarak silmek istediğinizden emin misiniz?";
+"alert.delete_all_notifications.title" = "Tümünü Sil";
+"alert.delete_all_notifications.message" = "Tüm bildirimleri kalıcı olarak silmek istediğinizden emin misiniz?";
+
+"button.add_account" = "Hesap Ekle";
+"button.add_budget" = "Bütçe Ekle";
+"button.add_category" = "Kategori Ekle";

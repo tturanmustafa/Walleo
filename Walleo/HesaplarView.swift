@@ -7,7 +7,6 @@ struct HesaplarView: View {
     
     @State private var viewModel: HesaplarViewModel?
     
-    // Gosterilecek sheet'i yöneten enum ve @State
     enum SheetTuru: Identifiable {
         case cuzdanEkle, krediKartiEkle, krediEkle
         case cuzdanDuzenle(Hesap), krediKartiDuzenle(Hesap), krediDuzenle(Hesap)
@@ -24,6 +23,8 @@ struct HesaplarView: View {
         }
     }
     @State private var gosterilecekSheet: SheetTuru?
+    
+    @State private var silinecekHesap: Hesap?
 
     var body: some View {
         NavigationStack {
@@ -39,14 +40,11 @@ struct HesaplarView: View {
                     ProgressView()
                 }
             }
-            .navigationTitle(LocalizedStringKey("accounts.title")) // DÜZELTİLDİ
+            .navigationTitle(LocalizedStringKey("accounts.title"))
             .toolbar { toolbarIcerigi() }
         }
-        // Manuel başlık güncelleme kodları kaldırıldı
         .sheet(item: $gosterilecekSheet, onDismiss: {
-            Task {
-                await viewModel?.hesaplamalariYap()
-            }
+            Task { await viewModel?.hesaplamalariYap() }
         }) { sheet in
             sheet.view
                 .environmentObject(appSettings)
@@ -56,6 +54,37 @@ struct HesaplarView: View {
                 viewModel = HesaplarViewModel(modelContext: self.modelContext)
                 await viewModel?.hesaplamalariYap()
             }
+        }
+        .alert(
+            LocalizedStringKey("alert.delete_confirmation.title"),
+            isPresented: Binding(isPresented: $silinecekHesap),
+            presenting: silinecekHesap
+        ) { hesap in
+            Button(role: .destructive) {
+                viewModel?.hesabiSil(hesap: hesap)
+            } label: {
+                Text("common.delete")
+            }
+        } message: { hesap in
+            // GÜNCELLENMİŞ VE AKILLI MESAJ BLOĞU
+            let dilKodu = appSettings.languageCode
+            guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+                  let languageBundle = Bundle(path: path) else {
+                return Text(hesap.isim) // Fallback
+            }
+            
+            let key: String
+            switch hesap.detay {
+            case .cuzdan:
+                key = "alert.delete_wallet.message_format"
+            case .krediKarti:
+                key = "alert.delete_credit_card.message_format"
+            case .kredi:
+                key = "alert.delete_loan.message_format"
+            }
+            
+            let formatString = languageBundle.localizedString(forKey: key, value: "", table: nil)
+            return Text(String(format: formatString, hesap.isim))
         }
     }
     
@@ -82,7 +111,7 @@ struct HesaplarView: View {
         HesapKartView(
             gosterilecekHesap: bilgi,
             onEdit: { presentEditSheet(for: bilgi.hesap) },
-            onDelete: { viewModel.hesabiSil(hesap: bilgi.hesap) }
+            onDelete: { silinecekHesap = bilgi.hesap }
         )
         .environmentObject(appSettings)
     }

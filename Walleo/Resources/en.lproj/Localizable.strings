@@ -262,3 +262,16 @@
 "settings.language_change.title" = "Change Language";
 "settings.language_change.message" = "To change the language setting, the application needs to be restarted. Do you want to continue?";
 "settings.language_change.restart_button" = "Restart";
+
+"alert.delete_confirmation.title" = "Confirm Deletion";
+"alert.delete_wallet.message_format" = "Are you sure you want to permanently delete the wallet/account named '%@'? Transactions linked to this account will not be deleted, their account association will simply be removed.";
+"alert.delete_credit_card.message_format" = "Are you sure you want to permanently delete the credit card named '%@'? Transactions linked to this card will not be deleted, their account association will simply be removed.";
+"alert.delete_loan.message_format" = "Are you sure you want to permanently delete the loan named '%@' and its installment plan? This action cannot be undone.";
+"alert.delete_category.message_format" = "Are you sure you want to delete the category named '%@'? The category for its transactions will be removed.";
+"alert.delete_transaction.message" = "Are you sure you want to permanently delete this transaction?";
+"alert.delete_all_notifications.title" = "Delete All";
+"alert.delete_all_notifications.message" = "Are you sure you want to permanently delete all notifications?";
+
+"button.add_account" = "Add Account";
+"button.add_budget" = "Add Budget";
+"button.add_category" = "Add Category";

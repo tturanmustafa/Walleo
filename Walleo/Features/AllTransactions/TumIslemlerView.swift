@@ -7,84 +7,106 @@ struct TumIslemlerView: View {
     
     @State private var viewModel: TumIslemlerViewModel
     
-    // Her bir filtre sayfası için ayrı state'ler
     @State private var kategoriFiltreGosteriliyor = false
     @State private var tarihFiltreGosteriliyor = false
     @State private var turFiltreGosteriliyor = false
     
     @State private var duzenlenecekIslem: Islem?
-    @State private var silinecekIslem: Islem?
+    @State private var silinecekTekrarliIslem: Islem?
+    @State private var silinecekTekilIslem: Islem?
     
     init(modelContext: ModelContext) {
         _viewModel = State(initialValue: TumIslemlerViewModel(modelContext: modelContext))
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            filtrelemeBari
-                .padding(.vertical, 8)
+        ZStack {
+            VStack(spacing: 0) {
+                filtrelemeBari
+                    .padding(.vertical, 8)
 
-            List {
-                ForEach(viewModel.islemler) { islem in
-                    IslemSatirView(
-                        islem: islem,
-                        onEdit: { duzenlenecekIslem = islem },
-                        onDelete: { silmeyiBaslat(islem) }
-                    )
+                List {
+                    ForEach(viewModel.islemler) { islem in
+                        IslemSatirView(
+                            islem: islem,
+                            onEdit: { duzenlenecekIslem = islem },
+                            onDelete: { silmeyiBaslat(islem) }
+                        )
+                    }
                 }
+                .listStyle(.plain)
             }
-            .listStyle(.plain)
-        }
-        .navigationTitle("all_transactions.title")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    dismiss()
-                }) {
-                    HStack {
-                        Image(systemName: "chevron.left")
-                        Text("common.back")
+            .disabled(viewModel.isDeleting)
+            .navigationTitle("all_transactions.title")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            Text("common.back")
+                        }
                     }
                 }
             }
-        }
-        .sheet(isPresented: $kategoriFiltreGosteriliyor, onDismiss: { viewModel.fetchData() }) {
-            KategoriSecimView(secilenKategoriler: $viewModel.filtreAyarlari.secilenKategoriler)
-                .environmentObject(appSettings)
-        }
-        .sheet(isPresented: $tarihFiltreGosteriliyor, onDismiss: { viewModel.fetchData() }) {
-            TarihAraligiSecimView(secilenAralik: $viewModel.filtreAyarlari.tarihAraligi)
-                .presentationDetents([.height(320)])
-                .environmentObject(appSettings)
-        }
-        .sheet(isPresented: $turFiltreGosteriliyor, onDismiss: { viewModel.fetchData() }) {
-            IslemTuruSecimView(secilenTurler: $viewModel.filtreAyarlari.secilenTurler)
-                .presentationDetents([.height(200)])
-                .environmentObject(appSettings)
-        }
-        .sheet(item: $duzenlenecekIslem, onDismiss: { viewModel.fetchData() }) { islem in
-            IslemEkleView(duzenlenecekIslem: islem)
-                .environmentObject(appSettings)
-        }
-        .overlay {
-            if viewModel.islemler.isEmpty {
-                ContentUnavailableView("all_transactions.not_found", systemImage: "magnifyingglass", description: Text("all_transactions.not_found_desc"))
+            .sheet(isPresented: $kategoriFiltreGosteriliyor) {
+                KategoriSecimView(secilenKategoriler: $viewModel.filtreAyarlari.secilenKategoriler)
+                    .environmentObject(appSettings)
+            }
+            .sheet(isPresented: $tarihFiltreGosteriliyor) {
+                TarihAraligiSecimView(secilenAralik: $viewModel.filtreAyarlari.tarihAraligi)
+                    .presentationDetents([.height(320)])
+                    .environmentObject(appSettings)
+            }
+            .sheet(isPresented: $turFiltreGosteriliyor) {
+                IslemTuruSecimView(secilenTurler: $viewModel.filtreAyarlari.secilenTurler)
+                    .presentationDetents([.height(200)])
+                    .environmentObject(appSettings)
+            }
+            .sheet(item: $duzenlenecekIslem) { islem in
+                IslemEkleView(duzenlenecekIslem: islem)
+                    .environmentObject(appSettings)
+            }
+            .overlay {
+                if viewModel.islemler.isEmpty && !viewModel.isDeleting {
+                    ContentUnavailableView("all_transactions.not_found", systemImage: "magnifyingglass", description: Text("all_transactions.not_found_desc"))
+                }
+            }
+            .recurringTransactionAlert(
+                for: $silinecekTekrarliIslem,
+                onDeleteSingle: { islem in viewModel.deleteIslem(islem) },
+                onDeleteSeries: { islem in viewModel.deleteSeri(islem) }
+            )
+            .alert(
+                LocalizedStringKey("alert.delete_confirmation.title"),
+                isPresented: Binding(isPresented: $silinecekTekilIslem),
+                presenting: silinecekTekilIslem
+            ) { islem in
+                Button(role: .destructive) {
+                    viewModel.deleteIslem(islem)
+                } label: { Text("common.delete") }
+            } message: { islem in
+                Text("alert.delete_transaction.message")
+            }
+            
+            if viewModel.isDeleting {
+                ProgressView("Siliniyor...")
+                    .padding(25)
+                    .background(Material.thick)
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
             }
         }
-        .recurringTransactionAlert(
-            for: $silinecekIslem,
-            onDeleteSingle: { islem in viewModel.deleteIslem(islem) },
-            onDeleteSeries: { islem in viewModel.deleteSeri(islem) }
-        )
     }
     
     private func silmeyiBaslat(_ islem: Islem) {
         if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
-            silinecekIslem = islem
+            silinecekTekrarliIslem = islem
         } else {
-            viewModel.deleteIslem(islem)
+            silinecekTekilIslem = islem
         }
     }
     

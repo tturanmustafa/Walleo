@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 
+@MainActor
 @Observable
 class TumIslemlerViewModel {
     var modelContext: ModelContext
@@ -10,6 +11,9 @@ class TumIslemlerViewModel {
     }
     
     var islemler: [Islem] = []
+    
+    var isDeleting = false
+    private let modelContainer: ModelContainer
 
     var aktifFiltreSayisi: Int {
         var count = 0
@@ -21,6 +25,7 @@ class TumIslemlerViewModel {
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
+        self.modelContainer = modelContext.container
         fetchData()
         
         NotificationCenter.default.addObserver(
@@ -36,33 +41,9 @@ class TumIslemlerViewModel {
         var baslangicTarihi: Date?
         var bitisTarihi: Date?
         
-        if filtreAyarlari.tarihAraligi != .hepsi {
-             switch filtreAyarlari.tarihAraligi {
-             case .buHafta:
-                 if let interval = calendar.dateInterval(of: .weekOfYear, for: Date()) {
-                     baslangicTarihi = interval.start
-                     bitisTarihi = interval.end
-                 }
-            case .buAy:
-                if let interval = calendar.dateInterval(of: .month, for: Date()) {
-                    baslangicTarihi = interval.start
-                    bitisTarihi = interval.end
-                }
-            case .son3Ay:
-                baslangicTarihi = calendar.date(byAdding: .month, value: -3, to: Date())
-                bitisTarihi = Date()
-            case .son6Ay:
-                baslangicTarihi = calendar.date(byAdding: .month, value: -6, to: Date())
-                bitisTarihi = Date()
-            case .yilBasindanBeri:
-                 baslangicTarihi = calendar.date(from: calendar.dateComponents([.year], from: Date()))
-                 bitisTarihi = Date()
-            case .sonYil:
-                baslangicTarihi = calendar.date(byAdding: .year, value: -1, to: Date())
-                bitisTarihi = Date()
-            case .hepsi:
-                break
-            }
+        if let interval = filtreAyarlari.tarihAraligi.dateInterval() {
+            baslangicTarihi = interval.start
+            bitisTarihi = interval.end
         }
         
         let turFiltresiAktif = filtreAyarlari.secilenTurler.count == 1
@@ -110,12 +91,19 @@ class TumIslemlerViewModel {
         }
     }
     
-    // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
     func deleteIslem(_ islem: Islem) {
-        TransactionService.shared.deleteTransaction(islem, in: modelContext, scope: .single)
+        TransactionService.shared.deleteTransaction(islem, in: modelContext)
+        if let index = islemler.firstIndex(where: { $0.id == islem.id }) {
+            islemler.remove(at: index)
+        }
     }
     
     func deleteSeri(_ islem: Islem) {
-        TransactionService.shared.deleteTransaction(islem, in: modelContext, scope: .series)
+        Task {
+            isDeleting = true
+            await TransactionService.shared.deleteSeriesInBackground(tekrarID: islem.tekrarID, from: modelContainer)
+            fetchData()
+            isDeleting = false
+        }
     }
 }
