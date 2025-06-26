@@ -275,3 +275,9 @@
 "button.add_account" = "Add Account";
 "button.add_budget" = "Add Budget";
 "button.add_category" = "Add Category";
+
+"budget_details.no_transactions" = "No Transactions for This Budget";
+
+"alert.no_accounts.title" = "Account Required";
+"alert.no_accounts.message" = "To add a transaction, you must first create a Wallet or Credit Card account.";
+"alert.no_accounts.add_account_button" = "Create Account";

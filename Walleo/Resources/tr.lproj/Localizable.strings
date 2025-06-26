@@ -275,3 +275,9 @@
 "button.add_account" = "Hesap Ekle";
 "button.add_budget" = "Bütçe Ekle";
 "button.add_category" = "Kategori Ekle";
+
+"budget_details.no_transactions" = "Bu Bütçe İçin İşlem Yok";
+
+"alert.no_accounts.title" = "Hesap Gerekli";
+"alert.no_accounts.message" = "Bir işlem ekleyebilmek için öncelikle bir Cüzdan veya Kredi Kartı hesabı oluşturmanız gerekmektedir.";
+"alert.no_accounts.add_account_button" = "Hesap Oluştur";
