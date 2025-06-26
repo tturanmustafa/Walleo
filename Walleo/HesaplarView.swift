@@ -39,31 +39,25 @@ struct HesaplarView: View {
                     ProgressView()
                 }
             }
-            // DEĞİŞİKLİK: Başlık artık doğrudan lokalizasyon anahtarı ile ayarlanıyor.
-            // Bu, SwiftUI'ın dil değişimlerini otomatik olarak algılamasını sağlar.
-            .navigationTitle("accounts.title")
+            .navigationTitle(LocalizedStringKey("accounts.title")) // DÜZELTİLDİ
             .toolbar { toolbarIcerigi() }
         }
-        // DEĞİŞİKLİK: Başlığı manuel olarak güncelleyen .onAppear ve .onChange kaldırıldı.
+        // Manuel başlık güncelleme kodları kaldırıldı
         .sheet(item: $gosterilecekSheet, onDismiss: {
             Task {
                 await viewModel?.hesaplamalariYap()
             }
         }) { sheet in
-            // Bu kısım doğruydu, olduğu gibi kalıyor.
             sheet.view
                 .environmentObject(appSettings)
         }
         .task {
-            // ViewModel'i oluşturan .task yapısı da doğru, olduğu gibi kalıyor.
             if viewModel == nil {
                 viewModel = HesaplarViewModel(modelContext: self.modelContext)
                 await viewModel?.hesaplamalariYap()
             }
         }
     }
-    
-    // YARDIMCI FONKSİYONLAR OLDUĞU GİBİ KALIYOR
     
     private func hesapListesi(viewModel: HesaplarViewModel) -> some View {
         ScrollView {
@@ -129,7 +123,6 @@ struct HesaplarView: View {
     }
 }
 
-// Extension'da bir değişiklik yok, olduğu gibi kalıyor.
 extension HesaplarView.SheetTuru {
     @ViewBuilder
     var view: some View {

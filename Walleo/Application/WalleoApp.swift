@@ -6,6 +6,9 @@ struct WalleoApp: App {
     @StateObject private var appSettings = AppSettings()
     let modelContainer: ModelContainer
 
+    // Arayüzü yeniden çizmek için kullanılacak state
+    @State private var viewID = UUID()
+
     init() {
         do {
             let config = ModelConfiguration(
@@ -13,7 +16,6 @@ struct WalleoApp: App {
                 cloudKitDatabase: .private("iCloud.com.mustafamt.walleo")
             )
 
-            // --- DÜZELTME BURADA: Model tiplerinin etrafındaki köşeli parantezler kaldırıldı ---
             modelContainer = try ModelContainer(
                 for: Hesap.self, Islem.self, Kategori.self, Butce.self, Bildirim.self,
                 configurations: config
@@ -31,19 +33,17 @@ struct WalleoApp: App {
                 .environmentObject(appSettings)
                 .preferredColorScheme(appSettings.colorScheme)
                 .environment(\.locale, Locale(identifier: appSettings.languageCode))
+                .id(viewID) // Bu ID değiştiğinde, tüm altındaki view'lar yeniden oluşturulur.
                 .task {
-                    // --- DÜZELTME & EN İYİ PRATİK ---
-                    // Uygulama başlarken yapılması gereken tüm konfigürasyon ve veri kontrolleri için
-                    // en doğru yer, ana görünümün .task modifikatörüdür.
-                    // Bu blok, görünüm ekrana geldiğinde asenkron olarak ve sadece bir kez çalışır.
-                    
-                    // 1. NotificationManager'ı burada, her şey yüklendikten sonra yapılandırıyoruz.
                     NotificationManager.shared.configure(modelContext: modelContainer.mainContext, appSettings: appSettings)
-                    
-                    // 2. Diğer başlangıç görevlerini de burada yapıyoruz.
                     await addDefaultCategoriesIfNeeded()
                     NotificationManager.shared.checkLoanInstallments()
                     NotificationManager.shared.checkCreditCardDueDates()
+                }
+                // Yeniden başlatma bildirimini dinle
+                .onReceive(NotificationCenter.default.publisher(for: .appShouldRestart)) { _ in
+                    // viewID'yi değiştirerek arayüzün yeniden çizilmesini tetikle
+                    viewID = UUID()
                 }
         }
         .modelContainer(modelContainer)

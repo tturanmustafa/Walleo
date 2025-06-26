@@ -4,7 +4,7 @@ import SwiftData
 struct ButceEkleDuzenleView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var appSettings: AppSettings // Dil ayarlarına erişim için eklendi
+    @EnvironmentObject var appSettings: AppSettings
     
     var duzenlenecekButce: Butce?
 
@@ -25,20 +25,16 @@ struct ButceEkleDuzenleView: View {
     }
     
     private var seciliKategoriIsimleri: String {
-        // Uygulama içinden seçilen dil kodunu al
         let dilKodu = appSettings.languageCode
         
-        // Bu dil koduna ait dil paketini (bundle) bul
         guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
               let languageBundle = Bundle(path: path) else {
-            // Eğer paket bulunamazsa, en azından ham veriyi göster
             return tumKategoriler
                 .filter { secilenKategoriIDleri.contains($0.id) }
                 .map { $0.localizationKey ?? $0.isim }
                 .joined(separator: ", ")
         }
         
-        // Çeviriyi, bulduğumuz bu özel dil paketi üzerinden yap
         return tumKategoriler
             .filter { secilenKategoriIDleri.contains($0.id) }
             .map { kategori in
@@ -54,13 +50,11 @@ struct ButceEkleDuzenleView: View {
                     TextField(LocalizedStringKey("budgets.form.name_placeholder"), text: $isim)
                     
                     VStack(alignment: .leading) {
-                        // Artık eski TextField yerine yeni, akıllı bileşenimizi kullanıyoruz.
-                        // Formatlama ve doğrulama kendi içinde.
                         FormattedAmountField(
                             "budgets.form.limit_amount",
                             value: $limitString,
                             isInvalid: $isLimitGecersiz,
-                            locale: Locale(identifier: appSettings.languageCode) // Dil ayarını da veriyoruz
+                            locale: Locale(identifier: appSettings.languageCode)
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 5)
@@ -118,7 +112,8 @@ struct ButceEkleDuzenleView: View {
     private func formuDoldur() {
         guard let butce = duzenlenecekButce else { return }
         self.isim = butce.isim
-        self.limitString = String(butce.limitTutar)
+        self.limitString = formatAmountForEditing(amount: butce.limitTutar, localeIdentifier: appSettings.languageCode)
+        self.isLimitGecersiz = false
         if let kategoriler = butce.kategoriler {
             self.secilenKategoriIDleri = Set(kategoriler.map { $0.id })
         }
@@ -126,13 +121,13 @@ struct ButceEkleDuzenleView: View {
     
     private func kaydet() {
         let secilenKategoriler = tumKategoriler.filter { secilenKategoriIDleri.contains($0.id) }
+        let limit = stringToDouble(limitString, locale: Locale(identifier: appSettings.languageCode))
         
         if let butce = duzenlenecekButce {
             butce.isim = isim
-            butce.limitTutar = Double(limitString.replacingOccurrences(of: ",", with: ".")) ?? 0
+            butce.limitTutar = limit
             butce.kategoriler = secilenKategoriler
         } else {
-            let limit = Double(limitString.replacingOccurrences(of: ",", with: ".")) ?? 0
             let yeniButce = Butce(isim: isim, limitTutar: limit, kategoriler: secilenKategoriler)
             modelContext.insert(yeniButce)
         }

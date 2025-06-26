@@ -27,6 +27,11 @@ struct AyarlarView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
     
+    // YEREL STATE: Picker artık sadece bu geçici state'i değiştirecek.
+    @State private var seciliDilKodu: String = "tr"
+    
+    @State private var dilDegisikligiUyarisiGoster = false
+    
     @State private var isExporting = false
     @State private var shareableURL: ShareableURL?
     
@@ -53,7 +58,8 @@ struct AyarlarView: View {
                     AyarIkonu(iconName: "globe", color: .blue)
                     Text(LocalizedStringKey("settings.language"))
                     Spacer()
-                    Picker("Dil", selection: $appSettings.languageCode) {
+                    // Picker artık yerel 'seciliDilKodu' state'ine bağlı
+                    Picker("Dil", selection: $seciliDilKodu) {
                         Text("Türkçe").tag("tr")
                         Text("English").tag("en")
                     }
@@ -131,6 +137,31 @@ struct AyarlarView: View {
         .sheet(item: $shareableURL) { wrapper in
             ActivityView(activityItems: [wrapper.url])
         }
+        // View ilk açıldığında yerel state'i mevcut ayarla eşitle
+        .onAppear {
+            self.seciliDilKodu = appSettings.languageCode
+        }
+        // Yerel state değiştiğinde ve kalıcı ayardan farklıysa uyarıyı göster
+        .onChange(of: seciliDilKodu) {
+            if seciliDilKodu != appSettings.languageCode {
+                dilDegisikligiUyarisiGoster = true
+            }
+        }
+        // Dil değişikliği için uyarı (alert)
+        .alert("settings.language_change.title", isPresented: $dilDegisikligiUyarisiGoster) {
+            Button("settings.language_change.restart_button", role: .destructive) {
+                // Kullanıcı onaylarsa yeni dili kalıcı olarak kaydet
+                appSettings.languageCode = seciliDilKodu
+                // ve yeniden başlatma bildirimini gönder
+                NotificationCenter.default.post(name: .appShouldRestart, object: nil)
+            }
+            Button("common.cancel", role: .cancel) {
+                // Kullanıcı vazgeçerse yerel state'i eski, kalıcı haline getir
+                self.seciliDilKodu = appSettings.languageCode
+            }
+        } message: {
+            Text("settings.language_change.message")
+        }
     }
     
     private func exportData() {
@@ -163,3 +194,7 @@ struct AyarlarView: View {
         }
     }
 }
+
+// Uygulamanın yeniden başlatılması gerektiğini bildiren özel Notification.Name
+// Bu extension artık AyarlarView içinde tanımlı olduğu için başka bir yerde olmasına gerek yok.
+// Eğer başka bir dosyada da kullanılacaksa global bir yere taşınabilir.

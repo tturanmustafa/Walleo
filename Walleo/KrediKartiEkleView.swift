@@ -6,10 +6,9 @@ struct KrediKartiEkleView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var appSettings: AppSettings
 
-    // MARK: - State Properties
     @State private var isim: String = ""
     @State private var limitString: String = ""
-    @State private var guncelBorcString: String = "" // Opsiyonel alan
+    @State private var guncelBorcString: String = ""
     @State private var kesimTarihi = Date()
     @State private var sonOdemeGunuOfseti: Int = 10
     @State private var secilenRenk: Color = .red
@@ -19,7 +18,6 @@ struct KrediKartiEkleView: View {
     @State private var isLimitGecersiz = false
     @State private var isBorcGecersiz = false
     
-    // MARK: - Computed Properties
     private var isFormValid: Bool {
         !isim.trimmingCharacters(in: .whitespaces).isEmpty &&
         !limitString.isEmpty &&
@@ -40,13 +38,10 @@ struct KrediKartiEkleView: View {
         return String(format: formatString, sonOdemeGunuOfseti)
     }
 
-    // MARK: - Body
     var body: some View {
         NavigationStack {
-            // --- DÜZELTME: 'Form' yerine 'ScrollView' ve 'VStack' kullanıyoruz ---
             ScrollView {
                 VStack(spacing: 20) {
-                    // Detaylar Bölümü
                     VStack(alignment: .leading, spacing: 5) {
                         Text(LocalizedStringKey("transaction.section_details"))
                             .font(.caption).foregroundColor(.secondary).padding(.leading)
@@ -55,12 +50,12 @@ struct KrediKartiEkleView: View {
                             TextField(LocalizedStringKey("accounts.add.card_name_placeholder"), text: $isim).padding()
                             Divider().padding(.leading)
                             
-                            // Limit TextField
                             VStack(alignment: .leading) {
                                 FormattedAmountField(
                                     "accounts.add.card_limit",
                                     value: $limitString,
-                                    isInvalid: $isLimitGecersiz
+                                    isInvalid: $isLimitGecersiz,
+                                    locale: Locale(identifier: appSettings.languageCode)
                                 )
                                 if isLimitGecersiz {
                                     Text(LocalizedStringKey("validation.error.invalid_amount_format"))
@@ -70,12 +65,12 @@ struct KrediKartiEkleView: View {
                             
                             Divider().padding(.leading)
                             
-                            // Güncel Borç TextField
                             VStack(alignment: .leading) {
                                 FormattedAmountField(
                                     "credit_card.form.current_debt_optional",
                                     value: $guncelBorcString,
-                                    isInvalid: $isBorcGecersiz
+                                    isInvalid: $isBorcGecersiz,
+                                    locale: Locale(identifier: appSettings.languageCode)
                                 )
                                 if isBorcGecersiz {
                                     Text(LocalizedStringKey("validation.error.invalid_amount_format"))
@@ -87,7 +82,6 @@ struct KrediKartiEkleView: View {
                         .cornerRadius(10)
                     }
 
-                    // Hesap Kesim Tarihi Bölümü
                     VStack(alignment: .leading, spacing: 5) {
                          Text(LocalizedStringKey("credit_card.form.statement_date_header"))
                             .font(.caption).foregroundColor(.secondary).padding(.leading)
@@ -98,7 +92,6 @@ struct KrediKartiEkleView: View {
                             .cornerRadius(10)
                     }
 
-                    // Son Ödeme Günü Bölümü
                     VStack(alignment: .leading, spacing: 5) {
                         Text(LocalizedStringKey("credit_card.form.payment_due_date_header"))
                            .font(.caption).foregroundColor(.secondary).padding(.leading)
@@ -109,7 +102,6 @@ struct KrediKartiEkleView: View {
                             .cornerRadius(10)
                     }
                     
-                    // Renk Seçimi Bölümü
                     VStack(alignment: .leading, spacing: 5) {
                          Text(LocalizedStringKey("categories.color"))
                             .font(.caption).foregroundColor(.secondary).padding(.leading)
@@ -135,21 +127,24 @@ struct KrediKartiEkleView: View {
         }
     }
     
-    // MARK: - Functions (Aynı kalıyor)
     private func formuDoldur() {
         guard let hesap = duzenlenecekHesap, case .krediKarti(let limit, let tarih, let ofset) = hesap.detay else { return }
         
+        let localeId = appSettings.languageCode
         isim = hesap.isim
-        limitString = String(format: "%.2f", limit).replacingOccurrences(of: ".", with: ",")
-        guncelBorcString = hesap.baslangicBakiyesi != 0 ? String(format: "%.2f", abs(hesap.baslangicBakiyesi)).replacingOccurrences(of: ".", with: ",") : ""
+        limitString = formatAmountForEditing(amount: limit, localeIdentifier: localeId)
+        guncelBorcString = formatAmountForEditing(amount: abs(hesap.baslangicBakiyesi), localeIdentifier: localeId)
+        isLimitGecersiz = false
+        isBorcGecersiz = false
         kesimTarihi = tarih
         sonOdemeGunuOfseti = ofset
         secilenRenk = hesap.renk
     }
     
     private func kaydet() {
-        let limit = Double(limitString.replacingOccurrences(of: ",", with: ".")) ?? 0
-        let guncelBorc = Double(guncelBorcString.replacingOccurrences(of: ",", with: ".")) ?? 0
+        let locale = Locale(identifier: appSettings.languageCode)
+        let limit = stringToDouble(limitString, locale: locale)
+        let guncelBorc = stringToDouble(guncelBorcString, locale: locale)
         let renkHex = secilenRenk.toHex() ?? "#FF3B30"
         
         let kartDetayi = HesapDetayi.krediKarti(limit: limit, kesimTarihi: kesimTarihi, sonOdemeGunuOfseti: sonOdemeGunuOfseti)

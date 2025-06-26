@@ -4,7 +4,7 @@ import SwiftData
 struct IslemEkleView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
-    @EnvironmentObject var appSettings: AppSettings // <--- EKLENECEK SATIR BU
+    @EnvironmentObject var appSettings: AppSettings
     
     var duzenlenecekIslem: Islem?
     
@@ -122,21 +122,11 @@ struct IslemEkleView: View {
         }
     }
     
-    private func haneKontrolluDogrula(newValue: String) {
-        if newValue.isEmpty { isTutarGecersiz = false; return }
-        let normalizedString = newValue.replacingOccurrences(of: ",", with: ".")
-        guard normalizedString.components(separatedBy: ".").count <= 2, Double(normalizedString) != nil else { isTutarGecersiz = true; return }
-        let parts = normalizedString.components(separatedBy: ".")
-        if parts[0].count > 9 { isTutarGecersiz = true; return }
-        if parts.count == 2 && parts[1].count > 2 { isTutarGecersiz = true; return }
-        isTutarGecersiz = false
-    }
-    
     private func formuDoldur() {
         guard let islem = duzenlenecekIslem else { return }
         isim = islem.isim
-        tutarString = String(format: "%.2f", islem.tutar).replacingOccurrences(of: ".", with: ",")
-        haneKontrolluDogrula(newValue: tutarString)
+        tutarString = formatAmountForEditing(amount: islem.tutar, localeIdentifier: appSettings.languageCode)
+        isTutarGecersiz = false
         tarih = islem.tarih
         secilenTur = islem.tur
         secilenKategoriID = islem.kategori?.id
@@ -154,8 +144,7 @@ struct IslemEkleView: View {
     }
     
     private func guncelle(tekil: Bool) {
-        let temizlenmisString = tutarString.replacingOccurrences(of: ",", with: ".")
-        let tutar = Double(temizlenmisString) ?? 0.0
+        let tutar = stringToDouble(tutarString, locale: Locale(identifier: appSettings.languageCode))
         let secilenKategori = kategoriler.first(where: { $0.id == secilenKategoriID })
         let secilenHesap = tumHesaplar.first { $0.id == secilenHesapID }
         
@@ -173,8 +162,6 @@ struct IslemEkleView: View {
         } else {
             islemToUpdate = Islem(isim: isim, tutar: tutar, tarih: tarih, tur: secilenTur, tekrar: secilenTekrar, kategori: secilenKategori, hesap: secilenHesap)
             modelContext.insert(islemToUpdate)
-            
-            // NotificationManager çağrısı (yeni işlem)
             NotificationManager.shared.checkBudget(for: islemToUpdate)
             
             if secilenTekrar != .tekSeferlik {
@@ -197,7 +184,6 @@ struct IslemEkleView: View {
         islemToUpdate.hesap = secilenHesap
         islemToUpdate.tekrar = secilenTekrar
         
-        // NotificationManager çağrısı (güncellenen işlem)
         NotificationManager.shared.checkBudget(for: islemToUpdate)
         
         if secilenTekrar == .tekSeferlik {
@@ -215,7 +201,6 @@ struct IslemEkleView: View {
             affectedCategoryIDs.append(kategoriID)
         }
         
-        // Yeni payload'ı oluştur
         let changeType: TransactionChangePayload.ChangeType = duzenlenecekIslem == nil ? .add : .update
         let payload = TransactionChangePayload(
             type: changeType,
@@ -223,7 +208,6 @@ struct IslemEkleView: View {
             affectedCategoryIDs: affectedCategoryIDs
         )
         
-        // Bildirimi yeni payload ile gönder
         NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["payload": payload])
         dismiss()
     }

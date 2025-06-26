@@ -258,3 +258,7 @@
 "settings.section.data_management" = "Data Management";
 "settings.data.export" = "Export Data (.csv)";
 "settings.data.exporting" = "Exporting...";
+
+"settings.language_change.title" = "Change Language";
+"settings.language_change.message" = "To change the language setting, the application needs to be restarted. Do you want to continue?";
+"settings.language_change.restart_button" = "Restart";

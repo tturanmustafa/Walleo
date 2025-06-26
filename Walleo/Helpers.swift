@@ -60,6 +60,38 @@ func formatCurrency(amount: Double, currencyCode: String, localeIdentifier: Stri
     return formattedString
 }
 
+func formatAmountForEditing(amount: Double, localeIdentifier: String) -> String {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal // .currency yerine .decimal kullanıyoruz ki para simgesi gelmesin.
+    formatter.locale = Locale(identifier: localeIdentifier)
+    formatter.usesGroupingSeparator = true // Binlik ayraçlarını etkinleştirir.
+    formatter.maximumFractionDigits = 2
+    formatter.minimumFractionDigits = 0 // Tamsayıları ondalıksız gösterebilir.
+    
+    // 0 ise boş string döndürerek placeholder'ın görünmesini sağlayabiliriz.
+    // Ancak düzenleme ekranında 0'ın görünmesi daha doğru olabilir.
+    if amount == 0 {
+        return "0"
+    }
+    
+    return formatter.string(from: NSNumber(value: amount)) ?? ""
+}
+
+func stringToDouble(_ stringValue: String, locale: Locale) -> Double {
+    let groupingSeparator = locale.groupingSeparator ?? ""
+    let decimalSeparator = locale.decimalSeparator ?? "."
+    
+    // 1. Adım: Metin içindeki tüm binlik ayraçlarını kaldır.
+    // Örn: "1.234,56" -> "1234,56"
+    let withoutGrouping = stringValue.replacingOccurrences(of: groupingSeparator, with: "")
+    
+    // 2. Adım: Dile özgü ondalık ayracını, Double() fonksiyonunun anlayacağı standart "." ile değiştir.
+    // Örn: "1234,56" -> "1234.56"
+    let parsableString = withoutGrouping.replacingOccurrences(of: decimalSeparator, with: ".")
+    
+    return Double(parsableString) ?? 0.0
+}
+
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
