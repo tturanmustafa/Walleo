@@ -281,3 +281,11 @@
 "alert.no_accounts.title" = "Account Required";
 "alert.no_accounts.message" = "To add a transaction, you must first create a Wallet or Credit Card account.";
 "alert.no_accounts.add_account_button" = "Create Account";
+
+// MARK: - Data Export Headers
+"export.header.date" = "Date";
+"export.header.name" = "Transaction Name";
+"export.header.amount" = "Amount";
+"export.header.type" = "Type";
+"export.header.category" = "Category";
+"export.header.account" = "Account";

@@ -281,3 +281,11 @@
 "alert.no_accounts.title" = "Hesap Gerekli";
 "alert.no_accounts.message" = "Bir işlem ekleyebilmek için öncelikle bir Cüzdan veya Kredi Kartı hesabı oluşturmanız gerekmektedir.";
 "alert.no_accounts.add_account_button" = "Hesap Oluştur";
+
+// MARK: - Veri Dışa Aktarma Başlıkları
+"export.header.date" = "Tarih";
+"export.header.name" = "İşlem Adı";
+"export.header.amount" = "Tutar";
+"export.header.type" = "Tür";
+"export.header.category" = "Kategori";
+"export.header.account" = "Hesap";
