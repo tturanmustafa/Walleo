@@ -1,5 +1,3 @@
-// Dosya Adı: KrediEkleView.swift (NİHAİ ÇÖZÜM)
-
 import SwiftUI
 import SwiftData
 import Combine
@@ -7,7 +5,8 @@ import Combine
 struct KrediEkleView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
-    
+    @EnvironmentObject var appSettings: AppSettings
+
     @State private var isim: String = ""
     @State private var cekilenTutarString: String = ""
     @State private var faizOraniString: String = ""
@@ -25,14 +24,27 @@ struct KrediEkleView: View {
                     FormattedAmountField(
                         "accounts.add.loan_amount",
                         value: $cekilenTutarString,
-                        isInvalid: .constant(false) // Bu alanda özel bir 'isInvalid' state'i yoktu, geçici bir binding kullandık.
+                        isInvalid: .constant(false),
+                        locale: Locale(identifier: appSettings.languageCode)
                     )
                     
                     HStack {
-                        TextField(LocalizedStringKey("accounts.add.interest_rate"), text: $faizOraniString).keyboardType(.decimalPad)
+                        TextField(LocalizedStringKey("accounts.add.interest_rate"), text: $faizOraniString)
+                            .keyboardType(.decimalPad)
+                            .onChange(of: faizOraniString) {
+                                let decimalSeparator = Locale(identifier: appSettings.languageCode).decimalSeparator ?? "."
+                                var filtered = faizOraniString.filter { "0123456789".contains($0) || String($0) == decimalSeparator }
+                                let parts = filtered.components(separatedBy: decimalSeparator)
+                                if parts.count > 2 {
+                                    filtered = parts[0] + decimalSeparator + parts.dropFirst().joined()
+                                }
+                                if filtered != faizOraniString {
+                                    faizOraniString = filtered
+                                }
+                            }
+                        
                         Picker(LocalizedStringKey("loan.form.interest_type"), selection: $faizTipi) {
                             ForEach(FaizTipi.allCases, id: \.self) { tip in
-                                // --- DÜZELTME BURADA ---
                                 Text(LocalizedStringKey(tip.localizedKey)).tag(tip)
                             }
                         }.pickerStyle(.menu).labelsHidden()
@@ -63,7 +75,7 @@ struct KrediEkleView: View {
     private func formuDoldur() {
         guard let hesap = duzenlenecekHesap, case .kredi(let tutar, let tip, let oran, let sayi, let tarih, _) = hesap.detay else { return }
         isim = hesap.isim
-        cekilenTutarString = String(tutar)
+        cekilenTutarString = formatAmountForEditing(amount: tutar, localeIdentifier: appSettings.languageCode)
         faizOraniString = String(oran)
         faizTipi = tip
         taksitSayisi = sayi
@@ -71,8 +83,10 @@ struct KrediEkleView: View {
     }
     
     private func kaydet() {
-        let cekilenTutar = Double(cekilenTutarString.replacingOccurrences(of: ",", with: ".")) ?? 0
-        let faizOrani = Double(faizOraniString.replacingOccurrences(of: ",", with: ".")) ?? 0
+        let locale = Locale(identifier: appSettings.languageCode)
+        let cekilenTutar = stringToDouble(cekilenTutarString, locale: locale)
+        let faizOrani = stringToDouble(faizOraniString, locale: locale)
+        
         let taksitler = taksitleriHesapla(anapara: cekilenTutar, yillikFaizYuzdesi: faizTipi == .yillik ? faizOrani : faizOrani * 12, taksitSayisi: taksitSayisi, ilkOdemeTarihi: ilkTaksitTarihi)
         
         let krediDetayi = HesapDetayi.kredi(cekilenTutar: cekilenTutar, faizTipi: faizTipi, faizOrani: faizOrani, taksitSayisi: taksitSayisi, ilkTaksitTarihi: ilkTaksitTarihi, taksitler: taksitler)
@@ -95,7 +109,7 @@ struct KrediEkleView: View {
         var taksitListesi: [KrediTaksitDetayi] = []
         let takvim = Calendar.current
         for i in 0..<n {
-            if let odemeGunu = takvim.date(byAdding: .month, value: i, to: ilkTaksitTarihi) {
+            if let odemeGunu = takvim.date(byAdding: .month, value: i, to: ilkOdemeTarihi) {
                 taksitListesi.append(KrediTaksitDetayi(taksitTutari: aylikTaksit, odemeTarihi: odemeGunu))
             }
         }

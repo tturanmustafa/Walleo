@@ -1,9 +1,8 @@
-// Dosya Adı: TaksitDuzenleView.swift (NİHAİ - HANE KONTROLLÜ)
-
 import SwiftUI
 
 struct TaksitDuzenleView: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var appSettings: AppSettings
     
     let hesap: Hesap
     let taksitID: UUID
@@ -11,10 +10,8 @@ struct TaksitDuzenleView: View {
     @State private var tutarString: String = ""
     @State private var odemeTarihi: Date = Date()
     
-    // YENİ: Tutar alanı için doğrulama durumu
     @State private var isTutarGecersiz = false
     
-    // YENİ: Form geçerliliği kontrolü
     private var isFormValid: Bool {
         !tutarString.isEmpty && !isTutarGecersiz
     }
@@ -27,7 +24,8 @@ struct TaksitDuzenleView: View {
                         FormattedAmountField(
                             "common.amount",
                             value: $tutarString,
-                            isInvalid: $isTutarGecersiz
+                            isInvalid: $isTutarGecersiz,
+                            locale: Locale(identifier: appSettings.languageCode)
                         )
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? .red : .clear, lineWidth: 1))
                         
@@ -45,29 +43,19 @@ struct TaksitDuzenleView: View {
                 ToolbarItem(placement: .cancellationAction) { Button(LocalizedStringKey("common.cancel")) { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button(LocalizedStringKey("common.save"), action: kaydet)
-                        .disabled(!isFormValid) // GÜNCELLENDİ
+                        .disabled(!isFormValid)
                 }
             }
             .onAppear(perform: formuDoldur)
         }
     }
     
-    private func haneKontrolluDogrula(newValue: String) {
-        if newValue.isEmpty { isTutarGecersiz = false; return }
-        let normalizedString = newValue.replacingOccurrences(of: ",", with: ".")
-        guard normalizedString.components(separatedBy: ".").count <= 2, Double(normalizedString) != nil else { isTutarGecersiz = true; return }
-        let parts = normalizedString.components(separatedBy: ".")
-        if parts[0].count > 9 { isTutarGecersiz = true; return }
-        if parts.count == 2 && parts[1].count > 2 { isTutarGecersiz = true; return }
-        isTutarGecersiz = false
-    }
-    
     private func formuDoldur() {
         guard case .kredi(_, _, _, _, _, let taksitler) = hesap.detay,
               let taksit = taksitler.first(where: { $0.id == taksitID }) else { return }
         
-        tutarString = String(format: "%.2f", taksit.taksitTutari).replacingOccurrences(of: ".", with: ",")
-        haneKontrolluDogrula(newValue: tutarString) // GÜNCELLENDİ
+        tutarString = formatAmountForEditing(amount: taksit.taksitTutari, localeIdentifier: appSettings.languageCode)
+        isTutarGecersiz = false
         odemeTarihi = taksit.odemeTarihi
     }
     
@@ -75,7 +63,7 @@ struct TaksitDuzenleView: View {
         guard case .kredi(let cekilenTutar, let faizTipi, let faizOrani, let taksitSayisi, let ilkTaksitTarihi, var taksitler) = hesap.detay else { return }
         guard let index = taksitler.firstIndex(where: { $0.id == taksitID }) else { return }
         
-        let yeniTutar = Double(tutarString.replacingOccurrences(of: ",", with: ".")) ?? 0
+        let yeniTutar = stringToDouble(tutarString, locale: Locale(identifier: appSettings.languageCode))
         
         taksitler[index].taksitTutari = yeniTutar
         taksitler[index].odemeTarihi = odemeTarihi

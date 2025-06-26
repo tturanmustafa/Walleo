@@ -6,8 +6,6 @@ struct ButcelerView: View {
     @EnvironmentObject var appSettings: AppSettings
     @State private var viewModel: ButcelerViewModel?
 
-    @State private var currentTitle: String = "" // Başlığı tutacak yeni State
-
     @State private var yeniButceEkleGoster = false
     @State private var duzenlenecekButce: Butce?
     @State private var silinecekButce: Butce?
@@ -34,7 +32,6 @@ struct ButcelerView: View {
                                                 duzenlenecekButce = gosterilecekButce.butce
                                             },
                                             onDelete: {
-                                                // Silme işlemini başlatmak için state'i ayarlıyoruz
                                                 silinecekButce = gosterilecekButce.butce
                                             }
                                         )
@@ -61,17 +58,14 @@ struct ButcelerView: View {
                     ProgressView()
                 }
             }
-            .navigationTitle(currentTitle) // Başlık artık State'ten geliyor
+            .navigationTitle(LocalizedStringKey("budgets.title")) // DÜZELTİLDİ
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { yeniButceEkleGoster = true }) { Image(systemName: "plus") }
                 }
             }
         }
-        .onAppear(perform: updateTitle) // Ekran ilk açıldığında başlığı ayarla
-        .onChange(of: appSettings.languageCode) { // Dil değiştiğinde başlığı güncelle
-            updateTitle()
-        }
+        // Manuel başlık güncelleme kodları kaldırıldı
         .sheet(isPresented: $yeniButceEkleGoster, onDismiss: {
             Task { await viewModel?.butceDurumlariniHesapla() }
         }) {
@@ -88,9 +82,5 @@ struct ButcelerView: View {
             }
             await viewModel?.butceDurumlariniHesapla()
         }
-    }
-    
-    private func updateTitle() {
-        self.currentTitle = NSLocalizedString("budgets.title", comment: "")
     }
 }

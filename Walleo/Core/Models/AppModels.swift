@@ -197,6 +197,10 @@ extension DateInterval {
     }
 }
 
+extension Notification.Name {
+    static let appShouldRestart = Notification.Name("appShouldRestart")
+}
+
 enum ButceTekrarAraligi: String, Codable, CaseIterable {
     case aylik = "enum.budget_period.monthly"
 }

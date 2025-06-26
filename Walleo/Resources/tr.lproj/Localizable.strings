@@ -258,3 +258,7 @@
 "settings.section.data_management" = "Veri Yönetimi";
 "settings.data.export" = "Verileri Dışa Aktar (.csv)";
 "settings.data.exporting" = "Dışa Aktarılıyor...";
+
+"settings.language_change.title" = "Dil Değiştir";
+"settings.language_change.message" = "Dil ayarını değiştirmek için uygulamanın yeniden başlatılması gerekir. Devam edilsin mi?";
+"settings.language_change.restart_button" = "Yeniden Başlat";
