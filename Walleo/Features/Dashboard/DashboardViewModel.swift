@@ -6,6 +6,11 @@ import SwiftData
 class DashboardViewModel {
     var modelContext: ModelContext
     
+    // YENİ: Seri silme işlemi sırasında UI'ı bilgilendirmek için
+    var isDeleting = false
+    // YENİ: Arka plan servisine vermek için container referansı
+    private let modelContainer: ModelContainer
+    
     var currentDate = Date() {
         didSet { fetchData() }
     }
@@ -21,6 +26,8 @@ class DashboardViewModel {
 
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
+        // GÜNCELLENDİ: Container'ı saklıyoruz
+        self.modelContainer = modelContext.container
         
         NotificationCenter.default.addObserver(
             self,
@@ -97,13 +104,22 @@ class DashboardViewModel {
         self.pieChartVerisi = yeniPieChartVerisi
     }
     
+    // GÜNCELLENMİŞ FONKSİYON
     func deleteIslem(_ islem: Islem) {
-        // Artık tüm mantık TransactionService'de. Sadece ilgili fonksiyonu çağırıyoruz.
-        TransactionService.shared.deleteTransaction(islem, in: modelContext, scope: .single)
+        // Artık `scope` parametresi olmayan doğru fonksiyonu çağırıyoruz.
+        TransactionService.shared.deleteTransaction(islem, in: modelContext)
+        // Silme sonrası arayüzü yenilemek için veriyi tekrar çekiyoruz.
+        fetchData()
     }
     
+    // GÜNCELLENMİŞ FONKSİYON
     func deleteSeri(for islem: Islem) {
-        // Seri silme mantığı da TransactionService'de.
-        TransactionService.shared.deleteTransaction(islem, in: modelContext, scope: .series)
+        Task {
+            isDeleting = true // Silme işlemi başladı
+            // Yeni, arka planda çalışan servisi çağırıyoruz.
+            await TransactionService.shared.deleteSeriesInBackground(tekrarID: islem.tekrarID, from: modelContainer)
+            fetchData() // İşlem bitince veriyi yenile
+            isDeleting = false // Silme işlemi bitti
+        }
     }
 }

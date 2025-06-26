@@ -23,6 +23,9 @@ struct IslemEkleView: View {
     @State private var guncellemeSecenekleriGoster = false
 
     @State private var isTutarGecersiz = false
+    
+    // YENİ: Kaydetme işlemi sırasında arayüzü yönetmek için
+    @State private var isSaving = false
 
     private var isFormValid: Bool {
         !isim.trimmingCharacters(in: .whitespaces).isEmpty &&
@@ -104,10 +107,26 @@ struct IslemEkleView: View {
                     }
                 }
             }
+            .disabled(isSaving) // Kaydederken formu pasif yap
             .navigationTitle(navigationTitleKey).navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button(LocalizedStringKey("common.cancel")) { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) { Button(LocalizedStringKey("common.save")) { kaydetmeIsleminiBaslat() }.disabled(!isFormValid) }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(LocalizedStringKey("common.cancel")) { dismiss() }
+                        .disabled(isSaving)
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    // GÜNCELLENDİ: Kaydetme butonunun görünümü ve davranışı
+                    if isSaving {
+                        ProgressView()
+                    } else {
+                        Button(LocalizedStringKey("common.save")) {
+                            Task {
+                                await kaydetmeIsleminiBaslat()
+                            }
+                        }
+                        .disabled(!isFormValid)
+                    }
+                }
             }
             .onChange(of: secilenTur) {
                 if !filtrelenmisKategoriler.contains(where: { $0.id == secilenKategoriID }) { secilenKategoriID = nil }
@@ -115,8 +134,8 @@ struct IslemEkleView: View {
             }
             .onAppear(perform: formuDoldur)
             .confirmationDialog(LocalizedStringKey("alert.recurring_transaction"), isPresented: $guncellemeSecenekleriGoster, titleVisibility: .visible) {
-                Button(LocalizedStringKey("alert.update_this_only")) { guncelle(tekil: true) }
-                Button(LocalizedStringKey("alert.update_future")) { guncelle(tekil: false) }
+                Button(LocalizedStringKey("alert.update_this_only")) { Task { await guncelle(tekil: true) } }
+                Button(LocalizedStringKey("alert.update_future")) { Task { await guncelle(tekil: false) } }
                 Button(LocalizedStringKey("common.cancel"), role: .cancel) { }
             }
         }
@@ -135,15 +154,17 @@ struct IslemEkleView: View {
         orijinalTekrar = islem.tekrar
     }
     
-    private func kaydetmeIsleminiBaslat() {
+    private func kaydetmeIsleminiBaslat() async {
         if duzenlenecekIslem != nil && orijinalTekrar != .tekSeferlik {
             guncellemeSecenekleriGoster = true
         } else {
-            guncelle(tekil: true)
+            await guncelle(tekil: true)
         }
     }
     
-    private func guncelle(tekil: Bool) {
+    private func guncelle(tekil: Bool) async {
+        isSaving = true
+        
         let tutar = stringToDouble(tutarString, locale: Locale(identifier: appSettings.languageCode))
         let secilenKategori = kategoriler.first(where: { $0.id == secilenKategoriID })
         let secilenHesap = tumHesaplar.first { $0.id == secilenHesapID }
@@ -162,14 +183,10 @@ struct IslemEkleView: View {
         } else {
             islemToUpdate = Islem(isim: isim, tutar: tutar, tarih: tarih, tur: secilenTur, tekrar: secilenTekrar, kategori: secilenKategori, hesap: secilenHesap)
             modelContext.insert(islemToUpdate)
-            NotificationManager.shared.checkBudget(for: islemToUpdate)
             
             if secilenTekrar != .tekSeferlik {
                 yeniSeriOlustur(islem: islemToUpdate)
             }
-            NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["affectedAccountIDs": Array(affectedAccountIDs)])
-            dismiss()
-            return
         }
         
         if !tekil {
@@ -208,7 +225,15 @@ struct IslemEkleView: View {
             affectedCategoryIDs: affectedCategoryIDs
         )
         
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["payload": payload])
+        do {
+            try modelContext.save()
+            Logger.log("IslemEkleView: Tüm işlemler başarıyla kaydedildi.", log: Logger.data, type: .info)
+            NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["payload": payload])
+        } catch {
+            Logger.log("IslemEkleView: Kaydetme sırasında kritik hata: \(error.localizedDescription)", log: Logger.data, type: .fault)
+        }
+        
+        isSaving = false
         dismiss()
     }
     

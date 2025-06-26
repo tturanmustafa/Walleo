@@ -1,11 +1,3 @@
-//
-//  DeletionScope.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 24.06.2025.
-//
-
-
 import Foundation
 import SwiftData
 
@@ -20,65 +12,90 @@ enum DeletionScope {
 /// Uygulama genelindeki işlem (Transaction) ile ilgili iş mantıklarını yöneten merkezi servis.
 class TransactionService {
     
-    /// Servisin tekil örneği (Singleton).
     static let shared = TransactionService()
-    
-    /// Dışarıdan yeni bir örnek oluşturulmasını engeller.
     private init() {}
     
-    /// Bir işlemi veya ait olduğu seriyi veritabanından siler ve ilgili ekranların güncellenmesi için bildirim yayınlar.
-    ///
-    /// - Parameters:
-    ///   - islem: Silinecek olan `Islem` nesnesi.
-    ///   - context: İşlemin yapılacağı `ModelContext`.
-    ///   - scope: Silme işleminin kapsamı (`.single` veya `.series`).
-    func deleteTransaction(_ islem: Islem, in context: ModelContext, scope: DeletionScope) {
-        // Hangi hesabın etkilendiğini takip etmek için bir set oluşturuyoruz.
-        // Bu, sadece ilgili hesap kartının güncellenmesini sağlar.
+    /// Tek bir işlemi veritabanından siler ve ilgili ekranların güncellenmesi için bildirim yayınlar.
+    /// Bu fonksiyon ana iş parçacığında çalışır ve tekil, hızlı silmeler için uygundur.
+    func deleteTransaction(_ islem: Islem, in context: ModelContext) {
         var affectedAccountIDs: Set<UUID> = []
         if let hesapID = islem.hesap?.id {
             affectedAccountIDs.insert(hesapID)
         }
         
-        // Eğer işlem tek seferlikse veya sadece tek bir tanesi silinmek isteniyorsa
-        if scope == .single || islem.tekrar == .tekSeferlik {
-            context.delete(islem)
-            print("TransactionService: Tek bir işlem silindi. ID: \(islem.id)")
-        } else { // scope == .series ise tüm seriyi sil
-            let tekrarID = islem.tekrarID
-            // tekrarID'si boş veya varsayılan UUID ise bir hata olmaması için kontrol
-            guard tekrarID != UUID() else {
-                context.delete(islem)
-                print("TransactionService: Seri silinmek istendi ancak tekrarID geçersizdi. Sadece tek işlem silindi. ID: \(islem.id)")
-                return
-            }
-            
-            do {
-                try context.delete(model: Islem.self, where: #Predicate { $0.tekrarID == tekrarID })
-                Logger.log("TransactionService: Tüm seri silindi. TekrarID: \(tekrarID)", log: Logger.service, type: .info)
-            } catch {
-                Logger.log("TransactionService: Seri silinirken hata oluştu: \(error.localizedDescription)", log: Logger.service, type: .error)
-            }
-        }
-        
-        // Değişikliği tüm uygulamaya bildiriyoruz ki ilgili ekranlar kendilerini güncellesin.
         var affectedCategoryIDs: Set<UUID> = []
         if let kategoriID = islem.kategori?.id {
             affectedCategoryIDs.insert(kategoriID)
         }
+        
+        context.delete(islem)
+        try? context.save() // Değişikliğin kaydedildiğinden emin oluyoruz.
 
-        // Yeni payload'ı oluştur
         let payload = TransactionChangePayload(
             type: .delete,
             affectedAccountIDs: Array(affectedAccountIDs),
             affectedCategoryIDs: Array(affectedCategoryIDs)
         )
         
-        // Bildirimi yeni payload ile gönder
         NotificationCenter.default.post(
             name: .transactionsDidChange,
             object: nil,
-            userInfo: ["payload": payload] // userInfo sözlüğünü payload'ı içerecek şekilde güncelledik
+            userInfo: ["payload": payload]
         )
+        Logger.log("TransactionService: Tek bir işlem silindi ve bildirim gönderildi. ID: \(islem.id)", log: Logger.service)
+    }
+    
+    /// Bir işlemin ait olduğu seriyi arka planda, UI'ı bloklamadan siler ve işlem bittiğinde bildirim yayınlar.
+    @MainActor
+    func deleteSeriesInBackground(tekrarID: UUID, from modelContainer: ModelContainer) async {
+        guard tekrarID != UUID() else { return }
+        
+        // Arka planda çalışacak yeni bir context oluşturuyoruz.
+        let backgroundContext = ModelContext(modelContainer)
+        let predicate = #Predicate<Islem> { $0.tekrarID == tekrarID }
+        let descriptor = FetchDescriptor(predicate: predicate)
+        
+        do {
+            // 1. Adım: Silinecek tüm işlemleri arka planda bul.
+            let itemsToDelete = try backgroundContext.fetch(descriptor)
+            
+            // Eğer silinecek bir şey yoksa işlemi sonlandır.
+            guard !itemsToDelete.isEmpty else { return }
+            
+            // 2. Adım: Payload için etkilenecek tüm hesap ve kategori ID'lerini topla.
+            var affectedAccountIDs: Set<UUID> = []
+            var affectedCategoryIDs: Set<UUID> = []
+            
+            for item in itemsToDelete {
+                if let hesapID = item.hesap?.id {
+                    affectedAccountIDs.insert(hesapID)
+                }
+                if let kategoriID = item.kategori?.id {
+                    affectedCategoryIDs.insert(kategoriID)
+                }
+            }
+            
+            // 3. Adım: Bulunan işlemleri sil ve veritabanını kaydet.
+            try backgroundContext.delete(model: Islem.self, where: predicate)
+            try backgroundContext.save()
+            
+            Logger.log("TransactionService: Seri arka planda silindi. TekrarID: \(tekrarID)", log: Logger.service, type: .info)
+            
+            // 4. Adım: Ana iş parçacığına geri dönüp bildirimi gönder.
+            let payload = TransactionChangePayload(
+                type: .delete,
+                affectedAccountIDs: Array(affectedAccountIDs),
+                affectedCategoryIDs: Array(affectedCategoryIDs)
+            )
+            
+            NotificationCenter.default.post(
+                name: .transactionsDidChange,
+                object: nil,
+                userInfo: ["payload": payload]
+            )
+            
+        } catch {
+            Logger.log("TransactionService: Seri arka planda silinirken hata oluştu: \(error.localizedDescription)", log: Logger.service, type: .error)
+        }
     }
 }
