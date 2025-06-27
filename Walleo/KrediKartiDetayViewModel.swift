@@ -8,35 +8,41 @@ class KrediKartiDetayViewModel {
     var kartHesabi: Hesap
     
     var donemIslemleri: [Islem] = []
+    var currentDate = Date() {
+        didSet {
+            islemleriGetir()
+        }
+    }
+    
+    // YENİ EKLENEN HESAPLANMIŞ DEĞİŞKEN
+    var toplamHarcama: Double {
+        donemIslemleri.reduce(0) { $0 + $1.tutar }
+    }
     
     init(modelContext: ModelContext, kartHesabi: Hesap) {
         self.modelContext = modelContext
         self.kartHesabi = kartHesabi
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(islemleriGetir),
+            name: .transactionsDidChange,
+            object: nil
+        )
     }
     
-    func islemleriGetir() {
-        // --- DÜZELTME BURADA ---
-        // Artık 3 parametreli (limit, kesimTarihi, ofset) case'i doğru şekilde karşılıyoruz.
-        // Limit ve ofset'i kullanmadığımız için _ ile atlıyoruz.
-        guard case .krediKarti(_, let kesimTarihi, _) = kartHesabi.detay else { return }
-        
-        // Bu dönemin başlangıç ve bitiş tarihlerini hesapla
-        let takvim = Calendar.current
-        let bugun = takvim.startOfDay(for: Date())
-        var bilesenler = takvim.dateComponents([.year, .month], from: bugun)
-        bilesenler.day = takvim.component(.day, from: kesimTarihi)
-
-        guard let buAykiKesimGunu = takvim.date(from: bilesenler) else { return }
-        let donemBitisTarihi = buAykiKesimGunu > bugun ? takvim.date(byAdding: .month, value: -1, to: buAykiKesimGunu)! : buAykiKesimGunu
-        
-        // donemBitisTarihi'nden bir ay geriye giderek başlangıç tarihini bulma (daha güvenli yol)
-        guard let donemBaslangicTarihi = takvim.date(byAdding: .month, value: -1, to: donemBitisTarihi) else { return }
+    @objc func islemleriGetir() {
+        let calendar = Calendar.current
+        guard let monthInterval = calendar.dateInterval(of: .month, for: currentDate) else { return }
         
         let kartID = kartHesabi.id
+        let giderTuruRawValue = IslemTuru.gider.rawValue
+        
         let predicate = #Predicate<Islem> { islem in
             islem.hesap?.id == kartID &&
-            islem.tarih > donemBaslangicTarihi &&
-            islem.tarih <= donemBitisTarihi
+            islem.tarih >= monthInterval.start &&
+            islem.tarih < monthInterval.end &&
+            islem.turRawValue == giderTuruRawValue
         }
         
         let descriptor = FetchDescriptor<Islem>(predicate: predicate, sortBy: [SortDescriptor(\.tarih, order: .reverse)])
@@ -44,7 +50,7 @@ class KrediKartiDetayViewModel {
         do {
             donemIslemleri = try modelContext.fetch(descriptor)
         } catch {
-            print("Kredi kartı işlemleri çekilirken hata: \(error)")
+            Logger.log("Kredi kartı detay işlemleri çekilirken hata: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
     }
 }

@@ -1,37 +1,109 @@
-// Dosya Adı: KrediKartiDetayView.swift (GÜNCEL HALİ)
-
 import SwiftUI
 import SwiftData
 
 struct KrediKartiDetayView: View {
+    @EnvironmentObject var appSettings: AppSettings
+    @Environment(\.modelContext) private var modelContext
+    
     @State private var viewModel: KrediKartiDetayViewModel
     
-    // GÜNCEL VE GÜVENLİ INIT:
-    // Artık 'modelContext'i parametre olarak alıyor, kendisi oluşturmuyor.
+    // Düzenleme ve silme işlemleri için state'ler
+    @State private var duzenlenecekIslem: Islem?
+    @State private var silinecekTekilIslem: Islem?
+    @State private var silinecekTekrarliIslem: Islem?
+    @State private var isDeletingSeries: Bool = false
+    
     init(kartHesabi: Hesap, modelContext: ModelContext) {
         _viewModel = State(initialValue: KrediKartiDetayViewModel(modelContext: modelContext, kartHesabi: kartHesabi))
     }
 
     var body: some View {
-        List {
-            // --- DÜZELTME BURADA ---
-            Section(LocalizedStringKey("credit_card_details.recent_expenses")) {
-                if viewModel.donemIslemleri.isEmpty {
-                    ContentUnavailableView(
-                        LocalizedStringKey("credit_card_details.no_transactions"),
-                        systemImage: "creditcard.slash"
-                    )
-                } else {
+        ZStack {
+            VStack(spacing: 0) {
+                MonthNavigatorView(currentDate: $viewModel.currentDate)
+                    .padding(.bottom, 10) // Ayırıcıya biraz boşluk
+                
+                // YENİ EKLENEN KART
+                // Sadece harcama varsa bu kartı göster
+                if viewModel.toplamHarcama > 0 {
+                    DonemHarcamaOzetKarti(toplamTutar: viewModel.toplamHarcama)
+                        .padding(.horizontal)
+                        .padding(.bottom, 10)
+                }
+                List {
                     ForEach(viewModel.donemIslemleri) { islem in
-                        IslemSatirView(islem: islem)
+                        IslemSatirView(
+                            islem: islem,
+                            onEdit: { duzenlenecekIslem = islem },
+                            onDelete: { silmeyiBaslat(islem) }
+                        )
+                    }
+                }
+                .listStyle(.plain)
+                .overlay {
+                    if viewModel.donemIslemleri.isEmpty && !isDeletingSeries {
+                        ContentUnavailableView(
+                            LocalizedStringKey("credit_card_details.no_expenses_for_month"),
+                            systemImage: "creditcard.slash"
+                        )
                     }
                 }
             }
+            .disabled(isDeletingSeries)
+            
+            if isDeletingSeries {
+                ProgressView("Seri Siliniyor...")
+                    .padding(25)
+                    .background(Material.thick)
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
+            }
         }
         .navigationTitle(viewModel.kartHesabi.isim)
+        .navigationBarTitleDisplayMode(.inline)
         .task {
-            // Context atamasına gerek kalmadı, sadece veri çekme işlemi yapılıyor.
+            // Ekran ilk açıldığında verileri getir
             viewModel.islemleriGetir()
+        }
+        .sheet(item: $duzenlenecekIslem) { islem in
+            IslemEkleView(duzenlenecekIslem: islem)
+                .environmentObject(appSettings)
+        }
+        .confirmationDialog(
+            LocalizedStringKey("alert.recurring_transaction"),
+            isPresented: Binding(isPresented: $silinecekTekrarliIslem),
+            presenting: silinecekTekrarliIslem
+        ) { islem in
+            Button("alert.delete_this_only", role: .destructive) {
+                TransactionService.shared.deleteTransaction(islem, in: modelContext)
+            }
+            Button("alert.delete_series", role: .destructive) {
+                Task {
+                    isDeletingSeries = true
+                    await TransactionService.shared.deleteSeriesInBackground(tekrarID: islem.tekrarID, from: modelContext.container)
+                    isDeletingSeries = false
+                }
+            }
+            Button("common.cancel", role: .cancel) { }
+        }
+        .alert(
+            LocalizedStringKey("alert.delete_confirmation.title"),
+            isPresented: Binding(isPresented: $silinecekTekilIslem),
+            presenting: silinecekTekilIslem
+        ) { islem in
+            Button(role: .destructive) {
+                TransactionService.shared.deleteTransaction(islem, in: modelContext)
+            } label: { Text("common.delete") }
+        } message: { islem in
+            Text("alert.delete_transaction.message")
+        }
+    }
+    
+    private func silmeyiBaslat(_ islem: Islem) {
+        if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
+            silinecekTekrarliIslem = islem
+        } else {
+            silinecekTekilIslem = islem
         }
     }
 }

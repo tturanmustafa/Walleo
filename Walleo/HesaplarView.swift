@@ -66,7 +66,6 @@ struct HesaplarView: View {
                 Text("common.delete")
             }
         } message: { hesap in
-            // GÜNCELLENMİŞ VE AKILLI MESAJ BLOĞU
             let dilKodu = appSettings.languageCode
             guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
                   let languageBundle = Bundle(path: path) else {
@@ -88,16 +87,24 @@ struct HesaplarView: View {
         }
     }
     
+    // GÜNCELLENMİŞ FONKSİYON
     private func hesapListesi(viewModel: HesaplarViewModel) -> some View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(viewModel.gosterilecekHesaplar) { bilgi in
+                    // Kredi veya Kredi Kartı ise tıklanabilir bir link oluştur
                     if case .kredi = bilgi.hesap.detay {
                         NavigationLink(destination: detayEkraniniGetir(hesap: bilgi.hesap)) {
                             hesapKarti(for: bilgi, viewModel: viewModel)
                         }
                         .buttonStyle(.plain)
+                    } else if case .krediKarti = bilgi.hesap.detay {
+                        NavigationLink(destination: detayEkraniniGetir(hesap: bilgi.hesap)) {
+                            hesapKarti(for: bilgi, viewModel: viewModel)
+                        }
+                        .buttonStyle(.plain)
                     } else {
+                        // Cüzdan ise tıklanabilir değil, sadece kartı göster
                         hesapKarti(for: bilgi, viewModel: viewModel)
                     }
                 }
@@ -146,6 +153,7 @@ struct HesaplarView: View {
         case .kredi: KrediDetayView(hesap: hesap, modelContext: self.modelContext)
         case .krediKarti: KrediKartiDetayView(kartHesabi: hesap, modelContext: self.modelContext)
         default:
+            // Bu case normalde cüzdan için çağrılmayacak ama güvenlik için burada.
             let title = String.localizedStringWithFormat(NSLocalizedString("account_details.generic_title", comment: ""), hesap.isim)
             Text(title)
         }

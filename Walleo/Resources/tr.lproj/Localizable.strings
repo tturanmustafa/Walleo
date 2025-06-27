@@ -289,3 +289,6 @@
 "export.header.type" = "Tür";
 "export.header.category" = "Kategori";
 "export.header.account" = "Hesap";
+
+"credit_card_details.no_expenses_for_month" = "Bu Ay İçin Harcama Yok";
+"credit_card_details.total_expenses_for_period" = "Dönem İçi Toplam Harcamalar";
