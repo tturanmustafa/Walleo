@@ -18,56 +18,54 @@ struct KategoriDuzenleView: View {
     ]
     
     private var navigationTitleKey: LocalizedStringKey {
-        kategori == nil ? "categories.new" : "categories.edit"
-    }
+         kategori == nil ? "categories.new" : "categories.edit"
+     }
 
-    var body: some View {
-        NavigationStack {
-            Form {
-                if kategori == nil {
-                    Picker("common.type", selection: $secilenTur) {
-                        Text("common.expense").tag(IslemTuru.gider)
-                        Text("common.income").tag(IslemTuru.gelir)
-                    }
-                    .pickerStyle(.segmented)
-                }
-                
-                TextField("categories.name", text: $isim)
-                
-                ColorPicker("categories.color", selection: $secilenRenk, supportsOpacity: false)
-                
-                Section("categories.select_icon") {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 44))], spacing: 16) {
-                        ForEach(ikonlar, id: \.self) { ikon in
-                            Image(systemName: ikon)
-                                .font(.title2)
-                                .foregroundColor(ikonAdi == ikon ? .primary : .secondary)
-                                .frame(width: 44, height: 44)
-                                .background(ikonAdi == ikon ? secilenRenk.opacity(0.2) : Color(.systemGray6))
-                                .cornerRadius(8)
-                                .onTapGesture {
-                                    ikonAdi = ikon
-                                }
-                        }
-                    }
-                }
-            }
-            .navigationTitle(navigationTitleKey)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("common.cancel") { dismiss() }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("common.save") {
-                        kaydet()
-                    }
-                    .disabled(isim.isEmpty)
-                }
-            }
-            .onAppear(perform: formuDoldur)
-        }
-    }
+     // GÜNCELLEME: Gereksiz NavigationStack sarmalayıcısı kaldırıldı.
+     var body: some View {
+         Form {
+             if kategori == nil {
+                 Picker("common.type", selection: $secilenTur) {
+                     Text("common.expense").tag(IslemTuru.gider)
+                     Text("common.income").tag(IslemTuru.gelir)
+                 }
+                 .pickerStyle(.segmented)
+             }
+             
+             TextField("categories.name", text: $isim)
+             
+             ColorPicker("categories.color", selection: $secilenRenk, supportsOpacity: false)
+             
+             Section("categories.select_icon") {
+                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 44))], spacing: 16) {
+                     ForEach(ikonlar, id: \.self) { ikon in
+                         Image(systemName: ikon)
+                             .font(.title2)
+                             .foregroundColor(ikonAdi == ikon ? .primary : .secondary)
+                             .frame(width: 44, height: 44)
+                             .background(ikonAdi == ikon ? secilenRenk.opacity(0.2) : Color(.systemGray6))
+                             .cornerRadius(8)
+                             .onTapGesture {
+                                 ikonAdi = ikon
+                             }
+                     }
+                 }
+             }
+         }
+         .navigationTitle(navigationTitleKey)
+         .navigationBarTitleDisplayMode(.inline)
+         // GÜNCELLEME: `toolbar` artık sadece "Kaydet" butonunu içeriyor.
+         // "İptal" butonu, otomatik gelen "Geri" butonu ile yer değiştirdi.
+         .toolbar {
+             ToolbarItem(placement: .confirmationAction) {
+                 Button("common.save") {
+                     kaydet()
+                 }
+                 .disabled(isim.isEmpty)
+             }
+         }
+         .onAppear(perform: formuDoldur)
+     }
     
     private func formuDoldur() {
         if let kategori = kategori {
