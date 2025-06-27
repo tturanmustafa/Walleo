@@ -234,6 +234,13 @@
 "category.loan_payment" = "Kredi Ödemesi";
 "category.other" = "Diğer";
 
+// MARK: - Filtreleme Ekranı
+"filter.custom_range_header" = "Özel Aralık";
+"filter.start_date" = "Başlangıç Tarihi";
+"filter.end_date" = "Bitiş Tarihi";
+"filter.presets_header" = "Hazır Aralıklar";
+"enum.date_range.custom" = "Özel";
+
 // MARK: - Para Birimleri
 "currency.name.TRY" = "Türk Lirası";
 "currency.name.USD" = "ABD Doları";

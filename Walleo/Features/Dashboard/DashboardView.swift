@@ -38,14 +38,13 @@ struct IslemTuruButonu: View {
 struct DashboardView: View {
     @EnvironmentObject var appSettings: AppSettings
     @Environment(\.colorScheme) var systemColorScheme
-    @Environment(\.modelContext) private var modelContext // Silme işlemi için eklendi
+    @Environment(\.modelContext) private var modelContext
     
     @State private var viewModel: DashboardViewModel
     
     @Query(filter: #Predicate<Bildirim> { !$0.okunduMu }) private var unreadNotifications: [Bildirim]
     
     @State private var duzenlenecekIslem: Islem?
-    // GÜNCELLENDİ: Silme onayları için state'ler
     @State private var silinecekTekrarliIslem: Islem?
     @State private var silinecekTekilIslem: Islem?
     
@@ -67,7 +66,6 @@ struct DashboardView: View {
     }
 
     var body: some View {
-        // YENİ: ZStack ile sarmalıyoruz
         ZStack {
             NavigationStack {
                 VStack(spacing: 0) {
@@ -94,6 +92,7 @@ struct DashboardView: View {
                             
                             if !viewModel.pieChartVerisi.isEmpty && !viewModel.filtrelenmisIslemler.isEmpty { dividerLine }
                             
+                            // GÜNCELLEME: 'currentDate' parametresi eklendi.
                             RecentTransactionsView(
                                 modelContext: viewModel.modelContext,
                                 islemler: viewModel.filtrelenmisIslemler,

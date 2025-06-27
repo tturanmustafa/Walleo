@@ -1,3 +1,5 @@
+// Dosya: RecentTransactionsView.swift
+
 import SwiftUI
 import SwiftData
 
@@ -5,6 +7,8 @@ struct RecentTransactionsView: View {
     @EnvironmentObject var appSettings: AppSettings
     let modelContext: ModelContext
     let islemler: [Islem]
+    
+    // GÜNCELLEME: 'currentDate' parametresi kaldırıldı.
     
     @Binding var duzenlenecekIslem: Islem?
     let onSilmeyiBaslat: (Islem) -> Void
@@ -15,6 +19,7 @@ struct RecentTransactionsView: View {
                 HStack {
                     Text("dashboard.recent_transactions").font(.headline).fontWeight(.bold)
                     Spacer()
+                    // GÜNCELLEME: NavigationLink orijinal, basit haline geri döndü.
                     NavigationLink("dashboard.see_all") {
                         TumIslemlerView(modelContext: modelContext)
                             .environmentObject(appSettings)
@@ -28,8 +33,6 @@ struct RecentTransactionsView: View {
                         IslemSatirView(
                             islem: islem,
                             onEdit: {
-                                // Sadece düzenlenecek işlemi set ediyoruz.
-                                // Sheet'in açılmasını bu state'in değişmesi tetikleyecek.
                                 duzenlenecekIslem = islem
                             },
                             onDelete: {

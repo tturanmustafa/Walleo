@@ -5,88 +5,76 @@ import SwiftData
 @Observable
 class TumIslemlerViewModel {
     var modelContext: ModelContext
-    
-    var filtreAyarlari = FiltreAyarlari() {
-        didSet { fetchData() }
-    }
-    
+    var filtreAyarlari = FiltreAyarlari() { didSet { fetchData() } }
     var islemler: [Islem] = []
-    
     var isDeleting = false
     private let modelContainer: ModelContainer
 
-    var aktifFiltreSayisi: Int {
-        var count = 0
-        if filtreAyarlari.tarihAraligi != .hepsi { count += 1 }
-        if filtreAyarlari.secilenTurler.count == 1 { count += 1 }
-        if !filtreAyarlari.secilenKategoriler.isEmpty { count += 1 }
-        return count
-    }
-    
-    init(modelContext: ModelContext) {
+    init(modelContext: ModelContext, baslangicTarihi: Date? = nil) {
         self.modelContext = modelContext
         self.modelContainer = modelContext.container
-        fetchData()
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(fetchData),
-            name: .transactionsDidChange,
-            object: nil
-        )
-    }
-    
-    @objc func fetchData() {
         let calendar = Calendar.current
-        var baslangicTarihi: Date?
-        var bitisTarihi: Date?
         
-        if let interval = filtreAyarlari.tarihAraligi.dateInterval() {
-            baslangicTarihi = interval.start
-            bitisTarihi = interval.end
+        if let tarih = baslangicTarihi {
+            if let ayinAraligi = calendar.dateInterval(of: .month, for: tarih) {
+                self.filtreAyarlari.baslangicTarihi = ayinAraligi.start
+                self.filtreAyarlari.bitisTarihi = calendar.date(byAdding: .day, value: -1, to: ayinAraligi.end)
+                self.filtreAyarlari.tarihAraligi = .ozel
+            }
+        } else {
+            self.filtreAyarlari.tarihAraligi = .buAy
+            if let ayinAraligi = self.filtreAyarlari.tarihAraligi.dateInterval() {
+                self.filtreAyarlari.baslangicTarihi = ayinAraligi.start
+                self.filtreAyarlari.bitisTarihi = calendar.date(byAdding: .day, value: -1, to: ayinAraligi.end)
+            }
+        }
+        
+        fetchData()
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: .transactionsDidChange, object: nil)
+    }
+
+    @objc func fetchData() {
+        let baslangicTarihi = filtreAyarlari.baslangicTarihi
+        var sorguBitisTarihi: Date? = nil
+        if let bitis = filtreAyarlari.bitisTarihi {
+            let bitisinGunu = Calendar.current.startOfDay(for: bitis)
+            sorguBitisTarihi = Calendar.current.date(byAdding: .day, value: 1, to: bitisinGunu)
         }
         
         let turFiltresiAktif = filtreAyarlari.secilenTurler.count == 1
         let secilenTurRawValue = filtreAyarlari.secilenTurler.first?.rawValue
-        
         let kategoriFiltresiAktif = !filtreAyarlari.secilenKategoriler.isEmpty
         let secilenKategoriIDleri = filtreAyarlari.secilenKategoriler
         
         let finalPredicate = #Predicate<Islem> { islem in
             (
                 (baslangicTarihi == nil || islem.tarih >= baslangicTarihi!) &&
-                (bitisTarihi == nil || islem.tarih < bitisTarihi!) &&
+                (sorguBitisTarihi == nil || islem.tarih < sorguBitisTarihi!) &&
                 (!turFiltresiAktif || islem.turRawValue == secilenTurRawValue!)
             )
         }
         
-        let sortDescriptors: [SortDescriptor<Islem>]
-        switch filtreAyarlari.sortOrder {
-        case .tarihAzalan: sortDescriptors = [SortDescriptor(\.tarih, order: .reverse)]
-        case .tarihArtan: sortDescriptors = [SortDescriptor(\.tarih, order: .forward)]
-        case .tutarAzalan: sortDescriptors = [SortDescriptor(\.tutar, order: .reverse)]
-        case .tutarArtan: sortDescriptors = [SortDescriptor(\.tutar, order: .forward)]
+        let sortDescriptors: [SortDescriptor<Islem>] = switch filtreAyarlari.sortOrder {
+            case .tarihAzalan: [SortDescriptor(\.tarih, order: .reverse)]
+            case .tarihArtan: [SortDescriptor(\.tarih, order: .forward)]
+            case .tutarAzalan: [SortDescriptor(\.tutar, order: .reverse)]
+            case .tutarArtan: [SortDescriptor(\.tutar, order: .forward)]
         }
         
-        let descriptor = FetchDescriptor<Islem>(
-            predicate: finalPredicate,
-            sortBy: sortDescriptors
-        )
+        let descriptor = FetchDescriptor<Islem>(predicate: finalPredicate, sortBy: sortDescriptors)
         
         do {
             var filtrelenmisSonuclar = try modelContext.fetch(descriptor)
-            
             if kategoriFiltresiAktif {
                 filtrelenmisSonuclar = filtrelenmisSonuclar.filter { islem in
                     guard let kategori = islem.kategori else { return false }
                     return secilenKategoriIDleri.contains(kategori.id)
                 }
             }
-            
             self.islemler = filtrelenmisSonuclar
-            
         } catch {
-            print("Filtreli veri çekme hatası (NİHAİ): \(error)")
+            Logger.log("Filtreli veri çekme hatası (NİHAİ): \(error.localizedDescription)", log: Logger.data, type: .error)
             islemler = []
         }
     }

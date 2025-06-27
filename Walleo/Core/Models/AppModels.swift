@@ -120,30 +120,30 @@ public enum SortOrder: String, CaseIterable, Identifiable {
 }
 
 public enum TarihAraligi: String, Hashable, Identifiable {
-    case hepsi = "enum.date_range.all"
     case buHafta = "enum.date_range.this_week"
     case buAy = "enum.date_range.this_month"
     case son3Ay = "enum.date_range.last_3_months"
     case son6Ay = "enum.date_range.last_6_months"
     case yilBasindanBeri = "enum.date_range.ytd"
     case sonYil = "enum.date_range.last_year"
+    case ozel = "enum.date_range.custom"
     
     public var id: Self { self }
     
-    var localized: String {
-        NSLocalizedString(self.rawValue, comment: "")
-    }
+    var localized: String { NSLocalizedString(self.rawValue, comment: "") }
     
     public static var allCases: [TarihAraligi] {
-        [.hepsi, .buHafta, .buAy, .son3Ay, .son6Ay, .yilBasindanBeri, .sonYil]
+        [.buHafta, .buAy, .son3Ay, .son6Ay, .yilBasindanBeri, .sonYil, .ozel]
     }
 }
 
 struct FiltreAyarlari {
-    var tarihAraligi: TarihAraligi = .hepsi
+    var tarihAraligi: TarihAraligi = .buAy
     var secilenTurler: Set<IslemTuru> = [.gelir, .gider]
     var secilenKategoriler: Set<UUID> = []
     var sortOrder: SortOrder = .tarihAzalan
+    var baslangicTarihi: Date? = nil
+    var bitisTarihi: Date? = nil
 }
 
 extension Notification.Name {
@@ -154,28 +154,34 @@ extension Date: @retroactive Identifiable {
     public var id: Date { self }
 }
 
+// Dosya: AppModels.swift -> Sadece bu extension'ı güncelleyin
+
 extension TarihAraligi {
-    func dateInterval(for date: Date = Date()) -> DateInterval? {
+    // NİHAİ HAL: Bu fonksiyon teknik olarak doğru aralıkları döndürür.
+    // Örn: Haziran ayı için bitiş tarihi 1 Temmuz 00:00'dır.
+    func dateInterval() -> DateInterval? {
         let calendar = Calendar.current
+        let now = Date()
+        
         switch self {
-        case .hepsi:
-            return nil
         case .buHafta:
-            return calendar.dateInterval(of: .weekOfYear, for: date)
+            return calendar.dateInterval(of: .weekOfYear, for: now)
         case .buAy:
-            return calendar.dateInterval(of: .month, for: date)
+            return calendar.dateInterval(of: .month, for: now)
         case .son3Ay:
-            guard let baslangic = calendar.date(byAdding: .month, value: -3, to: date) else { return nil }
-            return DateInterval(start: baslangic, end: date)
+            guard let baslangic = calendar.date(byAdding: .month, value: -3, to: now) else { return nil }
+            return DateInterval(start: calendar.startOfDay(for: baslangic), end: now)
         case .son6Ay:
-            guard let baslangic = calendar.date(byAdding: .month, value: -6, to: date) else { return nil }
-            return DateInterval(start: baslangic, end: date)
+            guard let baslangic = calendar.date(byAdding: .month, value: -6, to: now) else { return nil }
+            return DateInterval(start: calendar.startOfDay(for: baslangic), end: now)
         case .yilBasindanBeri:
-            guard let yilBasi = calendar.date(from: calendar.dateComponents([.year], from: date)) else { return nil }
-            return DateInterval(start: yilBasi, end: date)
+            guard let yilinBasi = calendar.date(from: calendar.dateComponents([.year], from: now)) else { return nil }
+            return DateInterval(start: yilinBasi, end: now)
         case .sonYil:
-            guard let baslangic = calendar.date(byAdding: .year, value: -1, to: date) else { return nil }
-            return DateInterval(start: baslangic, end: date)
+            guard let baslangic = calendar.date(byAdding: .year, value: -1, to: now) else { return nil }
+            return DateInterval(start: calendar.startOfDay(for: baslangic), end: now)
+        case .ozel:
+            return nil
         }
     }
 }

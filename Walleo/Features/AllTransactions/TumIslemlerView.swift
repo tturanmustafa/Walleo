@@ -1,3 +1,5 @@
+// Dosya: TumIslemlerView.swift
+
 import SwiftUI
 import SwiftData
 
@@ -15,26 +17,19 @@ struct TumIslemlerView: View {
     @State private var silinecekTekrarliIslem: Islem?
     @State private var silinecekTekilIslem: Islem?
     
-    init(modelContext: ModelContext) {
-        _viewModel = State(initialValue: TumIslemlerViewModel(modelContext: modelContext))
+    init(modelContext: ModelContext, baslangicTarihi: Date? = nil) {
+        _viewModel = State(initialValue: TumIslemlerViewModel(modelContext: modelContext, baslangicTarihi: baslangicTarihi))
     }
     
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
-                filtrelemeBari
-                    .padding(.vertical, 8)
-
+                filtrelemeBari.padding(.vertical, 8)
                 List {
                     ForEach(viewModel.islemler) { islem in
-                        IslemSatirView(
-                            islem: islem,
-                            onEdit: { duzenlenecekIslem = islem },
-                            onDelete: { silmeyiBaslat(islem) }
-                        )
+                        IslemSatirView(islem: islem, onEdit: { duzenlenecekIslem = islem }, onDelete: { silmeyiBaslat(islem) })
                     }
-                }
-                .listStyle(.plain)
+                }.listStyle(.plain)
             }
             .disabled(viewModel.isDeleting)
             .navigationTitle("all_transactions.title")
@@ -42,9 +37,7 @@ struct TumIslemlerView: View {
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {
-                        dismiss()
-                    }) {
+                    Button(action: { dismiss() }) {
                         HStack {
                             Image(systemName: "chevron.left")
                             Text("common.back")
@@ -53,13 +46,10 @@ struct TumIslemlerView: View {
                 }
             }
             .sheet(isPresented: $kategoriFiltreGosteriliyor) {
-                KategoriSecimView(secilenKategoriler: $viewModel.filtreAyarlari.secilenKategoriler)
-                    .environmentObject(appSettings)
+                KategoriSecimView(secilenKategoriler: $viewModel.filtreAyarlari.secilenKategoriler).environmentObject(appSettings)
             }
             .sheet(isPresented: $tarihFiltreGosteriliyor) {
-                TarihAraligiSecimView(secilenAralik: $viewModel.filtreAyarlari.tarihAraligi)
-                    .presentationDetents([.height(320)])
-                    .environmentObject(appSettings)
+                TarihAraligiSecimView(filtreAyarlari: $viewModel.filtreAyarlari).environmentObject(appSettings)
             }
             .sheet(isPresented: $turFiltreGosteriliyor) {
                 IslemTuruSecimView(secilenTurler: $viewModel.filtreAyarlari.secilenTurler)
@@ -67,8 +57,7 @@ struct TumIslemlerView: View {
                     .environmentObject(appSettings)
             }
             .sheet(item: $duzenlenecekIslem) { islem in
-                IslemEkleView(duzenlenecekIslem: islem)
-                    .environmentObject(appSettings)
+                IslemEkleView(duzenlenecekIslem: islem).environmentObject(appSettings)
             }
             .overlay {
                 if viewModel.islemler.isEmpty && !viewModel.isDeleting {
@@ -146,7 +135,9 @@ struct TumIslemlerView: View {
                 }
                 
                 Button { tarihFiltreGosteriliyor = true } label: { Text("filter.date_range") }
-                    .buttonStyle(FiltreButonStyle(aktif: viewModel.filtreAyarlari.tarihAraligi != .hepsi))
+                    // GÜNCELLEME: Butonun aktif olma koşulu da en basit haline geri döndü.
+                    // Varsayılan olan ".buAy" dan farklı bir şey seçilirse aktif olacak.
+                    .buttonStyle(FiltreButonStyle(aktif: viewModel.filtreAyarlari.tarihAraligi != .buAy))
                 
                 Button { turFiltreGosteriliyor = true } label: { Text("transaction.type") }
                     .buttonStyle(FiltreButonStyle(aktif: viewModel.filtreAyarlari.secilenTurler.count == 1))
