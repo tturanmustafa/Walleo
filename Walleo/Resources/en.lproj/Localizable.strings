@@ -289,3 +289,7 @@
 "export.header.type" = "Type";
 "export.header.category" = "Category";
 "export.header.account" = "Account";
+
+"credit_card_details.no_expenses_for_month" = "No Expenses for This Month";
+"credit_card_details.total_expenses_for_period" = "Total Expenses for the Period";
+
