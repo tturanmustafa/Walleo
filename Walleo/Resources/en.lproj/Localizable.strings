@@ -234,6 +234,13 @@
 "category.loan_payment" = "Loan Payment";
 "category.other" = "Other";
 
+// MARK: - Filter Screen
+"filter.custom_range_header" = "Custom Range";
+"filter.start_date" = "Start Date";
+"filter.end_date" = "End Date";
+"filter.presets_header" = "Presets";
+"enum.date_range.custom" = "Custom";
+
 // MARK: - Currencies
 "currency.name.TRY" = "Turkish Lira";
 "currency.name.USD" = "US Dollar";
