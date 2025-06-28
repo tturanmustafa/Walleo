@@ -83,9 +83,7 @@ struct KrediDetayView: View {
             
             let formatString = languageBundle.localizedString(forKey: "alert.add_as_expense.message_format", value: "", table: nil)
             let tutarString = formatCurrency(amount: taksit.taksitTutari, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
-            
-            // --- DÜZELTME BURADA ---
-            // Closure içinde birden fazla satır olduğu için 'return' ifadesi eklenmelidir.
+
             return Text(String(format: formatString, tutarString))
         }
         .navigationTitle(viewModel.hesap.isim)
@@ -94,28 +92,26 @@ struct KrediDetayView: View {
     
     private var krediOzetiSection: some View {
         Section(LocalizedStringKey("loan_details.summary_header")) {
-            // DÜZELTME 1: Çekilen Tutar etiket sorunu çözüldü.
             if case .kredi(let cekilenTutar, let faizTipi, let faizOrani, let taksitSayisi, _, _) = viewModel.hesap.detay {
+                
                 HStack {
-                    // Text artık LocalizedStringKey alıyor.
                     Text(LocalizedStringKey("accounts.add.loan_amount"))
                     Spacer()
                     Text(formatCurrency(amount: cekilenTutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
                 }
                 
-                // DÜZELTME 2: Faiz Oranı değeri ve etiketi sorunu çözüldü.
+                // DÜZELTME: Artık yeni merkezi fonksiyonumuzu kullanıyor.
                 HStack {
-                    Text(LocalizedStringKey("accounts.add.interest_rate")) // Bu anahtarın değerini "Faiz Oranı (%)" olarak güncelledik.
+                    Text(LocalizedStringKey("accounts.add.interest_rate"))
                     Spacer()
-                    // Değer artık faiz tipine göre dinamik ve lokalize.
-                    Text("\(NSLocalizedString(faizTipi.localizedKey, comment: "")) %\(String(format: "%.2f", faizOrani))")
+                    Text("\(getLocalized(faizTipi.localizedKey, from: appSettings)) %\(String(format: "%.2f", faizOrani))")
                 }
                 
+                // DÜZELTME: Artık yeni merkezi fonksiyonumuzu kullanıyor.
                 HStack {
                     Text(LocalizedStringKey("accounts.add.installments"))
                     Spacer()
-                    // Bu satır zaten doğru çalışıyordu, tutarlılık için kontrol edildi.
-                    Text(String.localizedStringWithFormat(NSLocalizedString("accounts.add.installments_stepper", comment: ""), taksitSayisi))
+                    Text(String(format: getLocalized("accounts.add.installments_stepper", from: appSettings), taksitSayisi))
                 }
             }
         }

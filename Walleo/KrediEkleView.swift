@@ -20,10 +20,8 @@ struct KrediEkleView: View {
          NavigationStack {
             Form {
                 Section(header: Text(LocalizedStringKey("loan.form.details_header"))) {
-                    // DÜZELTME: Placeholder özelleştirildi.
                     TextField(LocalizedStringKey("account.name_placeholder_loan"), text: $isim)
                     
-                    // DÜZELTME: Placeholder özelleştirildi.
                     FormattedAmountField(
                         "loan.principal_amount_placeholder",
                         value: $cekilenTutarString,
@@ -32,7 +30,6 @@ struct KrediEkleView: View {
                     )
                     
                     HStack {
-                        // DÜZELTME: Placeholder özelleştirildi.
                         TextField(LocalizedStringKey("loan.interest_rate_placeholder"), text: $faizOraniString)
                             .keyboardType(.decimalPad)
                             .onChange(of: faizOraniString) {
@@ -56,8 +53,8 @@ struct KrediEkleView: View {
                 }
                 
                 Section(header: Text(LocalizedStringKey("accounts.add.installments"))) {
-                    // DÜZELTME 3: Stepper metni artık lokalize.
-                    Stepper(String.localizedStringWithFormat(NSLocalizedString("accounts.add.installments_stepper", comment: ""), taksitSayisi), value: $taksitSayisi, in: 1...360)
+                    // DÜZELTME BURADA: Stepper artık yeni helper fonksiyonumuzu kullanıyor.
+                    Stepper(String(format: getLocalized("accounts.add.installments_stepper", from: appSettings), taksitSayisi), value: $taksitSayisi, in: 1...360)
                 }
                 
                 Section(header: Text(LocalizedStringKey("loan.form.first_payment_header"))) {
