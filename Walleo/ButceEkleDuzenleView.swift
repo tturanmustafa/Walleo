@@ -47,11 +47,13 @@ struct ButceEkleDuzenleView: View {
         NavigationStack {
             Form {
                 Section {
-                    TextField(LocalizedStringKey("budgets.form.name_placeholder"), text: $isim)
+                    // DÜZELTME: Placeholder özelleştirildi.
+                    TextField(LocalizedStringKey("budget.name_placeholder"), text: $isim)
                     
                     VStack(alignment: .leading) {
+                        // DÜZELTME: Placeholder özelleştirildi.
                         FormattedAmountField(
-                            "budgets.form.limit_amount",
+                            "budget.limit_placeholder",
                             value: $limitString,
                             isInvalid: $isLimitGecersiz,
                             locale: Locale(identifier: appSettings.languageCode)

@@ -27,21 +27,36 @@ struct FormattedAmountField: UIViewRepresentable {
         textField.keyboardType = .decimalPad
         textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
-        // Lokalizasyon anahtarını standart yolla kullanarak placeholder'ı ayarla
-        let localizedPlaceholder = NSLocalizedString(placeholderKey, comment: "")
-        textField.placeholder = localizedPlaceholder
+        // DÜZELTME: Placeholder metnini doğru dilden al.
+        textField.placeholder = getLocalizedPlaceholder()
         
         return textField
     }
 
     func updateUIView(_ uiView: UITextField, context: Context) {
-        // Dil değişikliğinde formatlayıcının locale'ini güncelle
+        // Dil değişikliği gibi durumlarda placeholder'ı güncelle.
+        uiView.placeholder = getLocalizedPlaceholder()
         context.coordinator.numberFormatter.locale = self.locale
 
         let formattedText = context.coordinator.format(text: valueString)
         if uiView.text != formattedText {
             uiView.text = formattedText
         }
+    }
+    
+    // YENİ YARDIMCI FONKSİYON
+    private func getLocalizedPlaceholder() -> String {
+        let languageCode = self.locale.identifier
+        
+        // Doğru dil paketini (bundle) bul
+        if let path = Bundle.main.path(forResource: languageCode, ofType: "lproj"),
+           let languageBundle = Bundle(path: path) {
+            // Çeviriyi bu paketten al
+            return languageBundle.localizedString(forKey: self.placeholderKey, value: self.placeholderKey, table: nil)
+        }
+        
+        // Eğer bir sebepten dil paketi bulunamazsa, standart (genellikle İngilizce) çeviriyi dene.
+        return NSLocalizedString(self.placeholderKey, comment: "")
     }
 
     func makeCoordinator() -> Coordinator {
@@ -66,7 +81,7 @@ struct FormattedAmountField: UIViewRepresentable {
             self.numberFormatter.usesGroupingSeparator = true
             self.numberFormatter.maximumFractionDigits = 2
             
-            // Dile göre ayraçları manuel olarak ayarlamak daha güvenilir olabilir
+            // Bu kısım aynı kalabilir, çünkü locale'den doğru ayraçları alıyor.
             if locale.identifier.starts(with: "tr") {
                 self.numberFormatter.groupingSeparator = "."
                 self.numberFormatter.decimalSeparator = ","

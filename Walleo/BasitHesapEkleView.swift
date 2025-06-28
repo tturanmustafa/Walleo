@@ -7,7 +7,8 @@ struct BasitHesapEkleView: View {
     @EnvironmentObject var appSettings: AppSettings
 
     @State private var isim: String = ""
-    @State private var bakiyeString: String = "0"
+    // DÜZELTME 1: Başlangıç değeri "0" yerine boş string "" oldu.
+    @State private var bakiyeString: String = ""
     @State private var secilenRenk: Color = .blue
     var duzenlenecekHesap: Hesap?
     
@@ -21,11 +22,13 @@ struct BasitHesapEkleView: View {
         NavigationStack {
             Form {
                 Section(LocalizedStringKey("transaction.section_details")) {
-                    TextField(LocalizedStringKey("accounts.add.account_name_placeholder"), text: $isim)
+                    // DÜZELTME 2: Placeholder özelleştirildi.
+                    TextField(LocalizedStringKey("account.name_placeholder_wallet"), text: $isim)
                     
                     VStack(alignment: .leading) {
+                        // DÜZELTME 3: Placeholder özelleştirildi.
                         FormattedAmountField(
-                            "accounts.add.initial_balance",
+                            "account.initial_balance_placeholder",
                             value: $bakiyeString,
                             isInvalid: $isBakiyeGecersiz,
                             locale: Locale(identifier: appSettings.languageCode)

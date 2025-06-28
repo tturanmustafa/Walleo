@@ -107,18 +107,11 @@
 "accounts.add.loan" = "Kredi";
 "accounts.add.new_credit_card" = "Yeni Kredi Kartı Ekle";
 "accounts.add.new_loan" = "Yeni Kredi Ekle";
-"accounts.add.account_name_placeholder" = "örn: Maaş Hesabım";
-"accounts.add.card_name_placeholder" = "örn: Bonus Card";
-"accounts.add.loan_name_placeholder" = "örn: Taşıt Kredisi";
-"accounts.add.initial_balance" = "Başlangıç Bakiyesi";
 "accounts.add.account_color" = "Hesap Rengi";
-"accounts.add.card_limit" = "Kart Limiti";
-"accounts.add.loan_amount" = "Çekilen Tutar (Anapara)";
-"accounts.add.interest_rate" = "Yıllık Faiz Oranı (%)";
+"accounts.add.interest_rate" = "Faiz Oranı (%)";
 "accounts.add.installments" = "Taksit Sayısı";
 "accounts.add.installments_stepper" = "%d ay";
 "accounts.add.create_installments_button" = "Kaydet ve Taksitleri Oluştur";
-"credit_card.form.current_debt_optional" = "Güncel Borç (Opsiyonel)";
 "credit_card.form.statement_date_header" = "Hesap Kesim Tarihi";
 "credit_card.form.statement_date" = "Hesap Kesim Tarihi";
 "credit_card.form.payment_due_date_header" = "Son Ödeme Günü Ayarı";
@@ -141,6 +134,19 @@
 "account_details.generic_title" = "%@ Detayları";
 "enum.interest_type.yearly" = "Yıllık";
 "enum.interest_type.monthly" = "Aylık";
+"transaction.name_placeholder" = "İşlem Adı (örn: Akşam Yemeği)";
+"transaction.amount_placeholder" = "Tutar (örn: 125,50)";
+"account.name_placeholder_wallet" = "Cüzdan Adı (örn: Nakit)";
+"account.name_placeholder_creditcard" = "Kart Adı (örn: Bonus Card)";
+"account.name_placeholder_loan" = "Kredi Adı (örn: Taşıt Kredisi)";
+"account.initial_balance_placeholder" = "Başlangıç Bakiyesi (örn: 500)";
+"credit_card.limit_placeholder" = "Kart Limiti (örn: 15000)";
+"credit_card.current_debt_placeholder" = "Güncel Borç (Opsiyonel)";
+"loan.principal_amount_placeholder" = "Çekilen Tutar (örn: 250000)";
+"loan.interest_rate_placeholder" = "Faiz Oranı (örn: 1,89)";
+"budget.name_placeholder" = "Bütçe Adı (örn: Mutfak Giderleri)";
+"budget.limit_placeholder" = "Aylık Limit (örn: 2500)";
+"accounts.add.loan_amount" = "Kredi Tutarı";
 
 // MARK: - Diğer Ekranlar ve Uyarılar
 "all_transactions.title" = "Tüm İşlemler";

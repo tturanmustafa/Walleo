@@ -20,16 +20,20 @@ struct KrediEkleView: View {
          NavigationStack {
             Form {
                 Section(header: Text(LocalizedStringKey("loan.form.details_header"))) {
-                    TextField(LocalizedStringKey("accounts.add.loan_name_placeholder"), text: $isim)
+                    // DÜZELTME: Placeholder özelleştirildi.
+                    TextField(LocalizedStringKey("account.name_placeholder_loan"), text: $isim)
+                    
+                    // DÜZELTME: Placeholder özelleştirildi.
                     FormattedAmountField(
-                        "accounts.add.loan_amount",
+                        "loan.principal_amount_placeholder",
                         value: $cekilenTutarString,
                         isInvalid: .constant(false),
                         locale: Locale(identifier: appSettings.languageCode)
                     )
                     
                     HStack {
-                        TextField(LocalizedStringKey("accounts.add.interest_rate"), text: $faizOraniString)
+                        // DÜZELTME: Placeholder özelleştirildi.
+                        TextField(LocalizedStringKey("loan.interest_rate_placeholder"), text: $faizOraniString)
                             .keyboardType(.decimalPad)
                             .onChange(of: faizOraniString) {
                                 let decimalSeparator = Locale(identifier: appSettings.languageCode).decimalSeparator ?? "."
@@ -52,6 +56,7 @@ struct KrediEkleView: View {
                 }
                 
                 Section(header: Text(LocalizedStringKey("accounts.add.installments"))) {
+                    // DÜZELTME 3: Stepper metni artık lokalize.
                     Stepper(String.localizedStringWithFormat(NSLocalizedString("accounts.add.installments_stepper", comment: ""), taksitSayisi), value: $taksitSayisi, in: 1...360)
                 }
                 

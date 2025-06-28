@@ -47,12 +47,13 @@ struct KrediKartiEkleView: View {
                             .font(.caption).foregroundColor(.secondary).padding(.leading)
                         
                         VStack(spacing: 0) {
-                            TextField(LocalizedStringKey("accounts.add.card_name_placeholder"), text: $isim).padding()
+                            TextField(LocalizedStringKey("account.name_placeholder_creditcard"), text: $isim).padding()
                             Divider().padding(.leading)
                             
                             VStack(alignment: .leading) {
+                                // DÜZELTME: Placeholder özelleştirildi.
                                 FormattedAmountField(
-                                    "accounts.add.card_limit",
+                                    "credit_card.limit_placeholder",
                                     value: $limitString,
                                     isInvalid: $isLimitGecersiz,
                                     locale: Locale(identifier: appSettings.languageCode)
@@ -66,8 +67,9 @@ struct KrediKartiEkleView: View {
                             Divider().padding(.leading)
                             
                             VStack(alignment: .leading) {
+                                // DÜZELTME: Placeholder özelleştirildi.
                                 FormattedAmountField(
-                                    "credit_card.form.current_debt_optional",
+                                    "credit_card.current_debt_placeholder",
                                     value: $guncelBorcString,
                                     isInvalid: $isBorcGecersiz,
                                     locale: Locale(identifier: appSettings.languageCode)
