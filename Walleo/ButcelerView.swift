@@ -61,7 +61,12 @@ struct ButcelerView: View {
             .navigationTitle(LocalizedStringKey("budgets.title"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { yeniButceEkleGoster = true }) { Image(systemName: "plus") }
+                    Button(action: { yeniButceEkleGoster = true }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "plus")
+                            Text(LocalizedStringKey("button.add_budget"))
+                        }
+                    }
                 }
             }
         }
