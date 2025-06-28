@@ -72,7 +72,7 @@
 "notification.budget.over_limit.body_line2" = "Budget Target: %@";
 "notification.budget.over_limit.body_line3" = "Exceeded by: %@";
 "notification.budget.approaching_limit.title" = "Budget Limit Approaching";
-"notification.budget.approaching_limit.body_line1_format" = "You have reached %2$.0f of your target for the %1$@ budget.";
+"notification.budget.approaching_limit.body_line1_format" = "You have reached %%%2$.0f of your target for the %1$@ budget.";
 "notification.budget.approaching_limit.body_line2" = "Budget Target: %@";
 "notification.budget.approaching_limit.body_line3" = "Amount Remaining: %@";
 "notification.credit_card.due_date.title" = "Credit Card Payment Due";

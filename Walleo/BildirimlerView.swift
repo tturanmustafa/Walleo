@@ -10,24 +10,25 @@ struct BildirimlerView: View {
     
     @Query(sort: \Bildirim.olusturmaTarihi, order: .reverse) private var bildirimler: [Bildirim]
     
-    // GÜNCELLEME: ViewModel kaldırıldı. View artık kendi durumunu yönetiyor.
     @State private var silinecekBildirim: Bildirim?
     @State private var tumunuSilUyarisiGoster = false
     @State private var isDeletingAll = false
+
+    private var hasUnreadNotifications: Bool {
+        bildirimler.contains { !$0.okunduMu }
+    }
 
     var body: some View {
         ZStack {
             NavigationStack {
                 List {
                     ForEach(bildirimler) { bildirim in
-                        // İçerik, doğrudan modelin kendisinden çağırılıyor.
                         let content = bildirim.displayContent(using: appSettings)
                         
                         bildirimSatiri(content: content, okunduMu: bildirim.okunduMu)
                             .onTapGesture {
                                 if !bildirim.okunduMu {
                                     bildirim.okunduMu = true
-                                    // Değişikliği anında kaydet.
                                     try? modelContext.save()
                                 }
                             }
@@ -44,24 +45,33 @@ struct BildirimlerView: View {
                     }
                 }
                 .navigationTitle("notifications.title")
-                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarTitleDisplayMode(.large)
                 .toolbar {
-                    ToolbarItemGroup(placement: .cancellationAction) {
-                        // Butonlar artık bu View içindeki private fonksiyonları çağırıyor.
-                        Button("notifications.mark_all_as_read") {
-                            markAllAsRead()
-                        }
-                        .disabled(bildirimler.isEmpty)
-                        
-                        Button("notifications.delete_all") {
-                            tumunuSilUyarisiGoster = true
-                        }
-                        .tint(.red)
-                        .disabled(bildirimler.isEmpty)
-                    }
+                    // GÜNCELLEME: Sol taraftaki butonlar kaldırıldı.
                     
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("common.done") { dismiss() }
+                        HStack {
+                            // YENİ: Eylem Menüsü
+                            Menu {
+                                Button(action: markAllAsRead) {
+                                    Label("notifications.mark_all_as_read", systemImage: "envelope.open")
+                                }
+                                .disabled(!hasUnreadNotifications)
+                                
+                                Button(role: .destructive, action: { tumunuSilUyarisiGoster = true }) {
+                                    Label("notifications.delete_all", systemImage: "trash")
+                                }
+                                .disabled(bildirimler.isEmpty)
+                                
+                            } label: {
+                                Image(systemName: "ellipsis.circle")
+                                    .font(.title3)
+                            }
+                            
+                            // Bitti butonu menünün yanında.
+                            Button("common.done") { dismiss() }
+                                .padding(.leading, 8)
+                        }
                     }
                 }
                 .alert(
@@ -95,8 +105,8 @@ struct BildirimlerView: View {
         }
     }
     
-    // GÜNCELLEME: Fonksiyonlar artık ViewModel'da değil, View'ın kendi private fonksiyonları.
     private func markAllAsRead() {
+        // Fonksiyonun mantığı aynı kalıyor.
         let unread = bildirimler.filter { !$0.okunduMu }
         guard !unread.isEmpty else { return }
         for notification in unread {
@@ -106,29 +116,29 @@ struct BildirimlerView: View {
     }
     
     private func deleteAllNotifications() {
+        // Fonksiyonun mantığı aynı kalıyor.
         guard !isDeletingAll else { return }
         Task {
             isDeletingAll = true
-            // Arka planda silmek yerine, az sayıda bildirim için ana thread'de silmek
-            // daha basit ve hatasız olabilir. Çok sayıda bildirim olursa bu tekrar değerlendirilir.
+            try? await Task.sleep(for: .seconds(0.5))
             try? modelContext.delete(model: Bildirim.self)
             try? modelContext.save()
             isDeletingAll = false
         }
     }
     
-    // Satır view'ı basit bir content yapısı alıyor.
     @ViewBuilder
     private func bildirimSatiri(content: BildirimDisplayContent, okunduMu: Bool) -> some View {
-        HStack(spacing: 15) {
+        HStack(alignment: .top, spacing: 15) {
             Image(systemName: content.ikonAdi)
                 .font(.title2)
                 .foregroundColor(content.ikonRengi)
-                .frame(width: 30)
-                .padding(.top, 5)
+                .frame(width: 30, height: 30)
+                .padding(.top, 3)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(content.baslik).fontWeight(.semibold)
+                
                 Text(content.aciklamaLine1).font(.caption).foregroundColor(.secondary)
                 if let line2 = content.aciklamaLine2 {
                     Text(line2).font(.caption).foregroundColor(.secondary)
@@ -142,7 +152,7 @@ struct BildirimlerView: View {
             Spacer()
             
             if !okunduMu {
-                Circle().fill(Color.accentColor).frame(width: 8, height: 8)
+                Circle().fill(Color.accentColor).frame(width: 8, height: 8).padding(.top, 6)
             }
         }
         .padding(.vertical, 8)

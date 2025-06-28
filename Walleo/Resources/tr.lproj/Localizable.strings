@@ -72,7 +72,7 @@
 "notification.budget.over_limit.body_line2" = "Bütçe Hedefi: %@";
 "notification.budget.over_limit.body_line3" = "Aşılan Tutar: %@";
 "notification.budget.approaching_limit.title" = "Bütçe Limiti Yaklaşıyor";
-"notification.budget.approaching_limit.body_line1_format" = "%1$@ adlı bütçenizin hedef tutarının %2$.0f'ına ulaştınız.";
+"notification.budget.approaching_limit.body_line1_format" = "%1$@ adlı bütçenizin hedef tutarının %%%2$.0f'ına ulaştınız.";
 "notification.budget.approaching_limit.body_line2" = "Bütçe Hedefi: %@";
 "notification.budget.approaching_limit.body_line3" = "Kalan Tutar: %@";
 "notification.credit_card.due_date.title" = "Kredi Kartı Ödemesi Yaklaşıyor";
