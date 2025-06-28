@@ -92,20 +92,23 @@ struct HesaplarView: View {
         ScrollView {
             LazyVStack(spacing: 16) {
                 ForEach(viewModel.gosterilecekHesaplar) { bilgi in
-                    // Kredi veya Kredi Kartı ise tıklanabilir bir link oluştur
+                    // GÜNCELLEME: Artık cüzdan tipi de bir NavigationLink içinde.
                     if case .kredi = bilgi.hesap.detay {
-                        NavigationLink(destination: detayEkraniniGetir(hesap: bilgi.hesap)) {
+                        NavigationLink(destination: KrediDetayView(hesap: bilgi.hesap, modelContext: self.modelContext)) {
                             hesapKarti(for: bilgi, viewModel: viewModel)
                         }
                         .buttonStyle(.plain)
                     } else if case .krediKarti = bilgi.hesap.detay {
-                        NavigationLink(destination: detayEkraniniGetir(hesap: bilgi.hesap)) {
+                        NavigationLink(destination: KrediKartiDetayView(kartHesabi: bilgi.hesap, modelContext: self.modelContext)) {
                             hesapKarti(for: bilgi, viewModel: viewModel)
                         }
                         .buttonStyle(.plain)
                     } else {
-                        // Cüzdan ise tıklanabilir değil, sadece kartı göster
-                        hesapKarti(for: bilgi, viewModel: viewModel)
+                        // YENİ: Cüzdan tipi için NavigationLink eklendi.
+                        NavigationLink(destination: CuzdanDetayView(hesap: bilgi.hesap)) {
+                            hesapKarti(for: bilgi, viewModel: viewModel)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
             }
