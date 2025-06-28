@@ -92,6 +92,20 @@ func stringToDouble(_ stringValue: String, locale: Locale) -> Double {
     return Double(parsableString) ?? 0.0
 }
 
+func getLocalized(_ key: String, from appSettings: AppSettings) -> String {
+    let languageCode = appSettings.languageCode
+    
+    // Doğru dil paketini (bundle) bul
+    if let path = Bundle.main.path(forResource: languageCode, ofType: "lproj"),
+       let languageBundle = Bundle(path: path) {
+        // Çeviriyi bu paketten al
+        return languageBundle.localizedString(forKey: key, value: key, table: nil)
+    }
+    
+    // Eğer bir sebepten dil paketi bulunamazsa, standart (genellikle İngilizce) çeviriyi dene.
+    return NSLocalizedString(key, comment: "")
+}
+
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
@@ -126,3 +140,4 @@ extension Color {
 extension UUID: @retroactive Identifiable {
     public var id: UUID { self }
 }
+
