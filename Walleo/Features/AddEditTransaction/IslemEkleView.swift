@@ -1,3 +1,5 @@
+// Dosya: IslemEkleView.swift
+
 import SwiftUI
 import SwiftData
 
@@ -23,8 +25,6 @@ struct IslemEkleView: View {
     @State private var guncellemeSecenekleriGoster = false
 
     @State private var isTutarGecersiz = false
-    
-    // YENİ: Kaydetme işlemi sırasında arayüzü yönetmek için
     @State private var isSaving = false
 
     private var isFormValid: Bool {
@@ -41,13 +41,12 @@ struct IslemEkleView: View {
     
     private var filtrelenmisHesaplar: [Hesap] {
         if secilenTur == .gelir {
-            // Artık hem cüzdan hem de kredi kartı tipi hesapları gösteriyor
             return tumHesaplar.filter {
                 if case .cuzdan = $0.detay { return true }
                 if case .krediKarti = $0.detay { return true }
                 return false
             }
-        } else { // Gider durumu aynı kalıyor (Kredi hesabı hariç hepsi)
+        } else {
             return tumHesaplar.filter { if case .kredi = $0.detay { return false }; return true }
         }
     }
@@ -71,17 +70,11 @@ struct IslemEkleView: View {
                     TextField(LocalizedStringKey("transaction.name_placeholder"), text: $isim)
                     
                     VStack(alignment: .leading) {
-                        FormattedAmountField(
-                            "common.amount",
-                            value: $tutarString,
-                            isInvalid: $isTutarGecersiz,
-                            locale: Locale(identifier: appSettings.languageCode)
-                        )
-                        .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? Color.red : Color.clear, lineWidth: 1))
+                        FormattedAmountField("common.amount", value: $tutarString, isInvalid: $isTutarGecersiz, locale: Locale(identifier: appSettings.languageCode))
+                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? Color.red : Color.clear, lineWidth: 1))
 
                         if isTutarGecersiz {
-                            Text(LocalizedStringKey("validation.error.invalid_amount_format"))
-                                .font(.caption).foregroundColor(.red).padding(.top, 2)
+                            Text(LocalizedStringKey("validation.error.invalid_amount_format")).font(.caption).foregroundColor(.red).padding(.top, 2)
                         }
                     }
                 }
@@ -93,14 +86,12 @@ struct IslemEkleView: View {
                             Label { Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim)) } icon: { Image(systemName: kategori.ikonAdi) }.tag(kategori.id as Kategori.ID?)
                         }
                     }
-                    
                     Picker(LocalizedStringKey("common.account"), selection: $secilenHesapID) {
                         Text(LocalizedStringKey("common.select_account")).tag(nil as Hesap.ID?)
                         ForEach(filtrelenmisHesaplar) { hesap in
                             Label(hesap.isim, systemImage: hesap.ikonAdi).tag(hesap.id as Hesap.ID?)
                         }
                     }
-                    
                     DatePicker(LocalizedStringKey("common.date"), selection: $tarih, displayedComponents: .date)
                 }
                 
@@ -112,23 +103,17 @@ struct IslemEkleView: View {
                     }
                 }
             }
-            .disabled(isSaving) // Kaydederken formu pasif yap
+            .disabled(isSaving)
             .navigationTitle(navigationTitleKey).navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(LocalizedStringKey("common.cancel")) { dismiss() }
-                        .disabled(isSaving)
+                    Button(LocalizedStringKey("common.cancel")) { dismiss() }.disabled(isSaving)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    // GÜNCELLENDİ: Kaydetme butonunun görünümü ve davranışı
                     if isSaving {
                         ProgressView()
                     } else {
-                        Button(LocalizedStringKey("common.save")) {
-                            Task {
-                                await kaydetmeIsleminiBaslat()
-                            }
-                        }
+                        Button(LocalizedStringKey("common.save")) { Task { await kaydetmeIsleminiBaslat() } }
                         .disabled(!isFormValid)
                     }
                 }
@@ -175,23 +160,15 @@ struct IslemEkleView: View {
         let secilenHesap = tumHesaplar.first { $0.id == secilenHesapID }
         
         var affectedAccountIDs: Set<UUID> = []
-        if let hesapID = secilenHesap?.id {
-            affectedAccountIDs.insert(hesapID)
-        }
+        if let hesapID = secilenHesap?.id { affectedAccountIDs.insert(hesapID) }
         
         let islemToUpdate: Islem
         if let islem = duzenlenecekIslem {
-            if let eskiHesapID = islem.hesap?.id {
-                affectedAccountIDs.insert(eskiHesapID)
-            }
+            if let eskiHesapID = islem.hesap?.id { affectedAccountIDs.insert(eskiHesapID) }
             islemToUpdate = islem
         } else {
             islemToUpdate = Islem(isim: isim, tutar: tutar, tarih: tarih, tur: secilenTur, tekrar: secilenTekrar, kategori: secilenKategori, hesap: secilenHesap)
             modelContext.insert(islemToUpdate)
-            
-            if secilenTekrar != .tekSeferlik {
-                yeniSeriOlustur(islem: islemToUpdate)
-            }
         }
         
         if !tekil {
@@ -211,9 +188,11 @@ struct IslemEkleView: View {
         if secilenTekrar == .tekSeferlik {
             islemToUpdate.tekrarID = UUID()
         }
+        
         if !tekil && secilenTekrar != .tekSeferlik {
             yeniSeriOlustur(islem: islemToUpdate)
         }
+        
         if orijinalTekrar == .tekSeferlik && secilenTekrar != .tekSeferlik {
              yeniSeriOlustur(islem: islemToUpdate)
         }
