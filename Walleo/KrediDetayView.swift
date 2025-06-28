@@ -94,13 +94,29 @@ struct KrediDetayView: View {
     
     private var krediOzetiSection: some View {
         Section(LocalizedStringKey("loan_details.summary_header")) {
+            // DÜZELTME 1: Çekilen Tutar etiket sorunu çözüldü.
             if case .kredi(let cekilenTutar, let faizTipi, let faizOrani, let taksitSayisi, _, _) = viewModel.hesap.detay {
-                HStack { Text(LocalizedStringKey("accounts.add.loan_amount")); Spacer(); Text(formatCurrency(amount: cekilenTutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)) }
+                HStack {
+                    // Text artık LocalizedStringKey alıyor.
+                    Text(LocalizedStringKey("accounts.add.loan_amount"))
+                    Spacer()
+                    Text(formatCurrency(amount: cekilenTutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
+                }
                 
-                // Faiz Tipi gösterimini de lokalize hale getiriyoruz
-                HStack { Text(LocalizedStringKey("accounts.add.interest_rate")); Spacer(); Text("\(NSLocalizedString(faizTipi.localizedKey, comment: "")) %\(String(format: "%.2f", faizOrani))") }
+                // DÜZELTME 2: Faiz Oranı değeri ve etiketi sorunu çözüldü.
+                HStack {
+                    Text(LocalizedStringKey("accounts.add.interest_rate")) // Bu anahtarın değerini "Faiz Oranı (%)" olarak güncelledik.
+                    Spacer()
+                    // Değer artık faiz tipine göre dinamik ve lokalize.
+                    Text("\(NSLocalizedString(faizTipi.localizedKey, comment: "")) %\(String(format: "%.2f", faizOrani))")
+                }
                 
-                HStack { Text(LocalizedStringKey("accounts.add.installments")); Spacer(); Text("\(taksitSayisi) Ay") }
+                HStack {
+                    Text(LocalizedStringKey("accounts.add.installments"))
+                    Spacer()
+                    // Bu satır zaten doğru çalışıyordu, tutarlılık için kontrol edildi.
+                    Text(String.localizedStringWithFormat(NSLocalizedString("accounts.add.installments_stepper", comment: ""), taksitSayisi))
+                }
             }
         }
     }

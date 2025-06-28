@@ -107,18 +107,11 @@
 "accounts.add.loan" = "Loan";
 "accounts.add.new_credit_card" = "New Credit Card";
 "accounts.add.new_loan" = "New Loan";
-"accounts.add.account_name_placeholder" = "e.g., Salary Account";
-"accounts.add.card_name_placeholder" = "e.g., Visa Gold";
-"accounts.add.loan_name_placeholder" = "e.g., Car Loan";
-"accounts.add.initial_balance" = "Initial Balance";
 "accounts.add.account_color" = "Account Color";
-"accounts.add.card_limit" = "Card Limit";
-"accounts.add.loan_amount" = "Principal Amount";
-"accounts.add.interest_rate" = "Annual Interest Rate (%)";
+"accounts.add.interest_rate" = "Interest Rate (%)";
 "accounts.add.installments" = "Number of Installments";
 "accounts.add.installments_stepper" = "%d months";
 "accounts.add.create_installments_button" = "Save & Create Installments";
-"credit_card.form.current_debt_optional" = "Current Debt (Optional)";
 "credit_card.form.statement_date_header" = "Statement Date";
 "credit_card.form.statement_date" = "Statement Date";
 "credit_card.form.payment_due_date_header" = "Payment Due Date Setting";
@@ -141,6 +134,19 @@
 "account_details.generic_title" = "%@ Details";
 "enum.interest_type.yearly" = "Annual";
 "enum.interest_type.monthly" = "Monthly";
+"transaction.name_placeholder" = "Transaction Name (e.g., Dinner)";
+"transaction.amount_placeholder" = "Amount (e.g., 49.99)";
+"account.name_placeholder_wallet" = "Wallet Name (e.g., Cash)";
+"account.name_placeholder_creditcard" = "Card Name (e.g., Visa Gold)";
+"account.name_placeholder_loan" = "Loan Name (e.g., Car Loan)";
+"account.initial_balance_placeholder" = "Initial Balance (e.g., 500)";
+"credit_card.limit_placeholder" = "Card Limit (e.g., 5000)";
+"credit_card.current_debt_placeholder" = "Current Debt (Optional)";
+"loan.principal_amount_placeholder" = "Principal Amount (e.g., 10000)";
+"loan.interest_rate_placeholder" = "Interest Rate (e.g., 5.25)";
+"budget.name_placeholder" = "Budget Name (e.g., Groceries)";
+"budget.limit_placeholder" = "Monthly Limit (e.g., 400)";
+"accounts.add.loan_amount" = "Loan Amount";
 
 // MARK: - Other Screens & Alerts
 "all_transactions.title" = "All Transactions";
