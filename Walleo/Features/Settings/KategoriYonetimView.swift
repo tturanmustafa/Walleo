@@ -50,7 +50,12 @@ struct KategoriYonetimView: View {
         .navigationTitle(LocalizedStringKey("categories.title"))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { yeniKategoriEkleGoster = true }) { Image(systemName: "plus") }
+                Button(action: { yeniKategoriEkleGoster = true }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "plus")
+                        Text(LocalizedStringKey("button.add_category"))
+                    }
+                }
             }
         }
         .sheet(isPresented: $yeniKategoriEkleGoster) { KategoriDuzenleView() }

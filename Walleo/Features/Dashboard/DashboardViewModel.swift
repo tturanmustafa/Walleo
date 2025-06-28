@@ -35,6 +35,13 @@ class DashboardViewModel {
             name: .transactionsDidChange,
             object: nil
         )
+        // DÜZELTME: Yeni sinyal dinleyicisi eklendi
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchData),
+            name: .categoriesDidChange, // Yeni sinyali dinliyor
+            object: nil
+        )
     }
     
     @objc func fetchData() {

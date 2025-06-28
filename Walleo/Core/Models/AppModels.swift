@@ -150,6 +150,11 @@ extension Notification.Name {
     static let transactionsDidChange = Notification.Name("transactionsDidChange")
 }
 
+extension Notification.Name {
+    // Mevcut olanın altına yenisini ekliyoruz.
+    static let categoriesDidChange = Notification.Name("categoriesDidChange")
+}
+
 extension Date: @retroactive Identifiable {
     public var id: Date { self }
 }

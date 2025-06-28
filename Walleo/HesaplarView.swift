@@ -128,6 +128,7 @@ struct HesaplarView: View {
     
     private func toolbarIcerigi() -> some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
+            // DİKKAT: Sadece Menu'nün label'ı değişti
             Menu {
                 Button(action: { gosterilecekSheet = .cuzdanEkle }) {
                     Label(LocalizedStringKey("accounts.add.wallet"), systemImage: "wallet.pass.fill")
@@ -138,7 +139,12 @@ struct HesaplarView: View {
                 Button(action: { gosterilecekSheet = .krediEkle }) {
                     Label(LocalizedStringKey("accounts.add.loan"), systemImage: "banknote.fill")
                 }
-            } label: { Image(systemName: "plus") }
+            } label: {
+                HStack(spacing: 4) {
+                    Image(systemName: "plus")
+                    Text(LocalizedStringKey("button.add_account"))
+                }
+            }
         }
     }
     

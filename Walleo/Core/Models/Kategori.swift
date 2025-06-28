@@ -33,4 +33,5 @@ class Kategori {
         self.localizationKey = localizationKey
         self.turRawValue = tur.rawValue
     }
+    init() { }
 }
