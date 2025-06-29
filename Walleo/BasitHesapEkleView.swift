@@ -1,3 +1,5 @@
+// YENİ DOSYA: BasitHesapEkleView.swift
+
 import SwiftUI
 import SwiftData
 
@@ -7,9 +9,9 @@ struct BasitHesapEkleView: View {
     @EnvironmentObject var appSettings: AppSettings
 
     @State private var isim: String = ""
-    // DÜZELTME 1: Başlangıç değeri "0" yerine boş string "" oldu.
-    @State private var bakiyeString: String = ""
-    @State private var secilenRenk: Color = .blue
+    @State private var baslangicBakiyesiString: String = ""
+    @State private var secilenRenk: Color = .green
+    
     var duzenlenecekHesap: Hesap?
     
     @State private var isBakiyeGecersiz = false
@@ -21,27 +23,23 @@ struct BasitHesapEkleView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(LocalizedStringKey("transaction.section_details")) {
-                    // DÜZELTME 2: Placeholder özelleştirildi.
-                    TextField(LocalizedStringKey("account.name_placeholder_wallet"), text: $isim)
+                Section(header: Text(LocalizedStringKey("transaction.section_details"))) {
+                    LabeledTextField(
+                        label: "form.label.wallet_name",
+                        placeholder: "account.name_placeholder_wallet", // Açıklayıcı, eski anahtar
+                        text: $isim
+                    )
                     
-                    VStack(alignment: .leading) {
-                        // DÜZELTME 3: Placeholder özelleştirildi.
-                        FormattedAmountField(
-                            "account.initial_balance_placeholder",
-                            value: $bakiyeString,
-                            isInvalid: $isBakiyeGecersiz,
-                            locale: Locale(identifier: appSettings.languageCode)
-                        )
-                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(isBakiyeGecersiz ? Color.red : Color.clear, lineWidth: 1))
-                        
-                        if isBakiyeGecersiz {
-                            Text(LocalizedStringKey("validation.error.invalid_amount_format"))
-                                .font(.caption).foregroundColor(.red).padding(.top, 2)
-                        }
-                    }
+                    LabeledAmountField(
+                        label: "form.label.initial_balance",
+                        placeholder: "account.initial_balance_placeholder", // Açıklayıcı, eski anahtar
+                        valueString: $baslangicBakiyesiString,
+                        isInvalid: $isBakiyeGecersiz,
+                        locale: Locale(identifier: appSettings.languageCode)
+                    )
                 }
-                Section(LocalizedStringKey("categories.color")) {
+                
+                Section(header: Text(LocalizedStringKey("categories.color"))) {
                     ColorPicker(LocalizedStringKey("accounts.add.account_color"), selection: $secilenRenk, supportsOpacity: false)
                 }
             }
@@ -59,21 +57,30 @@ struct BasitHesapEkleView: View {
     
     private func formuDoldur() {
         guard let hesap = duzenlenecekHesap else { return }
+        
         isim = hesap.isim
-        bakiyeString = formatAmountForEditing(amount: hesap.baslangicBakiyesi, localeIdentifier: appSettings.languageCode)
+        baslangicBakiyesiString = formatAmountForEditing(amount: hesap.baslangicBakiyesi, localeIdentifier: appSettings.languageCode)
         isBakiyeGecersiz = false
         secilenRenk = hesap.renk
     }
-
+    
     private func kaydet() {
-        let bakiye = stringToDouble(bakiyeString, locale: Locale(identifier: appSettings.languageCode))
-        let renkHex = secilenRenk.toHex() ?? "#007AFF"
+        let locale = Locale(identifier: appSettings.languageCode)
+        let baslangicBakiyesi = stringToDouble(baslangicBakiyesiString, locale: locale)
+        let renkHex = secilenRenk.toHex() ?? "#34C759"
+        
         if let hesap = duzenlenecekHesap {
             hesap.isim = isim
-            hesap.baslangicBakiyesi = bakiye
+            hesap.baslangicBakiyesi = baslangicBakiyesi
             hesap.renkHex = renkHex
         } else {
-            let yeniHesap = Hesap(isim: isim, ikonAdi: "wallet.pass.fill", renkHex: renkHex, baslangicBakiyesi: bakiye, detay: .cuzdan)
+            let yeniHesap = Hesap(
+                isim: isim,
+                ikonAdi: "wallet.pass.fill",
+                renkHex: renkHex,
+                baslangicBakiyesi: baslangicBakiyesi,
+                detay: .cuzdan
+            )
             modelContext.insert(yeniHesap)
         }
         dismiss()

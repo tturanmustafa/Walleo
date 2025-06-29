@@ -47,24 +47,24 @@ struct ButceEkleDuzenleView: View {
         NavigationStack {
             Form {
                 Section {
-                    // DÜZELTME: Placeholder özelleştirildi.
-                    TextField(LocalizedStringKey("budget.name_placeholder"), text: $isim)
+                    // --- DÜZELTME BURADA ---
+                    LabeledTextField(
+                        label: "form.label.budget_name", // Yeni etiket anahtarı
+                        placeholder: "budget.name_placeholder", // Orijinal, açıklayıcı anahtar
+                        text: $isim
+                    )
                     
                     VStack(alignment: .leading) {
-                        // DÜZELTME: Placeholder özelleştirildi.
-                        FormattedAmountField(
-                            "budget.limit_placeholder",
-                            value: $limitString,
+                        // --- DÜZELTME BURADA ---
+                        LabeledAmountField(
+                            label: "form.label.budget_limit", // Yeni etiket anahtarı
+                            placeholder: "budget.limit_placeholder", // Orijinal, açıklayıcı anahtar
+                            valueString: $limitString,
                             isInvalid: $isLimitGecersiz,
                             locale: Locale(identifier: appSettings.languageCode)
                         )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(isLimitGecersiz ? Color.red : Color.clear, lineWidth: 1)
-                        )
-
                         if isLimitGecersiz {
-                            Text(LocalizedStringKey("validation.error.invalid_amount_format"))
+                            Text("validation.error.invalid_amount_format")
                                 .font(.caption).foregroundColor(.red).padding(.top, 2)
                         }
                     }

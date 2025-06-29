@@ -23,9 +23,8 @@ struct BildirimlerView: View {
             NavigationStack {
                 List {
                     ForEach(bildirimler) { bildirim in
-                        let content = bildirim.displayContent(using: appSettings)
-                        
-                        bildirimSatiri(content: content, okunduMu: bildirim.okunduMu)
+                        // DEĞİŞİKLİK: Artık satır fonksiyonuna tüm 'bildirim' nesnesini yolluyoruz.
+                        bildirimSatiri(bildirim: bildirim)
                             .onTapGesture {
                                 if !bildirim.okunduMu {
                                     bildirim.okunduMu = true
@@ -47,11 +46,8 @@ struct BildirimlerView: View {
                 .navigationTitle("notifications.title")
                 .navigationBarTitleDisplayMode(.large)
                 .toolbar {
-                    // GÜNCELLEME: Sol taraftaki butonlar kaldırıldı.
-                    
                     ToolbarItem(placement: .topBarTrailing) {
                         HStack {
-                            // YENİ: Eylem Menüsü
                             Menu {
                                 Button(action: markAllAsRead) {
                                     Label("notifications.mark_all_as_read", systemImage: "envelope.open")
@@ -68,7 +64,6 @@ struct BildirimlerView: View {
                                     .font(.title3)
                             }
                             
-                            // Bitti butonu menünün yanında.
                             Button("common.done") { dismiss() }
                                 .padding(.leading, 8)
                         }
@@ -106,7 +101,6 @@ struct BildirimlerView: View {
     }
     
     private func markAllAsRead() {
-        // Fonksiyonun mantığı aynı kalıyor.
         let unread = bildirimler.filter { !$0.okunduMu }
         guard !unread.isEmpty else { return }
         for notification in unread {
@@ -116,7 +110,6 @@ struct BildirimlerView: View {
     }
     
     private func deleteAllNotifications() {
-        // Fonksiyonun mantığı aynı kalıyor.
         guard !isDeletingAll else { return }
         Task {
             isDeletingAll = true
@@ -127,8 +120,12 @@ struct BildirimlerView: View {
         }
     }
     
+    // DEĞİŞİKLİK: Bu fonksiyonun tamamı, zaman damgasını içerecek şekilde güncellendi.
     @ViewBuilder
-    private func bildirimSatiri(content: BildirimDisplayContent, okunduMu: Bool) -> some View {
+    private func bildirimSatiri(bildirim: Bildirim) -> some View {
+        let content = bildirim.displayContent(using: appSettings)
+        let locale = Locale(identifier: appSettings.languageCode)
+
         HStack(alignment: .top, spacing: 15) {
             Image(systemName: content.ikonAdi)
                 .font(.title2)
@@ -137,7 +134,15 @@ struct BildirimlerView: View {
                 .padding(.top, 3)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(content.baslik).fontWeight(.semibold)
+                HStack {
+                    Text(content.baslik)
+                        .fontWeight(.semibold)
+                    Spacer()
+                    // YENİ EKLENEN ZAMAN DAMGASI
+                    Text(formatNotificationTimestamp(from: bildirim.olusturmaTarihi, locale: locale))
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                }
                 
                 Text(content.aciklamaLine1).font(.caption).foregroundColor(.secondary)
                 if let line2 = content.aciklamaLine2 {
@@ -151,7 +156,7 @@ struct BildirimlerView: View {
             
             Spacer()
             
-            if !okunduMu {
+            if !bildirim.okunduMu {
                 Circle().fill(Color.accentColor).frame(width: 8, height: 8).padding(.top, 6)
             }
         }

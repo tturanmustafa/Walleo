@@ -36,25 +36,24 @@ class ButceDetayViewModel {
             var harcananTutar: Double = 0
             
             if !kategoriIDleri.isEmpty {
-                // --- DÜZELTME BAŞLANGICI ---
-                // 1. ADIM: Daha basit bir sorguyla ilgili aydaki tüm giderleri çek.
+                // --- OPTİMİZASYON BURADA ---
+                // Önceki gibi tüm giderleri çekmek yerine,
+                // Sadece bu bütçenin kategorilerine ait işlemleri çeken bir predicate oluşturuyoruz.
                 let giderTuruRawValue = IslemTuru.gider.rawValue
-                let genelIslemPredicate = #Predicate<Islem> { islem in
+                
+                let predicate = #Predicate<Islem> { islem in
                     islem.tarih >= monthInterval.start &&
                     islem.tarih < monthInterval.end &&
-                    islem.turRawValue == giderTuruRawValue
+                    islem.turRawValue == giderTuruRawValue &&
+                    // Bu satır, filtrelemeyi doğrudan veritabanında yapar.
+                    islem.kategori != nil && kategoriIDleri.contains(islem.kategori!.id)
                 }
-                let tumAylikGiderler = try modelContext.fetch(FetchDescriptor<Islem>(predicate: genelIslemPredicate))
                 
-                // 2. ADIM: Hafızada, bu bütçenin kategorilerine göre filtrele.
-                let ilgiliIslemler = tumAylikGiderler.filter { islem in
-                    guard let kategoriID = islem.kategori?.id else { return false }
-                    return kategoriIDleri.contains(kategoriID)
-                }
-                // --- DÜZELTME SONU ---
+                let descriptor = FetchDescriptor<Islem>(predicate: predicate, sortBy: [SortDescriptor(\.tarih, order: .reverse)])
+                let ilgiliIslemler = try modelContext.fetch(descriptor)
+                // --- OPTİMİZASYON SONU ---
                 
-                // Sonuçları sırala ve ata.
-                self.donemIslemleri = ilgiliIslemler.sorted(by: { $0.tarih > $1.tarih })
+                self.donemIslemleri = ilgiliIslemler
                 harcananTutar = self.donemIslemleri.reduce(0) { $0 + $1.tutar }
             }
             

@@ -58,26 +58,37 @@ struct IslemEkleView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section {
-                    Picker(LocalizedStringKey("transaction.type"), selection: $secilenTur) {
-                        ForEach(IslemTuru.allCases, id: \.self) { tur in
-                            Text(LocalizedStringKey(tur.rawValue)).tag(tur)
-                        }
-                    }.pickerStyle(.segmented)
-                }
-                
                 Section(header: Text(LocalizedStringKey("transaction.section_details"))) {
-                    // DÜZELTME: TextField doğru anahtarı kullanıyor.
-                    TextField(LocalizedStringKey("transaction.name_placeholder"), text: $isim)
+                    // ÖNCE (ESKİ KOD)
+                    // TextField(LocalizedStringKey("transaction.name_placeholder"), text: $isim)
+                    
+                    // SONRA (YENİ KOD)
+                    LabeledTextField(
+                        label: "form.label.transaction_name",
+                        placeholder: "transaction.name_placeholder",
+                        text: $isim
+                    )
                     
                     VStack(alignment: .leading) {
-                        // DÜZELTME: FormattedAmountField doğru anahtarı kullanıyor.
+                        // ÖNCE (ESKİ KOD)
+                        /*
                         FormattedAmountField(
                             "transaction.amount_placeholder",
                             value: $tutarString,
                             isInvalid: $isTutarGecersiz,
                             locale: Locale(identifier: appSettings.languageCode)
                         )
+                        */
+                        
+                        // SONRA (YENİ KOD)
+                        LabeledAmountField(
+                            label: "form.label.amount",
+                            placeholder: "transaction.amount_placeholder",
+                            valueString: $tutarString,
+                            isInvalid: $isTutarGecersiz,
+                            locale: Locale(identifier: appSettings.languageCode)
+                        )
+
                         if isTutarGecersiz {
                             Text(LocalizedStringKey("validation.error.invalid_amount_format")).font(.caption).foregroundColor(.red).padding(.top, 2)
                         }

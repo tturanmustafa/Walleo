@@ -106,6 +106,46 @@ func getLocalized(_ key: String, from appSettings: AppSettings) -> String {
     return NSLocalizedString(key, comment: "")
 }
 
+// Helpers.swift dosyasının sonuna ekleyin
+
+// Helpers.swift dosyasındaki mevcut fonksiyonu bununla değiştirin
+
+func formatNotificationTimestamp(from date: Date, locale: Locale) -> String {
+    let calendar = Calendar.current
+    let formatter = DateFormatter()
+    formatter.locale = locale
+    
+    // --- YENİ DÜZELTME BAŞLANGICI ---
+    // Doğru dil paketini (bundle) bul
+    let languageCode = locale.identifier
+    guard let path = Bundle.main.path(forResource: languageCode, ofType: "lproj"),
+          let languageBundle = Bundle(path: path) else {
+        // Hata durumunda basit bir formatla dön
+        formatter.dateFormat = "dd/MM/yy HH:mm"
+        return formatter.string(from: date)
+    }
+    // --- YENİ DÜZELTME SONU ---
+    
+    if calendar.isDateInToday(date) {
+        formatter.dateFormat = "HH:mm"
+        let timeString = formatter.string(from: date)
+        // Çeviriyi artık bizim bulduğumuz paketten alıyoruz
+        let todayString = languageBundle.localizedString(forKey: "time.today", value: "Today", table: nil)
+        return "\(todayString), \(timeString)"
+        
+    } else if calendar.isDateInYesterday(date) {
+        formatter.dateFormat = "HH:mm"
+        let timeString = formatter.string(from: date)
+        // Çeviriyi artık bizim bulduğumuz paketten alıyoruz
+        let yesterdayString = languageBundle.localizedString(forKey: "time.yesterday", value: "Yesterday", table: nil)
+        return "\(yesterdayString), \(timeString)"
+        
+    } else {
+        formatter.dateFormat = "dd/MM/yy HH:mm"
+        return formatter.string(from: date)
+    }
+}
+
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
