@@ -17,7 +17,8 @@ struct WalleoApp: App {
             )
 
             modelContainer = try ModelContainer(
-                for: Hesap.self, Islem.self, Kategori.self, Butce.self, Bildirim.self,
+                // YENİ MODELİ BURAYA EKLEYİN
+                for: Hesap.self, Islem.self, Kategori.self, Butce.self, Bildirim.self, TransactionMemory.self,
                 configurations: config
             )
 

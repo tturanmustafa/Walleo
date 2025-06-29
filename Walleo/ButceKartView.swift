@@ -1,3 +1,5 @@
+// Dosya: ButceKartView.swift
+
 import SwiftUI
 
 struct ButceKartView: View {
@@ -7,22 +9,22 @@ struct ButceKartView: View {
     var onEdit: () -> Void = {}
     var onDelete: () -> Void = {}
 
-    // --- Hesaplanmış Değişkenler ---
     private var limit: Double { gosterilecekButce.butce.limitTutar }
     private var harcanan: Double { gosterilecekButce.harcananTutar }
     private var kalan: Double { limit - harcanan }
     
-    // --- DÜZELTME: 'ProgressView' hatasını gidermek için yüzdeyi güvenli aralıkta hesaplıyoruz ---
+    // DÜZELTME: 'NaN' hatasını engellemek için daha güvenli hale getirildi.
     private var yuzde: Double {
-        guard limit > 0 else { return 0 }
+        guard limit > 0 else { return 0.0 }
+        guard harcanan >= 0 else { return 0.0 }
+        
         let hesaplananYuzde = harcanan / limit
-        // Değeri 0.0 ile 1.0 arasında kalacak şekilde kenetle
+        
+        // ProgressView'ın 0 ile 1 arasında bir değer beklediğini garanti altına al
         return max(0.0, min(1.0, hesaplananYuzde))
     }
 
     private var progressBarColor: Color {
-        // Renk mantığı artık orijinal yüzdeye göre değil, 0-1 arasındaki değere göre çalışabilir.
-        // Orijinal hesaplamayı (yuzde > 1.0) korumak için 'harcanan / limit' kullanılabilir.
         let gercekYuzde = limit > 0 ? harcanan / limit : 0
         if gercekYuzde >= 1.0 { return .red }
         if gercekYuzde > 0.8 { return .orange }
@@ -31,7 +33,6 @@ struct ButceKartView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Sağ üst menü ve başlık
             HStack {
                 Text(gosterilecekButce.butce.isim)
                     .font(.headline)
@@ -52,13 +53,11 @@ struct ButceKartView: View {
                 }
             }
             
-            // --- DÜZELTME: ProgressView artık kenetlenmiş 'yuzde' değerini kullanıyor ---
             ProgressView(value: yuzde)
                 .tint(progressBarColor)
                 .scaleEffect(x: 1, y: 2.0, anchor: .center)
                 .padding(.bottom, 4)
 
-            // Tutar bilgileri
             VStack(spacing: 8) {
                 HStack {
                     Text(LocalizedStringKey("budgets.card.total_limit"))
@@ -95,7 +94,6 @@ struct ButceKartView: View {
                 }
             }
             
-            // Kategorilerin ikonlarını gösteren bölüm
             if let kategoriler = gosterilecekButce.butce.kategoriler, !kategoriler.isEmpty {
                 Divider().padding(.top, 4)
                 

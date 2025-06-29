@@ -1,17 +1,24 @@
+// Dosya: ButceDetayView.swift
+
 import SwiftUI
 import SwiftData
 
 struct ButceDetayView: View {
     @EnvironmentObject var appSettings: AppSettings
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     
     @State private var viewModel: ButceDetayViewModel
     
-    // YENİ EKLENEN STATE'LER: Düzenleme ve silme işlemleri için
+    // İşlemler için state'ler
     @State private var duzenlenecekIslem: Islem?
     @State private var silinecekTekilIslem: Islem?
     @State private var silinecekTekrarliIslem: Islem?
     @State private var isDeletingSeries: Bool = false
+    
+    // Bütçenin kendisini düzenlemek ve silmek için state'ler
+    @State private var butceDuzenleGoster = false
+    @State private var butceSilUyarisiGoster = false
     
     private var gruplanmisIslemler: [Date: [Islem]] {
         Dictionary(grouping: viewModel.donemIslemleri) { islem in
@@ -23,18 +30,25 @@ struct ButceDetayView: View {
         gruplanmisIslemler.keys.sorted(by: >)
     }
 
-    init(butce: Butce, modelContext: ModelContext) {
-        _viewModel = State(initialValue: ButceDetayViewModel(modelContext: modelContext, butce: butce))
+    init(butce: Butce) {
+        _viewModel = State(initialValue: ButceDetayViewModel(butce: butce))
     }
 
     var body: some View {
-        // YENİ: ZStack ve ProgressView eklendi
         ZStack {
             List {
                 if let gosterilecekButce = viewModel.gosterilecekButce {
                     Section {
-                        ButceKartView(gosterilecekButce: gosterilecekButce)
-                            .environmentObject(appSettings)
+                        ButceKartView(
+                            gosterilecekButce: gosterilecekButce,
+                            onEdit: {
+                                butceDuzenleGoster = true
+                            },
+                            onDelete: {
+                                butceSilUyarisiGoster = true
+                            }
+                        )
+                        .environmentObject(appSettings)
                     }
                 }
 
@@ -47,7 +61,6 @@ struct ButceDetayView: View {
                     ForEach(siraliGunler, id: \.self) { gun in
                         Section(header: Text(gun, format: .dateTime.day().month().year())) {
                             ForEach(gruplanmisIslemler[gun] ?? []) { islem in
-                                // GÜNCELLENDİ: onEdit ve onDelete eylemleri eklendi
                                 IslemSatirView(
                                     islem: islem,
                                     onEdit: { duzenlenecekIslem = islem },
@@ -58,7 +71,7 @@ struct ButceDetayView: View {
                     }
                 }
             }
-            .disabled(isDeletingSeries) // Seri silinirken arayüzü pasif yap
+            .disabled(isDeletingSeries)
             
             if isDeletingSeries {
                 ProgressView("Seri Siliniyor...")
@@ -70,13 +83,32 @@ struct ButceDetayView: View {
         }
         .navigationTitle(viewModel.butce.isim)
         .navigationBarTitleDisplayMode(.inline)
-        .task {
-            await viewModel.fetchData()
+        .onAppear {
+            viewModel.initialize(modelContext: self.modelContext)
         }
-        // YENİ EKLENEN MODIFIER'LAR
         .sheet(item: $duzenlenecekIslem) { islem in
             IslemEkleView(duzenlenecekIslem: islem)
                 .environmentObject(appSettings)
+        }
+        .sheet(isPresented: $butceDuzenleGoster) {
+            ButceEkleDuzenleView(duzenlenecekButce: viewModel.butce)
+                .environmentObject(appSettings)
+        }
+        .alert(
+            LocalizedStringKey("alert.delete_confirmation.title"),
+            isPresented: $butceSilUyarisiGoster
+        ) {
+            Button(role: .destructive) {
+                deleteBudget()
+            } label: { Text("common.delete") }
+        } message: {
+             let dilKodu = appSettings.languageCode
+            guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+                  let languageBundle = Bundle(path: path) else {
+                return Text(viewModel.butce.isim)
+            }
+            let formatString = languageBundle.localizedString(forKey: "alert.delete_budget.message_format", value: "", table: nil)
+            return Text(String(format: formatString, viewModel.butce.isim))
         }
         .confirmationDialog(
             LocalizedStringKey("alert.recurring_transaction"),
@@ -108,7 +140,11 @@ struct ButceDetayView: View {
         }
     }
     
-    // YENİ EKLENEN FONKSİYON
+    private func deleteBudget() {
+        viewModel.deleteButce()
+        dismiss()
+    }
+    
     private func silmeyiBaslat(_ islem: Islem) {
         if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
             silinecekTekrarliIslem = islem

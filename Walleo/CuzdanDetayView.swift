@@ -1,12 +1,4 @@
-//
-//  CuzdanDetayView.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 28.06.2025.
-//
-
-
-// YENİ DOSYA: CuzdanDetayView.swift
+// Dosya: CuzdanDetayView.swift
 
 import SwiftUI
 import SwiftData
@@ -21,8 +13,9 @@ struct CuzdanDetayView: View {
     @State private var silinecekTekilIslem: Islem?
     @State private var silinecekTekrarliIslem: Islem?
     
+    // DÜZELTİLMİŞ INIT: Artık sadece 'hesap' alıyor ve kendi container'ını oluşturmuyor.
     init(hesap: Hesap) {
-        _viewModel = State(initialValue: CuzdanDetayViewModel(modelContext: try! ModelContext(ModelContainer(for: Islem.self)), hesap: hesap))
+        _viewModel = State(initialValue: CuzdanDetayViewModel(hesap: hesap))
     }
 
     var body: some View {
@@ -51,9 +44,9 @@ struct CuzdanDetayView: View {
         }
         .navigationTitle(viewModel.hesap.isim)
         .navigationBarTitleDisplayMode(.inline)
+        // YENİ MODIFIER: ViewModel'ı doğru context ile başlatır.
         .onAppear {
-            // View ilk açıldığında doğru context ile viewModel'ı oluştur.
-            viewModel = CuzdanDetayViewModel(modelContext: self.modelContext, hesap: viewModel.hesap)
+            viewModel.initialize(modelContext: self.modelContext)
         }
         .sheet(item: $duzenlenecekIslem) { islem in
             IslemEkleView(duzenlenecekIslem: islem).environmentObject(appSettings)

@@ -59,10 +59,6 @@ struct IslemEkleView: View {
         NavigationStack {
             Form {
                 Section(header: Text(LocalizedStringKey("transaction.section_details"))) {
-                    // ÖNCE (ESKİ KOD)
-                    // TextField(LocalizedStringKey("transaction.name_placeholder"), text: $isim)
-                    
-                    // SONRA (YENİ KOD)
                     LabeledTextField(
                         label: "form.label.transaction_name",
                         placeholder: "transaction.name_placeholder",
@@ -70,17 +66,6 @@ struct IslemEkleView: View {
                     )
                     
                     VStack(alignment: .leading) {
-                        // ÖNCE (ESKİ KOD)
-                        /*
-                        FormattedAmountField(
-                            "transaction.amount_placeholder",
-                            value: $tutarString,
-                            isInvalid: $isTutarGecersiz,
-                            locale: Locale(identifier: appSettings.languageCode)
-                        )
-                        */
-                        
-                        // SONRA (YENİ KOD)
                         LabeledAmountField(
                             label: "form.label.amount",
                             placeholder: "transaction.amount_placeholder",
@@ -118,6 +103,10 @@ struct IslemEkleView: View {
                         }
                     }
                 }
+            }
+            // KATEGORİ ÖNERME MANTIĞI İÇİN YENİ EKLENEN MODIFIER
+            .onChange(of: isim) {
+                suggestCategory(for: isim)
             }
             .disabled(isSaving)
             .navigationTitle(navigationTitleKey).navigationBarTitleDisplayMode(.inline)
@@ -160,6 +149,7 @@ struct IslemEkleView: View {
         orijinalTekrar = islem.tekrar
     }
     
+    // GÜNCELLENMİŞ FONKSİYON
     private func kaydetmeIsleminiBaslat() async {
         if duzenlenecekIslem != nil && orijinalTekrar != .tekSeferlik {
             guncellemeSecenekleriGoster = true
@@ -168,6 +158,7 @@ struct IslemEkleView: View {
         }
     }
     
+    // GÜNCELLENMİŞ FONKSİYON
     private func guncelle(tekil: Bool) async {
         isSaving = true
         
@@ -199,8 +190,6 @@ struct IslemEkleView: View {
         islemToUpdate.hesap = secilenHesap
         islemToUpdate.tekrar = secilenTekrar
         
-        NotificationManager.shared.checkBudget(for: islemToUpdate)
-        
         if secilenTekrar == .tekSeferlik {
             islemToUpdate.tekrarID = UUID()
         }
@@ -218,6 +207,8 @@ struct IslemEkleView: View {
             affectedCategoryIDs.append(kategoriID)
         }
         
+        await updateTransactionMemory(name: isim, categoryID: secilenKategoriID)
+        
         let changeType: TransactionChangePayload.ChangeType = duzenlenecekIslem == nil ? .add : .update
         let payload = TransactionChangePayload(
             type: changeType,
@@ -229,6 +220,10 @@ struct IslemEkleView: View {
             try modelContext.save()
             Logger.log("IslemEkleView: Tüm işlemler başarıyla kaydedildi.", log: Logger.data, type: .info)
             NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["payload": payload])
+            
+            // YENİ: Hızlı bütçe kontrolü burada yapılıyor.
+            BudgetService.shared.runBudgetChecks(for: islemToUpdate, in: modelContext, settings: appSettings)
+            
         } catch {
             Logger.log("IslemEkleView: Kaydetme sırasında kritik hata: \(error.localizedDescription)", log: Logger.data, type: .fault)
         }
@@ -278,6 +273,56 @@ struct IslemEkleView: View {
                 let yeniTekrarliIslem = Islem(isim: islem.isim, tutar: islem.tutar, tarih: gelecekTarih, tur: islem.tur, tekrar: islem.tekrar, tekrarID: tekrarID, kategori: islem.kategori, hesap: islem.hesap)
                 modelContext.insert(yeniTekrarliIslem)
             }
+        }
+    }
+    
+    // YENİ YARDIMCI FONKSİYON - 1
+    private func suggestCategory(for name: String) {
+        // YENİ KONTROL: Sadece YENİ bir işlem ekleniyorsa öneri yap.
+        // Eğer duzenlenecekIslem nil değilse, yani düzenleme modundaysak,
+        // fonksiyondan hemen çık ve hiçbir şey yapma.
+        guard duzenlenecekIslem == nil else { return }
+
+        let nameKey = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        
+        guard nameKey.count > 2 else { return }
+        
+        let descriptor = FetchDescriptor<TransactionMemory>(
+            predicate: #Predicate { $0.transactionNameKey == nameKey }
+        )
+        
+        if let memory = try? modelContext.fetch(descriptor).first {
+            Logger.log("Hafıza kaydı bulundu: İsim '\(nameKey)', Kategori ID: \(memory.lastCategoryID)", log: Logger.service)
+            if filtrelenmisKategoriler.contains(where: { $0.id == memory.lastCategoryID }) {
+                self.secilenKategoriID = memory.lastCategoryID
+            }
+        }
+    }
+    
+    // YENİ YARDIMCI FONKSİYON - 2
+    private func updateTransactionMemory(name: String, categoryID: Kategori.ID?) async {
+        guard let categoryID = categoryID else { return }
+        
+        let nameKey = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !nameKey.isEmpty else { return }
+        
+        let descriptor = FetchDescriptor<TransactionMemory>(
+            predicate: #Predicate { $0.transactionNameKey == nameKey }
+        )
+        
+        do {
+            if let existingMemory = try modelContext.fetch(descriptor).first {
+                existingMemory.lastCategoryID = categoryID
+                Logger.log("Hafıza kaydı güncellendi: İsim '\(nameKey)'", log: Logger.service)
+            } else {
+                let newMemory = TransactionMemory(transactionNameKey: nameKey, lastCategoryID: categoryID)
+                modelContext.insert(newMemory)
+                Logger.log("Yeni hafıza kaydı oluşturuldu: İsim '\(nameKey)'", log: Logger.service)
+            }
+            // Kaydetme işlemi `guncelle` fonksiyonundaki ana `try modelContext.save()` içinde yapılacak.
+            // Bu sayede tek bir veritabanı yazma işlemi olur.
+        } catch {
+            Logger.log("TransactionMemory güncellenirken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
     }
 }
