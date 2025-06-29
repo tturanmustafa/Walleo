@@ -312,3 +312,22 @@
 
 "notifications.delete_all" = "Tümünü Sil";
 "notifications.mark_all_as_read" = "Tümünü Okundu İşaretle";
+
+// MARK: - Form Labels & Placeholders
+// MARK: - Form Labels
+"form.label.transaction_name" = "İşlem Adı";
+"form.label.amount" = "Tutar";
+"form.label.wallet_name" = "Cüzdan Adı";
+"form.label.card_name" = "Kart Adı";
+"form.label.loan_name" = "Kredi Adı";
+"form.label.initial_balance" = "Başlangıç Bakiyesi";
+"form.label.card_limit" = "Kart Limiti";
+"form.label.current_debt" = "Güncel Borç";
+"form.label.principal_amount" = "Kredi Tutarı";
+"form.label.interest_rate" = "Faiz Oranı";
+"form.label.budget_name" = "Bütçe Adı";
+"form.label.budget_limit" = "Aylık Limit";
+
+// MARK: - Time
+"time.today" = "Bugün";
+"time.yesterday" = "Dün";

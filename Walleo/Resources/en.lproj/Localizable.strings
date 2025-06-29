@@ -312,3 +312,23 @@
 
 "notifications.delete_all" = "Delete All";
 "notifications.mark_all_as_read" = "Mark All as Read";
+
+// MARK: - Form Labels & Placeholders
+
+// MARK: - Form Labels
+"form.label.transaction_name" = "Transaction Name";
+"form.label.amount" = "Amount";
+"form.label.wallet_name" = "Wallet Name";
+"form.label.card_name" = "Card Name";
+"form.label.loan_name" = "Loan Name";
+"form.label.initial_balance" = "Initial Balance";
+"form.label.card_limit" = "Card Limit";
+"form.label.current_debt" = "Current Debt";
+"form.label.principal_amount" = "Principal Amount";
+"form.label.interest_rate" = "Interest Rate";
+"form.label.budget_name" = "Budget Name";
+"form.label.budget_limit" = "Monthly Limit";
+
+// MARK: - Time
+"time.today" = "Today";
+"time.yesterday" = "Yesterday";

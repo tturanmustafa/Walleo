@@ -47,38 +47,37 @@ struct KrediKartiEkleView: View {
                             .font(.caption).foregroundColor(.secondary).padding(.leading)
                         
                         VStack(spacing: 0) {
-                            TextField(LocalizedStringKey("account.name_placeholder_creditcard"), text: $isim).padding()
+                            // İSİM ALANI
+                            LabeledTextField(
+                                label: "form.label.card_name",
+                                placeholder: "account.name_placeholder_creditcard",
+                                text: $isim
+                            )
+                            .padding()
+
                             Divider().padding(.leading)
                             
-                            VStack(alignment: .leading) {
-                                // DÜZELTME: Placeholder özelleştirildi.
-                                FormattedAmountField(
-                                    "credit_card.limit_placeholder",
-                                    value: $limitString,
-                                    isInvalid: $isLimitGecersiz,
-                                    locale: Locale(identifier: appSettings.languageCode)
-                                )
-                                if isLimitGecersiz {
-                                    Text(LocalizedStringKey("validation.error.invalid_amount_format"))
-                                        .font(.caption).foregroundColor(.red).padding(.top, 2)
-                                }
-                            }.padding()
-                            
+                            // LİMİT ALANI
+                            LabeledAmountField(
+                                label: "form.label.card_limit",
+                                placeholder: "credit_card.limit_placeholder",
+                                valueString: $limitString,
+                                isInvalid: $isLimitGecersiz,
+                                locale: Locale(identifier: appSettings.languageCode)
+                            )
+                            .padding()
+
                             Divider().padding(.leading)
                             
-                            VStack(alignment: .leading) {
-                                // DÜZELTME: Placeholder özelleştirildi.
-                                FormattedAmountField(
-                                    "credit_card.current_debt_placeholder",
-                                    value: $guncelBorcString,
-                                    isInvalid: $isBorcGecersiz,
-                                    locale: Locale(identifier: appSettings.languageCode)
-                                )
-                                if isBorcGecersiz {
-                                    Text(LocalizedStringKey("validation.error.invalid_amount_format"))
-                                        .font(.caption).foregroundColor(.red).padding(.top, 2)
-                                }
-                            }.padding()
+                            // GÜNCEL BORÇ ALANI
+                            LabeledAmountField(
+                                label: "form.label.current_debt",
+                                placeholder: "credit_card.current_debt_placeholder",
+                                valueString: $guncelBorcString,
+                                isInvalid: $isBorcGecersiz,
+                                locale: Locale(identifier: appSettings.languageCode)
+                            )
+                            .padding()
                         }
                         .background(Color(.secondarySystemGroupedBackground))
                         .cornerRadius(10)

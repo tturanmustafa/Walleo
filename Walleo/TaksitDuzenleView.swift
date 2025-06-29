@@ -20,24 +20,18 @@ struct TaksitDuzenleView: View {
         NavigationStack {
             Form {
                 Section(LocalizedStringKey("installment.edit.details_header")) {
-                    VStack(alignment: .leading) {
-                        FormattedAmountField(
-                            "common.amount",
-                            value: $tutarString,
-                            isInvalid: $isTutarGecersiz,
-                            locale: Locale(identifier: appSettings.languageCode)
-                        )
-                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(isTutarGecersiz ? .red : .clear, lineWidth: 1))
-                        
-                        if isTutarGecersiz {
-                            Text(LocalizedStringKey("validation.error.invalid_amount_format"))
-                                .font(.caption).foregroundColor(.red).padding(.top, 2)
-                        }
-                    }
+                    // TUTAR ALANI
+                    LabeledAmountField(
+                        label: "form.label.amount",
+                        placeholder: "common.amount", // Genel bir placeholder
+                        valueString: $tutarString,
+                        isInvalid: $isTutarGecersiz,
+                        locale: Locale(identifier: appSettings.languageCode)
+                    )
+
                     DatePicker(LocalizedStringKey("common.date"), selection: $odemeTarihi, displayedComponents: .date)
                 }
-            }
-            .navigationTitle(LocalizedStringKey("installment.edit.title"))
+            }            .navigationTitle(LocalizedStringKey("installment.edit.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button(LocalizedStringKey("common.cancel")) { dismiss() } }
