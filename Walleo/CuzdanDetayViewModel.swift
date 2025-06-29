@@ -1,12 +1,4 @@
-//
-//  CuzdanDetayViewModel.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 28.06.2025.
-//
-
-
-// YENİ DOSYA: CuzdanDetayViewModel.swift
+// Dosya: CuzdanDetayViewModel.swift
 
 import SwiftUI
 import SwiftData
@@ -14,7 +6,8 @@ import SwiftData
 @MainActor
 @Observable
 class CuzdanDetayViewModel {
-    var modelContext: ModelContext
+    // DÜZELTME: modelContext artık opsiyonel.
+    var modelContext: ModelContext?
     var hesap: Hesap
     
     var currentDate = Date() {
@@ -25,10 +18,17 @@ class CuzdanDetayViewModel {
     var toplamGelir: Double = 0.0
     var toplamGider: Double = 0.0
     
-    init(modelContext: ModelContext, hesap: Hesap) {
-        self.modelContext = modelContext
+    // DÜZELTME: init artık context almıyor.
+    init(hesap: Hesap) {
         self.hesap = hesap
-        islemleriGetir() // İlk açılışta veriyi çek
+    }
+    
+    // YENİ FONKSİYON: View göründüğünde çağrılarak doğru context ile başlatılır.
+    func initialize(modelContext: ModelContext) {
+        guard self.modelContext == nil else { return } // Sadece bir kere başlatılmasını garantiler.
+        
+        self.modelContext = modelContext
+        islemleriGetir() // İlk veriyi çek
         
         NotificationCenter.default.addObserver(
             self,
@@ -39,12 +39,14 @@ class CuzdanDetayViewModel {
     }
     
     @objc func islemleriGetir() {
+        // DÜZELTME: Artık opsiyonel olan context güvenli bir şekilde kullanılır.
+        guard let modelContext = self.modelContext else { return }
+        
         let calendar = Calendar.current
         guard let monthInterval = calendar.dateInterval(of: .month, for: currentDate) else { return }
         
         let hesapID = hesap.id
         
-        // ÖNEMLİ: Bu sorgu, kredi kartından farklı olarak, hem gelir hem de giderleri çeker.
         let predicate = #Predicate<Islem> { islem in
             islem.hesap?.id == hesapID &&
             islem.tarih >= monthInterval.start &&
@@ -57,7 +59,6 @@ class CuzdanDetayViewModel {
             let islemler = try modelContext.fetch(descriptor)
             self.donemIslemleri = islemler
             
-            // Toplamları hesapla
             self.toplamGelir = islemler.filter { $0.tur == .gelir }.reduce(0) { $0 + $1.tutar }
             self.toplamGider = islemler.filter { $0.tur == .gider }.reduce(0) { $0 + $1.tutar }
             
