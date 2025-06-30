@@ -1,7 +1,10 @@
+// GÜNCELLEME: OzetView.swift
 import SwiftUI
 
-struct OzetView: View {
-    @Bindable var viewModel: RaporlarViewModel
+struct OzetView<ViewModel: RaporViewModelProtocol>: View {
+    // GÜNCELLEME: @Bindable kaldırıldı. Bu görünüm ViewModel'ı sadece
+    // okuduğu için özel bir etikete ihtiyaç yok.
+    let viewModel: ViewModel
     @EnvironmentObject var appSettings: AppSettings
     
     var body: some View {
@@ -9,10 +12,10 @@ struct OzetView: View {
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
+            // ... Geri kalan kod tamamen aynı ...
             ScrollView {
                 VStack(alignment: .center, spacing: 20) {
                     
-                    // Başlıklar artık Text(LocalizedStringKey(...)) ile çağırılıyor.
                     AnaMetriklerCard(ozetVerisi: viewModel.ozetVerisi)
                         .environmentObject(appSettings)
 
@@ -20,10 +23,10 @@ struct OzetView: View {
                         .environmentObject(appSettings)
                         
                     if !viewModel.topGiderKategorileri.isEmpty {
-                        KategoriOzetleriCardView( // <-- YENİ KULLANIM
+                        KategoriOzetleriCardView(
                             baslikKey: "reports.summary.top_expenses",
                             kategoriler: viewModel.topGiderKategorileri,
-                            showDivider: true // Divider'lı versiyon
+                            showDivider: true
                         )
                         .environmentObject(appSettings)
                     }

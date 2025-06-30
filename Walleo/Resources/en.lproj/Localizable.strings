@@ -332,3 +332,10 @@
 // MARK: - Time
 "time.today" = "Today";
 "time.yesterday" = "Yesterday";
+
+"reports.period.weekly" = "Weekly";
+"reports.period.monthly" = "Monthly";
+
+"week_picker.select_date_label" = "Select a Date";
+
+"week_picker.title" = "Select Week";

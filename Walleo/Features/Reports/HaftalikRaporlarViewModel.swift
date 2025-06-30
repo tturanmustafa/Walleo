@@ -3,17 +3,20 @@ import SwiftData
 
 @MainActor
 @Observable
-class RaporlarViewModel: RaporViewModelProtocol {
+class HaftalikRaporlarViewModel: RaporViewModelProtocol {
     var modelContext: ModelContext
     
-    var currentDate = Date() {
+    var currentDate: Date = Date() {
         didSet { Task { await fetchData() } }
     }
     
     var ozetVerisi = OzetVerisi()
     var karsilastirmaVerisi = KarsilastirmaVerisi()
     var topGiderKategorileri: [KategoriOzetSatiri] = []
+    
+    // GÜNCELLEME: Eksik olan özellik eklendi.
     var topGelirKategorileri: [KategoriOzetSatiri] = []
+    
     var giderDagilimVerisi: [KategoriOzetSatiri] = []
     var gelirDagilimVerisi: [KategoriOzetSatiri] = []
     var isLoading: Bool = true
@@ -37,12 +40,15 @@ class RaporlarViewModel: RaporViewModelProtocol {
         self.isLoading = true
         
         let calendar = Calendar.current
-        guard let anaDonem = calendar.dateInterval(of: .month, for: currentDate) else {
+        
+        guard let anaDonem = calendar.dateInterval(of: .weekOfYear, for: currentDate),
+              let oncekiDonemBaslangic = calendar.date(byAdding: .weekOfYear, value: -1, to: anaDonem.start),
+              let oncekiDonem = calendar.dateInterval(of: .weekOfYear, for: oncekiDonemBaslangic)
+        else {
             self.isLoading = false
             return
         }
         
-        let oncekiDonem = anaDonem.previous()
         let anaDonemIslemleri = await fetchTransactions(for: anaDonem)
         let oncekiDonemIslemleri = await fetchTransactions(for: oncekiDonem)
             
@@ -84,7 +90,7 @@ class RaporlarViewModel: RaporViewModelProtocol {
         do {
             return try modelContext.fetch(descriptor)
         } catch {
-            Logger.log("Raporlar için işlem verisi çekme hatası: \(error.localizedDescription)", log: Logger.data, type: .error)
+            Logger.log("Haftalık Raporlar için işlem verisi çekme hatası: \(error.localizedDescription)", log: Logger.data, type: .error)
             return []
         }
     }

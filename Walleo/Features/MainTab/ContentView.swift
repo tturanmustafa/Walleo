@@ -1,3 +1,5 @@
+// GÜNCELLEME: ContentView.swift
+
 import SwiftUI
 import SwiftData
 
@@ -7,20 +9,11 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var appSettings: AppSettings
     
-    // YENİ: Uyarıları yönetmek için state'ler
     @State private var hesapYokUyarisiGoster = false
-
-    // SwiftData'dan kullanılabilir hesapları çekmek için Query
     @Query private var kullanilabilirHesaplar: [Hesap]
     
     init() {
-        // Query'yi sadece Cüzdan ve Kredi Kartı tiplerini içerecek şekilde filtreliyoruz
         let predicate = #Predicate<Hesap> { hesap in
-            // Bu kısım Hesap modelindeki 'detay' enum'ının yapısına göre ayarlanmalı.
-            // Örnek bir filtreleme varsayımı:
-            // hesap.tur == "cuzdan" || hesap.tur == "krediKarti"
-            // Bizim projemizde bu kontrolü doğrudan yapamıyoruz, bu yüzden şimdilik tüm hesapları alıp
-            // butonda filtreleyeceğiz.
             true
         }
         _kullanilabilirHesaplar = Query(filter: predicate)
@@ -54,7 +47,9 @@ struct ContentView: View {
                     }
                     .tag(Sekme.butceler)
 
-                RaporlarView(modelContext: modelContext)
+                // GÜNCELLEME: Hatalı olan çağrı düzeltildi.
+                // RaporlarView artık modelContext'i parametre olarak almıyor.
+                RaporlarView()
                     .tabItem {
                         Label(LocalizedStringKey("tab.reports"), systemImage: "chart.bar.xaxis")
                     }
@@ -62,7 +57,6 @@ struct ContentView: View {
             }
 
             Button(action: {
-                // YENİ KONTROL: İşlem eklenebilecek bir hesap var mı?
                 let islemHesaplari = kullanilabilirHesaplar.filter {
                     if case .kredi = $0.detay { return false }; return true
                 }
@@ -85,13 +79,11 @@ struct ContentView: View {
             IslemEkleView()
                 .environmentObject(appSettings)
         }
-        // YENİ ALERT
         .alert(
             LocalizedStringKey("alert.no_accounts.title"),
             isPresented: $hesapYokUyarisiGoster
         ) {
             Button(LocalizedStringKey("alert.no_accounts.add_account_button")) {
-                // Kullanıcıyı Hesaplar sekmesine yönlendir
                 seciliSekme = .hesaplar
             }
             Button(LocalizedStringKey("common.cancel"), role: .cancel) { }

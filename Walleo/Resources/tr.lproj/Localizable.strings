@@ -331,3 +331,10 @@
 // MARK: - Time
 "time.today" = "Bugün";
 "time.yesterday" = "Dün";
+
+"reports.period.weekly" = "Haftalık";
+"reports.period.monthly" = "Aylık";
+
+"week_picker.select_date_label" = "Tarih Seçin";
+
+"week_picker.title" = "Hafta Seç";
