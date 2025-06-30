@@ -1,8 +1,8 @@
 import SwiftUI
 import Charts
 
-struct DagilimView: View {
-    @Bindable var viewModel: RaporlarViewModel
+struct DagilimView<ViewModel: RaporViewModelProtocol>: View {
+    let viewModel: ViewModel
     @EnvironmentObject var appSettings: AppSettings
     
     @State private var secilenTur: IslemTuru = .gider
@@ -16,13 +16,15 @@ struct DagilimView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             Picker("Dağılım Türü", selection: $secilenTur.animation()) {
                 Text(LocalizedStringKey("common.expense")).tag(IslemTuru.gider)
                 Text(LocalizedStringKey("common.income")).tag(IslemTuru.gelir)
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
+            // GÜNCELLEME: Picker ile altındaki içerik arasına boşluk eklendi.
+            .padding(.bottom, 20)
 
             if seciliVeri.isEmpty {
                 ContentUnavailableView(
@@ -33,25 +35,21 @@ struct DagilimView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         VStack {
-                            // GRAFİK DÜZENLEMESİ
                             Chart(seciliVeri) { veri in
                                 SectorMark(
                                     angle: .value("Tutar", veri.tutar),
                                     innerRadius: .ratio(0.6),
-                                    angularInset: 2.0 // Dashboard ile aynı
+                                    angularInset: 2.0
                                 )
                                 .foregroundStyle(veri.renk)
-                                .cornerRadius(8) // Dashboard ile aynı
-                                // Gölge eklendi (Dashboard ile aynı)
+                                .cornerRadius(8)
                                 .shadow(color: .black.opacity(0.3), radius: 2, x: 2, y: 2)
                             }
-                            // Frame düzenlendi (Dashboard gibi kare)
                             .frame(width: 250, height: 250)
                             .chartBackground { chartProxy in
                                 GeometryReader { geometry in
                                     let frame = geometry[chartProxy.plotAreaFrame]
                                     VStack {
-                                        // ORTA METİN DÜZENLEMESİ
                                         Text(LocalizedStringKey("common.total"))
                                             .font(.callout)
                                             .foregroundStyle(.secondary)
@@ -70,10 +68,11 @@ struct DagilimView: View {
                             }
                         }
                     }
-                    .padding()
+                    .padding(.horizontal)
                 }
             }
         }
+        .padding(.top)
     }
 }
 
