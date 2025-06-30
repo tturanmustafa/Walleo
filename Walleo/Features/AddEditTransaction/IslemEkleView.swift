@@ -21,6 +21,9 @@ struct IslemEkleView: View {
     @State private var secilenHesapID: Hesap.ID?
     @State private var secilenTekrar: TekrarTuru = .tekSeferlik
     
+    @State private var bitisTarihiEtkin: Bool = false
+    @State private var bitisTarihi: Date = Calendar.current.date(byAdding: .year, value: 1, to: Date()) ?? Date()
+    
     @State private var orijinalTekrar: TekrarTuru = .tekSeferlik
     @State private var guncellemeSecenekleriGoster = false
 
@@ -102,6 +105,16 @@ struct IslemEkleView: View {
                             Label { Text(LocalizedStringKey(tekrar.rawValue)) } icon: { Image(systemName: iconFor(tekrar: tekrar)) }.tag(tekrar)
                         }
                     }
+                    
+                    // YENİ: Bitiş tarihi belirleme arayüzü eklendi.
+                    // Sadece tekrarlanan bir işlem türü seçildiğinde görünür olacak.
+                    if secilenTekrar != .tekSeferlik {
+                        Toggle("form.label.set_end_date", isOn: $bitisTarihiEtkin.animation())
+                        
+                        if bitisTarihiEtkin {
+                            DatePicker("form.label.end_date", selection: $bitisTarihi, in: tarih..., displayedComponents: .date)
+                        }
+                    }
                 }
             }
             // KATEGORİ ÖNERME MANTIĞI İÇİN YENİ EKLENEN MODIFIER
@@ -147,9 +160,16 @@ struct IslemEkleView: View {
         secilenHesapID = islem.hesap?.id
         secilenTekrar = islem.tekrar
         orijinalTekrar = islem.tekrar
+        
+        // GÜNCELLEME: Düzenleme modunda bitiş tarihi alanlarını doldurma
+        if let bitis = islem.tekrarBitisTarihi {
+            bitisTarihiEtkin = true
+            bitisTarihi = bitis
+        } else {
+            bitisTarihiEtkin = false
+        }
     }
     
-    // GÜNCELLENMİŞ FONKSİYON
     private func kaydetmeIsleminiBaslat() async {
         if duzenlenecekIslem != nil && orijinalTekrar != .tekSeferlik {
             guncellemeSecenekleriGoster = true
@@ -158,13 +178,15 @@ struct IslemEkleView: View {
         }
     }
     
-    // GÜNCELLENMİŞ FONKSİYON
     private func guncelle(tekil: Bool) async {
         isSaving = true
         
         let tutar = stringToDouble(tutarString, locale: Locale(identifier: appSettings.languageCode))
         let secilenKategori = kategoriler.first(where: { $0.id == secilenKategoriID })
         let secilenHesap = tumHesaplar.first { $0.id == secilenHesapID }
+        
+        // GÜNCELLEME: Bitiş tarihi, toggle'ın durumuna göre ayarlanır.
+        let sonBitisTarihi: Date? = bitisTarihiEtkin ? bitisTarihi : nil
         
         var affectedAccountIDs: Set<UUID> = []
         if let hesapID = secilenHesap?.id { affectedAccountIDs.insert(hesapID) }
@@ -174,7 +196,7 @@ struct IslemEkleView: View {
             if let eskiHesapID = islem.hesap?.id { affectedAccountIDs.insert(eskiHesapID) }
             islemToUpdate = islem
         } else {
-            islemToUpdate = Islem(isim: isim, tutar: tutar, tarih: tarih, tur: secilenTur, tekrar: secilenTekrar, kategori: secilenKategori, hesap: secilenHesap)
+            islemToUpdate = Islem(isim: isim, tutar: tutar, tarih: tarih, tur: secilenTur, tekrar: secilenTekrar, kategori: secilenKategori, hesap: secilenHesap, tekrarBitisTarihi: sonBitisTarihi)
             modelContext.insert(islemToUpdate)
         }
         
@@ -189,17 +211,18 @@ struct IslemEkleView: View {
         islemToUpdate.kategori = secilenKategori
         islemToUpdate.hesap = secilenHesap
         islemToUpdate.tekrar = secilenTekrar
+        islemToUpdate.tekrarBitisTarihi = sonBitisTarihi
         
         if secilenTekrar == .tekSeferlik {
             islemToUpdate.tekrarID = UUID()
         }
         
         if !tekil && secilenTekrar != .tekSeferlik {
-            yeniSeriOlustur(islem: islemToUpdate)
+            yeniSeriOlustur(islem: islemToUpdate, bitis: sonBitisTarihi)
         }
         
         if orijinalTekrar == .tekSeferlik && secilenTekrar != .tekSeferlik {
-             yeniSeriOlustur(islem: islemToUpdate)
+             yeniSeriOlustur(islem: islemToUpdate, bitis: sonBitisTarihi)
         }
         
         var affectedCategoryIDs: [UUID] = []
@@ -218,12 +241,8 @@ struct IslemEkleView: View {
         
         do {
             try modelContext.save()
-            Logger.log("IslemEkleView: Tüm işlemler başarıyla kaydedildi.", log: Logger.data, type: .info)
             NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["payload": payload])
-            
-            // YENİ: Hızlı bütçe kontrolü burada yapılıyor.
             BudgetService.shared.runBudgetChecks(for: islemToUpdate, in: modelContext, settings: appSettings)
-            
         } catch {
             Logger.log("IslemEkleView: Kaydetme sırasında kritik hata: \(error.localizedDescription)", log: Logger.data, type: .fault)
         }
@@ -241,21 +260,16 @@ struct IslemEkleView: View {
         if sadeceGelecek {
             let baslangicTarihi = islem.tarih
             predicate = #Predicate<Islem> { islem in
-                islem.tekrarID == tekrarID &&
-                islem.id != anaIslemID &&
-                islem.tarih > baslangicTarihi
+                islem.tekrarID == tekrarID && islem.id != anaIslemID && islem.tarih > baslangicTarihi
             }
         } else {
-            predicate = #Predicate<Islem> { islem in
-                islem.tekrarID == tekrarID &&
-                islem.id != anaIslemID
-            }
+            predicate = #Predicate<Islem> { islem in islem.tekrarID == tekrarID && islem.id != anaIslemID }
         }
         
         try? modelContext.delete(model: Islem.self, where: predicate)
     }
     
-    private func yeniSeriOlustur(islem: Islem) {
+    private func yeniSeriOlustur(islem: Islem, bitis: Date?) {
         let tekrarID = islem.tekrarID == UUID() ? UUID() : islem.tekrarID
         if islem.tekrarID == UUID() { islem.tekrarID = tekrarID }
         
@@ -270,57 +284,44 @@ struct IslemEkleView: View {
         
         for i in 1...60 {
             if let gelecekTarih = Calendar.current.date(byAdding: .month, value: step * i, to: islem.tarih) {
-                let yeniTekrarliIslem = Islem(isim: islem.isim, tutar: islem.tutar, tarih: gelecekTarih, tur: islem.tur, tekrar: islem.tekrar, tekrarID: tekrarID, kategori: islem.kategori, hesap: islem.hesap)
+                // GÜNCELLEME: Bitiş tarihi kontrolü eklendi.
+                if let bitisTarihi = bitis, gelecekTarih > bitisTarihi {
+                    break
+                }
+                
+                let yeniTekrarliIslem = Islem(isim: islem.isim, tutar: islem.tutar, tarih: gelecekTarih, tur: islem.tur, tekrar: islem.tekrar, tekrarID: tekrarID, kategori: islem.kategori, hesap: islem.hesap, tekrarBitisTarihi: bitis)
                 modelContext.insert(yeniTekrarliIslem)
             }
         }
     }
     
-    // YENİ YARDIMCI FONKSİYON - 1
     private func suggestCategory(for name: String) {
-        // YENİ KONTROL: Sadece YENİ bir işlem ekleniyorsa öneri yap.
-        // Eğer duzenlenecekIslem nil değilse, yani düzenleme modundaysak,
-        // fonksiyondan hemen çık ve hiçbir şey yapma.
         guard duzenlenecekIslem == nil else { return }
-
         let nameKey = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        
         guard nameKey.count > 2 else { return }
-        
-        let descriptor = FetchDescriptor<TransactionMemory>(
-            predicate: #Predicate { $0.transactionNameKey == nameKey }
-        )
+        let descriptor = FetchDescriptor<TransactionMemory>(predicate: #Predicate { $0.transactionNameKey == nameKey })
         
         if let memory = try? modelContext.fetch(descriptor).first {
-            Logger.log("Hafıza kaydı bulundu: İsim '\(nameKey)', Kategori ID: \(memory.lastCategoryID)", log: Logger.service)
             if filtrelenmisKategoriler.contains(where: { $0.id == memory.lastCategoryID }) {
                 self.secilenKategoriID = memory.lastCategoryID
             }
         }
     }
     
-    // YENİ YARDIMCI FONKSİYON - 2
     private func updateTransactionMemory(name: String, categoryID: Kategori.ID?) async {
         guard let categoryID = categoryID else { return }
-        
         let nameKey = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard !nameKey.isEmpty else { return }
         
-        let descriptor = FetchDescriptor<TransactionMemory>(
-            predicate: #Predicate { $0.transactionNameKey == nameKey }
-        )
+        let descriptor = FetchDescriptor<TransactionMemory>(predicate: #Predicate { $0.transactionNameKey == nameKey })
         
         do {
             if let existingMemory = try modelContext.fetch(descriptor).first {
                 existingMemory.lastCategoryID = categoryID
-                Logger.log("Hafıza kaydı güncellendi: İsim '\(nameKey)'", log: Logger.service)
             } else {
                 let newMemory = TransactionMemory(transactionNameKey: nameKey, lastCategoryID: categoryID)
                 modelContext.insert(newMemory)
-                Logger.log("Yeni hafıza kaydı oluşturuldu: İsim '\(nameKey)'", log: Logger.service)
             }
-            // Kaydetme işlemi `guncelle` fonksiyonundaki ana `try modelContext.save()` içinde yapılacak.
-            // Bu sayede tek bir veritabanı yazma işlemi olur.
         } catch {
             Logger.log("TransactionMemory güncellenirken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
