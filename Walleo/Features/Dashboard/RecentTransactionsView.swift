@@ -8,8 +8,8 @@ struct RecentTransactionsView: View {
     let modelContext: ModelContext
     let islemler: [Islem]
     
-    // GÜNCELLEME: 'currentDate' parametresi kaldırıldı.
-    
+    let currentDate: Date
+
     @Binding var duzenlenecekIslem: Islem?
     let onSilmeyiBaslat: (Islem) -> Void
     
@@ -19,9 +19,10 @@ struct RecentTransactionsView: View {
                 HStack {
                     Text("dashboard.recent_transactions").font(.headline).fontWeight(.bold)
                     Spacer()
-                    // GÜNCELLEME: NavigationLink orijinal, basit haline geri döndü.
+                    // GÜNCELLEME: NavigationLink artık Dashboard'dan gelen 'currentDate'
+                    // bilgisini kullanarak TumIslemlerView'ı başlatıyor.
                     NavigationLink("dashboard.see_all") {
-                        TumIslemlerView(modelContext: modelContext)
+                        TumIslemlerView(modelContext: modelContext, baslangicTarihi: currentDate)
                             .environmentObject(appSettings)
                     }
                 }.padding()

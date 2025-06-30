@@ -338,3 +338,6 @@
 "week_picker.select_date_label" = "Tarih Seçin";
 
 "week_picker.title" = "Hafta Seç";
+
+"form.label.set_end_date" = "Bitiş Tarihi Belirle";
+"form.label.end_date" = "Bitiş Tarihi";

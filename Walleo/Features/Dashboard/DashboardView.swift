@@ -96,6 +96,7 @@ struct DashboardView: View {
                             RecentTransactionsView(
                                 modelContext: viewModel.modelContext,
                                 islemler: viewModel.filtrelenmisIslemler,
+                                currentDate: viewModel.currentDate, // EKLENEN SATIR
                                 duzenlenecekIslem: $duzenlenecekIslem,
                                 onSilmeyiBaslat: { islem in
                                     self.silmeyiBaslat(islem)
