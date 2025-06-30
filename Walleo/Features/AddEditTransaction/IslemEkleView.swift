@@ -61,6 +61,18 @@ struct IslemEkleView: View {
     var body: some View {
         NavigationStack {
             Form {
+                Section {
+                    Picker("İşlem Türü", selection: $secilenTur.animation()) {
+                        ForEach(IslemTuru.allCases, id: \.self) { tur in
+                            // GÜNCELLEME: tur.localized yerine, SwiftUI'ın kendi
+                            // dil motorunu kullanan LocalizedStringKey yapısını kullanıyoruz.
+                            // Bu, AppModels'ı değiştirmeden sorunu çözer.
+                            Text(LocalizedStringKey(tur.rawValue)).tag(tur)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                
                 Section(header: Text(LocalizedStringKey("transaction.section_details"))) {
                     LabeledTextField(
                         label: "form.label.transaction_name",
