@@ -7,6 +7,8 @@
 
 
 import SwiftUI
+import UserNotifications // BU SATIRI EKLEYİN
+
 
 struct BildirimAyarlariView: View {
     @EnvironmentObject var appSettings: AppSettings
@@ -37,7 +39,9 @@ struct BildirimAyarlariView: View {
     var body: some View {
         Form {
             Section(header: Text(LocalizedStringKey("settings.notifications.master_section"))) {
-                Toggle(LocalizedStringKey("settings.notifications.master_toggle"), isOn: $appSettings.masterNotificationsEnabled.animation())
+                // --- DEĞİŞİKLİK BURADA BAŞLIYOR ---
+                Toggle(LocalizedStringKey("settings.notifications.master_toggle"), isOn: masterToggleBinding)
+                // --- DEĞİŞİKLİK BURADA BİTİYOR ---
             }
 
             Section(header: Text(LocalizedStringKey("settings.notifications.budget_section"))) {
@@ -71,6 +75,29 @@ struct BildirimAyarlariView: View {
         }
         .navigationTitle(LocalizedStringKey("settings.notifications.title"))
         .navigationBarTitleDisplayMode(.inline)
+    }
+    private var masterToggleBinding: Binding<Bool> {
+        Binding<Bool>(
+            get: { appSettings.masterNotificationsEnabled },
+            set: { newValue in
+                if newValue {
+                    // Kullanıcı bildirimleri AÇMAK istiyor
+                    NotificationManager.shared.requestAuthorization { granted in
+                        if granted {
+                            appSettings.masterNotificationsEnabled = true
+                            NotificationManager.shared.scheduleGenericReminders()
+                        } else {
+                            // Kullanıcı izin vermedi, toggle'ı kapalı tut.
+                            appSettings.masterNotificationsEnabled = false
+                        }
+                    }
+                } else {
+                    // Kullanıcı bildirimleri KAPATMAK istiyor
+                    appSettings.masterNotificationsEnabled = false
+                    NotificationManager.shared.cancelGenericReminders()
+                }
+            }
+        )
     }
 }
 

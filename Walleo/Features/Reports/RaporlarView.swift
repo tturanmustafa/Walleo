@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 
+@MainActor
 protocol RaporViewModelProtocol: Observable {
     var ozetVerisi: OzetVerisi { get }
     var karsilastirmaVerisi: KarsilastirmaVerisi { get }

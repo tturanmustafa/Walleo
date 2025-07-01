@@ -341,3 +341,8 @@
 
 "form.label.set_end_date" = "Bitiş Tarihi Belirle";
 "form.label.end_date" = "Bitiş Tarihi";
+
+"notification.daily.title" = "Günü Tamamlama Zamanı!";
+"notification.daily.body" = "Bugünkü gelir ve giderlerinizi Walleo'ya eklediniz mi? Finansal sağlığınızı takip etmek için en iyi zaman.";
+"notification.weekly.title" = "Haftalık Raporunuz Hazır!";
+"notification.weekly.body" = "Geçen haftanın finansal özetini şimdi keşfedin. Harcamalarınız ve gelirleriniz hakkında detaylı bilgi Raporlar ekranında sizi bekliyor.";

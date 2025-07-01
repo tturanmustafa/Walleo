@@ -32,6 +32,8 @@ struct KategoriOzetSatiri: Identifiable, Hashable {
     let tutar: Double
     let yuzde: Double // Toplam gidere/gelire oranı
 }
+
+// Bu yeni struct'ı RaporModelleri.swift dosyasına ekleyebiliriz.
 // RaporModelleri.swift dosyasının en altına ekleyin
 
 

@@ -342,3 +342,8 @@
 
 "form.label.set_end_date" = "Set End Date";
 "form.label.end_date" = "End Date";
+
+"notification.daily.title" = "Time to Wrap Up the Day!";
+"notification.daily.body" = "Have you added today's income and expenses to Walleo? Now is the best time to track your financial health.";
+"notification.weekly.title" = "Your Weekly Report is Ready!";
+"notification.weekly.body" = "Discover last week's financial summary now. Detailed insights on your spending and income await you on the Reports screen.";

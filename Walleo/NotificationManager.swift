@@ -16,8 +16,79 @@ class NotificationManager {
         self.modelContext = modelContext
         self.appSettings = appSettings
     }
-
     
+    // MARK: - İzin Yönetimi
+    
+    func requestAuthorization(completion: @escaping (Bool) -> Void) {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            if let error = error {
+                Logger.log("Bildirim izni alınırken hata: \(error.localizedDescription)", log: Logger.service, type: .error)
+            }
+            DispatchQueue.main.async {
+                completion(granted)
+            }
+        }
+    }
+    
+    // MARK: - Jenerik Hatırlatıcılar
+    
+    func scheduleGenericReminders() {
+        let center = UNUserNotificationCenter.current()
+        cancelGenericReminders()
+        
+        // --- HATA DÜZELTMESİ: 'titleLocalizationKey' yerine doğrudan 'title' ve 'body' kullanıyoruz ---
+        // Bu yöntem, tüm iOS versiyonlarında kararlı bir şekilde çalışır.
+        
+        // 1. Günlük Gider Girme Hatırlatıcısı (21:00)
+        let dailyContent = UNMutableNotificationContent()
+        dailyContent.title = NSLocalizedString("notification.daily.title", comment: "Daily reminder title")
+        dailyContent.body = NSLocalizedString("notification.daily.body", comment: "Daily reminder body")
+        dailyContent.sound = .default
+
+        var dailyDateComponents = DateComponents()
+        dailyDateComponents.hour = 21
+        dailyDateComponents.minute = 0
+        let dailyTrigger = UNCalendarNotificationTrigger(dateMatching: dailyDateComponents, repeats: true)
+        
+        let dailyRequest = UNNotificationRequest(identifier: "walleoDailyReminder", content: dailyContent, trigger: dailyTrigger)
+        center.add(dailyRequest) { error in
+            if let error = error {
+                Logger.log("Günlük bildirim kurulamadı: \(error.localizedDescription)", log: Logger.service, type: .error)
+            } else {
+                Logger.log("Günlük bildirim başarıyla kuruldu.", log: Logger.service)
+            }
+        }
+        
+        // 2. Haftalık Rapor Hatırlatıcısı (Pazartesi 10:00)
+        let weeklyContent = UNMutableNotificationContent()
+        weeklyContent.title = NSLocalizedString("notification.weekly.title", comment: "Weekly report title")
+        weeklyContent.body = NSLocalizedString("notification.weekly.body", comment: "Weekly report body")
+        weeklyContent.sound = .default
+
+        var weeklyDateComponents = DateComponents()
+        weeklyDateComponents.weekday = 2 // 1 = Pazar, 2 = Pazartesi
+        weeklyDateComponents.hour = 10
+        weeklyDateComponents.minute = 0
+        let weeklyTrigger = UNCalendarNotificationTrigger(dateMatching: weeklyDateComponents, repeats: true)
+
+        let weeklyRequest = UNNotificationRequest(identifier: "walleoWeeklyReportReminder", content: weeklyContent, trigger: weeklyTrigger)
+        center.add(weeklyRequest) { error in
+            if let error = error {
+                Logger.log("Haftalık bildirim kurulamadı: \(error.localizedDescription)", log: Logger.service, type: .error)
+            } else {
+                Logger.log("Haftalık bildirim başarıyla kuruldu.", log: Logger.service)
+            }
+        }
+    }
+    
+    func cancelGenericReminders() {
+        let center = UNUserNotificationCenter.current()
+        let identifiers = ["walleoDailyReminder", "walleoWeeklyReportReminder"]
+        center.removePendingNotificationRequests(withIdentifiers: identifiers)
+        Logger.log("Genel hatırlatıcılar iptal edildi.", log: Logger.service)
+    }
+
     // MARK: - Ödeme Günü Kontrolleri
     
     func checkLoanInstallments() {
@@ -26,7 +97,6 @@ class NotificationManager {
     
     func checkCreditCardDueDates() {
         guard let context = modelContext, let settings = appSettings else { return }
-        // TODO: Kredi kartları için ayrı bir ayar eklendiğinde burası güncellenecek.
         guard settings.masterNotificationsEnabled else { return }
 
         do {
@@ -59,7 +129,6 @@ class NotificationManager {
         
         let daysUntilDue = calendar.dateComponents([.day], from: today, to: dueDate).day ?? -1
         
-        // Şimdilik kredi hatırlatıcı ayarını kullanıyoruz (loanReminderDays)
         if daysUntilDue >= 0 && daysUntilDue <= settings.loanReminderDays {
             createNotification(
                 tur: .krediKartiOdemeGunu,
@@ -74,9 +143,6 @@ class NotificationManager {
     
     private func createNotification(tur: BildirimTuru, hedefID: UUID?, ilgiliIsim: String?, tutar1: Double? = nil, tutar2: Double? = nil, tarih1: Date? = nil) {
         guard let context = modelContext else { return }
-        
-        // TODO: Aynı hedef ve tür için yakın zamanda oluşturulmuş bir bildirim var mı diye kontrol ederek
-        // mükerrer bildirimleri engelleme mantığı eklenebilir.
         
         let yeniBildirim = Bildirim(tur: tur, hedefID: hedefID, ilgiliIsim: ilgiliIsim, tutar1: tutar1, tutar2: tutar2, tarih1: tarih1)
         context.insert(yeniBildirim)
