@@ -29,12 +29,12 @@ struct HaftaSeciciView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("İptal") {
+                    Button(LocalizedStringKey("common.cancel")) {
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Seç") {
+                    Button(LocalizedStringKey("common.done")) {
                         currentDate = secilenTarih
                         dismiss()
                     }
