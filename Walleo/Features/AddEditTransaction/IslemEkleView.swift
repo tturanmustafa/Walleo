@@ -23,7 +23,7 @@ struct IslemEkleView: View {
     
     @State private var bitisTarihiEtkin: Bool = false
     @State private var bitisTarihi: Date = Calendar.current.date(byAdding: .year, value: 1, to: Date()) ?? Date()
-    
+
     @State private var orijinalTekrar: TekrarTuru = .tekSeferlik
     @State private var guncellemeSecenekleriGoster = false
 
@@ -109,6 +109,12 @@ struct IslemEkleView: View {
                         }
                     }
                     DatePicker(LocalizedStringKey("common.date"), selection: $tarih, displayedComponents: .date)
+                        // GÜNCELLEME: Başlangıç tarihi değiştiğinde, bitiş tarihinin de ondan ileri bir tarihte kalmasını sağla
+                        .onChange(of: tarih) {
+                            if bitisTarihi < tarih {
+                                bitisTarihi = tarih
+                            }
+                        }
                 }
                 
                 Section {
@@ -120,14 +126,11 @@ struct IslemEkleView: View {
                     
                     // YENİ: Bitiş tarihi belirleme arayüzü eklendi.
                     // Sadece tekrarlanan bir işlem türü seçildiğinde görünür olacak.
+                    // --- DEĞİŞİKLİK BURADA ---
+                    // Toggle kaldırıldı. Tekrarlanan bir işlem seçildiğinde DatePicker doğrudan görünüyor.
                     if secilenTekrar != .tekSeferlik {
-                        Toggle("form.label.set_end_date", isOn: $bitisTarihiEtkin.animation())
-                        
-                        if bitisTarihiEtkin {
-                            DatePicker("form.label.end_date", selection: $bitisTarihi, in: tarih..., displayedComponents: .date)
-                        }
-                    }
-                }
+                        DatePicker("form.label.end_date", selection: $bitisTarihi, in: tarih..., displayedComponents: .date)
+                    }                }
             }
             // KATEGORİ ÖNERME MANTIĞI İÇİN YENİ EKLENEN MODIFIER
             .onChange(of: isim) {
@@ -173,12 +176,14 @@ struct IslemEkleView: View {
         secilenTekrar = islem.tekrar
         orijinalTekrar = islem.tekrar
         
-        // GÜNCELLEME: Düzenleme modunda bitiş tarihi alanlarını doldurma
+        // Bitiş tarihi alanını doldurma güncellendi
         if let bitis = islem.tekrarBitisTarihi {
-            bitisTarihiEtkin = true
             bitisTarihi = bitis
         } else {
-            bitisTarihiEtkin = false
+            // Eğer kayıtlı bitiş tarihi yoksa ama tekrarlanan bir işlemse, varsayılan bir değer ata
+            if islem.tekrar != .tekSeferlik {
+                bitisTarihi = Calendar.current.date(byAdding: .year, value: 1, to: islem.tarih) ?? islem.tarih
+            }
         }
     }
     
@@ -197,8 +202,9 @@ struct IslemEkleView: View {
         let secilenKategori = kategoriler.first(where: { $0.id == secilenKategoriID })
         let secilenHesap = tumHesaplar.first { $0.id == secilenHesapID }
         
-        // GÜNCELLEME: Bitiş tarihi, toggle'ın durumuna göre ayarlanır.
-        let sonBitisTarihi: Date? = bitisTarihiEtkin ? bitisTarihi : nil
+        // --- DEĞİŞİKLİK BURADA ---
+        // Bitiş tarihi artık seçilen tekrarlanma türüne göre belirleniyor.
+        let sonBitisTarihi: Date? = secilenTekrar == .tekSeferlik ? nil : bitisTarihi
         
         var affectedAccountIDs: Set<UUID> = []
         if let hesapID = secilenHesap?.id { affectedAccountIDs.insert(hesapID) }
@@ -281,29 +287,53 @@ struct IslemEkleView: View {
         try? modelContext.delete(model: Islem.self, where: predicate)
     }
     
+    // --- DEĞİŞİKLİK BURADA: FONKSİYON TAMAMEN YENİLENDİ ---
     private func yeniSeriOlustur(islem: Islem, bitis: Date?) {
+        guard let bitisTarihi = bitis, secilenTekrar != .tekSeferlik else {
+            // Eğer bitiş tarihi yoksa veya tek seferlikse, seri oluşturma.
+            return
+        }
+
         let tekrarID = islem.tekrarID == UUID() ? UUID() : islem.tekrarID
         if islem.tekrarID == UUID() { islem.tekrarID = tekrarID }
         
-        var step = 0
+        var step: Calendar.Component
+        var value: Int
+        
         switch islem.tekrar {
-            case .herAy: step = 1
-            case .her3Ay: step = 3
-            case .her6Ay: step = 6
-            case .herYil: step = 12
-            case .tekSeferlik: return
+            case .herAy:
+                step = .month
+                value = 1
+            case .her3Ay:
+                step = .month
+                value = 3
+            case .her6Ay:
+                step = .month
+                value = 6
+            case .herYil:
+                step = .year
+                value = 1
+            case .tekSeferlik:
+                return
         }
         
-        for i in 1...60 {
-            if let gelecekTarih = Calendar.current.date(byAdding: .month, value: step * i, to: islem.tarih) {
-                // GÜNCELLEME: Bitiş tarihi kontrolü eklendi.
-                if let bitisTarihi = bitis, gelecekTarih > bitisTarihi {
-                    break
-                }
-                
-                let yeniTekrarliIslem = Islem(isim: islem.isim, tutar: islem.tutar, tarih: gelecekTarih, tur: islem.tur, tekrar: islem.tekrar, tekrarID: tekrarID, kategori: islem.kategori, hesap: islem.hesap, tekrarBitisTarihi: bitis)
-                modelContext.insert(yeniTekrarliIslem)
-            }
+        var mevcutTarih = islem.tarih
+        let takvim = Calendar.current
+
+        while let gelecekTarih = takvim.date(byAdding: step, value: value, to: mevcutTarih), gelecekTarih <= bitisTarihi {
+            let yeniTekrarliIslem = Islem(
+                isim: islem.isim,
+                tutar: islem.tutar,
+                tarih: gelecekTarih,
+                tur: islem.tur,
+                tekrar: islem.tekrar,
+                tekrarID: tekrarID,
+                kategori: islem.kategori,
+                hesap: islem.hesap,
+                tekrarBitisTarihi: bitisTarihi
+            )
+            modelContext.insert(yeniTekrarliIslem)
+            mevcutTarih = gelecekTarih // Bir sonraki döngü için tarihi güncelle
         }
     }
     
