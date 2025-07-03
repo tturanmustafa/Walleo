@@ -6,12 +6,36 @@ struct KategoriDuzenleView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var appSettings: AppSettings
 
+    // Bu özellik, dışarıdan bir kategori gelip gelmediğini tutar.
     var kategori: Kategori?
 
-    @State private var isim: String = ""
-    @State private var ikonAdi: String = "tag.fill"
-    @State private var secilenTur: IslemTuru = .gider
-    @State private var secilenRenk: Color = .blue
+    // @State değişkenleri artık init içinde ayarlanacak.
+    @State private var isim: String
+    @State private var ikonAdi: String
+    @State private var secilenTur: IslemTuru
+    @State private var secilenRenk: Color
+    
+    // --- YENİ VE DOĞRU YAKLAŞIM: INIT METODU ---
+    // Bu başlatıcı, view oluşturulurken SADECE BİR KEZ çalışır.
+    init(kategori: Kategori? = nil) {
+        self.kategori = kategori
+        
+        if let k = kategori {
+            // EĞER DÜZENLEME MODUNDAYSAK:
+            // State'i mevcut kategorinin verileriyle başlat.
+            _isim = State(initialValue: k.isim)
+            _ikonAdi = State(initialValue: k.ikonAdi)
+            _secilenTur = State(initialValue: k.tur)
+            _secilenRenk = State(initialValue: k.renk)
+        } else {
+            // EĞER EKLEME MODUNDAYSAK:
+            // State'i varsayılan değerlerle başlat.
+            _isim = State(initialValue: "")
+            _ikonAdi = State(initialValue: "tag.fill")
+            _secilenTur = State(initialValue: .gider)
+            _secilenRenk = State(initialValue: Color(red: 0, green: 0.478, blue: 1))
+        }
+    }
     
     private var isSystemCategory: Bool {
         kategori?.localizationKey != nil
@@ -28,6 +52,7 @@ struct KategoriDuzenleView: View {
     var body: some View {
         NavigationStack {
             Form {
+                // ... Form'un içeriği tamamen aynı kalıyor ...
                 if kategori == nil {
                     Section {
                         Picker("common.type", selection: $secilenTur) {
@@ -66,6 +91,7 @@ struct KategoriDuzenleView: View {
             .navigationTitle(navigationTitleKey)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                // Toolbar da tamamen aynı kalıyor
                 if kategori == nil {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("common.cancel") { dismiss() }
@@ -79,54 +105,38 @@ struct KategoriDuzenleView: View {
                     .disabled(isim.trimmingCharacters(in: .whitespaces).isEmpty && !isSystemCategory)
                 }
             }
-            .onAppear(perform: formuDoldur)
+            // ARTIK .onAppear ve formuDoldur'a İHTİYACIMIZ YOK.
+            // .onAppear(perform: formuDoldur) satırını siliyoruz.
         }
     }
     
+    // ARTIK BU FONKSİYONA İHTİYACIMIZ YOK, SİLİNEBİLİR.
+    /*
     private func formuDoldur() {
-        guard let kategori = kategori else { return }
-        
-        if let key = kategori.localizationKey {
-            let languageCode = appSettings.languageCode
-            if let path = Bundle.main.path(forResource: languageCode, ofType: "lproj"),
-               let languageBundle = Bundle(path: path) {
-                self.isim = languageBundle.localizedString(forKey: key, value: kategori.isim, table: nil)
-            } else {
-                self.isim = kategori.isim
-            }
-        } else {
-            self.isim = kategori.isim
-        }
-        
-        self.ikonAdi = kategori.ikonAdi
-        self.secilenTur = kategori.tur
-        self.secilenRenk = kategori.renk
+        //...
     }
+    */
     
-    // DİKKAT: KAYDETME MANTIĞI GÜNCELLENDİ
+    // Kaydet fonksiyonu daha önce düzelttiğimiz doğru haliyle kalıyor.
     private func kaydet() {
         let trimmedIsim = isim.trimmingCharacters(in: .whitespaces)
         guard !trimmedIsim.isEmpty || isSystemCategory else { return }
         
         if let kategori = kategori {
-            // DÜZENLEME MANTIĞI (Aynı kalıyor)
             if !isSystemCategory {
                 kategori.isim = trimmedIsim
             }
             kategori.ikonAdi = ikonAdi
             kategori.renkHex = secilenRenk.toHex() ?? "#FFFFFF"
         } else {
-            // YENİ KATEGORİ EKLEME MANTIĞI (Değişti)
-            let yeniKategori = Kategori() // 1. Boş bir nesne yarat
-            
-            // 2. Özelliklerini tek tek ata
-            yeniKategori.isim = trimmedIsim
-            yeniKategori.ikonAdi = ikonAdi
-            yeniKategori.tur = secilenTur
-            yeniKategori.renkHex = secilenRenk.toHex() ?? "#FFFFFF"
-            yeniKategori.localizationKey = nil // Kullanıcı tarafından oluşturulanların çeviri anahtarı olmaz.
-            
-            modelContext.insert(yeniKategori) // 3. Veritabanına ekle
+            let yeniKategori = Kategori(
+                isim: trimmedIsim,
+                ikonAdi: ikonAdi,
+                tur: secilenTur,
+                renkHex: secilenRenk.toHex() ?? "#FFFFFF",
+                localizationKey: nil
+            )
+            modelContext.insert(yeniKategori)
         }
         
         do {
@@ -140,10 +150,7 @@ struct KategoriDuzenleView: View {
     }
 }
 
-// Color -> Hex çevrimi için olan extension'ı buraya taşıdım
-// böylece bu View kendi kendine yetebilir hale geldi.
-// Eğer bu extension başka yerlerde de kullanılıyorsa,
-// Helpers.swift gibi merkezi bir dosyada tutulması daha doğrudur.
+// Bu extension da view içinde kalabilir, sorun yok.
 extension Color {
     func toHex() -> String? {
         guard let components = cgColor?.components, components.count >= 3 else {

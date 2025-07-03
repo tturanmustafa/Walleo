@@ -4,12 +4,12 @@ import SwiftUI
 
 @Model
 class Kategori {
-    // @Attribute(.unique) kaldırıldı ve varsayılan değer atandı.
+    // ... diğer özellikler aynı kalıyor ...
     var id: UUID = UUID()
     var isim: String = ""
     var ikonAdi: String = ""
     var renkHex: String = ""
-    var localizationKey: String? // Opsiyonel olduğu için varsayılan değere gerek yok.
+    var localizationKey: String?
     var turRawValue: String = IslemTuru.gider.rawValue
 
     @Relationship(deleteRule: .nullify, inverse: \Islem.kategori)
@@ -25,6 +25,7 @@ class Kategori {
     
     var renk: Color { Color(hex: renkHex) }
     
+    // Dolu olan init fonksiyonu kalacak
     init(id: UUID = UUID(), isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String? = nil) {
         self.id = id
         self.isim = isim
@@ -33,5 +34,7 @@ class Kategori {
         self.localizationKey = localizationKey
         self.turRawValue = tur.rawValue
     }
-    init() { }
+    
+    // BU FONKSİYONU SİLİN VEYA YORUM SATIRI YAPIN
+    // init() { }
 }

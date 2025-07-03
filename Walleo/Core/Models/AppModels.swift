@@ -47,6 +47,8 @@ class AppSettings: ObservableObject {
     @AppStorage("colorScheme") var colorSchemeValue: Int = 0
     @AppStorage("language") var languageCode: String = "tr"
     @AppStorage("currencyCode") var currencyCode: String = Currency.TRY.rawValue
+    @AppStorage("isCloudKitEnabled") var isCloudKitEnabled: Bool = true
+
 
     var colorScheme: ColorScheme? {
         switch colorSchemeValue {

@@ -26,14 +26,20 @@ struct AyarlarView: View {
     @EnvironmentObject var appSettings: AppSettings
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
-    
-    // YEREL STATE: Picker artık sadece bu geçici state'i değiştirecek.
-    @State private var seciliDilKodu: String = "tr"
+    @State private var seciliDilKodu: String
+    @State private var cloudKitToggleAcik: Bool
     
     @State private var dilDegisikligiUyarisiGoster = false
+    @State private var cloudKitDegisiklikUyarisiGoster = false
+    @State private var showingDeleteConfirmationAlert = false
     
     @State private var isExporting = false
     @State private var shareableURL: ShareableURL?
+    
+    init() {
+        _seciliDilKodu = State(initialValue: AppSettings().languageCode)
+        _cloudKitToggleAcik = State(initialValue: AppSettings().isCloudKitEnabled)
+    }
     
     var body: some View {
         Form {
@@ -100,10 +106,18 @@ struct AyarlarView: View {
             }
             
             Section(LocalizedStringKey("settings.section.data_management")) {
+                
+                // YENİ KOD: iCloud Yedekleme Toggle'ı
+                HStack {
+                    AyarIkonu(iconName: "icloud.fill", color: .cyan)
+                    Toggle("settings.data.icloud_backup", isOn: $cloudKitToggleAcik)
+                }
+                .padding(.vertical, 4)
+                
+                // Veri Dışa Aktarma Butonu (Mevcut kodunuz)
                 Button(action: exportData) {
                     HStack {
                         AyarIkonu(iconName: "square.and.arrow.up", color: .purple)
-                        
                         if isExporting {
                             Text(LocalizedStringKey("settings.data.exporting"))
                             Spacer()
@@ -115,7 +129,21 @@ struct AyarlarView: View {
                 }
                 .disabled(isExporting)
                 .foregroundColor(.primary)
+                .padding(.vertical, 4) // <-- YENİ EKLENEN SATIR
+
+                // Tüm Verileri Sil Butonu (Mevcut kodunuz)
+                Button(role: .destructive) {
+                    showingDeleteConfirmationAlert = true
+                } label: {
+                    HStack {
+                        AyarIkonu(iconName: "trash.fill", color: .red)
+                        Text(LocalizedStringKey("settings.data.delete_all"))
+                    }
+                }
+                .padding(.vertical, 4) // <-- YENİ EKLENEN SATIR
+
             }
+            
             
             Section(LocalizedStringKey("settings.section_info")) {
                 HStack {
@@ -137,30 +165,50 @@ struct AyarlarView: View {
         .sheet(item: $shareableURL) { wrapper in
             ActivityView(activityItems: [wrapper.url])
         }
-        // View ilk açıldığında yerel state'i mevcut ayarla eşitle
-        .onAppear {
-            self.seciliDilKodu = appSettings.languageCode
+        // GÜNCELLENMİŞ ALERT: Dil değişikliği için
+        .alert("settings.language_change.title", isPresented: $dilDegisikligiUyarisiGoster) {
+            Button("alert.language_change.confirm_button") { // "Onayla"
+                appSettings.languageCode = seciliDilKodu
+                NotificationCenter.default.post(name: .appShouldRestart, object: nil)
+            }
+            Button("common.cancel", role: .cancel) {
+                self.seciliDilKodu = appSettings.languageCode
+            }
+        } message: {
+            Text("settings.language_change.message")
         }
-        // Yerel state değiştiğinde ve kalıcı ayardan farklıysa uyarıyı göster
+        // YENİ ALERT: iCloud ayarı değişikliği için
+        .alert("alert.icloud_toggle.title", isPresented: $cloudKitDegisiklikUyarisiGoster) {
+            Button("settings.language_change.restart_button") {
+                appSettings.isCloudKitEnabled = cloudKitToggleAcik
+                NotificationCenter.default.post(name: .appShouldRestart, object: nil)
+            }
+            Button("common.cancel", role: .cancel) {
+                self.cloudKitToggleAcik = appSettings.isCloudKitEnabled
+            }
+        } message: {
+            Text("alert.icloud_toggle.message")
+        }
+        // Tüm verileri silme uyarısı (Mevcut kodunuz)
+        .alert(LocalizedStringKey("alert.delete_all_data.title"), isPresented: $showingDeleteConfirmationAlert) {
+            Button("common.confirm_delete", role: .destructive) {
+                NotificationCenter.default.post(name: .appShouldDeleteAllData, object: nil)
+                dismiss()
+            }
+            Button("common.cancel", role: .cancel) {}
+        } message: {
+            Text(LocalizedStringKey("alert.delete_all_data.message"))
+        }
+        // State değişikliklerini izleyen .onChange modifier'ları
         .onChange(of: seciliDilKodu) {
             if seciliDilKodu != appSettings.languageCode {
                 dilDegisikligiUyarisiGoster = true
             }
         }
-        // Dil değişikliği için uyarı (alert)
-        .alert("settings.language_change.title", isPresented: $dilDegisikligiUyarisiGoster) {
-            Button("settings.language_change.restart_button", role: .destructive) {
-                // Kullanıcı onaylarsa yeni dili kalıcı olarak kaydet
-                appSettings.languageCode = seciliDilKodu
-                // ve yeniden başlatma bildirimini gönder
-                NotificationCenter.default.post(name: .appShouldRestart, object: nil)
+        .onChange(of: cloudKitToggleAcik) {
+            if cloudKitToggleAcik != appSettings.isCloudKitEnabled {
+                cloudKitDegisiklikUyarisiGoster = true
             }
-            Button("common.cancel", role: .cancel) {
-                // Kullanıcı vazgeçerse yerel state'i eski, kalıcı haline getir
-                self.seciliDilKodu = appSettings.languageCode
-            }
-        } message: {
-            Text("settings.language_change.message")
         }
     }
     
@@ -195,6 +243,6 @@ struct AyarlarView: View {
     }
 }
 
-// Uygulamanın yeniden başlatılması gerektiğini bildiren özel Notification.Name
-// Bu extension artık AyarlarView içinde tanımlı olduğu için başka bir yerde olmasına gerek yok.
-// Eğer başka bir dosyada da kullanılacaksa global bir yere taşınabilir.
+extension Notification.Name {
+    static let appShouldDeleteAllData = Notification.Name("appShouldDeleteAllData")
+}

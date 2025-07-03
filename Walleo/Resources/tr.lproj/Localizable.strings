@@ -346,3 +346,24 @@
 "notification.daily.body" = "Bugünkü gelir ve giderlerinizi Walleo'ya eklediniz mi? Finansal sağlığınızı takip etmek için en iyi zaman.";
 "notification.weekly.title" = "Haftalık Raporunuz Hazır!";
 "notification.weekly.body" = "Geçen haftanın finansal özetini şimdi keşfedin. Harcamalarınız ve gelirleriniz hakkında detaylı bilgi Raporlar ekranında sizi bekliyor.";
+
+// ... mevcut metinleriniz ...
+
+"settings.data.delete_all" = "Tüm Verileri Sil";
+"alert.delete_all_data.title" = "Tüm Veriler Silinsin mi?";
+"alert.delete_all_data.message" = "Bu işlem geri alınamaz. Cihazdaki ve iCloud'daki tüm hesaplarınız, işlemleriniz ve bütçeleriniz kalıcı olarak silinecektir.";
+"common.confirm_delete" = "Evet, Tümünü Sil";
+
+// ... mevcut metinleriniz ...
+
+"settings.data.icloud_backup" = "iCloud Yedekleme";
+"alert.icloud_toggle.title" = "Yedekleme Ayarı Değişiyor";
+"alert.icloud_toggle.message" = "Bu ayarı değiştirmek, uygulamanın yeniden başlatılmasını gerektirir. Devam edilsin mi?";
+"alert.language_change.confirm_button" = "Onayla";
+"alert.no_payment_account.title" = "Uygun Hesap Bulunamadı";
+"alert.no_payment_account.message" = "Bu ödemeyi gider olarak ekleyebilmek için öncelikle bir Cüzdan veya Kredi Kartı hesabı oluşturmanız gerekmektedir.";
+"account_selection.title" = "Ödeme Yapılacak Hesabı Seçin";
+
+
+"account_type.wallet" = "Cüzdan";
+"account_type.credit_card" = "Kredi Kartı";
