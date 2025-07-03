@@ -31,7 +31,7 @@ struct KrediDetayView: View {
                             .foregroundColor(taksit.odendiMi ? .green : .accentColor)
                             .onTapGesture {
                                 if !taksit.odendiMi {
-                                    viewModel.taksidiOde(taksit: taksit)
+                                    viewModel.taksidiOdemeyiBaslat(taksit: taksit)
                                 }
                             }
                         
@@ -56,7 +56,7 @@ struct KrediDetayView: View {
                     .swipeActions(edge: .leading, allowsFullSwipe: true) {
                         if !taksit.odendiMi {
                             Button {
-                                viewModel.taksidiOde(taksit: taksit)
+                                viewModel.taksidiOdemeyiBaslat(taksit: taksit)
                             } label: {
                                 Label(LocalizedStringKey("installment.paid.label"), systemImage: "checkmark")
                             }
@@ -69,22 +69,39 @@ struct KrediDetayView: View {
         .sheet(item: $duzenlenecekTaksitID) { taksitID in
             TaksitDuzenleView(hesap: viewModel.hesap, taksitID: taksitID)
         }
-        .alert(LocalizedStringKey("alert.add_as_expense.title"), isPresented: $viewModel.giderEkleUyarisiGoster, presenting: viewModel.islemOlusturulacakTaksit) { taksit in
-            Button(LocalizedStringKey("alert.add_as_expense.button_yes"), role: .destructive) { viewModel.taksidiOnaylaVeGiderEkle(onayla: true) }
-            Button(LocalizedStringKey("alert.add_as_expense.button_no")) { viewModel.taksidiOnaylaVeGiderEkle(onayla: false) }
+        // YENİ SHEET: Hesap seçim ekranını gösterir
+        .sheet(isPresented: $viewModel.hesapSecimSayfasiniGoster) {
+            HesapSecimView(odemeHesaplari: viewModel.odemeHesaplari) { secilenHesap in
+                viewModel.giderIsleminiOlustur(hesap: secilenHesap)
+            }
+            .presentationDetents([.medium])
+
+        }
+        // GÜNCELLENMİŞ ALERT: "Gider olarak ekle" uyarısı
+        .alert(LocalizedStringKey("alert.add_as_expense.title"), isPresented: $viewModel.giderEkleUyarisiGoster) {
+            Button(LocalizedStringKey("alert.add_as_expense.button_yes"), role: .destructive) {
+                viewModel.giderOlarakEklemeyiOnayla()
+            }
+            Button(LocalizedStringKey("alert.add_as_expense.button_no")) {
+                viewModel.sadeceOdenmisIsaretle()
+            }
             Button(LocalizedStringKey("common.cancel"), role: .cancel) { }
-        } message: { taksit in
+        } message: {
             let dilKodu = appSettings.languageCode
-            
             guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
                   let languageBundle = Bundle(path: path) else {
-                return Text("Error creating message.")
+                return Text("Error creating message.") // Hata durumu
             }
-            
             let formatString = languageBundle.localizedString(forKey: "alert.add_as_expense.message_format", value: "", table: nil)
-            let tutarString = formatCurrency(amount: taksit.taksitTutari, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
-
+            let tutarString = formatCurrency(amount: viewModel.islemYapilacakTaksit?.taksitTutari ?? 0, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
+            
             return Text(String(format: formatString, tutarString))
+        }
+        // YENİ ALERT: Uygun hesap bulunamadı uyarısı
+        .alert(LocalizedStringKey("alert.no_payment_account.title"), isPresented: $viewModel.uygunHesapYokUyarisiGoster) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(LocalizedStringKey("alert.no_payment_account.message"))
         }
         .navigationTitle(viewModel.hesap.isim)
         .navigationBarTitleDisplayMode(.inline)

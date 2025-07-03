@@ -9,51 +9,97 @@ class KrediDetayViewModel {
     var modelContext: ModelContext
     var hesap: Hesap
     
+    // --- YENİ STATE'LER ---
+    var odemeHesaplari: [Hesap] = []
+    var islemYapilacakTaksit: KrediTaksitDetayi?
+    
     var giderEkleUyarisiGoster = false
-    var islemOlusturulacakTaksit: KrediTaksitDetayi?
+    var uygunHesapYokUyarisiGoster = false
+    var hesapSecimSayfasiniGoster = false
     
     init(modelContext: ModelContext, hesap: Hesap) {
         self.modelContext = modelContext
         self.hesap = hesap
     }
     
-    func taksidiOde(taksit: KrediTaksitDetayi) {
-        self.islemOlusturulacakTaksit = taksit
+    // 1. Adım: Kullanıcı bir taksidi ödemek istediğinde bu fonksiyon tetiklenir.
+    func taksidiOdemeyiBaslat(taksit: KrediTaksitDetayi) {
+        self.islemYapilacakTaksit = taksit
         self.giderEkleUyarisiGoster = true
     }
     
-    func taksidiOnaylaVeGiderEkle(onayla: Bool) {
-        guard let taksit = islemOlusturulacakTaksit else { return }
+    // 2. Adım: Kullanıcı "Gider Olarak Ekle" uyarısında "Evet" derse bu fonksiyon çalışır.
+    func giderOlarakEklemeyiOnayla() {
+        fetchOdemeHesaplari()
         
+        if odemeHesaplari.isEmpty {
+            // Eğer uygun hesap yoksa, View'a uyarı göstermesi için sinyal gönder.
+            uygunHesapYokUyarisiGoster = true
+        } else {
+            // Eğer uygun hesap varsa, View'a seçim ekranını göstermesi için sinyal gönder.
+            hesapSecimSayfasiniGoster = true
+        }
+    }
+
+    // 3. Adım: Kullanıcı seçim ekranından bir hesap seçtiğinde bu fonksiyon çalışır.
+    func giderIsleminiOlustur(hesap: Hesap) {
+        guard let taksit = islemYapilacakTaksit else { return }
+        
+        taksidiOnayla(taksit: taksit, islemOlusturulsun: true, secilenHesap: hesap)
+    }
+    
+    // 4. Adım: Kullanıcı "Gider Olarak Ekleme" derse bu fonksiyon çalışır.
+    func sadeceOdenmisIsaretle() {
+        guard let taksit = islemYapilacakTaksit else { return }
+        
+        taksidiOnayla(taksit: taksit, islemOlusturulsun: false, secilenHesap: nil)
+    }
+    
+    // 5. Adım (Merkezi Mantık): Taksidi onaylayan ve isteğe bağlı olarak gider ekleyen ana fonksiyon.
+    private func taksidiOnayla(taksit: KrediTaksitDetayi, islemOlusturulsun: Bool, secilenHesap: Hesap?) {
         guard case .kredi(let cekilenTutar, let faizTipi, let faizOrani, let taksitSayisi, let ilkTaksitTarihi, var taksitler) = hesap.detay else { return }
         guard let index = taksitler.firstIndex(where: { $0.id == taksit.id }) else { return }
         
+        // Taksidin durumunu güncelle
         taksitler[index].odendiMi = true
         hesap.detay = .kredi(cekilenTutar: cekilenTutar, faizTipi: faizTipi, faizOrani: faizOrani, taksitSayisi: taksitSayisi, ilkTaksitTarihi: ilkTaksitTarihi, taksitler: taksitler)
 
-        if onayla {
+        var affectedAccountIDs: Set<UUID> = [hesap.id]
+
+        if islemOlusturulsun, let odemeHesabi = secilenHesap {
             guard let kategori = krediKategorisiniGetir() else {
-                print("KRİTİK HATA: 'Kredi Ödemesi' kategorisi veritabanında bulunamadı.")
+                Logger.log("KRİTİK HATA: 'Kredi Ödemesi' kategorisi veritabanında bulunamadı.", log: Logger.data, type: .fault)
                 return
             }
             
             let yeniIslem = Islem(
-                isim: hesap.isim,
+                isim: "\(hesap.isim) Taksit Ödemesi",
                 tutar: taksit.taksitTutari,
                 tarih: Date(),
                 tur: .gider,
                 kategori: kategori,
-                hesap: nil
+                hesap: odemeHesabi // SEÇİLEN HESABI EKLE
             )
             modelContext.insert(yeniIslem)
+            affectedAccountIDs.insert(odemeHesabi.id)
         }
         
-        // --- GÜNCELLEME: Akıllı Bildirim Gönderimi ---
-        // Taksit ödemesi kredi hesabının kendisini etkiler.
-        let userInfo: [String: Any] = ["affectedAccountIDs": [hesap.id]]
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: userInfo)
+        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["payload": TransactionChangePayload(type: .update, affectedAccountIDs: Array(affectedAccountIDs), affectedCategoryIDs: [])])
         
-        islemOlusturulacakTaksit = nil
+        islemYapilacakTaksit = nil
+    }
+    
+    // 6. Adım (Yardımcı Fonksiyonlar)
+    private func fetchOdemeHesaplari() {
+        let descriptor = FetchDescriptor<Hesap>()
+        let tumHesaplar = try? modelContext.fetch(descriptor)
+        
+        self.odemeHesaplari = tumHesaplar?.filter { hesap in
+            if case .kredi = hesap.detay {
+                return false // Kredi hesabıyla ödeme yapılamaz
+            }
+            return true
+        } ?? []
     }
     
     private func krediKategorisiniGetir() -> Kategori? {

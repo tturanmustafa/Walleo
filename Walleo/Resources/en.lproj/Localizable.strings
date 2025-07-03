@@ -347,3 +347,23 @@
 "notification.daily.body" = "Have you added today's income and expenses to Walleo? Now is the best time to track your financial health.";
 "notification.weekly.title" = "Your Weekly Report is Ready!";
 "notification.weekly.body" = "Discover last week's financial summary now. Detailed insights on your spending and income await you on the Reports screen.";
+
+// ... your existing strings ...
+
+"settings.data.delete_all" = "Delete All Data";
+"alert.delete_all_data.title" = "Delete All Data?";
+"alert.delete_all_data.message" = "This action cannot be undone. All of your accounts, transactions, and budgets on this device and in iCloud will be permanently deleted.";
+"common.confirm_delete" = "Yes, Delete All";
+
+// ... your existing strings ...
+
+"settings.data.icloud_backup" = "iCloud Backup";
+"alert.icloud_toggle.title" = "Changing Backup Setting";
+"alert.icloud_toggle.message" = "Changing this setting requires the application to restart. Do you want to continue?";
+"alert.language_change.confirm_button" = "Approve";
+"alert.no_payment_account.title" = "No Suitable Account Found";
+"alert.no_payment_account.message" = "To add this payment as an expense, you must first create a Wallet or Credit Card account.";
+"account_selection.title" = "Select Payment Account";
+
+"account_type.wallet" = "Wallet";
+"account_type.credit_card" = "Credit Card";
