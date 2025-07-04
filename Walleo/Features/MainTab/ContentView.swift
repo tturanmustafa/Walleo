@@ -7,9 +7,11 @@ struct ContentView: View {
     @State private var seciliSekme: Sekme = .panel
     @State private var yeniIslemEkleShowing = false
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var entitlementManager: EntitlementManager
     @EnvironmentObject var appSettings: AppSettings
     
     @State private var hesapYokUyarisiGoster = false
+    @State private var paywallGosteriliyor = false
     @Query private var kullanilabilirHesaplar: [Hesap]
     
     init() {
@@ -89,6 +91,22 @@ struct ContentView: View {
             Button(LocalizedStringKey("common.cancel"), role: .cancel) { }
         } message: {
             Text("alert.no_accounts.message")
+        }
+        .onAppear {
+            // Bu ekran her göründüğünde, kullanıcının abonelik durumunu güncelle.
+            entitlementManager.updateSubscriptionStatus()
+            
+            // Eğer kullanıcı premium değilse, paywall'u göster.
+            if !entitlementManager.hasPremiumAccess {
+                // Kısa bir gecikme, arayüzün oturmasına zaman tanır.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    paywallGosteriliyor = true
+                }
+            }
+        }
+        .sheet(isPresented: $paywallGosteriliyor) {
+            // Ödeme duvarı ekranını göster.
+            PaywallView()
         }
     }
 }
