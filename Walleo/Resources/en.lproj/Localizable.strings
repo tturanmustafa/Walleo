@@ -367,3 +367,19 @@
 
 "account_type.wallet" = "Wallet";
 "account_type.credit_card" = "Credit Card";
+
+// MARK: - Onboarding
+"onboarding.page1.title" = "Your Financial Universe, at a Tap";
+"onboarding.page1.subtitle" = "Take full control of your financial situation by managing your cash, credit cards, and loans all in one place.";
+"onboarding.page2.title" = "You Manage Your Budget, Not the Other Way Around";
+"onboarding.page2.subtitle" = "Create category-specific budgets and easily shape your spending towards your goals with visual progress tracking.";
+"onboarding.page3.title" = "Let Your Data Speak, See Your Future";
+"onboarding.page3.subtitle" = "Make smarter financial decisions by turning your past expenses into meaningful reports and comparative analyses.";
+"onboarding.page4.title" = "The Financial Assistant That Thinks of You";
+"onboarding.page4.subtitle" = "Rest easy with smart notifications that proactively remind you of everything from due dates to budget overruns.";
+"onboarding.page5.title" = "Entirely Yours, Uniquely You";
+"onboarding.page5.subtitle" = "Perfectly tailor the app to your lifestyle and preferences with themes, languages, currencies, and custom categories.";
+"onboarding.page6.title" = "Your Data is Your Fortress";
+"onboarding.page6.subtitle" = "The control of your data is entirely in your hands, from secure iCloud synchronization to data export and permanent deletion options.";
+"onboarding.signin.apple" = "Sign in with Apple";
+"onboarding.privacy_policy" = "By continuing, you agree to our Privacy Policy and Terms of Use.";

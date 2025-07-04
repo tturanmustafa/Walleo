@@ -48,6 +48,8 @@ class AppSettings: ObservableObject {
     @AppStorage("language") var languageCode: String = "tr"
     @AppStorage("currencyCode") var currencyCode: String = Currency.TRY.rawValue
     @AppStorage("isCloudKitEnabled") var isCloudKitEnabled: Bool = true
+    @AppStorage("hasCompletedOnboarding") var hasCompletedOnboarding: Bool = false
+
 
 
     var colorScheme: ColorScheme? {

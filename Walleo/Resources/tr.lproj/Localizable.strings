@@ -367,3 +367,19 @@
 
 "account_type.wallet" = "Cüzdan";
 "account_type.credit_card" = "Kredi Kartı";
+
+// MARK: - Onboarding
+"onboarding.page1.title" = "Finansal Evreniniz, Tek Dokunuşta";
+"onboarding.page1.subtitle" = "Nakit, kredi kartı ve kredi borçlarınızı tek bir yerden yöneterek finansal durumunuzun tam kontrolünü elinize alın.";
+"onboarding.page2.title" = "Bütçeniz Sizi Değil, Siz Bütçenizi Yönetin";
+"onboarding.page2.subtitle" = "Kategorilere özel bütçeler oluşturun ve görsel ilerleme takibiyle harcamalarınızı hedefleriniz doğrultusunda kolayca şekillendirin.";
+"onboarding.page3.title" = "Verileriniz Konuşsun, Geleceğinizi Görün";
+"onboarding.page3.subtitle" = "Geçmiş harcamalarınızı anlamlı raporlara ve karşılaştırmalı analizlere dönüştürerek daha akıllı finansal kararlar verin.";
+"onboarding.page4.title" = "Sizi Düşünen Finansal Asistan";
+"onboarding.page4.subtitle" = "Fatura tarihlerinden bütçe aşımlarına kadar her önemli detayı size proaktif olarak hatırlatan akıllı bildirimlerle içiniz rahat olsun.";
+"onboarding.page5.title" = "Tamamen Sizin, Tamamen Size Özel";
+"onboarding.page5.subtitle" = "Tema, dil, para birimi ve özel kategorilerle uygulamayı kendi yaşam tarzınıza ve tercihlerinize göre mükemmel bir şekilde uyarlayın.";
+"onboarding.page6.title" = "Verileriniz Sizin Kalenizdir";
+"onboarding.page6.subtitle" = "Güvenli iCloud senkronizasyonundan veri ihracına ve kalıcı silme seçeneğine kadar verilerinizin kontrolü tamamen sizin elinizde.";
+"onboarding.signin.apple" = "Apple ile Giriş Yap";
+"onboarding.privacy_policy" = "Devam ederek Gizlilik Politikamızı ve Kullanım Şartlarımızı kabul etmiş olursunuz.";
