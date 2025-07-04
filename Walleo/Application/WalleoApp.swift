@@ -1,29 +1,36 @@
 import SwiftUI
 import SwiftData
+import RevenueCat // RevenueCat'i import ediyoruz
 
 @main
 struct WalleoApp: App {
+    // Abonelik durumunu uygulama genelinde yönetecek olan nesne
+    @StateObject private var entitlementManager = EntitlementManager()
+    
     @StateObject private var appSettings = AppSettings()
     let modelContainer: ModelContainer
     @State private var viewID = UUID()
 
     init() {
-        // Kullanıcının iCloud tercihini AppSettings'ten oku.
+        // --- RevenueCat SDK'sını BAŞLATMA ---
+        // DİKKAT: "REVENUECAT_API_KEY" yazan yere kendi RevenueCat Public API Key'inizi yapıştırın.
+        Purchases.configure(withAPIKey: "appl_DgbseCsjdacHFLvdfRHlhFqrXMI")
+        
+        // Geliştirme aşamasında logları görmek için
+        Purchases.logLevel = .debug
+        
+        // --- ModelContainer oluşturma kodunuz aynı kalıyor ---
         let isCloudKitEnabled = AppSettings().isCloudKitEnabled
         Logger.log("Uygulama başlatılıyor. iCloud Yedekleme durumu: \(isCloudKitEnabled ? "AÇIK" : "KAPALI")", log: Logger.service, type: .default)
 
         do {
-            // Tercihe göre ModelConfiguration oluştur.
             let config: ModelConfiguration
-            
             if isCloudKitEnabled {
-                // Eğer AÇIK ise, CloudKit konfigürasyonu ile oluştur.
                 config = ModelConfiguration(
                     "WalleoDB",
                     cloudKitDatabase: .private("iCloud.com.mustafamt.walleo")
                 )
             } else {
-                // Eğer KAPALI ise, SADECE LOKAL konfigürasyon ile oluştur.
                 config = ModelConfiguration("WalleoDB")
             }
 
@@ -39,32 +46,30 @@ struct WalleoApp: App {
 
     var body: some Scene {
         WindowGroup {
-        if appSettings.hasCompletedOnboarding {
-            ContentView()
-                .environmentObject(appSettings)
-                .preferredColorScheme(appSettings.colorScheme)
-                .environment(\.locale, Locale(identifier: appSettings.languageCode))
-                .id(viewID)
-                .task {
-                    // .task içeriği aynı
-                }
-                .onReceive(NotificationCenter.default.publisher(for: .appShouldRestart)) { _ in
-                    // Hem dil hem de iCloud ayarı değiştiğinde bu bildirim tetiklenir.
-                    // viewID değişir ve tüm arayüz yeniden çizilir.
-                    // WalleoApp yeniden başlatıldığı için, yeni init metodu
-                    // güncel iCloud ayarına göre doğru ModelContainer'ı oluşturur.
-                    viewID = UUID()
-                }
-                .onReceive(NotificationCenter.default.publisher(for: .appShouldDeleteAllData)) { _ in
-                    deleteAllData()
-                }
-        } else {
-            OnboardingView()
-                .environmentObject(appSettings)
+            // Onboarding tamamlanıp tamamlanmadığını kontrol et
+            if appSettings.hasCompletedOnboarding {
+                ContentView()
+                    .environmentObject(appSettings)
+                    // Abonelik yöneticisini tüm alt görünümlerin erişebilmesi için ortama ekliyoruz
+                    .environmentObject(entitlementManager)
+                    .preferredColorScheme(appSettings.colorScheme)
+                    .environment(\.locale, Locale(identifier: appSettings.languageCode))
+                    .id(viewID)
+                    .onReceive(NotificationCenter.default.publisher(for: .appShouldRestart)) { _ in
+                        viewID = UUID()
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: .appShouldDeleteAllData)) { _ in
+                        deleteAllData()
+                    }
+            } else {
+                OnboardingView()
+                    .environmentObject(appSettings)
+                    // Abonelik yöneticisini Onboarding ekranına da gönderiyoruz
+                    .environmentObject(entitlementManager)
+            }
         }
+        .modelContainer(modelContainer)
     }
-    .modelContainer(modelContainer)
-}
 
     
 
