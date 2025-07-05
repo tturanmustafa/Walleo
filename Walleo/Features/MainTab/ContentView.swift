@@ -13,6 +13,8 @@ struct ContentView: View {
     @State private var hesapYokUyarisiGoster = false
     @State private var paywallGosteriliyor = false
     @Query private var kullanilabilirHesaplar: [Hesap]
+    @State private var showPaywall = false                               // ⬅️ EKLENDİ
+
     
     init() {
         let predicate = #Predicate<Hesap> { hesap in
@@ -93,20 +95,16 @@ struct ContentView: View {
             Text("alert.no_accounts.message")
         }
         .onAppear {
-            // Bu ekran her göründüğünde, kullanıcının abonelik durumunu güncelle.
-            entitlementManager.updateSubscriptionStatus()
-            
-            // Eğer kullanıcı premium değilse, paywall'u göster.
-            if !entitlementManager.hasPremiumAccess {
-                // Kısa bir gecikme, arayüzün oturmasına zaman tanır.
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            Task {
+                await entitlementManager.refresh()
+                if entitlementManager.isLoaded && !entitlementManager.hasPremiumAccess {
                     paywallGosteriliyor = true
                 }
             }
         }
-        .sheet(isPresented: $paywallGosteriliyor) {
-            // Ödeme duvarı ekranını göster.
-            PaywallView()
+        .sheet(isPresented: $showPaywall) { PaywallView() }
+        .onChange(of: entitlementManager.hasPremiumAccess) { yeniDurum in
+            if yeniDurum { showPaywall = false }
         }
     }
 }

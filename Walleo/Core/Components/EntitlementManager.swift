@@ -2,31 +2,49 @@
 //  EntitlementManager.swift
 //  Walleo
 //
-//  Created by Mustafa Turan on 4.07.2025.
+//  6 Temmuz 2025 – Delegate düzeltmesi
 //
-
 
 import Foundation
 import RevenueCat
 import SwiftUI
 
 @MainActor
-class EntitlementManager: ObservableObject {
-    // Uygulama genelinde kullanıcının premium erişimi olup olmadığını bu değişken tutacak.
-    @Published var hasPremiumAccess: Bool = false
+final class EntitlementManager: NSObject, ObservableObject, PurchasesDelegate {
 
-    init() {
-        // Manager oluşturulduğunda kullanıcının mevcut durumunu kontrol et.
-        updateSubscriptionStatus()
+    private let entitlementID = "Premium"
+
+    @Published private(set) var hasPremiumAccess = false
+    @Published private(set) var isLoaded = false
+
+    override init() {
+        super.init()
+        Purchases.shared.delegate = self
+        Task { await refresh() }
     }
-    
-    func updateSubscriptionStatus() {
-        Purchases.shared.getCustomerInfo { (customerInfo, error) in
-            // customerInfo'dan "Walleo Premium" entitlement'ının aktif olup olmadığını kontrol et.
-            // "Walleo Premium" adı, App Store Connect'te oluşturduğunuz Grubun adıyla aynı olmalı.
-            self.hasPremiumAccess = customerInfo?.entitlements["Walleo Premium"]?.isActive == true
-            
-            Logger.log("Abonelik durumu güncellendi. Premium Erişim: \(self.hasPremiumAccess)", log: Logger.service)
+
+    func refresh() async {
+        do {
+            let customerInfo = try await Purchases.shared.customerInfo()
+            hasPremiumAccess = customerInfo
+                .entitlements[entitlementID]?
+                .isActive == true
+        } catch {
+            Logger.log("Entitlement sorgusunda hata: \(error)",
+                       log: Logger.service, type: .error)
+        }
+        isLoaded = true
+    }
+
+    // 🔁 Delegate metodu – canlı dinleme
+    nonisolated func purchases(_ purchases: Purchases,
+                               receivedUpdated customerInfo: CustomerInfo) {
+        Task { @MainActor in
+            let active = customerInfo.entitlements[entitlementID]?.isActive == true
+            if self.hasPremiumAccess != active {
+                self.hasPremiumAccess = active
+                Logger.log("Delegate: Premium = \(active)", log: Logger.service)
+            }
         }
     }
 }

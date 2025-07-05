@@ -24,6 +24,7 @@ struct AyarIkonu: View {
 
 struct AyarlarView: View {
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var entitlementManager: EntitlementManager   // EKLE
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
     @State private var seciliDilKodu: String
@@ -35,6 +36,7 @@ struct AyarlarView: View {
     
     @State private var isExporting = false
     @State private var shareableURL: ShareableURL?
+    @State private var showPaywall = false                               // ⬅️ EKLENDİ
     
     init() {
         _seciliDilKodu = State(initialValue: AppSettings().languageCode)
@@ -102,9 +104,14 @@ struct AyarlarView: View {
                     AyarIkonu(iconName: "bell.badge.fill", color: .red)
                     Text(LocalizedStringKey("settings.notifications"))
                 }
+                .disabled(!entitlementManager.hasPremiumAccess)          // ⛔️ tıklama
+                .opacity(entitlementManager.hasPremiumAccess ? 1.0 : 0.4)
+                .onTapGesture {
+                    guard !entitlementManager.hasPremiumAccess else { return }
+                    showPaywall = true                                   // Paywall tetikle
+                }
                 .padding(.vertical, 4)
             }
-            
             Section(LocalizedStringKey("settings.section.data_management")) {
                 
                 // YENİ KOD: iCloud Yedekleme Toggle'ı
@@ -165,6 +172,11 @@ struct AyarlarView: View {
         .sheet(item: $shareableURL) { wrapper in
             ActivityView(activityItems: [wrapper.url])
         }
+        .sheet(isPresented: $showPaywall) { PaywallView() }
+        .onChange(of: entitlementManager.hasPremiumAccess) { yeniDurum in
+            if yeniDurum { showPaywall = false }
+        }
+
         // GÜNCELLENMİŞ ALERT: Dil değişikliği için
         .alert("settings.language_change.title", isPresented: $dilDegisikligiUyarisiGoster) {
             Button("alert.language_change.confirm_button") { // "Onayla"
