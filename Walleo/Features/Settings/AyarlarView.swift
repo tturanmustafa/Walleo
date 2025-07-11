@@ -16,6 +16,8 @@ struct AyarlarView: View {
     @State private var dilDegisikligiUyarisiGoster = false
     @State private var cloudKitDegisiklikUyarisiGoster = false
     @State private var showingDeleteConfirmationAlert = false
+    @State private var showFamilyActiveWarning = false
+    @State private var showCloudKitFamilyWarning = false
 
     @State private var isExporting = false
     @State private var shareableURL: ShareableURL?
@@ -38,7 +40,8 @@ struct AyarlarView: View {
                 shareableURL: $shareableURL,
                 showingDeleteConfirmationAlert: $showingDeleteConfirmationAlert,
                 showPaywall: $showPaywall,
-                aileHesabiYonetimGoster: $aileHesabiYonetimGoster
+                aileHesabiYonetimGoster: $aileHesabiYonetimGoster,
+                showCloudKitFamilyWarning: $showCloudKitFamilyWarning
             )
             
             BilgiBolumu()
@@ -74,7 +77,13 @@ struct AyarlarView: View {
         }
         .onChange(of: cloudKitToggleAcik) { _, _ in
             if cloudKitToggleAcik != appSettings.isCloudKitEnabled {
-                cloudKitDegisiklikUyarisiGoster = true
+                // Aile hesabı kontrolü
+                if !cloudKitToggleAcik && AileHesabiService.shared.mevcutAileHesabi != nil {
+                    showCloudKitFamilyWarning = true
+                    cloudKitToggleAcik = true // Toggle'ı geri aç
+                } else {
+                    cloudKitDegisiklikUyarisiGoster = true
+                }
             }
         }
         // ALERTS
@@ -102,12 +111,27 @@ struct AyarlarView: View {
         }
         .alert(LocalizedStringKey("alert.delete_all_data.title"), isPresented: $showingDeleteConfirmationAlert) {
             Button("common.confirm_delete", role: .destructive) {
-                NotificationCenter.default.post(name: .appShouldDeleteAllData, object: nil)
-                dismiss()
+                // Aile hesabı kontrolü
+                if AileHesabiService.shared.mevcutAileHesabi != nil {
+                    showFamilyActiveWarning = true
+                } else {
+                    NotificationCenter.default.post(name: .appShouldDeleteAllData, object: nil)
+                    dismiss()
+                }
             }
             Button("common.cancel", role: .cancel) {}
         } message: {
             Text(LocalizedStringKey("alert.delete_all_data.message"))
+        }
+        .alert("family.error.cannot_delete_with_family", isPresented: $showFamilyActiveWarning) {
+            Button("common.ok", role: .cancel) {}
+        } message: {
+            Text("family.error.must_leave_family_first")
+        }
+        .alert("family.error.cannot_disable_icloud", isPresented: $showCloudKitFamilyWarning) {
+            Button("common.ok", role: .cancel) {}
+        } message: {
+            Text("family.error.icloud_required_for_family")
         }
     }
 }
@@ -205,6 +229,7 @@ struct VeriYonetimiBolumu: View {
     @Binding var showingDeleteConfirmationAlert: Bool
     @Binding var showPaywall: Bool
     @Binding var aileHesabiYonetimGoster: Bool
+    @Binding var showCloudKitFamilyWarning: Bool
     
     @State private var aileHesabindanAyrilUyarisi = false
     @StateObject private var aileService = AileHesabiService.shared
@@ -213,13 +238,9 @@ struct VeriYonetimiBolumu: View {
     var body: some View {
         Section(LocalizedStringKey("settings.section.data_management")) {
             
-            // Aile Hesabı Yönetimi
+            // Aile Hesabı Yönetimi - Premium kontrolü kaldırıldı
             Button(action: {
-                if entitlementManager.hasPremiumAccess {
-                    aileHesabiYonetimGoster = true
-                } else {
-                    showPaywall = true
-                }
+                aileHesabiYonetimGoster = true
             }) {
                 HStack {
                     AyarIkonu(iconName: "person.3.fill", color: .indigo)
@@ -251,23 +272,8 @@ struct VeriYonetimiBolumu: View {
                 }
             }
             .foregroundColor(.primary)
-            .opacity(entitlementManager.hasPremiumAccess ? 1.0 : 0.4)
             .padding(.vertical, 4)
-            
-            // Aile Hesabından Ayrıl (Sadece üye ise göster)
-            if let aileHesabi = aileService.mevcutAileHesabi,
-               aileHesabi.adminID != cloudKit.currentUserID {
-                Button(role: .destructive, action: { aileHesabindanAyrilUyarisi = true }) {
-                    HStack {
-                        AyarIkonu(iconName: "arrow.right.square.fill", color: .red)
-                        Text(LocalizedStringKey("settings.family.leave"))
-                    }
-                }
-                .padding(.vertical, 4)
-            }
-            
-            Divider()
-            
+                        
             // iCloud Toggle
             HStack {
                 AyarIkonu(iconName: "icloud.fill", color: .cyan)
@@ -302,20 +308,6 @@ struct VeriYonetimiBolumu: View {
                 }
             }
             .padding(.vertical, 4)
-        }
-        .alert("family.leave.title", isPresented: $aileHesabindanAyrilUyarisi) {
-            Button("common.cancel", role: .cancel) { }
-            Button("family.leave.confirm", role: .destructive) {
-                Task {
-                    do {
-                        try await aileService.aileHesabindanAyril()
-                    } catch {
-                        // Hata göster
-                    }
-                }
-            }
-        } message: {
-            Text("family.leave.message")
         }
         .onAppear {
             aileService.configure(with: modelContext)
@@ -409,4 +401,3 @@ extension Notification.Name {
     static let appShouldDeleteAllData = Notification.Name("appShouldDeleteAllData")
     static let showPaywallRequested = Notification.Name("showPaywallRequested")
 }
-

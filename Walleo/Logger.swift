@@ -34,3 +34,16 @@ struct Logger {
         os_log("%{public}s", log: log, type: type, message)
     }
 }
+
+extension Logger {
+    static func logFamilyAction(_ action: String, details: [String: Any]? = nil, type: OSLogType = .info) {
+        var message = "FAMILY_ACTION: \(action)"
+        
+        if let details = details {
+            let detailsString = details.map { "\($0.key)=\($0.value)" }.joined(separator: ", ")
+            message += " | \(detailsString)"
+        }
+        
+        log(message, log: service, type: type)
+    }
+}

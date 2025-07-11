@@ -17,7 +17,21 @@ class AileHesabiService: ObservableObject {
     private let cloudKit = CloudKitManager.shared
     private let maxUyeSayisi = 4
     
-    private init() {}
+    private init() {
+        // iCloud durum değişikliklerini dinle
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(iCloudStatusChanged),
+            name: .iCloudStatusChanged,
+            object: nil
+        )
+    }
+    
+    @objc private func iCloudStatusChanged() {
+        Task {
+            await kontrolEt()
+        }
+    }
     
     func configure(with modelContext: ModelContext) {
         self.modelContext = modelContext
@@ -32,8 +46,13 @@ class AileHesabiService: ObservableObject {
         guard let modelContext = modelContext else { throw AileHataları.contextYok }
         guard let currentUserID = cloudKit.currentUserID else { throw AileHataları.kullaniciIDYok }
         
+        // iCloud kontrolü
+        guard cloudKit.isAvailable else { throw AileHataları.iCloudGerekli }
+        
         isProcessing = true
         currentOperation = "family.creating"
+        
+        Logger.logFamilyAction("CREATE_FAMILY_START", details: ["name": isim])
         
         do {
             // Mevcut aile hesabı kontrolü
@@ -58,9 +77,12 @@ class AileHesabiService: ObservableObject {
             try modelContext.save()
             mevcutAileHesabi = yeniAileHesabi
             
+            Logger.logFamilyAction("CREATE_FAMILY_SUCCESS", details: ["familyID": yeniAileHesabi.id.uuidString])
+            
         } catch {
             isProcessing = false
             currentOperation = nil
+            Logger.logFamilyAction("CREATE_FAMILY_ERROR", details: ["error": error.localizedDescription], type: .error)
             throw error
         }
         
@@ -68,12 +90,72 @@ class AileHesabiService: ObservableObject {
         currentOperation = nil
     }
     
+    func aileHesabiniSil() async throws {
+        guard let modelContext = modelContext else { throw AileHataları.contextYok }
+        guard let aileHesabi = mevcutAileHesabi else { throw AileHataları.aileHesabiYok }
+        guard let currentUserID = cloudKit.currentUserID else { throw AileHataları.kullaniciIDYok }
+        
+        // Admin kontrolü
+        guard aileHesabi.adminID == currentUserID else {
+            throw AileHataları.yetkiYok
+        }
+        
+        isProcessing = true
+        currentOperation = "family.deleting"
+        
+        do {
+            Logger.logFamilyAction("DELETE_FAMILY_START", details: ["familyID": aileHesabi.id.uuidString, "memberCount": aileHesabi.uyeler?.count ?? 0])
+            
+            // Tüm üyeleri sil
+            if let uyeler = aileHesabi.uyeler {
+                for uye in uyeler {
+                    modelContext.delete(uye)
+                }
+            }
+            
+            // Aile hesabını sil
+            modelContext.delete(aileHesabi)
+            
+            try modelContext.save()
+            mevcutAileHesabi = nil
+            
+            Logger.logFamilyAction("DELETE_FAMILY_SUCCESS")
+            
+        } catch {
+            isProcessing = false
+            currentOperation = nil
+            Logger.logFamilyAction("DELETE_FAMILY_ERROR", details: ["error": error.localizedDescription], type: .error)
+            throw error
+        }
+        
+        isProcessing = false
+        currentOperation = nil
+    }
+    
+    func aileHesabiniDuzenle(yeniIsim: String) async throws {
+        guard let modelContext = modelContext else { throw AileHataları.contextYok }
+        guard let aileHesabi = mevcutAileHesabi else { throw AileHataları.aileHesabiYok }
+        guard let currentUserID = cloudKit.currentUserID else { throw AileHataları.kullaniciIDYok }
+        
+        // Admin kontrolü
+        guard aileHesabi.adminID == currentUserID else {
+            throw AileHataları.yetkiYok
+        }
+        
+        aileHesabi.isim = yeniIsim
+        aileHesabi.guncellemeTarihi = Date()
+        
+        try modelContext.save()
+        
+        Logger.logFamilyAction("EDIT_FAMILY_NAME", details: ["newName": yeniIsim])
+    }
+    
     func uyeEkle(email: String, gorunumIsmi: String) async throws {
         guard let aileHesabi = mevcutAileHesabi else { throw AileHataları.aileHesabiYok }
         guard let currentUserID = cloudKit.currentUserID else { throw AileHataları.kullaniciIDYok }
         guard let modelContext = modelContext else { throw AileHataları.contextYok }
         
-        Logger.log("Üye ekleme başlatıldı - Email: \(email), Görünüm İsmi: \(gorunumIsmi)", log: Logger.service)
+        Logger.logFamilyAction("ADD_MEMBER_START", details: ["email": email, "displayName": gorunumIsmi])
         
         // Admin kontrolü
         guard aileHesabi.adminID == currentUserID else {
@@ -88,9 +170,9 @@ class AileHesabiService: ObservableObject {
         
         // Email'in zaten davet edilip edilmediğini kontrol et
         let existingInvite = adminDavetleri.first { davet in
-            (davet.davetEdilenID == "pending_\(email)" ||
-             davet.davetEdilenID.contains(email)) &&
-            davet.durum == .beklemede
+            let emailMatch = davet.davetEdilenID == "pending_\(email)" ||
+                           davet.gorunumIsmi?.lowercased() == email.lowercased()
+            return emailMatch && davet.durum == .beklemede
         }
         
         if existingInvite != nil {
@@ -119,10 +201,10 @@ class AileHesabiService: ObservableObject {
                 let userInfo = try await cloudKit.discoverUser(email: email)
                 userID = userInfo.userID
                 displayName = userInfo.displayName
-                Logger.log("Kullanıcı bulundu - ID: \(userID), İsim: \(displayName)", log: Logger.service)
+                Logger.logFamilyAction("USER_DISCOVERED", details: ["userID": userID, "displayName": displayName])
             } catch {
                 // User discovery başarısız olursa, geçici bir ID oluştur
-                Logger.log("User discovery failed: \(error), creating placeholder invite", log: Logger.service, type: .error)
+                Logger.logFamilyAction("USER_DISCOVERY_FAILED", details: ["email": email, "error": error.localizedDescription], type: .error)
                 userID = "pending_\(email)"
                 displayName = gorunumIsmi
             }
@@ -133,13 +215,14 @@ class AileHesabiService: ObservableObject {
                 aileHesabiIsmi: aileHesabi.isim,
                 davetEdenID: currentUserID,
                 davetEdenIsim: "Admin",
-                davetEdilenID: userID
+                davetEdilenID: userID,
+                gorunumIsmi: displayName
             )
             
             modelContext.insert(davet)
             try modelContext.save()
             
-            Logger.log("Member invited successfully - Davet ID: \(davet.id)", log: Logger.service)
+            Logger.logFamilyAction("INVITE_SENT_SUCCESS", details: ["inviteID": davet.id.uuidString])
             
             // Davet listesini güncelle
             await kontrolEt()
@@ -147,7 +230,7 @@ class AileHesabiService: ObservableObject {
         } catch {
             isProcessing = false
             currentOperation = nil
-            Logger.log("Üye ekleme hatası: \(error)", log: Logger.service, type: .error)
+            Logger.logFamilyAction("ADD_MEMBER_ERROR", details: ["error": error.localizedDescription], type: .error)
             throw error
         }
         
@@ -155,39 +238,7 @@ class AileHesabiService: ObservableObject {
         currentOperation = nil
     }
     
-    func aileHesabindanAyril() async throws {
-        guard let modelContext = modelContext else { throw AileHataları.contextYok }
-        guard let aileHesabi = mevcutAileHesabi else { throw AileHataları.aileHesabiYok }
-        guard let currentUserID = cloudKit.currentUserID else { throw AileHataları.kullaniciIDYok }
-        
-        isProcessing = true
-        currentOperation = "family.leaving"
-        
-        do {
-            // Üyeyi bul ve sil
-            if let uye = aileHesabi.uyeler?.first(where: { $0.appleID == currentUserID }) {
-                modelContext.delete(uye)
-            }
-            
-            // Eğer admin ayrılıyorsa ve başka üye yoksa, aile hesabını sil
-            if aileHesabi.adminID == currentUserID && (aileHesabi.uyeler?.count ?? 0) <= 1 {
-                modelContext.delete(aileHesabi)
-            }
-            
-            mevcutAileHesabi = nil
-            try modelContext.save()
-            
-        } catch {
-            isProcessing = false
-            currentOperation = nil
-            throw error
-        }
-        
-        isProcessing = false
-        currentOperation = nil
-    }
-    
-    func daveteYanitVer(davet: AileDavet, kabul: Bool) async throws {
+    func daveteYanitVer(davet: AileDavet, kabul: Bool, veriSecenegi: VeriSecenegi = .temizBaslangic) async throws {
         guard let modelContext = modelContext else { throw AileHataları.contextYok }
         guard let currentUserID = cloudKit.currentUserID else { throw AileHataları.kullaniciIDYok }
         
@@ -202,6 +253,9 @@ class AileHesabiService: ObservableObject {
         
         isProcessing = true
         currentOperation = kabul ? "family.joining" : "family.declining"
+        
+        Logger.logFamilyAction(kabul ? "ACCEPT_INVITE_START" : "DECLINE_INVITE",
+                              details: ["inviteID": davet.id.uuidString, "dataOption": veriSecenegi])
         
         do {
             if kabul {
@@ -219,18 +273,29 @@ class AileHesabiService: ObservableObject {
                 )
                 
                 if let aileHesabi = try modelContext.fetch(descriptor).first {
+                    // Veri işlemleri
+                    if veriSecenegi == .temizBaslangic {
+                        // Mevcut verileri sil
+                        try await clearUserData()
+                    } else {
+                        // Mevcut verileri aileye dahil et
+                        try await mergeDataToFamily(aileHesabi: aileHesabi)
+                    }
+                    
                     // Yeni üye ekle
                     let yeniUye = AileUyesi(
                         appleID: currentUserID,
-                        gorunumIsmi: davet.davetEdilenID.hasPrefix("pending_") ?
-                                     String(davet.davetEdilenID.dropFirst(8)) :
-                                     "Üye",
+                        gorunumIsmi: davet.gorunumIsmi ?? "Üye",
                         durum: .aktif
                     )
                     yeniUye.aileHesabi = aileHesabi
                     modelContext.insert(yeniUye)
                     
                     mevcutAileHesabi = aileHesabi
+                    
+                    // Diğer bekleyen davetleri otomatik reddet
+                    await otomatikDavetReddi(kullaniciID: currentUserID)
+                    
                 } else {
                     throw AileHataları.aileHesabiYok
                 }
@@ -240,12 +305,15 @@ class AileHesabiService: ObservableObject {
             davet.durum = kabul ? .kabul : .red
             try modelContext.save()
             
+            Logger.logFamilyAction(kabul ? "ACCEPT_INVITE_SUCCESS" : "DECLINE_INVITE_SUCCESS")
+            
             // Listeleri güncelle
             await kontrolEt()
             
         } catch {
             isProcessing = false
             currentOperation = nil
+            Logger.logFamilyAction("INVITE_RESPONSE_ERROR", details: ["error": error.localizedDescription], type: .error)
             throw error
         }
         
@@ -253,63 +321,50 @@ class AileHesabiService: ObservableObject {
         currentOperation = nil
     }
     
-    // MARK: - Davet Kodu İşlemleri
-    
-    func davetKoduOlustur(kod: String) async throws {
+    func aileHesabindanAyril() async throws {
+        guard let modelContext = modelContext else { throw AileHataları.contextYok }
         guard let aileHesabi = mevcutAileHesabi else { throw AileHataları.aileHesabiYok }
         guard let currentUserID = cloudKit.currentUserID else { throw AileHataları.kullaniciIDYok }
-        guard let modelContext = modelContext else { throw AileHataları.contextYok }
         
-        // Admin kontrolü
-        guard aileHesabi.adminID == currentUserID else {
-            throw AileHataları.yetkiYok
+        isProcessing = true
+        currentOperation = "family.leaving"
+        
+        Logger.logFamilyAction("LEAVE_FAMILY_START", details: ["familyID": aileHesabi.id.uuidString])
+        
+        do {
+            // Üyeyi bul ve sil
+            if let uye = aileHesabi.uyeler?.first(where: { $0.appleID == currentUserID }) {
+                modelContext.delete(uye)
+            }
+            
+            // Eğer admin ayrılıyorsa ve başka üye yoksa, aile hesabını sil
+            if aileHesabi.adminID == currentUserID && (aileHesabi.uyeler?.count ?? 0) <= 1 {
+                modelContext.delete(aileHesabi)
+            }
+            
+            mevcutAileHesabi = nil
+            try modelContext.save()
+            
+            Logger.logFamilyAction("LEAVE_FAMILY_SUCCESS")
+            
+        } catch {
+            isProcessing = false
+            currentOperation = nil
+            Logger.logFamilyAction("LEAVE_FAMILY_ERROR", details: ["error": error.localizedDescription], type: .error)
+            throw error
         }
         
-        // Davet oluştur (davet kodu ile)
-        let davet = AileDavet(
-            aileHesabiID: aileHesabi.id,
-            aileHesabiIsmi: aileHesabi.isim,
-            davetEdenID: currentUserID,
-            davetEdenIsim: "Admin",
-            davetEdilenID: "DAVET_KODU_\(kod)" // Özel prefix ile işaretle
-        )
-        
-        modelContext.insert(davet)
-        try modelContext.save()
+        isProcessing = false
+        currentOperation = nil
     }
     
-    func davetKoduylaKatil(kod: String) async throws {
-        guard let modelContext = modelContext else { throw AileHataları.contextYok }
-        guard let currentUserID = cloudKit.currentUserID else { throw AileHataları.kullaniciIDYok }
-        
-        // Davet kodunu bul
-        let davetKoduID = "DAVET_KODU_\(kod)"
-        let descriptor = FetchDescriptor<AileDavet>(
-            predicate: #Predicate { davet in
-                davet.davetEdilenID == davetKoduID &&
-                davet.durumRawValue == "beklemede"
-            }
-        )
-        
-        guard let davet = try modelContext.fetch(descriptor).first else {
-            throw AileHataları.gecersizDavetKodu
-        }
-        
-        // Geçerlilik kontrolü
-        guard davet.gecerlilikTarihi > Date() else {
-            throw AileHataları.davetSuresiDolmus
-        }
-        
-        // Daveti kabul et
-        davet.davetEdilenID = currentUserID
-        try await daveteYanitVer(davet: davet, kabul: true)
-    }
+    // MARK: - Yardımcı Fonksiyonlar
     
     private func kontrolEt() async {
         guard let modelContext = modelContext,
               let currentUserID = cloudKit.currentUserID else { return }
         
-        Logger.log("Aile hesabı kontrolü başlatıldı - User ID: \(currentUserID)", log: Logger.service)
+        Logger.logFamilyAction("CHECK_FAMILY_STATUS")
         
         // Mevcut aile hesabını kontrol et
         let descriptor = FetchDescriptor<AileHesabi>()
@@ -320,30 +375,22 @@ class AileHesabiService: ObservableObject {
             }
             
             if let aile = mevcutAileHesabi {
-                Logger.log("Aile hesabı bulundu: \(aile.isim) - Üye sayısı: \(aile.uyeler?.count ?? 0)", log: Logger.service)
+                Logger.logFamilyAction("FAMILY_FOUND", details: ["familyID": aile.id.uuidString, "memberCount": aile.uyeler?.count ?? 0])
             }
         }
         
-        // Bekleyen davetleri kontrol et
-        let currentUserIDForPredicate = currentUserID
-        
-        // İki tür davet kontrol et:
-        // 1. Bu kullanıcıya gönderilen davetler
-        // 2. Bu kullanıcının admin olduğu ailenin pending davetleri
-        
+        // Admin davetlerini kontrol et
         if let aileHesabi = mevcutAileHesabi, aileHesabi.adminID == currentUserID {
-            // Admin ise, kendi ailesinin tüm davetlerini göster
             let aileID = aileHesabi.id
             let adminDavetDescriptor = FetchDescriptor<AileDavet>(
                 predicate: #Predicate { davet in
-                    davet.aileHesabiID == aileID &&
-                    davet.durumRawValue == "beklemede"
+                    davet.aileHesabiID == aileID
                 }
             )
             
             if let davetler = try? modelContext.fetch(adminDavetDescriptor) {
                 adminDavetleri = davetler.filter { $0.gecerlilikTarihi > Date() }
-                Logger.log("Admin için bekleyen davet sayısı: \(adminDavetleri.count)", log: Logger.service)
+                Logger.logFamilyAction("ADMIN_INVITES_LOADED", details: ["count": adminDavetleri.count])
             }
         } else {
             adminDavetleri = []
@@ -352,18 +399,69 @@ class AileHesabiService: ObservableObject {
         // Normal kullanıcı davetleri
         let davetDescriptor = FetchDescriptor<AileDavet>(
             predicate: #Predicate { davet in
-                davet.davetEdilenID == currentUserIDForPredicate &&
+                davet.davetEdilenID == currentUserID &&
                 davet.durumRawValue == "beklemede"
             }
         )
         
         if let davetler = try? modelContext.fetch(davetDescriptor) {
             bekleyenDavetler = davetler.filter { $0.gecerlilikTarihi > Date() }
-            Logger.log("Kullanıcı için bekleyen davet sayısı: \(bekleyenDavetler.count)", log: Logger.service)
+            Logger.logFamilyAction("USER_INVITES_LOADED", details: ["count": bekleyenDavetler.count])
         }
+    }
+    
+    private func otomatikDavetReddi(kullaniciID: String) async {
+        guard let modelContext = modelContext else { return }
+        
+        let bekleyenDavetler = bekleyenDavetler.filter {
+            $0.davetEdilenID == kullaniciID &&
+            $0.durum == .beklemede
+        }
+        
+        Logger.logFamilyAction("AUTO_DECLINE_INVITES", details: ["count": bekleyenDavetler.count])
+        
+        for davet in bekleyenDavetler {
+            davet.durum = .otoRed
+        }
+        
+        try? modelContext.save()
+    }
+    
+    private func clearUserData() async throws {
+        guard let modelContext = modelContext else { return }
+        
+        Logger.logFamilyAction("CLEAR_USER_DATA_START")
+        
+        // Tüm kullanıcı verilerini sil
+        try modelContext.delete(model: Islem.self)
+        try modelContext.delete(model: Butce.self)
+        try modelContext.delete(model: Hesap.self)
+        try modelContext.delete(model: Bildirim.self)
+        try modelContext.delete(model: TransactionMemory.self)
+        
+        // Sadece kullanıcı oluşturduğu kategorileri sil
+        let userCreatedCategoriesPredicate = #Predicate<Kategori> { $0.localizationKey == nil }
+        try modelContext.delete(model: Kategori.self, where: userCreatedCategoriesPredicate)
+        
+        try modelContext.save()
+        
+        Logger.logFamilyAction("CLEAR_USER_DATA_SUCCESS")
+    }
+    
+    private func mergeDataToFamily(aileHesabi: AileHesabi) async throws {
+        // Mevcut verileri aileye dahil etme mantığı
+        // Bu özellik phase 2'de implemente edilebilir
+        Logger.logFamilyAction("MERGE_DATA_TO_FAMILY", details: ["familyID": aileHesabi.id.uuidString])
     }
 }
 
+// MARK: - Veri Seçeneği
+enum VeriSecenegi {
+    case temizBaslangic
+    case verileriDahilEt
+}
+
+// MARK: - Hatalar
 enum AileHataları: LocalizedError {
     case contextYok
     case kullaniciIDYok
@@ -376,6 +474,7 @@ enum AileHataları: LocalizedError {
     case zaatenDavetEdilmis
     case zaatenUye
     case davetGecersiz
+    case iCloudGerekli
     
     var errorDescription: String? {
         switch self {
@@ -401,7 +500,8 @@ enum AileHataları: LocalizedError {
             return NSLocalizedString("family.error.already_member", comment: "")
         case .davetGecersiz:
             return NSLocalizedString("family.error.invite_invalid", comment: "")
+        case .iCloudGerekli:
+            return NSLocalizedString("family.error.icloud_required", comment: "")
         }
     }
 }
-

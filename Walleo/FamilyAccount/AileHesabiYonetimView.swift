@@ -9,7 +9,12 @@ struct AileHesabiYonetimView: View {
     
     @StateObject private var service = AileHesabiService.shared
     
-    @State private var aileIsmiGoster = false
+    @State private var selectedTab = 0 // 0: Gruplarım, 1: Davetlerim
+    @State private var showCreateFamily = false
+    @State private var showEditFamily = false
+    @State private var showDeleteWarning = false
+    @State private var showMemberWarning = false
+    @State private var showPaywall = false
     @State private var uyeEkleGoster = false
     @State private var silinecekUye: AileUyesi?
     @State private var silinecekDavet: AileDavet?
@@ -20,34 +25,138 @@ struct AileHesabiYonetimView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                if service.mevcutAileHesabi != nil {
-                    aileHesabiDetayView
-                } else if !service.bekleyenDavetler.isEmpty {
-                    davetlerView
-                } else {
-                    bosEkranView
+            VStack(spacing: 0) {
+                // Tab Seçici
+                Picker("", selection: $selectedTab) {
+                    Text("family.groups.my_groups").tag(0)
+                    Text("family.invites.my_invites").tag(1)
                 }
+                .pickerStyle(.segmented)
+                .padding()
                 
-                if service.isProcessing {
-                    ProgressOverlayView(message: service.currentOperation ?? "family.processing")
+                ZStack {
+                    if selectedTab == 0 {
+                        gruplarimView
+                    } else {
+                        davetlerimView
+                    }
+                    
+                    if service.isProcessing {
+                        ProgressOverlayView(message: service.currentOperation ?? "family.processing")
+                    }
                 }
             }
             .navigationTitle("family.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("common.done") { dismiss() }
+                    if service.mevcutAileHesabi != nil &&
+                       service.mevcutAileHesabi?.adminID == getCurrentUserID() {
+                        Menu {
+                            Button(action: { showEditFamily = true }) {
+                                Label("common.edit", systemImage: "pencil")
+                            }
+                            Button(role: .destructive, action: {
+                                checkAndShowDeleteWarning()
+                            }) {
+                                Label("common.delete", systemImage: "trash")
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis.circle")
+                        }
+                    }
                 }
+            }
+            .sheet(isPresented: $showCreateFamily) {
+                if entitlementManager.hasPremiumAccess {
+                    AileHesabiOlusturView()
+                } else {
+                    PaywallView()
+                }
+            }
+            .sheet(isPresented: $showEditFamily) {
+                if let aile = service.mevcutAileHesabi {
+                    AileHesabiDuzenleView(aileHesabi: aile)
+                }
+            }
+            .sheet(isPresented: $uyeEkleGoster) {
+                UyeEkleView()
+            }
+            .sheet(item: $davetDetayGoster) { davet in
+                DavetDetayView(davet: davet)
             }
             .onAppear {
                 service.configure(with: modelContext)
             }
+            // Alerts
+            .alert("family.delete.title", isPresented: $showDeleteWarning) {
+                Button("common.cancel", role: .cancel) { }
+                Button("common.delete", role: .destructive) {
+                    deleteFamily()
+                }
+            } message: {
+                Text("family.delete.message.no_members")
+            }
+            .alert("family.delete.title", isPresented: $showMemberWarning) {
+                Button("common.cancel", role: .cancel) { }
+                Button("common.delete", role: .destructive) {
+                    deleteFamily()
+                }
+            } message: {
+                if let count = service.mevcutAileHesabi?.uyeler?.count {
+                    Text("family.warning.delete_with_members \(count)")
+                }
+            }
+            .alert("family.member.remove.title", isPresented: $uyeSilmeUyarisi) {
+                Button("common.cancel", role: .cancel) { }
+                Button("common.remove", role: .destructive) {
+                    if let uye = silinecekUye {
+                        uyeyiSil(uye)
+                    }
+                }
+            } message: {
+                Text("family.member.remove.message")
+            }
+            .alert("family.invite.cancel.title", isPresented: $davetSilmeUyarisi) {
+                Button("common.cancel", role: .cancel) { }
+                Button("family.invite.cancel.confirm", role: .destructive) {
+                    if let davet = silinecekDavet {
+                        davetiIptalEt(davet)
+                    }
+                }
+            } message: {
+                Text("family.invite.cancel.message")
+            }
+            .alert("family.leave.title", isPresented: $ayrilmaUyarisiGoster) {
+                Button("common.cancel", role: .cancel) { }
+                Button("family.leave.confirm", role: .destructive) {
+                    Task {
+                        do {
+                            try await service.aileHesabindanAyril()
+                            dismiss()
+                        } catch {
+                            Logger.logFamilyAction("LEAVE_FAMILY_ERROR", details: ["error": error.localizedDescription], type: .error)
+                        }
+                    }
+                }
+            } message: {
+                Text("family.leave.message")
+            }
         }
     }
     
-    // MARK: - Alt Görünümler
+    // MARK: - Gruplarım View
+    private var gruplarimView: some View {
+        Group {
+            if service.mevcutAileHesabi != nil {
+                aileHesabiDetayView
+            } else {
+                bosEkranView
+            }
+        }
+    }
     
+    // MARK: - Boş Ekran View
     private var bosEkranView: some View {
         VStack(spacing: 30) {
             Image(systemName: "person.3.fill")
@@ -64,7 +173,14 @@ struct AileHesabiYonetimView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
             
-            Button(action: { aileIsmiGoster = true }) {
+            Button(action: {
+                if CloudKitManager.shared.isAvailable {
+                    showCreateFamily = true
+                } else {
+                    // iCloud uyarısı göster
+                    showICloudAlert()
+                }
+            }) {
                 Label("family.create", systemImage: "plus.circle.fill")
                     .font(.headline)
                     .padding()
@@ -75,11 +191,9 @@ struct AileHesabiYonetimView: View {
             }
             .padding(.horizontal)
         }
-        .sheet(isPresented: $aileIsmiGoster) {
-            AileHesabiOlusturView()
-        }
     }
     
+    // MARK: - Aile Hesabı Detay View
     private var aileHesabiDetayView: some View {
         List {
             if let aileHesabi = service.mevcutAileHesabi {
@@ -131,29 +245,7 @@ struct AileHesabiYonetimView: View {
                     }
                 }
                 
-                // Bekleyen Davetler (Admin görüşü)
-                if aileHesabi.adminID == getCurrentUserID() {
-                    let aileID = aileHesabi.id
-                    let bekleyenDavetler = service.adminDavetleri.filter { davet in
-                        davet.aileHesabiID == aileID && davet.durum == .beklemede
-                    }
-                    
-                    if !bekleyenDavetler.isEmpty {
-                        Section("family.pending_invites") {
-                            ForEach(bekleyenDavetler) { davet in
-                                DavetSatiriAdmin(
-                                    davet: davet,
-                                    onCancel: {
-                                        silinecekDavet = davet
-                                        davetSilmeUyarisi = true
-                                    }
-                                )
-                            }
-                        }
-                    }
-                }
-                
-                // Aile Hesabından Ayrıl
+                // Aile Hesabından Ayrıl (sadece üye ise)
                 if aileHesabi.adminID != getCurrentUserID() {
                     Section {
                         Button(role: .destructive, action: { ayrilmaUyarisiGoster = true }) {
@@ -163,63 +255,81 @@ struct AileHesabiYonetimView: View {
                 }
             }
         }
-        .sheet(isPresented: $uyeEkleGoster) {
-            UyeEkleView()
-        }
-        .alert("family.member.remove.title", isPresented: $uyeSilmeUyarisi) {
-            Button("common.cancel", role: .cancel) { }
-            Button("common.remove", role: .destructive) {
-                if let uye = silinecekUye {
-                    uyeyiSil(uye)
-                }
-            }
-        } message: {
-            Text("family.member.remove.message")
-        }
-        .alert("family.invite.cancel.title", isPresented: $davetSilmeUyarisi) {
-            Button("common.cancel", role: .cancel) { }
-            Button("family.invite.cancel.confirm", role: .destructive) {
-                if let davet = silinecekDavet {
-                    davetiIptalEt(davet)
-                }
-            }
-        } message: {
-            Text("family.invite.cancel.message")
-        }
-        .alert("family.leave.title", isPresented: $ayrilmaUyarisiGoster) {
-            Button("common.cancel", role: .cancel) { }
-            Button("family.leave.confirm", role: .destructive) {
-                Task {
-                    do {
-                        try await service.aileHesabindanAyril()
-                        dismiss()
-                    } catch {
-                        // Hata göster
-                    }
-                }
-            }
-        } message: {
-            Text("family.leave.message")
-        }
     }
     
-    private var davetlerView: some View {
+    // MARK: - Davetlerim View
+    private var davetlerimView: some View {
         List {
-            Section("family.invitations") {
-                ForEach(service.bekleyenDavetler) { davet in
-                    DavetSatiriView(davet: davet) {
-                        davetDetayGoster = davet
+            // Davet Ettiklerim (Admin için)
+            if let aileHesabi = service.mevcutAileHesabi,
+               aileHesabi.adminID == getCurrentUserID() {
+                let gonderilenDavetler = service.adminDavetleri.filter {
+                    $0.durum == .beklemede || $0.durum == .red
+                }
+                
+                if !gonderilenDavetler.isEmpty {
+                    Section("family.invites.sent") {
+                        ForEach(gonderilenDavetler) { davet in
+                            GonderilenDavetSatiri(
+                                davet: davet,
+                                onCancel: {
+                                    if davet.durum == .beklemede {
+                                        silinecekDavet = davet
+                                        davetSilmeUyarisi = true
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
             }
-        }
-        .sheet(item: $davetDetayGoster) { davet in
-            DavetDetayView(davet: davet)
+            
+            // Davet Aldıklarım
+            if !service.bekleyenDavetler.isEmpty {
+                Section("family.invites.received") {
+                    ForEach(service.bekleyenDavetler) { davet in
+                        AlinanDavetSatiri(davet: davet) {
+                            // Aktif aile kontrolü
+                            if service.mevcutAileHesabi != nil {
+                                showActiveFamilyWarning()
+                            } else {
+                                davetDetayGoster = davet
+                            }
+                        }
+                    }
+                }
+            }
+            
+            if service.adminDavetleri.isEmpty && service.bekleyenDavetler.isEmpty {
+                ContentUnavailableView("family.invites.no_invites",
+                                     systemImage: "envelope.open",
+                                     description: Text("family.invites.no_invites.desc"))
+            }
         }
     }
     
+    // MARK: - Helper Functions
     private func getCurrentUserID() -> String {
         return CloudKitManager.shared.currentUserID ?? ""
+    }
+    
+    private func checkAndShowDeleteWarning() {
+        if let memberCount = service.mevcutAileHesabi?.uyeler?.count, memberCount > 1 {
+            showMemberWarning = true
+        } else {
+            showDeleteWarning = true
+        }
+    }
+    
+    private func deleteFamily() {
+        Task {
+            do {
+                try await service.aileHesabiniSil()
+                dismiss()
+            } catch {
+                Logger.logFamilyAction("DELETE_FAMILY_ERROR", details: ["error": error.localizedDescription], type: .error)
+            }
+        }
     }
     
     private func uyeyiSil(_ uye: AileUyesi) {
@@ -227,10 +337,10 @@ struct AileHesabiYonetimView: View {
             do {
                 modelContext.delete(uye)
                 try modelContext.save()
-                // Service'i yeniden configure et
                 service.configure(with: modelContext)
+                Logger.logFamilyAction("MEMBER_REMOVED", details: ["memberID": uye.id.uuidString])
             } catch {
-                Logger.log("Üye silme hatası: \(error)", log: Logger.service, type: .error)
+                Logger.logFamilyAction("REMOVE_MEMBER_ERROR", details: ["error": error.localizedDescription], type: .error)
             }
         }
     }
@@ -240,12 +350,20 @@ struct AileHesabiYonetimView: View {
             do {
                 davet.durum = .red
                 try modelContext.save()
-                // Service'i yeniden configure et
                 service.configure(with: modelContext)
+                Logger.logFamilyAction("INVITE_CANCELLED", details: ["inviteID": davet.id.uuidString])
             } catch {
-                Logger.log("Davet iptal hatası: \(error)", log: Logger.service, type: .error)
+                Logger.logFamilyAction("CANCEL_INVITE_ERROR", details: ["error": error.localizedDescription], type: .error)
             }
         }
+    }
+    
+    private func showICloudAlert() {
+        // iCloud uyarısı göster
+    }
+    
+    private func showActiveFamilyWarning() {
+        // Aktif aile uyarısı göster
     }
 }
 
@@ -293,75 +411,6 @@ struct UyeSatiriView: View {
     }
 }
 
-struct DavetSatiriAdmin: View {
-    let davet: AileDavet
-    let onCancel: () -> Void
-    
-    var body: some View {
-        HStack {
-            Image(systemName: "clock.fill")
-                .font(.title2)
-                .foregroundColor(.orange)
-            
-            VStack(alignment: .leading) {
-                if davet.davetEdilenID.hasPrefix("pending_") {
-                    Text(String(davet.davetEdilenID.dropFirst(8)))
-                        .font(.body)
-                    Text("Email ile davet edildi")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                } else {
-                    Text("Davet Gönderildi")
-                        .font(.body)
-                    Text("Kullanıcı ID: \(String(davet.davetEdilenID.prefix(8)))")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                
-                HStack {
-                    Text("Kalan süre: ")
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                    Text(davet.gecerlilikTarihi, style: .relative)
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
-                }
-            }
-            
-            Spacer()
-            
-            Button(action: onCancel) {
-                Text("İptal")
-                    .font(.caption)
-                    .foregroundColor(.red)
-            }
-        }
-        .padding(.vertical, 4)
-    }
-}
-
-struct DavetSatiriView: View {
-    let davet: AileDavet
-    let onTap: () -> Void
-    
-    var body: some View {
-        Button(action: onTap) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(davet.aileHesabiIsmi)
-                    .font(.headline)
-                Text(String(format: NSLocalizedString("family.invited_by", comment: ""),
-                           davet.davetEdenIsim))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                Text(davet.olusturmaTarihi, style: .relative)
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.vertical, 4)
-        }
-        .buttonStyle(.plain)
-    }
-}
 
 struct ProgressOverlayView: View {
     let message: String
@@ -388,3 +437,74 @@ struct ProgressOverlayView: View {
     }
 }
 
+struct GonderilenDavetSatiri: View {
+    let davet: AileDavet
+    let onCancel: () -> Void
+    
+    var body: some View {
+        HStack {
+            Image(systemName: davet.durum == .beklemede ? "clock.fill" : "xmark.circle.fill")
+                .font(.title2)
+                .foregroundColor(davet.durum == .beklemede ? .orange : .red)
+            
+            VStack(alignment: .leading) {
+                if davet.davetEdilenID.hasPrefix("pending_") {
+                    Text(String(davet.davetEdilenID.dropFirst(8)))
+                        .font(.body)
+                } else {
+                    Text(davet.gorunumIsmi ?? "Davet")
+                        .font(.body)
+                }
+                
+                HStack {
+                    Text("family.invite.status.\(davet.durum.rawValue)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    if davet.durum == .beklemede {
+                        Text("•")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Text(davet.gecerlilikTarihi, style: .relative)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            
+            Spacer()
+            
+            if davet.durum == .beklemede {
+                Button(action: onCancel) {
+                    Text("common.cancel")
+                        .font(.caption)
+                        .foregroundColor(.red)
+                }
+            }
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+struct AlinanDavetSatiri: View {
+    let davet: AileDavet
+    let onTap: () -> Void
+    
+    var body: some View {
+        Button(action: onTap) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(davet.aileHesabiIsmi)
+                    .font(.headline)
+                Text(String(format: NSLocalizedString("family.invited_by", comment: ""),
+                           davet.davetEdenIsim))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                Text(davet.olusturmaTarihi, style: .relative)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.vertical, 4)
+        }
+        .buttonStyle(.plain)
+    }
+}

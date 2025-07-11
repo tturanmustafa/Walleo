@@ -12,6 +12,10 @@ class CloudKitManager: ObservableObject {
     
     @Published var isAvailable = false
     @Published var currentUserID: String?
+    @Published var iCloudStatus: CKAccountStatus = .couldNotDetermine
+    @Published var hasICloudIssue = false
+    
+    private var statusCheckTimer: Timer?
     
     private init() {
         self.privateDB = container.privateCloudDatabase
@@ -19,6 +23,7 @@ class CloudKitManager: ObservableObject {
         
         Task {
             await checkAvailability()
+            startContinuousCheck()
         }
     }
     
@@ -27,15 +32,37 @@ class CloudKitManager: ObservableObject {
     func checkAvailability() async {
         do {
             let status = try await container.accountStatus()
+            iCloudStatus = status
             isAvailable = status == .available
             
             if isAvailable {
                 let userID = try await container.userRecordID()
                 currentUserID = userID.recordName
+                hasICloudIssue = false
+            } else {
+                currentUserID = nil
+                // Aile hesabı varsa sorun var
+                if AileHesabiService.shared.mevcutAileHesabi != nil {
+                    hasICloudIssue = true
+                }
             }
+            
+            // Durum değişikliği bildirimi
+            NotificationCenter.default.post(name: .iCloudStatusChanged, object: nil)
+            
         } catch {
             Logger.log("CloudKit availability check failed: \(error)", log: Logger.service, type: .error)
             isAvailable = false
+            iCloudStatus = .couldNotDetermine
+        }
+    }
+    
+    private func startContinuousCheck() {
+        statusCheckTimer?.invalidate()
+        statusCheckTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
+            Task {
+                await self.checkAvailability()
+            }
         }
     }
     
@@ -125,3 +152,6 @@ class CloudKitManager: ObservableObject {
     }
 }
 
+extension Notification.Name {
+    static let iCloudStatusChanged = Notification.Name("iCloudStatusChanged")
+}
