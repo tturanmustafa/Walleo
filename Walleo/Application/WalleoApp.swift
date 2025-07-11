@@ -1,25 +1,23 @@
 import SwiftUI
 import SwiftData
-import RevenueCat // RevenueCat'i import ediyoruz
+import RevenueCat
+import CloudKit
 
 @main
 struct WalleoApp: App {
-    // Abonelik durumunu uygulama genelinde yönetecek olan nesne
     @StateObject private var entitlementManager = EntitlementManager()
-    
     @StateObject private var appSettings = AppSettings()
+    @StateObject private var cloudKitManager = CloudKitManager.shared
+    
     let modelContainer: ModelContainer
     @State private var viewID = UUID()
 
     init() {
-        // --- RevenueCat SDK'sını BAŞLATMA ---
-        // DİKKAT: "REVENUECAT_API_KEY" yazan yere kendi RevenueCat Public API Key'inizi yapıştırın.
+        // RevenueCat SDK'sını başlat
         Purchases.configure(withAPIKey: "appl_DgbseCsjdacHFLvdfRHlhFqrXMI")
-        
-        // Geliştirme aşamasında logları görmek için
         Purchases.logLevel = .debug
         
-        // --- ModelContainer oluşturma kodunuz aynı kalıyor ---
+        // ModelContainer oluştur
         let isCloudKitEnabled = AppSettings().isCloudKitEnabled
         Logger.log("Uygulama başlatılıyor. iCloud Yedekleme durumu: \(isCloudKitEnabled ? "AÇIK" : "KAPALI")", log: Logger.service, type: .default)
 
@@ -35,7 +33,9 @@ struct WalleoApp: App {
             }
 
             modelContainer = try ModelContainer(
-                for: Hesap.self, Islem.self, Kategori.self, Butce.self, Bildirim.self, TransactionMemory.self, AppMetadata.self,
+                for: Hesap.self, Islem.self, Kategori.self, Butce.self,
+                     Bildirim.self, TransactionMemory.self, AppMetadata.self,
+                     AileHesabi.self, AileUyesi.self, AileDavet.self,
                 configurations: config
             )
         } catch {
@@ -46,12 +46,11 @@ struct WalleoApp: App {
 
     var body: some Scene {
         WindowGroup {
-            // Onboarding tamamlanıp tamamlanmadığını kontrol et
             if appSettings.hasCompletedOnboarding {
                 ContentView()
                     .environmentObject(appSettings)
-                    // Abonelik yöneticisini tüm alt görünümlerin erişebilmesi için ortama ekliyoruz
                     .environmentObject(entitlementManager)
+                    .environmentObject(cloudKitManager)
                     .preferredColorScheme(appSettings.colorScheme)
                     .environment(\.locale, Locale(identifier: appSettings.languageCode))
                     .id(viewID)
@@ -61,17 +60,21 @@ struct WalleoApp: App {
                     .onReceive(NotificationCenter.default.publisher(for: .appShouldDeleteAllData)) { _ in
                         deleteAllData()
                     }
+                    .task {
+                        // CloudKit durumunu kontrol et
+                        await cloudKitManager.checkAvailability()
+                        // CloudKit permissions'ları request et
+                        await requestCloudKitPermissions()
+                    }
             } else {
                 OnboardingView()
                     .environmentObject(appSettings)
-                    // Abonelik yöneticisini Onboarding ekranına da gönderiyoruz
                     .environmentObject(entitlementManager)
+                    .environmentObject(cloudKitManager)
             }
         }
         .modelContainer(modelContainer)
     }
-
-    
 
     private func deleteAllData() {
         Logger.log("Tüm verileri silme işlemi başlatıldı.", log: Logger.service, type: .info)
@@ -79,12 +82,11 @@ struct WalleoApp: App {
             await MainActor.run {
                 let context = modelContainer.mainContext
                 do {
-                    // Tüm modelleri tek tek ve toplu olarak sil.
+                    // Tüm modelleri sil
                     try context.delete(model: Islem.self)
                     try context.delete(model: Butce.self)
                     
-                    // --- GÜNCELLEME BURADA ---
-                    // Sadece kullanıcının oluşturduğu kategorileri (çeviri anahtarı olmayanları) sil.
+                    // Sadece kullanıcı oluşturduğu kategorileri sil
                     let userCreatedCategoriesPredicate = #Predicate<Kategori> { $0.localizationKey == nil }
                     try context.delete(model: Kategori.self, where: userCreatedCategoriesPredicate)
                     
@@ -93,18 +95,36 @@ struct WalleoApp: App {
                     try context.delete(model: TransactionMemory.self)
                     try context.delete(model: AppMetadata.self)
                     
-                    // Değişiklikleri kaydet.
+                    // Aile hesabı modellerini de sil
+                    try context.delete(model: AileDavet.self)
+                    try context.delete(model: AileUyesi.self)
+                    try context.delete(model: AileHesabi.self)
+                    
                     try context.save()
                     
-                    Logger.log("Tüm kullanıcı verileri başarıyla silindi. Varsayılan kategoriler korundu. Arayüz yeniden başlatılıyor.", log: Logger.service, type: .info)
-                    
-                    // Arayüzü sıfırdan başlatmak için viewID'yi değiştir.
+                    Logger.log("Tüm kullanıcı verileri başarıyla silindi.", log: Logger.service, type: .info)
                     viewID = UUID()
                     
                 } catch {
-                    Logger.log("Tüm veriler silinirken KRİTİK bir hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .fault)
+                    Logger.log("Tüm veriler silinirken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .fault)
                 }
             }
         }
     }
+    
+    private func requestCloudKitPermissions() async {
+        let container = CKContainer(identifier: "iCloud.com.mustafamt.walleo")
+        
+        do {
+            let status = try await container.accountStatus()
+            if status == .available {
+                // Request permission for user discovery
+                let _ = try await container.requestApplicationPermission(.userDiscoverability)
+                Logger.log("CloudKit permissions requested successfully", log: Logger.service)
+            }
+        } catch {
+            Logger.log("CloudKit permission request failed: \(error)", log: Logger.service, type: .error)
+        }
+    }
 }
+

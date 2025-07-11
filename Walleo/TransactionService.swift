@@ -18,31 +18,42 @@ class TransactionService {
     /// Tek bir işlemi veritabanından siler ve ilgili ekranların güncellenmesi için bildirim yayınlar.
     /// Bu fonksiyon ana iş parçacığında çalışır ve tekil, hızlı silmeler için uygundur.
     func deleteTransaction(_ islem: Islem, in context: ModelContext) {
-        var affectedAccountIDs: Set<UUID> = []
-        if let hesapID = islem.hesap?.id {
-            affectedAccountIDs.insert(hesapID)
+        do {
+            var affectedAccountIDs: Set<UUID> = []
+            var affectedCategoryIDs: Set<UUID> = []
+            
+            // İlişkili ID'leri güvenli şekilde topla
+            if let hesapID = islem.hesap?.id {
+                affectedAccountIDs.insert(hesapID)
+            }
+            if let kategoriID = islem.kategori?.id {
+                affectedCategoryIDs.insert(kategoriID)
+            }
+            
+            // İşlemi sil
+            context.delete(islem)
+            
+            // Kaydet
+            try context.save()
+            
+            // Bildirim gönder
+            let payload = TransactionChangePayload(
+                type: .delete,
+                affectedAccountIDs: Array(affectedAccountIDs),
+                affectedCategoryIDs: Array(affectedCategoryIDs)
+            )
+            
+            NotificationCenter.default.post(
+                name: .transactionsDidChange,
+                object: nil,
+                userInfo: ["payload": payload]
+            )
+            
+            Logger.log("İşlem başarıyla silindi: \(islem.id)", log: Logger.service)
+            
+        } catch {
+            Logger.log("İşlem silme hatası: \(error)", log: Logger.service, type: .error)
         }
-        
-        var affectedCategoryIDs: Set<UUID> = []
-        if let kategoriID = islem.kategori?.id {
-            affectedCategoryIDs.insert(kategoriID)
-        }
-        
-        context.delete(islem)
-        try? context.save() // Değişikliğin kaydedildiğinden emin oluyoruz.
-
-        let payload = TransactionChangePayload(
-            type: .delete,
-            affectedAccountIDs: Array(affectedAccountIDs),
-            affectedCategoryIDs: Array(affectedCategoryIDs)
-        )
-        
-        NotificationCenter.default.post(
-            name: .transactionsDidChange,
-            object: nil,
-            userInfo: ["payload": payload]
-        )
-        Logger.log("TransactionService: Tek bir işlem silindi ve bildirim gönderildi. ID: \(islem.id)", log: Logger.service)
     }
     
     /// Bir işlemin ait olduğu seriyi arka planda, UI'ı bloklamadan siler ve işlem bittiğinde bildirim yayınlar.
@@ -50,19 +61,17 @@ class TransactionService {
     func deleteSeriesInBackground(tekrarID: UUID, from modelContainer: ModelContainer) async {
         guard tekrarID != UUID() else { return }
         
-        // Arka planda çalışacak yeni bir context oluşturuyoruz.
-        let backgroundContext = ModelContext(modelContainer)
-        let predicate = #Predicate<Islem> { $0.tekrarID == tekrarID }
-        let descriptor = FetchDescriptor(predicate: predicate)
-        
         do {
-            // 1. Adım: Silinecek tüm işlemleri arka planda bul.
-            let itemsToDelete = try backgroundContext.fetch(descriptor)
+            let backgroundContext = ModelContext(modelContainer)
+            backgroundContext.autosaveEnabled = false // Otomatik kaydetmeyi kapat
             
-            // Eğer silinecek bir şey yoksa işlemi sonlandır.
+            let predicate = #Predicate<Islem> { $0.tekrarID == tekrarID }
+            let descriptor = FetchDescriptor(predicate: predicate)
+            
+            let itemsToDelete = try backgroundContext.fetch(descriptor)
             guard !itemsToDelete.isEmpty else { return }
             
-            // 2. Adım: Payload için etkilenecek tüm hesap ve kategori ID'lerini topla.
+            // Batch silme için ID'leri topla
             var affectedAccountIDs: Set<UUID> = []
             var affectedCategoryIDs: Set<UUID> = []
             
@@ -73,15 +82,15 @@ class TransactionService {
                 if let kategoriID = item.kategori?.id {
                     affectedCategoryIDs.insert(kategoriID)
                 }
+                backgroundContext.delete(item)
             }
             
-            // 3. Adım: Bulunan işlemleri sil ve veritabanını kaydet.
-            try backgroundContext.delete(model: Islem.self, where: predicate)
+            // Toplu kaydet
             try backgroundContext.save()
             
-            Logger.log("TransactionService: Seri arka planda silindi. TekrarID: \(tekrarID)", log: Logger.service, type: .info)
+            Logger.log("Seri silindi: \(itemsToDelete.count) işlem", log: Logger.service)
             
-            // 4. Adım: Ana iş parçacığına geri dönüp bildirimi gönder.
+            // Ana thread'de bildirim gönder
             let payload = TransactionChangePayload(
                 type: .delete,
                 affectedAccountIDs: Array(affectedAccountIDs),
@@ -95,7 +104,7 @@ class TransactionService {
             )
             
         } catch {
-            Logger.log("TransactionService: Seri arka planda silinirken hata oluştu: \(error.localizedDescription)", log: Logger.service, type: .error)
+            Logger.log("Seri silme hatası: \(error)", log: Logger.service, type: .error)
         }
     }
 }
