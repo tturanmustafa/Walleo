@@ -57,36 +57,69 @@ class KrediDetayViewModel {
     
     // 5. Adım (Merkezi Mantık): Taksidi onaylayan ve isteğe bağlı olarak gider ekleyen ana fonksiyon.
     private func taksidiOnayla(taksit: KrediTaksitDetayi, islemOlusturulsun: Bool, secilenHesap: Hesap?) {
-        guard case .kredi(let cekilenTutar, let faizTipi, let faizOrani, let taksitSayisi, let ilkTaksitTarihi, var taksitler) = hesap.detay else { return }
-        guard let index = taksitler.firstIndex(where: { $0.id == taksit.id }) else { return }
-        
-        // Taksidin durumunu güncelle
-        taksitler[index].odendiMi = true
-        hesap.detay = .kredi(cekilenTutar: cekilenTutar, faizTipi: faizTipi, faizOrani: faizOrani, taksitSayisi: taksitSayisi, ilkTaksitTarihi: ilkTaksitTarihi, taksitler: taksitler)
-
-        var affectedAccountIDs: Set<UUID> = [hesap.id]
-
-        if islemOlusturulsun, let odemeHesabi = secilenHesap {
-            guard let kategori = krediKategorisiniGetir() else {
-                Logger.log("KRİTİK HATA: 'Kredi Ödemesi' kategorisi veritabanında bulunamadı.", log: Logger.data, type: .fault)
+        do {
+            guard case .kredi(let cekilenTutar, let faizTipi, let faizOrani, let taksitSayisi, let ilkTaksitTarihi, var taksitler) = hesap.detay else {
+                Logger.log("Kredi detayı alınamadı", log: Logger.service, type: .error)
                 return
             }
             
-            let yeniIslem = Islem(
-                isim: "\(hesap.isim) Taksit Ödemesi",
-                tutar: taksit.taksitTutari,
-                tarih: Date(),
-                tur: .gider,
-                kategori: kategori,
-                hesap: odemeHesabi // SEÇİLEN HESABI EKLE
+            guard let index = taksitler.firstIndex(where: { $0.id == taksit.id }) else {
+                Logger.log("Taksit bulunamadı", log: Logger.service, type: .error)
+                return
+            }
+            
+            // Taksit durumunu güncelle
+            taksitler[index].odendiMi = true
+            hesap.detay = .kredi(
+                cekilenTutar: cekilenTutar,
+                faizTipi: faizTipi,
+                faizOrani: faizOrani,
+                taksitSayisi: taksitSayisi,
+                ilkTaksitTarihi: ilkTaksitTarihi,
+                taksitler: taksitler
             )
-            modelContext.insert(yeniIslem)
-            affectedAccountIDs.insert(odemeHesabi.id)
+            
+            var affectedAccountIDs: Set<UUID> = [hesap.id]
+            
+            // Gider olarak ekle
+            if islemOlusturulsun, let odemeHesabi = secilenHesap {
+                guard let kategori = krediKategorisiniGetir() else {
+                    Logger.log("Kredi kategorisi bulunamadı", log: Logger.data, type: .error)
+                    return
+                }
+                
+                let yeniIslem = Islem(
+                    isim: "\(hesap.isim) Taksit Ödemesi",
+                    tutar: taksit.taksitTutari,
+                    tarih: Date(),
+                    tur: .gider,
+                    kategori: kategori,
+                    hesap: odemeHesabi
+                )
+                
+                modelContext.insert(yeniIslem)
+                affectedAccountIDs.insert(odemeHesabi.id)
+            }
+            
+            // Değişiklikleri kaydet
+            try modelContext.save()
+            
+            // Bildirim gönder
+            NotificationCenter.default.post(
+                name: .transactionsDidChange,
+                object: nil,
+                userInfo: ["payload": TransactionChangePayload(
+                    type: .update,
+                    affectedAccountIDs: Array(affectedAccountIDs),
+                    affectedCategoryIDs: []
+                )]
+            )
+            
+            islemYapilacakTaksit = nil
+            
+        } catch {
+            Logger.log("Taksit ödeme hatası: \(error)", log: Logger.service, type: .error)
         }
-        
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["payload": TransactionChangePayload(type: .update, affectedAccountIDs: Array(affectedAccountIDs), affectedCategoryIDs: [])])
-        
-        islemYapilacakTaksit = nil
     }
     
     // 6. Adım (Yardımcı Fonksiyonlar)

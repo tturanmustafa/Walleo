@@ -120,33 +120,49 @@ struct KategoriDuzenleView: View {
     // Kaydet fonksiyonu daha önce düzelttiğimiz doğru haliyle kalıyor.
     private func kaydet() {
         let trimmedIsim = isim.trimmingCharacters(in: .whitespaces)
-        guard !trimmedIsim.isEmpty || isSystemCategory else { return }
         
-        if let kategori = kategori {
-            if !isSystemCategory {
-                kategori.isim = trimmedIsim
-            }
-            kategori.ikonAdi = ikonAdi
-            kategori.renkHex = secilenRenk.toHex() ?? "#FFFFFF"
-        } else {
-            let yeniKategori = Kategori(
-                isim: trimmedIsim,
-                ikonAdi: ikonAdi,
-                tur: secilenTur,
-                renkHex: secilenRenk.toHex() ?? "#FFFFFF",
-                localizationKey: nil
-            )
-            modelContext.insert(yeniKategori)
+        // Validasyon
+        guard !trimmedIsim.isEmpty || isSystemCategory else {
+            Logger.log("Kategori adı boş olamaz", log: Logger.view, type: .error)
+            return
+        }
+        
+        // Renk validasyonu
+        guard let hexColor = secilenRenk.toHex() else {
+            Logger.log("Geçersiz renk seçimi", log: Logger.view, type: .error)
+            return
         }
         
         do {
+            if let kategori = kategori {
+                // Güncelleme
+                if !isSystemCategory {
+                    kategori.isim = trimmedIsim
+                }
+                kategori.ikonAdi = ikonAdi
+                kategori.renkHex = hexColor
+            } else {
+                // Yeni kategori
+                let yeniKategori = Kategori(
+                    isim: trimmedIsim,
+                    ikonAdi: ikonAdi,
+                    tur: secilenTur,
+                    renkHex: hexColor,
+                    localizationKey: nil
+                )
+                modelContext.insert(yeniKategori)
+            }
+            
             try modelContext.save()
+            
+            // Bildirim gönder
             NotificationCenter.default.post(name: .categoriesDidChange, object: nil)
+            
+            dismiss()
+            
         } catch {
-            Logger.log("Kategori kaydedilirken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
+            Logger.log("Kategori kaydetme hatası: \(error)", log: Logger.data, type: .error)
         }
-        
-        dismiss()
     }
 }
 

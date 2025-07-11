@@ -197,76 +197,113 @@ struct IslemEkleView: View {
     
     private func guncelle(tekil: Bool) async {
         isSaving = true
-        
-        let tutar = stringToDouble(tutarString, locale: Locale(identifier: appSettings.languageCode))
-        let secilenKategori = kategoriler.first(where: { $0.id == secilenKategoriID })
-        let secilenHesap = tumHesaplar.first { $0.id == secilenHesapID }
-        
-        // --- DEĞİŞİKLİK BURADA ---
-        // Bitiş tarihi artık seçilen tekrarlanma türüne göre belirleniyor.
-        let sonBitisTarihi: Date? = secilenTekrar == .tekSeferlik ? nil : bitisTarihi
-        
-        var affectedAccountIDs: Set<UUID> = []
-        if let hesapID = secilenHesap?.id { affectedAccountIDs.insert(hesapID) }
-        
-        let islemToUpdate: Islem
-        if let islem = duzenlenecekIslem {
-            if let eskiHesapID = islem.hesap?.id { affectedAccountIDs.insert(eskiHesapID) }
-            islemToUpdate = islem
-        } else {
-            islemToUpdate = Islem(isim: isim, tutar: tutar, tarih: tarih, tur: secilenTur, tekrar: secilenTekrar, kategori: secilenKategori, hesap: secilenHesap, tekrarBitisTarihi: sonBitisTarihi)
-            modelContext.insert(islemToUpdate)
-        }
-        
-        if !tekil {
-            seriyiSil(islem: islemToUpdate, sadeceGelecek: true)
-        }
-        
-        islemToUpdate.isim = isim
-        islemToUpdate.tutar = tutar
-        islemToUpdate.tarih = tarih
-        islemToUpdate.tur = secilenTur
-        islemToUpdate.kategori = secilenKategori
-        islemToUpdate.hesap = secilenHesap
-        islemToUpdate.tekrar = secilenTekrar
-        islemToUpdate.tekrarBitisTarihi = sonBitisTarihi
-        
-        if secilenTekrar == .tekSeferlik {
-            islemToUpdate.tekrarID = UUID()
-        }
-        
-        if !tekil && secilenTekrar != .tekSeferlik {
-            yeniSeriOlustur(islem: islemToUpdate, bitis: sonBitisTarihi)
-        }
-        
-        if orijinalTekrar == .tekSeferlik && secilenTekrar != .tekSeferlik {
-             yeniSeriOlustur(islem: islemToUpdate, bitis: sonBitisTarihi)
-        }
-        
-        var affectedCategoryIDs: [UUID] = []
-        if let kategoriID = secilenKategori?.id {
-            affectedCategoryIDs.append(kategoriID)
-        }
-        
-        await updateTransactionMemory(name: isim, categoryID: secilenKategoriID)
-        
-        let changeType: TransactionChangePayload.ChangeType = duzenlenecekIslem == nil ? .add : .update
-        let payload = TransactionChangePayload(
-            type: changeType,
-            affectedAccountIDs: Array(affectedAccountIDs),
-            affectedCategoryIDs: affectedCategoryIDs
-        )
+        defer { isSaving = false } // Her durumda isSaving'i false yap
         
         do {
+            // Güvenli double dönüşümü
+            let tutar = stringToDouble(tutarString, locale: Locale(identifier: appSettings.languageCode))
+            guard tutar > 0 else {
+                Logger.log("Geçersiz tutar: \(tutarString)", log: Logger.view, type: .error)
+                return
+            }
+            
+            // Kategori ve hesap kontrolü
+            guard let secilenKategori = kategoriler.first(where: { $0.id == secilenKategoriID }),
+                  let secilenHesap = tumHesaplar.first(where: { $0.id == secilenHesapID }) else {
+                Logger.log("Kategori veya hesap bulunamadı", log: Logger.view, type: .error)
+                return
+            }
+            
+            let sonBitisTarihi: Date? = secilenTekrar == .tekSeferlik ? nil : bitisTarihi
+            
+            var affectedAccountIDs: Set<UUID> = [secilenHesap.id]
+            
+            let islemToUpdate: Islem
+            if let islem = duzenlenecekIslem {
+                if let eskiHesapID = islem.hesap?.id {
+                    affectedAccountIDs.insert(eskiHesapID)
+                }
+                islemToUpdate = islem
+            } else {
+                islemToUpdate = Islem(
+                    isim: isim,
+                    tutar: tutar,
+                    tarih: tarih,
+                    tur: secilenTur,
+                    tekrar: secilenTekrar,
+                    kategori: secilenKategori,
+                    hesap: secilenHesap,
+                    tekrarBitisTarihi: sonBitisTarihi
+                )
+                modelContext.insert(islemToUpdate)
+            }
+            
+            // Güvenli seri silme
+            if !tekil && duzenlenecekIslem != nil {
+                await MainActor.run {
+                    seriyiSil(islem: islemToUpdate, sadeceGelecek: true)
+                }
+            }
+            
+            // İşlem güncelleme
+            islemToUpdate.isim = isim.trimmingCharacters(in: .whitespaces)
+            islemToUpdate.tutar = tutar
+            islemToUpdate.tarih = tarih
+            islemToUpdate.tur = secilenTur
+            islemToUpdate.kategori = secilenKategori
+            islemToUpdate.hesap = secilenHesap
+            islemToUpdate.tekrar = secilenTekrar
+            islemToUpdate.tekrarBitisTarihi = sonBitisTarihi
+            
+            if secilenTekrar == .tekSeferlik {
+                islemToUpdate.tekrarID = UUID()
+            }
+            
+            // Yeni seri oluşturma kontrolü
+            if (!tekil && secilenTekrar != .tekSeferlik) ||
+               (orijinalTekrar == .tekSeferlik && secilenTekrar != .tekSeferlik) {
+                await MainActor.run {
+                    yeniSeriOlustur(islem: islemToUpdate, bitis: sonBitisTarihi)
+                }
+            }
+            
+            // Hafıza güncelleme
+            await updateTransactionMemory(name: isim, categoryID: secilenKategoriID)
+            
+            // Değişiklik bildirimi
+            let changeType: TransactionChangePayload.ChangeType = duzenlenecekIslem == nil ? .add : .update
+            let payload = TransactionChangePayload(
+                type: changeType,
+                affectedAccountIDs: Array(affectedAccountIDs),
+                affectedCategoryIDs: [secilenKategori.id]
+            )
+            
+            // Model kaydetme
             try modelContext.save()
-            NotificationCenter.default.post(name: .transactionsDidChange, object: nil, userInfo: ["payload": payload])
-            BudgetService.shared.runBudgetChecks(for: islemToUpdate, in: modelContext, settings: appSettings)
+            
+            // Bildirimler
+            await MainActor.run {
+                NotificationCenter.default.post(
+                    name: .transactionsDidChange,
+                    object: nil,
+                    userInfo: ["payload": payload]
+                )
+                BudgetService.shared.runBudgetChecks(
+                    for: islemToUpdate,
+                    in: modelContext,
+                    settings: appSettings
+                )
+            }
+            
+            dismiss()
+            
         } catch {
-            Logger.log("IslemEkleView: Kaydetme sırasında kritik hata: \(error.localizedDescription)", log: Logger.data, type: .fault)
+            Logger.log("İşlem kaydetme hatası: \(error)", log: Logger.view, type: .error)
+            // Kullanıcıya hata göster
+            await MainActor.run {
+                // Hata alert'i göstermek için state ekleyebilirsiniz
+            }
         }
-        
-        isSaving = false
-        dismiss()
     }
     
     private func seriyiSil(islem: Islem, sadeceGelecek: Bool) {
@@ -289,38 +326,36 @@ struct IslemEkleView: View {
     
     // --- DEĞİŞİKLİK BURADA: FONKSİYON TAMAMEN YENİLENDİ ---
     private func yeniSeriOlustur(islem: Islem, bitis: Date?) {
-        guard let bitisTarihi = bitis, secilenTekrar != .tekSeferlik else {
-            // Eğer bitiş tarihi yoksa veya tek seferlikse, seri oluşturma.
-            return
-        }
-
+        guard let bitisTarihi = bitis,
+              secilenTekrar != .tekSeferlik else { return }
+        
+        // Maksimum tekrar sayısı kontrolü (performans için)
+        let maxTekrar = 100
+        var tekrarSayisi = 0
+        
         let tekrarID = islem.tekrarID == UUID() ? UUID() : islem.tekrarID
-        if islem.tekrarID == UUID() { islem.tekrarID = tekrarID }
+        if islem.tekrarID == UUID() {
+            islem.tekrarID = tekrarID
+        }
         
         var step: Calendar.Component
         var value: Int
         
         switch islem.tekrar {
-            case .herAy:
-                step = .month
-                value = 1
-            case .her3Ay:
-                step = .month
-                value = 3
-            case .her6Ay:
-                step = .month
-                value = 6
-            case .herYil:
-                step = .year
-                value = 1
-            case .tekSeferlik:
-                return
+            case .herAy: (step, value) = (.month, 1)
+            case .her3Ay: (step, value) = (.month, 3)
+            case .her6Ay: (step, value) = (.month, 6)
+            case .herYil: (step, value) = (.year, 1)
+            case .tekSeferlik: return
         }
         
         var mevcutTarih = islem.tarih
         let takvim = Calendar.current
-
-        while let gelecekTarih = takvim.date(byAdding: step, value: value, to: mevcutTarih), gelecekTarih <= bitisTarihi {
+        
+        while let gelecekTarih = takvim.date(byAdding: step, value: value, to: mevcutTarih),
+              gelecekTarih <= bitisTarihi,
+              tekrarSayisi < maxTekrar {
+            
             let yeniTekrarliIslem = Islem(
                 isim: islem.isim,
                 tutar: islem.tutar,
@@ -332,8 +367,10 @@ struct IslemEkleView: View {
                 hesap: islem.hesap,
                 tekrarBitisTarihi: bitisTarihi
             )
+            
             modelContext.insert(yeniTekrarliIslem)
-            mevcutTarih = gelecekTarih // Bir sonraki döngü için tarihi güncelle
+            mevcutTarih = gelecekTarih
+            tekrarSayisi += 1
         }
     }
     

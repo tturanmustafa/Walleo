@@ -383,3 +383,97 @@
 "onboarding.page6.subtitle" = "Güvenli iCloud senkronizasyonundan veri ihracına ve kalıcı silme seçeneğine kadar verilerinizin kontrolü tamamen sizin elinizde.";
 "onboarding.signin.apple" = "Apple ile Giriş Yap";
 "onboarding.privacy_policy" = "Devam ederek Gizlilik Politikamızı ve Kullanım Şartlarımızı kabul etmiş olursunuz.";
+
+"settings.section_ai_assistant" = "YAPAY ZEKA ASİSTANI";
+"settings.ai_assistant_title" = "AI Asistan ile Sohbet Et";
+
+// MARK: - Aile Hesabı
+"family.title" = "Aile Hesabı";
+"family.empty.title" = "Henüz Aile Hesabı Yok";
+"family.empty.description" = "Finansal verilerinizi aile üyelerinizle paylaşmak için bir aile hesabı oluşturun.";
+"family.create" = "Aile Hesabı Oluştur";
+"family.create.title" = "Aile Hesabı Oluştur";
+"family.create.name_label" = "Aile Hesabı Adı";
+"family.create.name_placeholder" = "örn: Yılmaz Ailesi";
+"family.create.name_helper" = "Ailenizi temsil eden bir isim seçin (3-30 karakter)";
+"family.create.info.header" = "AİLE HESABI NEDİR?";
+"family.create.info.members" = "Finansal verilerinizi 4 aile üyesine kadar paylaşın";
+"family.create.info.admin" = "Tam kontrol sahibi yönetici siz olacaksınız";
+"family.create.info.sync" = "Tüm veriler iCloud üzerinden otomatik senkronize olur";
+
+"family.name" = "Aile Adı";
+"family.admin" = "Yönetici";
+"family.members" = "ÜYELER";
+"family.add_member" = "Üye Ekle";
+"family.leave" = "Aile Hesabından Ayrıl";
+"family.leave.title" = "Aile Hesabından Ayrılsın mı?";
+"family.leave.message" = "Mevcut verilerin bir kopyasını alacaksınız ancak artık aile hesabı ile senkronize olmayacaksınız. Bu işlem geri alınamaz.";
+"family.leave.confirm" = "Evet, Ayrıl";
+
+"family.invite.title" = "Üye Davet Et";
+"family.invite.header" = "ÜYE BİLGİLERİ";
+"family.invite.email" = "E-posta Adresi";
+"family.invite.display_name" = "Görünüm Adı";
+"family.invite.footer" = "Kişi katılmak için aynı Apple ID e-postasını kullanmalıdır.";
+"family.invite.info" = "Bu kişiye bir davet gönderilecek. 7 gün içinde kabul etmesi gerekir.";
+"family.invite.send" = "Davet Gönder";
+
+"family.invitation.title" = "Aile Daveti";
+"family.invitation.invites_you" = "sizi davet ediyor";
+"family.invitation.warning.title" = "Önemli Uyarı";
+"family.invitation.warning.message" = "Bu daveti kabul ettiğinizde tüm mevcut verileriniz ailenin ortak verileriyle değiştirilecektir.";
+"family.invitation.sync.title" = "Otomatik Senkronizasyon";
+"family.invitation.sync.message" = "Katıldıktan sonra tüm işlemler aile üyeleri arasında otomatik olarak senkronize edilecektir.";
+"family.invitation.expiry.title" = "Davet Süresi";
+"family.invitation.expiry.message" = "Bu davet %d gün içinde sona erecek.";
+"family.invitation.accept" = "Daveti Kabul Et";
+"family.invitation.decline" = "Reddet";
+"family.invitation.confirm.title" = "Kabul Onayı";
+"family.invitation.confirm.message" = "Mevcut verileriniz kalıcı olarak ailenin verileriyle değiştirilecek. Bu işlem geri alınamaz.";
+"family.invitation.confirm.accept" = "Evet, Kabul Et";
+
+"family.invitations" = "BEKLEYEN DAVETLER";
+"family.invited_by" = "%@ tarafından davet edildiniz";
+
+"family.processing" = "İşleniyor...";
+"family.creating" = "Aile hesabı oluşturuluyor...";
+"family.inviting" = "Davet gönderiliyor...";
+"family.joining" = "Aile hesabına katılınıyor...";
+"family.declining" = "Davet reddediliyor...";
+"family.leaving" = "Aile hesabından ayrılınıyor...";
+"family.processing.sync" = "Veriler Senkronize Ediliyor";
+"family.processing.please_wait" = "Bu işlem birkaç dakika sürebilir...";
+
+"family.created.notification.title" = "Aile Hesabı Oluşturuldu";
+"family.created.notification.message" = "'%@' aile hesabınız başarıyla oluşturuldu.";
+"family.left.notification.title" = "Aile Hesabından Ayrıldınız";
+"family.left.notification.message" = "Aile hesabından ayrıldınız. Verileriniz korundu.";
+
+"family.error.title" = "Hata";
+"family.error.no_context" = "Veritabanı bağlantı hatası";
+"family.error.no_user_id" = "Kullanıcı kimliği belirlenemedi";
+"family.error.no_family" = "Aile hesabı bulunamadı";
+"family.error.already_has_family" = "Zaten bir aile hesabına üyesiniz";
+"family.error.no_permission" = "Bu işlem için yetkiniz yok";
+"family.error.max_members" = "Maksimum üye sayısına (4) ulaşıldı";
+"family.error.invitation_not_found" = "Davet bulunamadı";
+
+"settings.family.manage" = "Aile Hesabını Yönet";
+"settings.family.leave" = "Aile Hesabından Ayrıl";
+
+// MARK: - Aile Hesabı Ek
+"family.pending_invites" = "BEKLEYEN DAVETLER";
+"family.member.remove.title" = "Üye Silinsin mi?";
+"family.member.remove.message" = "Bu üyeyi aile hesabından çıkarmak istediğinizden emin misiniz?";
+"family.invite.cancel.title" = "Davet İptal Edilsin mi?";
+"family.invite.cancel.message" = "Bu daveti iptal etmek istediğinizden emin misiniz?";
+"family.invite.cancel.confirm" = "Evet, İptal Et";
+"common.remove" = "Çıkar";
+"common.ok" = "Tamam";
+
+"family.error.already_invited" = "Bu e-posta adresi zaten davet edilmiş";
+"family.error.already_member" = "Bu kişi zaten üye";
+"family.error.invite_invalid" = "Bu davet artık geçerli değil";
+"family.error.invalid_code" = "Geçersiz davet kodu";
+"family.error.code_expired" = "Davet kodunun süresi dolmuş";
+

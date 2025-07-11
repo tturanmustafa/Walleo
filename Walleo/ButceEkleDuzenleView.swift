@@ -122,18 +122,45 @@ struct ButceEkleDuzenleView: View {
     }
     
     private func kaydet() {
-        let secilenKategoriler = tumKategoriler.filter { secilenKategoriIDleri.contains($0.id) }
-        let limit = stringToDouble(limitString, locale: Locale(identifier: appSettings.languageCode))
-        
-        if let butce = duzenlenecekButce {
-            butce.isim = isim
-            butce.limitTutar = limit
-            butce.kategoriler = secilenKategoriler
-        } else {
-            let yeniButce = Butce(isim: isim, limitTutar: limit, kategoriler: secilenKategoriler)
-            modelContext.insert(yeniButce)
+        // Güvenli değer kontrolü
+        guard !isim.trimmingCharacters(in: .whitespaces).isEmpty else {
+            Logger.log("Bütçe adı boş olamaz", log: Logger.view, type: .error)
+            return
         }
         
-        dismiss()
+        let limit = stringToDouble(limitString, locale: Locale(identifier: appSettings.languageCode))
+        guard limit > 0 else {
+            Logger.log("Geçersiz limit tutarı", log: Logger.view, type: .error)
+            return
+        }
+        
+        let secilenKategoriler = tumKategoriler.filter { secilenKategoriIDleri.contains($0.id) }
+        guard !secilenKategoriler.isEmpty else {
+            Logger.log("En az bir kategori seçilmelidir", log: Logger.view, type: .error)
+            return
+        }
+        
+        do {
+            if let butce = duzenlenecekButce {
+                // Güncelleme
+                butce.isim = isim.trimmingCharacters(in: .whitespaces)
+                butce.limitTutar = limit
+                butce.kategoriler = secilenKategoriler
+            } else {
+                // Yeni bütçe
+                let yeniButce = Butce(
+                    isim: isim.trimmingCharacters(in: .whitespaces),
+                    limitTutar: limit,
+                    kategoriler: secilenKategoriler
+                )
+                modelContext.insert(yeniButce)
+            }
+            
+            try modelContext.save()
+            dismiss()
+            
+        } catch {
+            Logger.log("Bütçe kaydetme hatası: \(error)", log: Logger.data, type: .error)
+        }
     }
 }

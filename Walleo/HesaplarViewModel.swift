@@ -7,7 +7,7 @@ import SwiftData
 class HesaplarViewModel {
     var modelContext: ModelContext
     var gosterilecekHesaplar: [GosterilecekHesap] = []
-
+    
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
         
@@ -18,7 +18,7 @@ class HesaplarViewModel {
             object: nil
         )
     }
-
+    
     @objc func hesaplamalariTetikle(notification: Notification) {
         // Gelen bildirimin içinde yeni payload'ımız var mı diye kontrol et
         guard let payload = notification.userInfo?["payload"] as? TransactionChangePayload else {
@@ -41,7 +41,7 @@ class HesaplarViewModel {
             print("HesaplarViewModel: Değişiklik fark edildi ancak ilgili hesap bulunmadığı için güncelleme yapılmadı.")
         }
     }
-
+    
     func hesaplamalariYap() async {
         do {
             let hesaplar = try modelContext.fetch(FetchDescriptor<Hesap>(sortBy: [SortDescriptor(\.olusturmaTarihi)]))
@@ -71,7 +71,7 @@ class HesaplarViewModel {
                 case .kredi(_, _, _, let taksitSayisi, _, let taksitler):
                     let odenenTaksitSayisi = taksitler.filter { $0.odendiMi }.count
                     gosterilecekHesap.krediDetay = .init(kalanTaksitSayisi: taksitSayisi - odenenTaksitSayisi, odenenTaksitSayisi: odenenTaksitSayisi)
-                
+                    
                 case .cuzdan:
                     break
                 }
@@ -83,7 +83,7 @@ class HesaplarViewModel {
             Logger.log("Hesap ViewModel genel hesaplama hatası: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
     }
-
+    
     private func guncelBakiyeHesapla(for accountIDs: [UUID]) async {
         let uniqueIDs = Set(accountIDs)
         
@@ -124,12 +124,30 @@ class HesaplarViewModel {
     }
     
     func hesabiSil(hesap: Hesap) {
-        if let iliskiliIslemler = hesap.islemler {
-            for islem in iliskiliIslemler {
-                islem.hesap = nil
+        do {
+            // İlişkili işlemleri güvenli şekilde ayır
+            if let iliskiliIslemler = hesap.islemler {
+                for islem in iliskiliIslemler {
+                    islem.hesap = nil
+                }
             }
+            
+            // Hesabı sil
+            modelContext.delete(hesap)
+            
+            // Değişiklikleri kaydet
+            try modelContext.save()
+            
+            // Listeyi güncelle
+            Task {
+                await hesaplamalariYap()
+            }
+            
+            // Bildirim gönder
+            NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+            
+        } catch {
+            Logger.log("Hesap silme hatası: \(error)", log: Logger.service, type: .error)
         }
-        modelContext.delete(hesap)
-        NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
     }
 }
