@@ -477,3 +477,24 @@
 "family.error.invalid_code" = "Geçersiz davet kodu";
 "family.error.code_expired" = "Davet kodunun süresi dolmuş";
 
+// MARK: - Aile Hesabı Ek
+"family.edit.title" = "Aile Adını Düzenle";
+"family.groups.my_groups" = "Gruplarım";
+"family.invites.my_invites" = "Davetlerim";
+"family.invites.sent" = "Gönderilen Davetler";
+"family.invites.received" = "Alınan Davetler";
+"family.invites.no_invites" = "Davet Yok";
+"family.invites.no_invites.desc" = "Gönderilen ve alınan davetleriniz burada görünecek";
+"family.invite.status.beklemede" = "Beklemede";
+"family.invite.status.kabul" = "Kabul edildi";
+"family.invite.status.red" = "Reddedildi";
+"family.invite.status.otoRed" = "Otomatik reddedildi";
+"family.invite.status.suresiDoldu" = "Süresi doldu";
+"family.delete.title" = "Aile Hesabı Silinsin mi?";
+"family.delete.message.no_members" = "Bu aile hesabını silmek istediğinizden emin misiniz?";
+"family.warning.delete_with_members" = "Uyarı: Bu ailede %d üye var. Tüm paylaşılan veriler kaybolacak.";
+"family.error.icloud_required" = "Aile özelliklerini kullanmak için iCloud etkin olmalıdır";
+"family.error.cannot_delete_with_family" = "Aile İçindeyken Veri Silinemez";
+"family.error.must_leave_family_first" = "Tüm verileri silmeden önce aile hesabından ayrılmalısınız";
+"family.error.cannot_disable_icloud" = "iCloud Devre Dışı Bırakılamaz";
+"family.error.icloud_required_for_family" = "Aile hesabı senkronizasyonu için iCloud gereklidir";

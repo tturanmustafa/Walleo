@@ -77,6 +77,13 @@ struct WalleoApp: App {
     }
 
     private func deleteAllData() {
+        // Aile hesabı kontrolü
+        if AileHesabiService.shared.mevcutAileHesabi != nil {
+            Logger.log("Aile hesabı aktifken veri silme engellendi", log: Logger.service, type: .default)
+            // TODO: Burada kullanıcıya bir alert gösterilebilir
+            return
+        }
+        
         Logger.log("Tüm verileri silme işlemi başlatıldı.", log: Logger.service, type: .info)
         Task {
             await MainActor.run {
@@ -127,4 +134,3 @@ struct WalleoApp: App {
         }
     }
 }
-
