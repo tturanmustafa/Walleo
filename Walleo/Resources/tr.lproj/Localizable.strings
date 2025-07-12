@@ -28,6 +28,7 @@
 "tab.reports" = "Raporlar";
 "tab.settings" = "Ayarlar";
 "tab.budgets" = "Bütçeler";
+"tab.more" = "Daha Fazla";
 
 // MARK: - Panel / Dashboard Ekranı
 "dashboard.category_distribution" = "Kategori Dağılımı";
@@ -498,3 +499,40 @@
 "family.error.must_leave_family_first" = "Tüm verileri silmeden önce aile hesabından ayrılmalısınız";
 "family.error.cannot_disable_icloud" = "iCloud Devre Dışı Bırakılamaz";
 "family.error.icloud_required_for_family" = "Aile hesabı senkronizasyonu için iCloud gereklidir";
+
+// Localizable.strings
+
+// Genel
+"button.save" = "Kaydet";
+"button.cancel" = "İptal";
+"button.edit" = "Düzenle";
+"label.past" = "Geçmiş";
+
+// Bütçe Listesi
+"budget_list.title" = "Bütçeler";
+"budget_list.no_budgets" = "Henüz bütçe oluşturmadınız.";
+
+// Bütçe Detay
+"budget_detail.base_budget" = "Ana Bütçe";
+"budget_detail.rollover_from_last_month" = "Bu Aya Devreden";
+"budget_detail.total_budget" = "Toplam Kullanılabilir Bütçe";
+"budget_detail.rollover_history" = "Devir Geçmişi";
+"budget_detail.from" = "%@'ten Devreden"; // örn: "Haziran 2025'ten Devreden"
+
+// Bütçe Ekle/Düzenle
+"budget_edit.new_title" = "Yeni Bütçe";
+"budget_edit.edit_title" = "Bütçeyi Düzenle";
+"budget_edit.section.info" = "Bütçe Bilgileri";
+"budget_edit.field.name" = "Bütçe Adı";
+"budget_edit.field.name.placeholder" = "örn: Mutfak Masrafı";
+"budget_edit.field.amount" = "Aylık Tutar";
+"budget_edit.field.month" = "Bütçe Ayı";
+"budget_edit.section.settings" = "Ayarlar";
+"budget_edit.toggle.auto_renew" = "Her ay otomatik yenilensin";
+"budget_edit.toggle.rollover" = "Artan tutarı bir sonraki aya devret";
+
+// Bildirimler
+"notification.renew.title" = "Bütçeniz Yenileniyor: %@"; // Bütçe Adı
+"notification.renew.body" = "%@ bütçeniz %@ için yenilenecektir."; // Bütçe Adı, Ay Adı
+"notification.renew.summary.title" = "Hoş Geldin %@! ☕️"; // Ay Adı
+"notification.renew.summary.body" = "Bu ay için %d bütçeniz yenilendi: %@."; // Sayı, Bütçe isimleri
