@@ -28,6 +28,7 @@
 "tab.reports" = "Reports";
 "tab.settings" = "Settings";
 "tab.budgets" = "Budgets";
+"tab.more" = "More";
 
 // MARK: - Dashboard Screen
 "dashboard.category_distribution" = "Category Distribution";

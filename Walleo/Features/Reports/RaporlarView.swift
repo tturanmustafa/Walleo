@@ -108,11 +108,10 @@ private struct AylikRaporlarContentView: View {
     @State private var secilenRaporTuru: RaporTuru = .ozet
 
     enum RaporTuru: CaseIterable {
-        case ozet, takvim, dagilim
+        case ozet, dagilim
         var localizedKey: LocalizedStringKey {
             switch self {
             case .ozet: "reports.type.summary"
-            case .takvim: "tab.calendar"
             case .dagilim: "reports.type.distribution"
             }
         }
@@ -139,8 +138,6 @@ private struct AylikRaporlarContentView: View {
                 switch secilenRaporTuru {
                 case .ozet:
                     OzetView(viewModel: viewModel)
-                case .takvim:
-                    TakvimView(modelContext: self.modelContext, currentDate: $viewModel.currentDate)
                 case .dagilim:
                     DagilimView(viewModel: viewModel)
                 }
