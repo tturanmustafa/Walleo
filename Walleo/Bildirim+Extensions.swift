@@ -68,7 +68,33 @@ extension Bildirim {
             
             ikonAdi = "creditcard.circle.fill"
             ikonRengi = .purple
+        
+        case .butceYenilemeOncesi:
+            baslik = languageBundle.localizedString(forKey: "notification.budget.pre_renewal.title", value: "Budget Renewal Reminder", table: nil)
+            let formatString = languageBundle.localizedString(forKey: "notification.budget.pre_renewal.body", value: "", table: nil)
+            let butceAdi = self.ilgiliIsim ?? ""
+            let devredenTutar = formatCurrency(amount: self.tutar1 ?? 0, currencyCode: paraKodu, localeIdentifier: dilKodu)
             
+            aciklamaLine1 = String(format: formatString, butceAdi, devredenTutar)
+            aciklamaLine2 = nil
+            aciklamaLine3 = nil
+            
+            ikonAdi = "arrow.triangle.2.circlepath.circle.fill"
+            ikonRengi = .cyan
+
+        case .butceYenilemeSonrasi:
+            baslik = languageBundle.localizedString(forKey: "notification.budget.renewal_summary.title", value: "Budgets Renewed!", table: nil)
+            let formatString = languageBundle.localizedString(forKey: "notification.budget.renewal_summary.body", value: "", table: nil)
+            let ayAdi = self.ilgiliIsim ?? ""
+            let yenilenenSayi = Int(self.tutar1 ?? 0)
+            
+            aciklamaLine1 = String(format: formatString, ayAdi, yenilenenSayi)
+            aciklamaLine2 = nil
+            aciklamaLine3 = nil
+            
+            ikonAdi = "sparkles"
+            ikonRengi = .yellow
+
         // GÜNCELLEME: Varsayılan durum yeni yapıya uygun hale getirildi.
         default:
             baslik = "Bilinmeyen Bildirim"

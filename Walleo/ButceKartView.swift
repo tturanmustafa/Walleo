@@ -1,27 +1,21 @@
-// Dosya: ButceKartView.swift
-
 import SwiftUI
 
 struct ButceKartView: View {
     let gosterilecekButce: GosterilecekButce
+    let isDuzenlenebilir: Bool // YENİ: Kartın düzenlenip düzenlenemeyeceğini dışarıdan alır.
     @EnvironmentObject var appSettings: AppSettings
     
-    var onEdit: () -> Void = {}
-    var onDelete: () -> Void = {}
+    // Düzenleme ve Silme eylemleri için closure'lar
+    var onEdit: () -> Void
+    var onDelete: () -> Void
 
+    // Hesaplanan değişkenler (Aynı kalıyor)
     private var limit: Double { gosterilecekButce.butce.limitTutar }
     private var harcanan: Double { gosterilecekButce.harcananTutar }
     private var kalan: Double { limit - harcanan }
-    
-    // DÜZELTME: 'NaN' hatasını engellemek için daha güvenli hale getirildi.
     private var yuzde: Double {
-        guard limit > 0 else { return 0.0 }
-        guard harcanan >= 0 else { return 0.0 }
-        
-        let hesaplananYuzde = harcanan / limit
-        
-        // ProgressView'ın 0 ile 1 arasında bir değer beklediğini garanti altına al
-        return max(0.0, min(1.0, hesaplananYuzde))
+        guard limit > 0, harcanan >= 0 else { return 0.0 }
+        return min(1.0, harcanan / limit)
     }
 
     private var progressBarColor: Color {
@@ -39,11 +33,14 @@ struct ButceKartView: View {
                     .fontWeight(.bold)
                 Spacer()
                 Menu {
-                    Button(action: onEdit) {
-                        Label(LocalizedStringKey("common.edit"), systemImage: "pencil")
+                    // --- DÜZELTME: Düzenle butonu artık koşullu ---
+                    if isDuzenlenebilir {
+                        Button(action: onEdit) {
+                            Label("common.edit", systemImage: "pencil")
+                        }
                     }
                     Button(role: .destructive, action: onDelete) {
-                        Label(LocalizedStringKey("common.delete"), systemImage: "trash")
+                        Label("common.delete", systemImage: "trash")
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle.fill")
@@ -114,7 +111,8 @@ struct ButceKartView: View {
             }
         }
         .padding()
-        .background(Color(.systemGray6))
+        .background(Color(.systemBackground))
         .cornerRadius(12)
+        .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
     }
 }

@@ -6,6 +6,8 @@ enum BildirimTuru: String, Codable {
     case butceLimitiAsildi = "bütçe.limit.aşıldı"
     case taksitHatirlatici = "taksit.hatırlatıcı"
     case krediKartiOdemeGunu = "kart.ödeme.günü"
+    case butceYenilemeOncesi = "bütçe.yenileme.öncesi"
+    case butceYenilemeSonrasi = "bütçe.yenileme.sonrası"
 }
 
 @Model

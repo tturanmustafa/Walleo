@@ -1,20 +1,27 @@
 import SwiftUI
 import SwiftData
 
+//================================================================
+// MARK: - Ana Bütçeler Görünümü (ButcelerView)
+//================================================================
+
 struct ButcelerView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var appSettings: AppSettings
-    @State private var viewModel: ButcelerView.ButcelerViewModel? // ViewModel'ı View'ın içinde tanımlıyoruz
+    
+    // ViewModel, tüm hesaplama ve veri çekme mantığını yönetir.
+    @State private var viewModel: ButcelerViewModel?
 
+    // Sheet'leri kontrol etmek için kullanılan state'ler.
     @State private var yeniButceEkleGoster = false
     @State private var duzenlenecekButce: Butce?
     @State private var silinecekButce: Butce?
 
     var body: some View {
         NavigationStack {
+            // ViewModel yüklendiğinde ana içeriği göster, yükleniyorsa ProgressView göster.
             Group {
                 if let viewModel = viewModel {
-                    // ANA GÖRÜNÜM ARTIK DAHA BASİT
                     mainContentView(viewModel: viewModel)
                 } else {
                     ProgressView()
@@ -22,10 +29,17 @@ struct ButcelerView: View {
             }
             .navigationTitle(LocalizedStringKey("budgets.title"))
             .toolbar {
-                // Toolbar içeriği de ayrı bir fonksiyona taşındı.
                 toolbarContent()
             }
         }
+        // ViewModel'ı ilk açılışta bir kez oluştur ve veriyi çek.
+        .task {
+            if viewModel == nil {
+                viewModel = ButcelerViewModel(modelContext: modelContext)
+                await viewModel?.hesaplamalariTetikle()
+            }
+        }
+        // Yeni bütçe eklendiğinde veya bir bütçe düzenlendiğinde listeyi yenile.
         .sheet(isPresented: $yeniButceEkleGoster, onDismiss: {
             Task { await viewModel?.hesaplamalariTetikle() }
         }) {
@@ -36,12 +50,7 @@ struct ButcelerView: View {
         }) { butce in
             ButceEkleDuzenleView(duzenlenecekButce: butce)
         }
-        .task {
-            if viewModel == nil {
-                viewModel = ButcelerViewModel(modelContext: modelContext)
-            }
-            await viewModel?.hesaplamalariTetikle()
-        }
+        // Bütçe silme uyarısı
         .alert(
             LocalizedStringKey("alert.delete_confirmation.title"),
             isPresented: Binding(isPresented: $silinecekButce),
@@ -53,18 +62,17 @@ struct ButcelerView: View {
                 Text("common.delete")
             }
         } message: { butce in
-            // ... (alert mesajı aynı kalıyor) ...
             let dilKodu = appSettings.languageCode
             guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
                   let languageBundle = Bundle(path: path) else {
-                return Text(butce.isim) // Fallback
+                return Text(butce.isim)
             }
             let formatString = languageBundle.localizedString(forKey: "alert.delete_budget.message_format", value: "", table: nil)
             return Text(String(format: formatString, butce.isim))
         }
     }
 
-    // YENİ: Ana içerik görünümünü oluşturan yardımcı bileşen
+    /// Ana içeriği (liste veya boş ekran) oluşturan yardımcı bileşen.
     @ViewBuilder
     private func mainContentView(viewModel: ButcelerViewModel) -> some View {
         if viewModel.gosterilecekButceler.isEmpty {
@@ -74,45 +82,29 @@ struct ButcelerView: View {
                 description: Text(LocalizedStringKey("budgets.empty.description"))
             )
         } else {
-            // Liste görünümü de kendi bileşenine ayrıldı
-            budgetScrollView(viewModel: viewModel)
+            budgetListView(viewModel: viewModel)
         }
     }
 
-    // YENİ: Kaydırılabilir bütçe listesini oluşturan yardımcı bileşen
-    private func budgetScrollView(viewModel: ButcelerViewModel) -> some View {
-        ScrollView {
-            VStack(spacing: 15) {
-                ForEach(viewModel.gosterilecekButceler) { gosterilecekButce in
-                    // Tek bir kart bile kendi fonksiyonuna ayrıldı
-                    budgetCardLink(gosterilecekButce: gosterilecekButce)
+    /// Aylık gruplanmış bütçe listesini oluşturan bileşen.
+    private func budgetListView(viewModel: ButcelerViewModel) -> some View {
+        List {
+            ForEach(viewModel.siraliAylar, id: \.self) { ay in
+                Section(header: ayBasligi(for: ay)) {
+                    ForEach(viewModel.gruplanmisButceler[ay] ?? []) { gosterilecekButce in
+                        ButceKartLinkView(
+                            gosterilecekButce: gosterilecekButce,
+                            onEdit: { duzenlenecekButce = gosterilecekButce.butce },
+                            onDelete: { silinecekButce = gosterilecekButce.butce }
+                        )
+                    }
                 }
             }
-            .padding()
         }
+        .listStyle(.insetGrouped)
     }
 
-    // YENİ: Tek bir bütçe kartı ve onun NavigationLink'ini oluşturan yardımcı fonksiyon
-    private func budgetCardLink(gosterilecekButce: GosterilecekButce) -> some View {
-        NavigationLink(destination: ButceDetayView(butce: gosterilecekButce.butce)) {
-            ButceKartView(
-                gosterilecekButce: gosterilecekButce,
-                onEdit: { duzenlenecekButce = gosterilecekButce.butce },
-                onDelete: { silinecekButce = gosterilecekButce.butce }
-            )
-        }
-        .buttonStyle(.plain)
-        .contextMenu {
-            Button(action: { duzenlenecekButce = gosterilecekButce.butce }) {
-                Label("common.edit", systemImage: "pencil")
-            }
-            Button(role: .destructive, action: { silinecekButce = gosterilecekButce.butce }) {
-                Label("common.delete", systemImage: "trash")
-            }
-        }
-    }
-    
-    // YENİ: Toolbar içeriğini oluşturan yardımcı fonksiyon
+    /// Toolbar içeriğini oluşturan fonksiyon.
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -124,19 +116,101 @@ struct ButcelerView: View {
             }
         }
     }
+    
+    /// Ay başlığını formatlayan yardımcı fonksiyon.
+    private func ayBasligi(for date: Date) -> some View {
+        Text(monthYearString(from: date, localeIdentifier: appSettings.languageCode))
+            .font(.headline)
+            .fontWeight(.bold)
+            .padding(.vertical, 4)
+    }
 }
 
-// ViewModel'ı, derleyicinin işini kolaylaştırmak için View'ın içine bir extension olarak taşıdım.
-// Bu, dosya sayısını artırmadan mantıksal bir gruplama sağlar.
+//================================================================
+// MARK: - Bütçe Kartı ve Linki (ButceKartLinkView)
+//================================================================
+
+/// Her bir bütçe kartını, `NavigationLink`'ini ve durum (geçmiş/aktif) mantığını yöneten alt bileşen.
+struct ButceKartLinkView: View {
+    let gosterilecekButce: GosterilecekButce
+    
+    var onEdit: () -> Void
+    var onDelete: () -> Void
+    
+    private var isGecmisDonem: Bool {
+        let bugun = Calendar.current.startOfDay(for: Date())
+        let butceDonemi = gosterilecekButce.butce.periyot
+        let mevcutAyBasi = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: bugun))!
+        return butceDonemi < mevcutAyBasi
+    }
+    
+    var body: some View {
+        ZStack {
+            // ButceKartView, artık linkin arka planı gibi davranıyor.
+            ButceKartView(
+                gosterilecekButce: gosterilecekButce,
+                isDuzenlenebilir: !isGecmisDonem, // ButceKartView'a düzenlenip düzenlenemeyeceğini iletiyoruz.
+                onEdit: onEdit,
+                onDelete: onDelete
+            )
+            .opacity(isGecmisDonem ? 0.7 : 1.0)
+            .overlay(alignment: .topLeading) {
+                 if isGecmisDonem {
+                    Text(LocalizedStringKey("budget.list.period_ended"))
+                        .font(.caption2.bold())
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(.gray.opacity(0.7))
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                        .padding([.top, .leading], 4)
+                 }
+            }
+            
+            // Asıl gezinmeyi sağlayan NavigationLink'i görünmez yapıyoruz.
+            NavigationLink(destination: ButceDetayView(butce: gosterilecekButce.butce)) {
+                EmptyView()
+            }
+            .opacity(0)
+        }
+        // Karta tıklandığında menünün açılması için
+        .contextMenu {
+            if !isGecmisDonem {
+                Button(action: onEdit) {
+                    Label("common.edit", systemImage: "pencil")
+                }
+            }
+            Button(role: .destructive, action: onDelete) {
+                Label("common.delete", systemImage: "trash")
+            }
+        }
+        // Listenin kendi satır stillerini tamamen devre dışı bırakıyoruz.
+        .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
+        .listRowSeparator(.hidden)
+        .listRowBackground(Color.clear)
+    }
+}
+
+//================================================================
+// MARK: - Bütçeler ViewModel (ButcelerViewModel)
+//================================================================
+
 extension ButcelerView {
     @MainActor
     @Observable
     class ButcelerViewModel {
         var modelContext: ModelContext
-        var gosterilecekButceler: [GosterilecekButce] = []
         
+        // Arayüzün kullanacağı gruplanmış ve hesaplanmış veri.
+        var gruplanmisButceler: [Date: [GosterilecekButce]] = [:]
+        var siraliAylar: [Date] = []
+        
+        // Sadece ana listede görünecek tüm bütçeler
+        var gosterilecekButceler: [GosterilecekButce] = []
+
         init(modelContext: ModelContext) {
             self.modelContext = modelContext
+            // Veri değiştiğinde listeyi yenilemek için dinleyici.
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(hesaplamalariTetikle),
@@ -145,54 +219,53 @@ extension ButcelerView {
             )
         }
         
+        /// Veri çekme ve hesaplama işlemini başlatan tetikleyici.
         @objc func hesaplamalariTetikle() {
             Task {
                 await butceDurumlariniHesapla()
             }
         }
 
+        /// Seçilen bütçeyi veritabanından siler.
         func deleteButce(_ butce: Butce) {
             modelContext.delete(butce)
             Task {
-                await butceDurumlariniHesapla()
+                await hesaplamalariTetikle()
             }
         }
         
+        /// Tüm bütçeleri çeker, harcanan tutarlarını hesaplar ve aylara göre gruplar.
         func butceDurumlariniHesapla() async {
-            let calendar = Calendar.current
-            guard let monthInterval = calendar.dateInterval(of: .month, for: Date()) else { return }
-
             do {
-                let butceDescriptor = FetchDescriptor<Butce>(sortBy: [SortDescriptor(\.olusturmaTarihi)])
+                // 1. Tüm bütçeleri çek.
+                let butceDescriptor = FetchDescriptor<Butce>(sortBy: [SortDescriptor(\.periyot, order: .reverse)])
                 let tumButceler = try modelContext.fetch(butceDescriptor)
                 
+                // 2. Harcama hesaplaması için gerekli tüm işlemleri tek seferde çek.
                 let giderTuruRawValue = IslemTuru.gider.rawValue
-                let genelIslemPredicate = #Predicate<Islem> { islem in
-                    islem.tarih >= monthInterval.start &&
-                    islem.tarih < monthInterval.end &&
-                    islem.turRawValue == giderTuruRawValue
-                }
-                let tumAylikGiderler = try modelContext.fetch(FetchDescriptor<Islem>(predicate: genelIslemPredicate))
-                let kategoriyeGoreIslemler = Dictionary(grouping: tumAylikGiderler) { $0.kategori?.id }
+                let tumGiderler = try modelContext.fetch(FetchDescriptor<Islem>(predicate: #Predicate { $0.turRawValue == giderTuruRawValue }))
                 
+                // 3. Her bütçe için harcanan tutarı hesapla ve GosterilecekButce nesneleri oluştur.
                 var yeniGosterilecekler: [GosterilecekButce] = []
-                
                 for butce in tumButceler {
-                    var harcananTutar: Double = 0.0
+                    let butceAraligi = Calendar.current.dateInterval(of: .month, for: butce.periyot)!
+                    let kategoriIDleri = Set(butce.kategoriler?.map { $0.id } ?? [])
                     
-                    if let butceninKategorileri = butce.kategoriler {
-                        for kategori in butceninKategorileri {
-                            if let islemler = kategoriyeGoreIslemler[kategori.id] {
-                                let buKategorininToplami = islemler.reduce(0) { $0 + $1.tutar }
-                                harcananTutar += buKategorininToplami
-                            }
-                        }
-                    }
+                    let harcananTutar = tumGiderler.filter { islem in
+                        islem.tarih >= butceAraligi.start &&
+                        islem.tarih < butceAraligi.end &&
+                        kategoriIDleri.contains(islem.kategori?.id ?? UUID())
+                    }.reduce(0) { $0 + $1.tutar }
                     
                     yeniGosterilecekler.append(GosterilecekButce(butce: butce, harcananTutar: harcananTutar))
                 }
                 
+                // 4. Hesaplanan veriyi arayüzün kullanacağı şekilde grupla ve sırala.
                 self.gosterilecekButceler = yeniGosterilecekler
+                self.gruplanmisButceler = Dictionary(grouping: yeniGosterilecekler) {
+                    return Calendar.current.startOfDay(for: $0.butce.periyot)
+                }
+                self.siraliAylar = self.gruplanmisButceler.keys.sorted(by: >)
                 
             } catch {
                 Logger.log("Bütçe durumları hesaplanırken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
