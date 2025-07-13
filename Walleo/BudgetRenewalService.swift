@@ -21,60 +21,43 @@ class BudgetRenewalService {
     /// Bütçe yenileme ve bildirim gönderme işlemlerini başlatan ana fonksiyon.
     /// Bu fonksiyonun, uygulamanın arka plan görevi tarafından (örn: her günün başında) çağrılması hedeflenir.
     func runDailyChecks() async {
+        Logger.log("Günlük bütçe kontrolü başlatıldı.", log: Logger.service)
+
+        // 1. Otomatik yenilemesi aktif olan tüm bütçeleri çek.
+        let descriptor = FetchDescriptor<Butce>(predicate: #Predicate { $0.otomatikYenile == true })
+        guard let aktifYenilemeliButceler = try? modelContext.fetch(descriptor) else { return }
+
+        // 2. Verimlilik için bütçeleri ana ID'lerine (zincirlerine) göre grupla.
+        // anaButceID'si olmayanlar (ilk oluşturulanlar) kendi ID'leri ile gruplanır.
+        let butceZincirleri = Dictionary(grouping: aktifYenilemeliButceler, by: { $0.anaButceID ?? $0.id })
+
+        // 3. Her bir bütçe zinciri için telafi kontrolü yap.
+        for (_, zincir) in butceZincirleri {
+            // Zincirdeki en son tarihli (en güncel) bütçeyi bul.
+            guard let sonButce = zincir.max(by: { $0.periyot < $1.periyot }) else { continue }
+            
+            // Bu döngü, eksik olan tüm ayları yakalayana kadar çalışır.
+            // Örneğin, kullanıcı uygulamayı 3 ay sonra açtıysa, 3 kez çalışır.
+            var mevcutSonButce = sonButce
+            while let birSonrakiPeriyot = getNextPeriod(for: mevcutSonButce.periyot), birSonrakiPeriyot <= Date() {
+                Logger.log("'\(mevcutSonButce.isim)' için kayıp ay (\(birSonrakiPeriyot)) bulundu, yenileniyor...", log: Logger.service)
+                // Eksik ay için yeni bütçeyi oluştur ve bir sonraki döngü için en son bütçe olarak ata.
+                mevcutSonButce = await renewSingleBudget(from: mevcutSonButce, to: birSonrakiPeriyot)
+            }
+        }
+        
+        // 4. Ön onay bildirimlerini gönderme mantığı (bu ayrı çalışabilir).
         let takvim = Calendar.current
         let bugun = takvim.startOfDay(for: Date())
-
-        // 1. Ayın sonundan bir gün önce miyiz? Ön onay bildirimleri için kontrol.
         if isOneDayBeforeEndOfMonth(date: bugun, calendar: takvim) {
             await sendPreRenewalNotifications(for: bugun)
         }
-
-        // 2. Ayın ilk günü müyüz? Yenileme işlemleri ve özet bildirimi için kontrol.
-        if takvim.component(.day, from: bugun) == 1 {
-            guard let oncekiAyinIlkGunu = takvim.date(byAdding: .month, value: -1, to: bugun) else { return }
-            let yenilenenButceSayisi = await renewBudgets(for: oncekiAyinIlkGunu)
-            
-            // Sadece bütçe yenilendiyse özet bildirimi gönder
-            if yenilenenButceSayisi > 0 {
-                await sendRenewalSummaryNotification(for: bugun, yenilenenSayi: yenilenenButceSayisi)
-            }
-        }
     }
 
-    // MARK: - Budget Renewal Logic
-    
-    /// Belirtilen ayın bütçelerini bir sonraki ay için yeniler ve yenilenen bütçe sayısını döndürür.
-    private func renewBudgets(for month: Date) async -> Int {
-        guard let ayAraligi = Calendar.current.dateInterval(of: .month, for: month) else { return 0 }
+    // --- YENİ EKLENDİ: İki yeni yardımcı fonksiyon ---
 
-        let predicate = #Predicate<Butce> { butce in
-            butce.periyot >= ayAraligi.start &&
-            butce.periyot < ayAraligi.end &&
-            butce.otomatikYenile == true
-        }
-        let descriptor = FetchDescriptor(predicate: predicate)
-
-        do {
-            let yenilenecekButceler = try modelContext.fetch(descriptor)
-            guard !yenilenecekButceler.isEmpty else { return 0 }
-            
-            Logger.log("\(yenilenecekButceler.count) adet bütçe yenileme için bulundu.", log: Logger.service)
-
-            for butce in yenilenecekButceler {
-                await createNextMonthBudget(from: butce)
-            }
-            
-            try modelContext.save()
-            return yenilenecekButceler.count
-            
-        } catch {
-            Logger.log("Yenilenecek bütçeler çekilirken hata: \(error)", log: Logger.service, type: .error)
-            return 0
-        }
-    }
-
-    /// Verilen bir bütçeden yola çıkarak bir sonraki ay için yeni bir bütçe oluşturur.
-    private func createNextMonthBudget(from previousBudget: Butce) async {
+    /// Tek bir bütçeyi, belirtilen yeni periyot için yeniler ve oluşturulan yeni bütçeyi döndürür.
+    private func renewSingleBudget(from previousBudget: Butce, to newPeriod: Date) async -> Butce {
         var buAykiDevir: Double = 0
         if previousBudget.devredenBakiyeEtkin {
             buAykiDevir = await calculateRolloverAmount(for: previousBudget)
@@ -88,12 +71,10 @@ class BudgetRenewalService {
         
         let toplamDevredenTutar = guncelDevirGecmisi.values.reduce(0, +)
         
-        guard let yeniPeriyot = Calendar.current.date(byAdding: .month, value: 1, to: previousBudget.periyot) else { return }
-        
         let yeniButce = Butce(
             isim: previousBudget.isim,
-            limitTutar: previousBudget.limitTutar, // Ana limit sabit kalır
-            periyot: yeniPeriyot,
+            limitTutar: previousBudget.limitTutar,
+            periyot: newPeriod,
             otomatikYenile: previousBudget.otomatikYenile,
             devredenBakiyeEtkin: previousBudget.devredenBakiyeEtkin,
             kategoriler: previousBudget.kategoriler ?? [],
@@ -103,6 +84,17 @@ class BudgetRenewalService {
         
         yeniButce.devirGecmisiSozlugu = guncelDevirGecmisi
         modelContext.insert(yeniButce)
+        
+        try? modelContext.save()
+        
+        // Özet bildirimi için bu bilgiyi kullanabiliriz.
+        // Şimdilik sadece yeni bütçeyi döndürüyoruz.
+        return yeniButce
+    }
+
+    /// Bir tarihin bir sonraki ayının başlangıcını döndürür.
+    private func getNextPeriod(for date: Date) -> Date? {
+        Calendar.current.date(byAdding: .month, value: 1, to: date)
     }
 
     /// Bir bütçenin devreden tutarını hesaplar (GÜVENLİ VERSİYON).
