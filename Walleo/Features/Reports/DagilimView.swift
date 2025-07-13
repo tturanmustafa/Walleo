@@ -48,15 +48,18 @@ struct DagilimView<ViewModel: RaporViewModelProtocol>: View {
                             .frame(width: 250, height: 250)
                             .chartBackground { chartProxy in
                                 GeometryReader { geometry in
-                                    let frame = geometry[chartProxy.plotAreaFrame]
-                                    VStack {
-                                        Text(LocalizedStringKey("common.total"))
-                                            .font(.callout)
-                                            .foregroundStyle(.secondary)
-                                        Text(formatCurrency(amount: seciliToplamTutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
-                                            .font(.title2.bold())
+                                    if let anchor = chartProxy.plotFrame {
+                                        let frame = geometry[anchor]
+
+                                        VStack {
+                                            Text(LocalizedStringKey("common.total"))
+                                                .font(.callout)
+                                                .foregroundStyle(.secondary)
+                                            Text(formatCurrency(amount: seciliToplamTutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
+                                                .font(.title2.bold())
+                                        }
+                                        .position(x: frame.midX, y: frame.midY)
                                     }
-                                    .position(x: frame.midX, y: frame.midY)
                                 }
                             }
                         }
