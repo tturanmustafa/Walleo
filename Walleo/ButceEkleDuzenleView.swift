@@ -8,9 +8,14 @@ struct ButceEkleDuzenleView: View {
     
     var duzenlenecekButce: Butce?
 
+    // State değişkenleri
     @State private var isim: String = ""
     @State private var limitString: String = ""
     @State private var secilenKategoriIDleri: Set<UUID> = []
+    
+    // --- YENİ EKLENEN STATE'LER ---
+    @State private var otomatikYenile: Bool = true
+    @State private var devredenBakiyeEtkin: Bool = false
 
     @State private var isLimitGecersiz = false
     @State private var kategoriSecimGoster = false
@@ -47,27 +52,19 @@ struct ButceEkleDuzenleView: View {
         NavigationStack {
             Form {
                 Section {
-                    // --- DÜZELTME BURADA ---
                     LabeledTextField(
-                        label: "form.label.budget_name", // Yeni etiket anahtarı
-                        placeholder: "budget.name_placeholder", // Orijinal, açıklayıcı anahtar
+                        label: "form.label.budget_name",
+                        placeholder: "budget.name_placeholder",
                         text: $isim
                     )
                     
-                    VStack(alignment: .leading) {
-                        // --- DÜZELTME BURADA ---
-                        LabeledAmountField(
-                            label: "form.label.budget_limit", // Yeni etiket anahtarı
-                            placeholder: "budget.limit_placeholder", // Orijinal, açıklayıcı anahtar
-                            valueString: $limitString,
-                            isInvalid: $isLimitGecersiz,
-                            locale: Locale(identifier: appSettings.languageCode)
-                        )
-                        if isLimitGecersiz {
-                            Text("validation.error.invalid_amount_format")
-                                .font(.caption).foregroundColor(.red).padding(.top, 2)
-                        }
-                    }
+                    LabeledAmountField(
+                        label: "form.label.budget_limit",
+                        placeholder: "budget.limit_placeholder",
+                        valueString: $limitString,
+                        isInvalid: $isLimitGecersiz,
+                        locale: Locale(identifier: appSettings.languageCode)
+                    )
                 }
                 
                 Section {
@@ -89,6 +86,25 @@ struct ButceEkleDuzenleView: View {
                         }
                     }
                     .foregroundColor(.primary)
+                }
+                
+                Section(header: Text("budget.automation_settings")) {
+                    HStack {
+                        Text(LocalizedStringKey("budget.form.auto_renew"))
+                        Spacer() // Metin ve anahtar arasına boşluk ekleyerek sağa iter.
+                        Toggle("", isOn: $otomatikYenile.animation())
+                            .labelsHidden() // Toggle'ın kendi iç etiketini gizler.
+                    }
+                    
+                    // --- 2. DEVREDEN BAKİYE SATIRI (YENİ YAPI) ---
+                    if otomatikYenile {
+                        HStack {
+                            Text(LocalizedStringKey("budget.form.rollover_balance"))
+                            Spacer() // Metin ve anahtar arasına boşluk ekleyerek sağa iter.
+                            Toggle("", isOn: $devredenBakiyeEtkin)
+                                .labelsHidden() // Toggle'ın kendi iç etiketini gizler.
+                        }
+                    }
                 }
             }
             .navigationTitle(duzenlenecekButce == nil ? LocalizedStringKey("budgets.add.title") : LocalizedStringKey("budgets.edit.title"))
@@ -115,52 +131,41 @@ struct ButceEkleDuzenleView: View {
         guard let butce = duzenlenecekButce else { return }
         self.isim = butce.isim
         self.limitString = formatAmountForEditing(amount: butce.limitTutar, localeIdentifier: appSettings.languageCode)
-        self.isLimitGecersiz = false
+        self.otomatikYenile = butce.otomatikYenile
+        self.devredenBakiyeEtkin = butce.devredenBakiyeEtkin
         if let kategoriler = butce.kategoriler {
             self.secilenKategoriIDleri = Set(kategoriler.map { $0.id })
         }
     }
     
     private func kaydet() {
-        // Güvenli değer kontrolü
-        guard !isim.trimmingCharacters(in: .whitespaces).isEmpty else {
-            Logger.log("Bütçe adı boş olamaz", log: Logger.view, type: .error)
-            return
-        }
-        
         let limit = stringToDouble(limitString, locale: Locale(identifier: appSettings.languageCode))
-        guard limit > 0 else {
-            Logger.log("Geçersiz limit tutarı", log: Logger.view, type: .error)
-            return
-        }
-        
         let secilenKategoriler = tumKategoriler.filter { secilenKategoriIDleri.contains($0.id) }
-        guard !secilenKategoriler.isEmpty else {
-            Logger.log("En az bir kategori seçilmelidir", log: Logger.view, type: .error)
-            return
+        
+        if let butce = duzenlenecekButce {
+            // Güncelleme
+            butce.isim = isim.trimmingCharacters(in: .whitespaces)
+            butce.limitTutar = limit
+            butce.kategoriler = secilenKategoriler
+            butce.otomatikYenile = otomatikYenile
+            butce.devredenBakiyeEtkin = devredenBakiyeEtkin
+        } else {
+            // Yeni bütçe oluşturma
+            let calendar = Calendar.current
+            let ayinBasi = calendar.date(from: calendar.dateComponents([.year, .month], from: Date())) ?? Date()
+            
+            let yeniButce = Butce(
+                isim: isim.trimmingCharacters(in: .whitespaces),
+                limitTutar: limit,
+                periyot: ayinBasi, // Bütçeyi bu ay için oluştur
+                otomatikYenile: otomatikYenile,
+                devredenBakiyeEtkin: devredenBakiyeEtkin,
+                kategoriler: secilenKategoriler
+            )
+            modelContext.insert(yeniButce)
         }
         
-        do {
-            if let butce = duzenlenecekButce {
-                // Güncelleme
-                butce.isim = isim.trimmingCharacters(in: .whitespaces)
-                butce.limitTutar = limit
-                butce.kategoriler = secilenKategoriler
-            } else {
-                // Yeni bütçe
-                let yeniButce = Butce(
-                    isim: isim.trimmingCharacters(in: .whitespaces),
-                    limitTutar: limit,
-                    kategoriler: secilenKategoriler
-                )
-                modelContext.insert(yeniButce)
-            }
-            
-            try modelContext.save()
-            dismiss()
-            
-        } catch {
-            Logger.log("Bütçe kaydetme hatası: \(error)", log: Logger.data, type: .error)
-        }
+        try? modelContext.save()
+        dismiss()
     }
 }

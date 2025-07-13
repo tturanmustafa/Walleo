@@ -7,10 +7,11 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
+		<string>processing</string>
 	</array>
-    <key>NSUserTrackingUsageDescription</key>
-    <string>Aile hesabına üye eklemek için diğer kullanıcıları bulmanız gerekiyor.</string>
-    <key>NSContactsUsageDescription</key>
-    <string>Aile hesabına üye eklemek için kişilerinize erişim gerekiyor.</string>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.walleo.bgtask.renewBudgets</string>
+	</array>
 </dict>
 </plist>

@@ -500,3 +500,17 @@
 "family.error.must_leave_family_first" = "You must leave the family account before deleting all data";
 "family.error.cannot_disable_icloud" = "Cannot Disable iCloud";
 "family.error.icloud_required_for_family" = "iCloud is required for family account sync";
+
+// MARK: - Budgets Additional
+"budget.automation_settings" = "Automation Settings";
+"budget.form.auto_renew" = "Renew automatically every month";
+"budget.form.rollover_balance" = "Rollover balance from last month";
+"budget.list.period_ended" = "Period Ended";
+"budget.detail.period_info" = "Period Information";
+"budget.detail.budget_period" = "Budget Period";
+"budget.detail.rollover_from_last_month" = "Rollover from Last Month";
+"budget.detail.transactions_for_period" = "Transactions for This Period";
+"notification.budget.pre_renewal.title" = "Your Budget is About to Renew";
+"notification.budget.pre_renewal.body" = "Your '%@' budget will be renewed for next month with a rollover of %@.";
+"notification.budget.renewal_summary.title" = "Your Budgets Have Renewed!";
+"notification.budget.renewal_summary.body" = "Welcome, %@! ☕️ %d of your budgets have been automatically renewed for this month.";

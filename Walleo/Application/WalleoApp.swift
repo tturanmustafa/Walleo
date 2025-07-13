@@ -2,15 +2,18 @@ import SwiftUI
 import SwiftData
 import RevenueCat
 import CloudKit
+import BackgroundTasks // Arka plan görevleri için bu framework'ü import ediyoruz
 
 @main
 struct WalleoApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var entitlementManager = EntitlementManager()
     @StateObject private var appSettings = AppSettings()
     @StateObject private var cloudKitManager = CloudKitManager.shared
     
     let modelContainer: ModelContainer
     @State private var viewID = UUID()
+    private let budgetRenewalTaskID = "com.walleo.bgtask.renewBudgets"
 
     init() {
         // RevenueCat SDK'sını başlat
@@ -42,6 +45,7 @@ struct WalleoApp: App {
             Logger.log("KRİTİK HATA: ModelContainer oluşturulamadı. Hata: \(error.localizedDescription)", log: Logger.data, type: .fault)
             fatalError("ModelContainer oluşturulamadı: \(error)")
         }
+        registerBackgroundTask()
     }
 
     var body: some Scene {
@@ -74,6 +78,12 @@ struct WalleoApp: App {
             }
         }
         .modelContainer(modelContainer)
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .background {
+                // Uygulama arka plana atıldığında, bütçe yenileme görevini zamanla
+                scheduleBudgetRenewalTask()
+            }
+        }
     }
 
     private func deleteAllData() {
@@ -131,6 +141,52 @@ struct WalleoApp: App {
             }
         } catch {
             Logger.log("CloudKit permission request failed: \(error)", log: Logger.service, type: .error)
+        }
+    }
+    private func registerBackgroundTask() {
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: budgetRenewalTaskID, using: nil) { task in
+            Logger.log("Arka plan bütçe yenileme görevi BAŞLADI.", log: Logger.service, type: .info)
+            
+            task.expirationHandler = {
+                task.setTaskCompleted(success: false)
+                Logger.log("Arka plan görevi zaman aşımına uğradı.", log: Logger.service, type: .error)
+            }
+
+            // --- DÜZELTME: GÜVENLİ VERİTABANI BAĞLANTISI ---
+            // Arka plan görevi için ana konteynırdan yeni ve bağımsız bir context oluşturuyoruz.
+            let backgroundContext = ModelContext(modelContainer)
+            let service = BudgetRenewalService(modelContext: backgroundContext)
+            // --- DÜZELTME SONU ---
+            
+            Task {
+                await service.runDailyChecks()
+                
+                // Değişiklikleri kaydetmeye çalış
+                do {
+                    try backgroundContext.save()
+                    task.setTaskCompleted(success: true)
+                    Logger.log("Arka plan görevi TAMAMLANDI ve değişiklikler kaydedildi.", log: Logger.service, type: .info)
+                } catch {
+                    task.setTaskCompleted(success: false)
+                    Logger.log("Arka plan context'i kaydedilirken hata: \(error)", log: Logger.service, type: .error)
+                }
+                
+                self.scheduleBudgetRenewalTask()
+            }
+        }
+    }
+
+    /// Arka plan görevinin bir sonraki sefer için çalışmasını iOS'tan talep eder.
+    private func scheduleBudgetRenewalTask() {
+        let request = BGAppRefreshTaskRequest(identifier: budgetRenewalTaskID)
+        // Görevin en erken ne zaman çalışabileceğini belirtiyoruz (örn: 3 saat sonra)
+        request.earliestBeginDate = Calendar.current.date(byAdding: .hour, value: 3, to: Date())
+        
+        do {
+            try BGTaskScheduler.shared.submit(request)
+            Logger.log("Bütçe yenileme görevi başarıyla zamanlandı.", log: Logger.service)
+        } catch {
+            Logger.log("Bütçe yenileme görevi zamanlanamadı: \(error)", log: Logger.service, type: .error)
         }
     }
 }
