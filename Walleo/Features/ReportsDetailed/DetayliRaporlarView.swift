@@ -1,4 +1,4 @@
-// >> GÜNCELLENECEK DOSYA: Features/Reports/DetayliRaporlarView.swift
+// >> GÜNCELLENECEK DOSYA: Features/ReportsDetailed/DetayliRaporlarView.swift
 
 import SwiftUI
 
@@ -6,9 +6,10 @@ struct DetayliRaporlarView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel = DetayliRaporlarViewModel()
     
-    @State private var secilenRaporTuru: RaporTuru = .krediKarti
+    @State private var secilenRaporTuru: RaporTuru = .harcamalar
     
     enum RaporTuru: String, CaseIterable, Identifiable {
+        case harcamalar = "reports.detailed.spending_heatmap"
         case krediKarti = "reports.detailed.credit_card_report"
         case kredi = "reports.detailed.loan_report"
         
@@ -16,7 +17,7 @@ struct DetayliRaporlarView: View {
     }
 
     var body: some View {
-        NavigationStack {  // <-- NavigationStack eklendi
+        NavigationStack {
             VStack(spacing: 0) {
                 // Başlık ve Picker'ları içeren üst bölüm
                 VStack {
@@ -34,6 +35,13 @@ struct DetayliRaporlarView: View {
 
                 // Rapor içeriğini gösteren switch
                 switch secilenRaporTuru {
+                case .harcamalar:
+                    HarcamaIsiHaritasiView(
+                        modelContext: modelContext,
+                        baslangicTarihi: viewModel.baslangicTarihi,
+                        bitisTarihi: viewModel.bitisTarihi
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 case .krediKarti:
                     KrediKartiRaporuView(
                         modelContext: modelContext,
@@ -52,14 +60,13 @@ struct DetayliRaporlarView: View {
             }
             .navigationTitle("reports.detailed.title")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)  // <-- Geri butonunu gizle
+            .navigationBarBackButtonHidden(true)
             .onChange(of: viewModel.baslangicTarihi) { viewModel.fetchData() }
             .onChange(of: viewModel.bitisTarihi) { viewModel.fetchData() }
             .onAppear { viewModel.fetchData() }
-        }  // <-- NavigationStack kapandı
+        }
     }
     
-    // --- DÜZELTME 2: Tarih seçicilere etiketler eklendi ---
     private var tarihSecimAlani: some View {
         HStack(spacing: 16) {
             // Başlangıç Tarihi
