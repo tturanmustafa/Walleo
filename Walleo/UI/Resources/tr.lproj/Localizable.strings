@@ -548,3 +548,24 @@
 "reports.detailed.paid_only" = "Sadece Ödendi İşaretlenenler";
 "reports.detailed.overdue" = "Vadesi Geçmiş Taksitler";
 "reports.detailed.upcoming" = "Gelecek Taksitler";
+
+/* Harcama Isı Haritası */
+"reports.detailed.spending_heatmap" = "Harcamalar";
+"reports.heatmap.no_data" = "Seçilen tarih aralığında harcama bulunamadı";
+"reports.heatmap.hourly_distribution" = "Saatlik Dağılım";
+"reports.heatmap.comparison" = "Karşılaştırma";
+"reports.heatmap.insights" = "Akıllı İçgörüler";
+
+/* Zaman Dilimleri */
+"reports.heatmap.morning" = "Sabah";
+"reports.heatmap.noon" = "Öğle";
+"reports.heatmap.evening" = "Akşam";
+"reports.heatmap.night" = "Gece";
+"reports.heatmap.weekday" = "Hafta İçi";
+"reports.heatmap.weekend" = "Hafta Sonu";
+
+/* İçgörüler */
+"reports.heatmap.insight.busiest_day" = "En yoğun gün: %@";
+"reports.heatmap.insight.busiest_hour" = "En aktif saat: %@";
+"reports.heatmap.insight.weekend_comparison" = "Hafta sonları %%%@ daha fazla harcama";
+"reports.heatmap.insight.no_spending_days" = "%@ gün hiç harcama yapılmamış";

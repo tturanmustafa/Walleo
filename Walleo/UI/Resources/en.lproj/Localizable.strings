@@ -548,3 +548,24 @@
 "reports.detailed.paid_only" = "Marked as Paid Only";
 "reports.detailed.overdue" = "Overdue Installments";
 "reports.detailed.upcoming" = "Upcoming Installments";
+
+/* Spending Heatmap */
+"reports.detailed.spending_heatmap" = "Spending";
+"reports.heatmap.no_data" = "No spending found in selected date range";
+"reports.heatmap.hourly_distribution" = "Hourly Distribution";
+"reports.heatmap.comparison" = "Comparison";
+"reports.heatmap.insights" = "Smart Insights";
+
+/* Time Periods */
+"reports.heatmap.morning" = "Morning";
+"reports.heatmap.noon" = "Noon";
+"reports.heatmap.evening" = "Evening";
+"reports.heatmap.night" = "Night";
+"reports.heatmap.weekday" = "Weekday";
+"reports.heatmap.weekend" = "Weekend";
+
+/* Insights */
+"reports.heatmap.insight.busiest_day" = "Busiest day: %@";
+"reports.heatmap.insight.busiest_hour" = "Most active hour: %@";
+"reports.heatmap.insight.weekend_comparison" = "%%%@ more spending on weekends";
+"reports.heatmap.insight.no_spending_days" = "No spending for %@ days";
