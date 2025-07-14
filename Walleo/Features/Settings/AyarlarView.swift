@@ -24,6 +24,8 @@ struct AyarlarView: View {
 
     @State private var showPaywall = false
     @State private var aileHesabiYonetimGoster = false
+    @State private var isExportingPDF = false
+    @State private var pdfShareableURL: ShareableURL?
 
     var body: some View {
         Form {
@@ -41,7 +43,9 @@ struct AyarlarView: View {
                 showingDeleteConfirmationAlert: $showingDeleteConfirmationAlert,
                 showPaywall: $showPaywall,
                 aileHesabiYonetimGoster: $aileHesabiYonetimGoster,
-                showCloudKitFamilyWarning: $showCloudKitFamilyWarning
+                showCloudKitFamilyWarning: $showCloudKitFamilyWarning,
+                isExportingPDF = $isExportingPDF,
+                pdfShareableURL: $shareableURL,
             )
             
             BilgiBolumu()
@@ -63,6 +67,9 @@ struct AyarlarView: View {
             AileHesabiYonetimView()
                 .environmentObject(appSettings)
                 .environmentObject(entitlementManager)
+        }
+        .sheet(item: $pdfShareableURL) { wrapper in
+            ActivityView(activityItems: [wrapper.url])
         }
         // CHANGE HANDLERS
         .onChange(of: entitlementManager.hasPremiumAccess) { _, yeniDurum in
@@ -230,6 +237,8 @@ struct VeriYonetimiBolumu: View {
     @Binding var showPaywall: Bool
     @Binding var aileHesabiYonetimGoster: Bool
     @Binding var showCloudKitFamilyWarning: Bool
+    @State private var isExportingPDF = false
+    @State private var pdfShareableURL: ShareableURL?
     
     @State private var aileHesabindanAyrilUyarisi = false
     @StateObject private var aileService = AileHesabiService.shared
@@ -298,6 +307,22 @@ struct VeriYonetimiBolumu: View {
             .foregroundColor(.primary)
             .padding(.vertical, 4)
             
+            Button(action: exportDetailedReportsPDF) {
+                HStack {
+                    AyarIkonu(iconName: "doc.text.fill", color: .orange)
+                    if isExportingPDF {
+                        Text(LocalizedStringKey("settings.data.exporting_pdf"))
+                        Spacer()
+                        ProgressView()
+                    } else {
+                        Text(LocalizedStringKey("settings.data.export_reports_pdf"))
+                    }
+                }
+            }
+            .disabled(isExportingPDF)
+            .foregroundColor(.primary)
+            .padding(.vertical, 4)
+            
             // Verileri Sil
             Button(role: .destructive) {
                 showingDeleteConfirmationAlert = true
@@ -340,6 +365,54 @@ struct VeriYonetimiBolumu: View {
                 Logger.log("CSV dosyası geçici olarak kaydedilirken hata oluştu: \(error.localizedDescription)", log: Logger.service, type: .error)
                 DispatchQueue.main.async {
                     self.isExporting = false
+                }
+            }
+        }
+    }
+    
+    private func exportDetailedReportsPDF() {
+        isExportingPDF = true
+        
+        Task {
+            do {
+                // Tüm rapor türlerini export et
+                let allReports = DetayliRaporlarView.RaporTuru.allCases
+                
+                // Bu ayın başı ve sonu
+                let calendar = Calendar.current
+                let now = Date()
+                let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: now))!
+                let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: startOfMonth)!
+                
+                // ViewModel oluştur ve verileri yükle
+                let viewModel = DetayliRaporlarViewModel(modelContext: modelContext)
+                viewModel.baslangicTarihi = startOfMonth
+                viewModel.bitisTarihi = endOfMonth
+                
+                // Her rapor için verileri yükle
+                for report in allReports {
+                    await viewModel.veriYukle(tur: report)
+                    try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 saniye bekle
+                }
+                
+                // PDF oluştur
+                let pdfURL = try await PDFExportService.generateDetailedReportsPDF(
+                    reports: allReports,
+                    dateRange: (startOfMonth, endOfMonth),
+                    viewModel: viewModel,
+                    languageCode: appSettings.languageCode,
+                    currencyCode: appSettings.currencyCode
+                )
+                
+                await MainActor.run {
+                    self.pdfShareableURL = ShareableURL(url: pdfURL)
+                    self.isExportingPDF = false
+                }
+                
+            } catch {
+                Logger.log("PDF export hatası: \(error)", log: Logger.service, type: .error)
+                await MainActor.run {
+                    self.isExportingPDF = false
                 }
             }
         }
