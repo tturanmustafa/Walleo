@@ -36,20 +36,17 @@ struct ButcelerView: View {
         .task {
             if viewModel == nil {
                 viewModel = ButcelerViewModel(modelContext: modelContext)
-                // --- DÜZELTME: Gereksiz 'await' kaldırıldı ---
-                viewModel?.hesaplamalariTetikle()
+                await viewModel?.hesaplamalariTetikle()
             }
         }
         // Yeni bütçe eklendiğinde veya bir bütçe düzenlendiğinde listeyi yenile.
         .sheet(isPresented: $yeniButceEkleGoster, onDismiss: {
-            // --- DÜZELTME: Gereksiz 'Task' ve 'await' kaldırıldı ---
-            viewModel?.hesaplamalariTetikle()
+            Task { await viewModel?.hesaplamalariTetikle() }
         }) {
             ButceEkleDuzenleView()
         }
         .sheet(item: $duzenlenecekButce, onDismiss: {
-            // --- DÜZELTME: Gereksiz 'Task' ve 'await' kaldırıldı ---
-            viewModel?.hesaplamalariTetikle()
+            Task { await viewModel?.hesaplamalariTetikle() }
         }) { butce in
             ButceEkleDuzenleView(duzenlenecekButce: butce)
         }
@@ -198,141 +195,81 @@ struct ButceKartLinkView: View {
 // MARK: - Bütçeler ViewModel (ButcelerViewModel)
 //================================================================
 
-// ButcelerView.swift dosyasının en altındaki ViewModel extension'ını bununla değiştir.
-
 extension ButcelerView {
     @MainActor
     @Observable
     class ButcelerViewModel {
         var modelContext: ModelContext
         
+        // Arayüzün kullanacağı gruplanmış ve hesaplanmış veri.
         var gruplanmisButceler: [Date: [GosterilecekButce]] = [:]
         var siraliAylar: [Date] = []
+        
+        // Sadece ana listede görünecek tüm bütçeler
         var gosterilecekButceler: [GosterilecekButce] = []
 
-        // MARK: - Init & Notification
-        
         init(modelContext: ModelContext) {
             self.modelContext = modelContext
-            // Bildirim geldiğinde artık "akıllı" fonksiyonu çağırıyoruz.
+            // Veri değiştiğinde listeyi yenilemek için dinleyici.
             NotificationCenter.default.addObserver(
                 self,
-                selector: #selector(handleDataChange),
+                selector: #selector(hesaplamalariTetikle),
                 name: .transactionsDidChange,
                 object: nil
             )
         }
         
-        /// Gelen bildirimin içeriğini kontrol eder ve duruma göre hedefli veya genel güncelleme yapar.
-        @objc private func handleDataChange(notification: Notification) {
-            if let payload = notification.userInfo?["payload"] as? TransactionChangePayload,
-               let categoryID = payload.affectedCategoryIDs.first {
-                // "Akıllı" Yol: Sadece ilgili kategorinin bütçesini güncelle.
-                Logger.log("Hedefli bütçe güncellemesi tetiklendi. Kategori ID: \(categoryID)", log: Logger.service)
-                Task {
-                    await updateTargetedBudgets(for: categoryID)
-                }
-            } else {
-                // "Güvenli" Yol: Her şeyi yeniden hesapla.
-                Logger.log("Genel bütçe güncellemesi tetiklendi.", log: Logger.service)
-                Task {
-                    await updateAllBudgets()
-                }
-            }
-        }
-        
-        // MARK: - Ana Fonksiyonlar
-        
-        /// Sadece görünüm ilk açıldığında veya genel bir yenileme gerektiğinde kullanılır.
-        func hesaplamalariTetikle() {
+        /// Veri çekme ve hesaplama işlemini başlatan tetikleyici.
+        @objc func hesaplamalariTetikle() {
             Task {
-                await updateAllBudgets()
+                await butceDurumlariniHesapla()
             }
         }
 
+        /// Seçilen bütçeyi veritabanından siler.
         func deleteButce(_ butce: Butce) {
             modelContext.delete(butce)
-            hesaplamalariTetikle() // Silme sonrası her zaman tam yenileme yapılır.
-        }
-        
-        // MARK: - Güncelleme Stratejileri
-        
-        /// "Hızlı Yol": Sadece belirli bir kategoriyi içeren bütçelerin harcamalarını yeniden hesaplar.
-        private func updateTargetedBudgets(for categoryID: UUID) async {
-            // 1. Sadece etkilenen bütçeleri mevcut listemizden bul.
-            let etkilenenButceIDleri = gosterilecekButceler
-                .filter { $0.butce.kategoriler?.contains(where: { $0.id == categoryID }) ?? false }
-                .map { $0.id }
-            
-            guard !etkilenenButceIDleri.isEmpty else { return }
-            
-            // 2. Verimlilik için o ayın tüm giderlerini sadece bir kez veritabanından çek.
-            do {
-                let butceAraligi = Calendar.current.dateInterval(of: .month, for: Date())!
-                let giderTuruRawValue = IslemTuru.gider.rawValue
-                let descriptor = FetchDescriptor<Islem>(predicate: #Predicate { $0.turRawValue == giderTuruRawValue && $0.tarih >= butceAraligi.start && $0.tarih < butceAraligi.end })
-                let tumAylikGiderler = try modelContext.fetch(descriptor)
-                
-                // 3. Ana listedeki etkilenen bütçeleri bul ve harcamalarını güncelle.
-                for i in 0..<gosterilecekButceler.count {
-                    if etkilenenButceIDleri.contains(gosterilecekButceler[i].id) {
-                        gosterilecekButceler[i].harcananTutar = calculateSpending(for: gosterilecekButceler[i].butce, using: tumAylikGiderler)
-                    }
-                }
-                
-                // 4. Listeyi yeniden grupla ve sırala (veritabanı okuması olmadan).
-                regroupAndSort()
-                
-            } catch {
-                 Logger.log("Hedefli bütçe güncellemesi sırasında hata: \(error.localizedDescription)", log: Logger.data, type: .error)
+            Task {
+                await hesaplamalariTetikle()
             }
         }
         
-        /// "Güvenli Yol": Tüm bütçelerin harcamalarını en baştan, veritabanından okuyarak hesaplar.
-        private func updateAllBudgets() async {
+        /// Tüm bütçeleri çeker, harcanan tutarlarını hesaplar ve aylara göre gruplar.
+        func butceDurumlariniHesapla() async {
             do {
+                // 1. Tüm bütçeleri çek.
                 let butceDescriptor = FetchDescriptor<Butce>(sortBy: [SortDescriptor(\.periyot, order: .reverse)])
                 let tumButceler = try modelContext.fetch(butceDescriptor)
                 
+                // 2. Harcama hesaplaması için gerekli tüm işlemleri tek seferde çek.
                 let giderTuruRawValue = IslemTuru.gider.rawValue
-                let descriptor = FetchDescriptor<Islem>(predicate: #Predicate { $0.turRawValue == giderTuruRawValue })
-                let tumGiderler = try modelContext.fetch(descriptor)
+                let tumGiderler = try modelContext.fetch(FetchDescriptor<Islem>(predicate: #Predicate { $0.turRawValue == giderTuruRawValue }))
                 
+                // 3. Her bütçe için harcanan tutarı hesapla ve GosterilecekButce nesneleri oluştur.
                 var yeniGosterilecekler: [GosterilecekButce] = []
                 for butce in tumButceler {
                     let butceAraligi = Calendar.current.dateInterval(of: .month, for: butce.periyot)!
-                    let butceGiderleri = tumGiderler.filter { $0.tarih >= butceAraligi.start && $0.tarih < butceAraligi.end }
-                    let harcanan = calculateSpending(for: butce, using: butceGiderleri)
-                    yeniGosterilecekler.append(GosterilecekButce(butce: butce, harcananTutar: harcanan))
+                    let kategoriIDleri = Set(butce.kategoriler?.map { $0.id } ?? [])
+                    
+                    let harcananTutar = tumGiderler.filter { islem in
+                        islem.tarih >= butceAraligi.start &&
+                        islem.tarih < butceAraligi.end &&
+                        kategoriIDleri.contains(islem.kategori?.id ?? UUID())
+                    }.reduce(0) { $0 + $1.tutar }
+                    
+                    yeniGosterilecekler.append(GosterilecekButce(butce: butce, harcananTutar: harcananTutar))
                 }
                 
+                // 4. Hesaplanan veriyi arayüzün kullanacağı şekilde grupla ve sırala.
                 self.gosterilecekButceler = yeniGosterilecekler
-                regroupAndSort()
+                self.gruplanmisButceler = Dictionary(grouping: yeniGosterilecekler) {
+                    return Calendar.current.startOfDay(for: $0.butce.periyot)
+                }
+                self.siraliAylar = self.gruplanmisButceler.keys.sorted(by: >)
                 
             } catch {
-                Logger.log("Genel bütçe güncellemesi sırasında hata: \(error.localizedDescription)", log: Logger.data, type: .error)
+                Logger.log("Bütçe durumları hesaplanırken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
             }
-        }
-        
-        // MARK: - Yardımcı Fonksiyonlar
-        
-        /// Tek bir bütçenin harcamasını, önceden çekilmiş işlem listesini kullanarak hesaplar.
-        private func calculateSpending(for budget: Butce, using transactions: [Islem]) -> Double {
-            let kategoriIDleri = Set(budget.kategoriler?.map { $0.id } ?? [])
-            guard !kategoriIDleri.isEmpty else { return 0.0 }
-            
-            let harcananTutar = transactions.filter { islem in
-                guard let kategoriID = islem.kategori?.id else { return false }
-                return kategoriIDleri.contains(kategoriID)
-            }.reduce(0) { $0 + $1.tutar }
-            
-            return harcananTutar
-        }
-        
-        /// Mevcut `gosterilecekButceler` listesini aylara göre gruplar ve sıralar.
-        private func regroupAndSort() {
-            self.gruplanmisButceler = Dictionary(grouping: gosterilecekButceler) { Calendar.current.startOfDay(for: $0.butce.periyot) }
-            self.siraliAylar = self.gruplanmisButceler.keys.sorted(by: >)
         }
     }
 }
