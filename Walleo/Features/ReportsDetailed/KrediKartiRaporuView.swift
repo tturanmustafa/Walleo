@@ -36,7 +36,31 @@ struct KrediKartiRaporuView: View {
 
     var body: some View {
         ScrollView {
-            // ... (ScrollView içeriği aynı kalıyor) ...
+            VStack(spacing: 20) {
+                if viewModel.isLoading {
+                    ProgressView("Yükleniyor...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(.top, 100)
+                } else if viewModel.kartDetayRaporlari.isEmpty {
+                    ContentUnavailableView(
+                        "Veri Bulunamadı",
+                        systemImage: "creditcard.fill",
+                        description: Text("Seçilen tarih aralığında kredi kartı harcaması bulunamadı.")
+                    )
+                    .padding(.top, 100)
+                } else {
+                    // Genel özet kartı
+                    GenelOzetKarti(ozet: viewModel.genelOzet)
+                        .padding(.horizontal)
+                    
+                    // Her kart için detay paneli
+                    ForEach(viewModel.kartDetayRaporlari) { rapor in
+                        kartDetayPaneli(rapor: rapor)
+                            .padding(.horizontal)
+                    }
+                }
+            }
+            .padding(.vertical)
         }
         .onAppear { Task { await viewModel.fetchData() } }
         // --- KESİN ÇÖZÜMÜN EKLENDİĞİ YER ---

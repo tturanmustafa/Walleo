@@ -16,46 +16,47 @@ struct DetayliRaporlarView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            // Başlık ve Picker'ları içeren üst bölüm
-            VStack {
-                tarihSecimAlani
-                
-                Picker("Rapor Türü", selection: $secilenRaporTuru) {
-                    ForEach(RaporTuru.allCases) { tur in
-                        Text(LocalizedStringKey(tur.rawValue)).tag(tur)
+        NavigationStack {  // <-- NavigationStack eklendi
+            VStack(spacing: 0) {
+                // Başlık ve Picker'ları içeren üst bölüm
+                VStack {
+                    tarihSecimAlani
+                    
+                    Picker("Rapor Türü", selection: $secilenRaporTuru) {
+                        ForEach(RaporTuru.allCases) { tur in
+                            Text(LocalizedStringKey(tur.rawValue)).tag(tur)
+                        }
                     }
+                    .pickerStyle(.segmented)
                 }
-                .pickerStyle(.segmented)
-            }
-            .padding()
-            .background(.regularMaterial)
+                .padding()
+                .background(.regularMaterial)
 
-            // Rapor içeriğini gösteren switch
-            switch secilenRaporTuru {
-            case .krediKarti:
-                KrediKartiRaporuView(
-                    modelContext: modelContext,
-                    baslangicTarihi: viewModel.baslangicTarihi,
-                    bitisTarihi: viewModel.bitisTarihi
-                )
-            case .kredi:
-                KrediRaporuView(
-                    modelContext: modelContext,
-                    baslangicTarihi: viewModel.baslangicTarihi,
-                    bitisTarihi: viewModel.bitisTarihi
-                )
+                // Rapor içeriğini gösteren switch
+                switch secilenRaporTuru {
+                case .krediKarti:
+                    KrediKartiRaporuView(
+                        modelContext: modelContext,
+                        baslangicTarihi: viewModel.baslangicTarihi,
+                        bitisTarihi: viewModel.bitisTarihi
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                case .kredi:
+                    KrediRaporuView(
+                        modelContext: modelContext,
+                        baslangicTarihi: viewModel.baslangicTarihi,
+                        bitisTarihi: viewModel.bitisTarihi
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
             }
-            
-            // --- EKLENECEK SATIR ---
-            // Bu Spacer, içerik görünümlerine render edilecek alanı verir
-            // ve bomboş ekran sorununu çözer.
-            Spacer()
-        }
-        .navigationTitle("reports.detailed.title")
-        .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: viewModel.baslangicTarihi) { viewModel.fetchData() }
-        .onChange(of: viewModel.bitisTarihi) { viewModel.fetchData() }
+            .navigationTitle("reports.detailed.title")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)  // <-- Geri butonunu gizle
+            .onChange(of: viewModel.baslangicTarihi) { viewModel.fetchData() }
+            .onChange(of: viewModel.bitisTarihi) { viewModel.fetchData() }
+            .onAppear { viewModel.fetchData() }
+        }  // <-- NavigationStack kapandı
     }
     
     // --- DÜZELTME 2: Tarih seçicilere etiketler eklendi ---

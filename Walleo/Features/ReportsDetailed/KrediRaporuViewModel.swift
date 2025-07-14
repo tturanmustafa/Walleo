@@ -45,6 +45,7 @@ class KrediRaporuViewModel {
     
     func fetchData() async {
         isLoading = true
+        Logger.log("Kredi Raporu: Veri çekme başladı. Tarih aralığı: \(baslangicTarihi) - \(bitisTarihi)", log: Logger.service)
         
         let sorguBitisTarihi = Calendar.current.date(byAdding: .day, value: 1, to: bitisTarihi) ?? bitisTarihi
         
@@ -52,9 +53,12 @@ class KrediRaporuViewModel {
         let krediTuru = HesapTuru.kredi.rawValue
         let hesapPredicate = #Predicate<Hesap> { $0.hesapTuruRawValue == krediTuru }
         guard let krediHesaplari = try? modelContext.fetch(FetchDescriptor(predicate: hesapPredicate)) else {
+            Logger.log("Kredi Raporu: Hiç kredi hesabı bulunamadı", log: Logger.service, type: .error)
             isLoading = false
             return
         }
+        
+        Logger.log("Kredi Raporu: \(krediHesaplari.count) adet kredi bulundu", log: Logger.service)
 
         // 2. Tüm taksitleri ve ilgili işlemleri çek
         var tumDonemTaksitleri: [KrediTaksitDetayi] = []
@@ -86,6 +90,7 @@ class KrediRaporuViewModel {
         self.krediDetayRaporlari = tumRaporlar.sorted(by: { $0.donemdekiTaksitTutari > $1.donemdekiTaksitTutari })
         
         isLoading = false
+        Logger.log("Kredi Raporu: Veri çekme tamamlandı. Rapor sayısı: \(krediDetayRaporlari.count), Toplam taksit: \(tumDonemTaksitleri.count)", log: Logger.service)
     }
     
     // Bir taksidin gider olarak eklenip eklenmediğini kontrol eden fonksiyon

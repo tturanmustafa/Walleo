@@ -43,15 +43,19 @@ class KrediKartiRaporuViewModel {
 
     func fetchData() async {
         isLoading = true
+        Logger.log("KrediKarti Raporu: Veri çekme başladı. Tarih aralığı: \(baslangicTarihi) - \(bitisTarihi)", log: Logger.service)
         
         let sorguBitisTarihi = Calendar.current.date(byAdding: .day, value: 1, to: bitisTarihi) ?? bitisTarihi
 
         let krediKartiTuru = HesapTuru.krediKarti.rawValue
         let hesapPredicate = #Predicate<Hesap> { $0.hesapTuruRawValue == krediKartiTuru }
         guard let kartHesaplari = try? modelContext.fetch(FetchDescriptor(predicate: hesapPredicate)) else {
+            Logger.log("KrediKarti Raporu: Hiç kredi kartı hesabı bulunamadı", log: Logger.service, type: .error)
             isLoading = false
             return
         }
+        
+        Logger.log("KrediKarti Raporu: \(kartHesaplari.count) adet kart bulundu", log: Logger.service)
         let kartHesapIDleri = Set(kartHesaplari.map { $0.id }) // Daha hızlı arama için Set'e çeviriyoruz.
         
         // --- DÜZELTME BAŞLIYOR ---
@@ -79,15 +83,17 @@ class KrediKartiRaporuViewModel {
             }
         
             // 4. ADIM: Verileri işle ve raporları oluştur. (Bu kısım aynı kalıyor)
+            Logger.log("KrediKarti Raporu: \(tumIslemler.count) adet işlem bulundu", log: Logger.service)
             hesaplamalariYap(kartHesaplari: kartHesaplari, tumIslemler: tumIslemler)
             
         } catch {
-            print("Detaylı Raporlar için işlem verisi çekilirken hata: \(error.localizedDescription)")
+            Logger.log("Detaylı Raporlar için işlem verisi çekilirken hata: \(error.localizedDescription)", log: Logger.service, type: .error)
         }
         
         // --- DÜZELTME BİTİYOR ---
         
         isLoading = false
+        Logger.log("KrediKarti Raporu: Veri çekme tamamlandı. Rapor sayısı: \(kartDetayRaporlari.count)", log: Logger.service)
     }
     
     private func hesaplamalariYap(kartHesaplari: [Hesap], tumIslemler: [Islem]) {
