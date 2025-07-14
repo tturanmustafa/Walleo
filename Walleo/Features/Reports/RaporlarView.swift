@@ -27,25 +27,27 @@ struct RaporlarView: View {
     }
     
     var body: some View {
-        // NavigationStack buradan kaldırıldı.
-        VStack(spacing: 0) {
-            Picker("Rapor Periyodu", selection: $secilenRaporPeriyodu.animation()) {
-                Text(RaporPeriyodu.haftalik.localizedKey).tag(RaporPeriyodu.haftalik)
-                Text(RaporPeriyodu.aylik.localizedKey).tag(RaporPeriyodu.aylik)
-            }
-            .pickerStyle(.segmented)
-            .padding(.horizontal)
-            .padding(.top, 10)
+        NavigationStack {  // <-- NavigationStack eklendi
+            VStack(spacing: 0) {
+                Picker("Rapor Periyodu", selection: $secilenRaporPeriyodu.animation()) {
+                    Text(RaporPeriyodu.haftalik.localizedKey).tag(RaporPeriyodu.haftalik)
+                    Text(RaporPeriyodu.aylik.localizedKey).tag(RaporPeriyodu.aylik)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                .padding(.top, 10)
 
-            switch secilenRaporPeriyodu {
-            case .haftalik:
-                HaftalikRaporlarContentView(modelContext: modelContext)
-            case .aylik:
-                AylikRaporlarContentView(modelContext: modelContext)
+                switch secilenRaporPeriyodu {
+                case .haftalik:
+                    HaftalikRaporlarContentView(modelContext: modelContext)
+                case .aylik:
+                    AylikRaporlarContentView(modelContext: modelContext)
+                }
             }
-        }
-        .navigationTitle("tab.reports") // Bu modifier'lar hala çalışacak.
-        .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("tab.reports")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden(true)  // <-- Geri butonunu gizle
+        }  // <-- NavigationStack kapandı
     }
 }
 

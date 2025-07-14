@@ -32,7 +32,31 @@ struct KrediRaporuView: View {
 
     var body: some View {
         ScrollView {
-            // ... (ScrollView içeriği aynı kalıyor) ...
+            VStack(spacing: 20) {
+                if viewModel.isLoading {
+                    ProgressView("Yükleniyor...")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(.top, 100)
+                } else if viewModel.krediDetayRaporlari.isEmpty {
+                    ContentUnavailableView(
+                        "Veri Bulunamadı",
+                        systemImage: "banknote.fill",
+                        description: Text("Seçilen tarih aralığında kredi taksiti bulunamadı.")
+                    )
+                    .padding(.top, 100)
+                } else {
+                    // Genel özet kartı
+                    KrediGenelOzetKarti(ozet: viewModel.genelOzet)
+                        .padding(.horizontal)
+                    
+                    // Her kredi için detay paneli
+                    ForEach(viewModel.krediDetayRaporlari) { rapor in
+                        krediDetayPaneli(rapor: rapor)
+                            .padding(.horizontal)
+                    }
+                }
+            }
+            .padding(.vertical)
         }
         .onAppear { Task { await viewModel.fetchData() } }
         // --- KESİN ÇÖZÜMÜN EKLENDİĞİ YER ---

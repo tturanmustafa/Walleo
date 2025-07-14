@@ -92,28 +92,36 @@ struct ContentView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // --- ANA DÜZELTME BURADA ---
-            // Her sekme, kendi bağımsız NavigationStack'i ile sarmalanıyor.
-            TabView(selection: $seciliSekme) {
-                NavigationStack { DashboardView(modelContext: modelContext) }
-                    .tag(Sekme.panel)
-                
-                NavigationStack { HesaplarView() }
-                    .tag(Sekme.hesaplar)
-                    
-                NavigationStack { TakvimView(modelContext: modelContext) }
-                    .tag(Sekme.takvim)
-                
-                NavigationStack { ButcelerView() }
-                    .tag(Sekme.butceler)
-                
-                NavigationStack { RaporlarView() }
-                    .tag(Sekme.raporlar)
-                
-                NavigationStack { DetayliRaporlarView() }
-                    .tag(Sekme.detayliRaporlar)
+            // Ana içerik
+            Group {
+                if seciliSekme == .panel || seciliSekme == .hesaplar || seciliSekme == .takvim {
+                    // Normal tab'lar için TabView kullan
+                    TabView(selection: $seciliSekme) {
+                        NavigationStack { DashboardView(modelContext: modelContext) }
+                            .tag(Sekme.panel)
+                        
+                        NavigationStack { HesaplarView() }
+                            .tag(Sekme.hesaplar)
+                            
+                        NavigationStack { TakvimView(modelContext: modelContext) }
+                            .tag(Sekme.takvim)
+                    }
+                } else {
+                    // "Daha Fazla" menüsünden seçilenler için doğrudan göster
+                    switch seciliSekme {
+                    case .butceler:
+                        ButcelerView()
+                    case .raporlar:
+                        RaporlarView()
+                    case .detayliRaporlar:
+                        DetayliRaporlarView()
+                    default:
+                        EmptyView()
+                    }
+                }
             }
             
+            // Custom Tab Bar (aynı kalacak)
             VStack(spacing: 0) {
                 Spacer()
                 HStack(alignment: .bottom) {
@@ -122,6 +130,7 @@ struct ContentView: View {
                     addTransactionButton
                     TabButton(iconName: "calendar", labelKey: "tab.calendar", sekme: .takvim, seciliSekme: $seciliSekme)
                     
+                    // Daha Fazla Butonu
                     Button(action: {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             dahaFazlaShowing.toggle()
@@ -140,9 +149,11 @@ struct ContentView: View {
                 }
                 .padding(.top, 25)
                 .frame(height: 50 + safeAreaInsets.bottom)
+                .background(Color(.systemBackground))
                 .contentShape(Rectangle())
             }
 
+            // Floating Menu Overlay (aynı kalacak)
             if dahaFazlaShowing {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
