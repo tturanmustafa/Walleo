@@ -34,7 +34,8 @@ enum ZamanPeriyodu {
 
 // MARK: - Radyal Grafik Modeli
 
-struct SaatlikDagilimVerisi {
+struct SaatlikDagilimVerisi: Identifiable { // <--- Identifiable eklendi
+    var id: Int { saat } // <--- Benzersiz ID olarak 'saat' kullanıldı
     let saat: Int // 0-23
     let toplamTutar: Double
     let islemSayisi: Int

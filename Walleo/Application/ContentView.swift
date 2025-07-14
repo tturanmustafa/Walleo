@@ -147,8 +147,8 @@ struct ContentView: View {
                     }
                     .frame(maxWidth: .infinity)
                 }
-                .padding(.top, 25)
-                .frame(height: 50 + safeAreaInsets.bottom)
+                .padding(.top, 10)
+                .frame(height: 30 + safeAreaInsets.bottom)
                 .background(Color(.systemBackground))
                 .contentShape(Rectangle())
             }

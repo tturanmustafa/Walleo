@@ -15,7 +15,7 @@ struct PeriyodikKarsilastirmaView: View {
     let veriler: [HarcamaKarsilastirmaVerisi]
     @EnvironmentObject var appSettings: AppSettings
     
-    @State private var secilenVeri: KarsilastirmaVerisi?
+    @State private var secilenVeri: HarcamaKarsilastirmaVerisi?
     
     private var ortalamaDeger: Double {
         guard !veriler.isEmpty else { return 0 }

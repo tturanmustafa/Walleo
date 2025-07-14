@@ -65,7 +65,7 @@ struct HarcamaIsiHaritasiView: View {
                         
                         // Periyodik Karşılaştırma
                         PeriyodikKarsilastirmaView(
-                            veriler: $viewModel.karsilastirmaVerileri
+                            veriler: viewModel.karsilastirmaVerileri // <--- Doğru kullanım
                         )
                         .frame(height: 200)
                     }
