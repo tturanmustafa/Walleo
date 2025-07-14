@@ -514,3 +514,37 @@
 "notification.budget.pre_renewal.body" = "'%@' bütçeniz, %@ tutarındaki devir ile bir sonraki ay için yenilenecektir.";
 "notification.budget.renewal_summary.title" = "Bütçeleriniz Yenilendi!";
 "notification.budget.renewal_summary.body" = "Hoş geldin %@! ☕️ Bu ay için %d bütçeniz otomatik olarak yenilendi.";
+
+// MARK: - Detaylı Raporlar
+"reports.detailed.title" = "Detaylı Raporlar";
+"reports.detailed.credit_card_report" = "Kredi Kartı Raporu";
+"reports.detailed.loan_report" = "Kredi Raporu";
+"reports.detailed.start_date" = "Başlangıç Tarihi";
+"reports.detailed.end_date" = "Bitiş Tarihi";
+
+// Boş Ekran Metinleri
+"reports.detailed.no_cc_data_title" = "Veri Bulunamadı";
+"reports.detailed.no_cc_data_desc" = "Seçilen tarih aralığında herhangi bir kredi kartı harcaması bulunmuyor.";
+"reports.detailed.no_loan_data_title" = "Veri Bulunamadı";
+"reports.detailed.no_loan_data_desc" = "Seçilen tarih aralığında vadesi gelen herhangi bir kredi taksidi bulunmuyor.";
+
+// Kredi Kartı Raporu
+"reports.detailed.overall_summary" = "Genel Özet";
+"reports.detailed.total_spending" = "Toplam Harcama";
+"reports.detailed.transaction_count" = "İşlem Sayısı";
+"reports.detailed.most_used_card" = "En Çok Kullanılan Kart";
+"reports.detailed.card_details_header" = "Kart Detayları";
+"reports.detailed.category_distribution" = "Kategori Dağılımı";
+"reports.detailed.daily_spending_trend" = "Günlük Harcama Trendi";
+
+// Kredi Raporu
+"reports.detailed.overall_loan_summary" = "Genel Kredi Özeti";
+"reports.detailed.active_loan_count" = "%d Aktif Kredi";
+"reports.detailed.paid_installments_count" = "Ödenen: %d";
+"reports.detailed.unpaid_installments_count" = "Ödenmeyen: %d";
+"reports.detailed.loan_details_header" = "Kredi Detayları";
+"reports.detailed.installments_in_period" = "Dönemdeki Taksit: %d";
+"reports.detailed.paid_and_expensed" = "Ödendi ve Gider Eklendi";
+"reports.detailed.paid_only" = "Sadece Ödendi İşaretlenenler";
+"reports.detailed.overdue" = "Vadesi Geçmiş Taksitler";
+"reports.detailed.upcoming" = "Gelecek Taksitler";
