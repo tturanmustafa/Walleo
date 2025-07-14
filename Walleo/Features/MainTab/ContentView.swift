@@ -25,10 +25,20 @@ struct FloatingActionMenu: View {
     @Binding var isShowing: Bool
     
     // Butonların kademeli olarak görünmesi için state'ler
-    @State private var showButtons = [false, false]
+    @State private var showButtons = [false, false, false] // 3 elemanlı yap
 
     var body: some View {
         VStack(spacing: 16) {
+            Button(action: {
+                seciliSekme = .detayliRaporlar
+                isShowing = false
+            }) {
+                Label("detailed_reports.menu_title", systemImage: "chart.line.text.clipboard")
+            }
+            .buttonStyle(FloatingActionButtonStyle())
+            .opacity(showButtons[2] ? 1 : 0)
+            .offset(y: showButtons[2] ? 0 : 20)
+            
             // Raporlar Butonu
             Button(action: {
                 seciliSekme = .raporlar
@@ -52,12 +62,14 @@ struct FloatingActionMenu: View {
             .offset(y: showButtons[1] ? 0 : 20)
         }
         .onAppear {
-            // Menü açıldığında butonları güzel bir animasyonla göster
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.8, blendDuration: 0).delay(0.1)) {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8, blendDuration: 0).delay(0.15)) {
                 showButtons[0] = true
             }
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.8, blendDuration: 0).delay(0.05)) {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8, blendDuration: 0).delay(0.1)) {
                 showButtons[1] = true
+            }
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8, blendDuration: 0).delay(0.05)) {
+                showButtons[2] = true
             }
         }
     }
@@ -83,10 +95,10 @@ struct ContentView: View {
     
     private var isMoreTabSelected: Bool {
         switch seciliSekme {
-        case .butceler, .raporlar:
-            return true // Eğer Bütçeler veya Raporlar seçiliyse true döner
+        case .butceler, .raporlar, .detayliRaporlar:
+            return true
         default:
-            return false // Diğer tüm sekmeler için false döner
+            return false
         }
     }
 
@@ -101,7 +113,7 @@ struct ContentView: View {
     // "Daha Fazla" butonu artık bir sekme değil, sadece menüyü açan bir eylem olduğu için
     // enum'dan kaldırıldı. Bütçeler ve Raporlar hala programatik geçiş için mevcut.
     enum Sekme: Hashable {
-        case panel, hesaplar, takvim, butceler, raporlar
+        case panel, hesaplar, takvim, butceler, raporlar, detayliRaporlar // detayliRaporlar eklendi
     }
 
     var body: some View {
@@ -120,6 +132,8 @@ struct ContentView: View {
                     .tag(Sekme.butceler)
                 RaporlarView()
                     .tag(Sekme.raporlar)
+                DetayliRaporlarView()
+                    .tag(Sekme.detayliRaporlar)
             }
             
             // --- DEĞİŞİKLİK: Özel TabBar ve "+" Butonu ---

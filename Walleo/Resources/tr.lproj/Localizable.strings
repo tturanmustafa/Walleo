@@ -514,3 +514,37 @@
 "notification.budget.pre_renewal.body" = "'%@' bütçeniz, %@ tutarındaki devir ile bir sonraki ay için yenilenecektir.";
 "notification.budget.renewal_summary.title" = "Bütçeleriniz Yenilendi!";
 "notification.budget.renewal_summary.body" = "Hoş geldin %@! ☕️ Bu ay için %d bütçeniz otomatik olarak yenilendi.";
+
+// MARK: - Detailed Reports
+"detailed_reports.title" = "Detaylı Raporlar";
+"detailed_reports.date_range.start" = "Başlangıç";
+"detailed_reports.date_range.end" = "Bitiş";
+"detailed_reports.credit_card.title" = "Kredi Kartı Raporu";
+"detailed_reports.loan.title" = "Kredi Raporu";
+"detailed_reports.no_data" = "Bu tarih aralığında veri bulunamadı";
+
+// MARK: - Credit Card Report
+"credit_card_report.overview.title" = "Genel Bakış";
+"credit_card_report.total_spending" = "Toplam Harcama";
+"credit_card_report.daily_average" = "Günlük Ortalama";
+"credit_card_report.most_spent_day" = "En Çok Harcanan Gün";
+"credit_card_report.transaction_count" = "İşlem Sayısı";
+"credit_card_report.trend.title" = "Harcama Trendi";
+"credit_card_report.category_analysis" = "Kategori Analizi";
+"credit_card_report.heatmap.title" = "Harcama Isı Haritası";
+"credit_card_report.no_cards" = "Kredi kartı hesabı bulunamadı";
+"credit_card_report.select_card" = "Kart Seçin";
+
+// MARK: - Loan Report
+"loan_report.overview.title" = "Kredi Özeti";
+"loan_report.active_loans" = "Aktif Krediler";
+"loan_report.total_remaining" = "Toplam Kalan Borç";
+"loan_report.paid_this_period" = "Bu Dönem Ödenen";
+"loan_report.installment_analysis" = "Taksit Analizi";
+"loan_report.payment_calendar" = "Ödeme Takvimi";
+"loan_report.comparison.title" = "Kredi Karşılaştırması";
+"loan_report.no_loans" = "Kredi hesabı bulunamadı";
+"loan_report.paid_installments" = "Ödenen Taksitler";
+"loan_report.pending_installments" = "Bekleyen Taksitler";
+"loan_report.recorded_as_expense" = "Gider Olarak Kaydedilen";
+"loan_report.progress" = "İlerleme";

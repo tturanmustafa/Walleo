@@ -514,3 +514,37 @@
 "notification.budget.pre_renewal.body" = "Your '%@' budget will be renewed for next month with a rollover of %@.";
 "notification.budget.renewal_summary.title" = "Your Budgets Have Renewed!";
 "notification.budget.renewal_summary.body" = "Welcome, %@! ☕️ %d of your budgets have been automatically renewed for this month.";
+
+// MARK: - Detailed Reports
+"detailed_reports.title" = "Detailed Reports";
+"detailed_reports.date_range.start" = "Start";
+"detailed_reports.date_range.end" = "End";
+"detailed_reports.credit_card.title" = "Credit Card Report";
+"detailed_reports.loan.title" = "Loan Report";
+"detailed_reports.no_data" = "No data found for this date range";
+
+// MARK: - Credit Card Report
+"credit_card_report.overview.title" = "Overview";
+"credit_card_report.total_spending" = "Total Spending";
+"credit_card_report.daily_average" = "Daily Average";
+"credit_card_report.most_spent_day" = "Highest Spending Day";
+"credit_card_report.transaction_count" = "Transaction Count";
+"credit_card_report.trend.title" = "Spending Trend";
+"credit_card_report.category_analysis" = "Category Analysis";
+"credit_card_report.heatmap.title" = "Spending Heatmap";
+"credit_card_report.no_cards" = "No credit card accounts found";
+"credit_card_report.select_card" = "Select Card";
+
+// MARK: - Loan Report
+"loan_report.overview.title" = "Loan Summary";
+"loan_report.active_loans" = "Active Loans";
+"loan_report.total_remaining" = "Total Remaining Debt";
+"loan_report.paid_this_period" = "Paid This Period";
+"loan_report.installment_analysis" = "Installment Analysis";
+"loan_report.payment_calendar" = "Payment Calendar";
+"loan_report.comparison.title" = "Loan Comparison";
+"loan_report.no_loans" = "No loan accounts found";
+"loan_report.paid_installments" = "Paid Installments";
+"loan_report.pending_installments" = "Pending Installments";
+"loan_report.recorded_as_expense" = "Recorded as Expense";
+"loan_report.progress" = "Progress";
