@@ -113,7 +113,7 @@ class KrediKartiRaporuViewModel {
         var yeniRaporlar: [KartDetayRaporu] = []
         for kart in kartHesaplari {
             let kartaAitIslemler = gruplanmisIslemler[kart] ?? []
-            if kartaAitIslemler.isEmpty { continue } // İşlemi olmayan kartı rapora ekleme
+            if kartaAitIslemler.isEmpty { continue }
             
             var kartRaporu = KartDetayRaporu(id: kart.id, hesap: kart)
             kartRaporu.toplamHarcama = kartaAitIslemler.reduce(0) { $0 + $1.tutar }
@@ -122,7 +122,8 @@ class KrediKartiRaporuViewModel {
             let kategoriGruplari = Dictionary(grouping: kartaAitIslemler, by: { $0.kategori! })
             kartRaporu.kategoriDagilimi = kategoriGruplari.map { (kategori, islemler) in
                 let toplam = islemler.reduce(0) { $0 + $1.tutar }
-                return KategoriHarcamasi(kategori: kategori.isim, tutar: toplam, renk: kategori.renk, localizationKey: kategori.localizationKey)
+                // --- GÜNCELLENEN SATIR ---
+                return KategoriHarcamasi(kategori: kategori.isim, tutar: toplam, renk: kategori.renk, localizationKey: kategori.localizationKey, ikonAdi: kategori.ikonAdi)
             }.sorted(by: { $0.tutar > $1.tutar })
             
             // Günlük trendi hesapla (Çizgi Grafik için)

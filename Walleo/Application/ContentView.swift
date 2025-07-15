@@ -108,16 +108,23 @@ struct ContentView: View {
                     }
                 } else {
                     // "Daha Fazla" menüsünden seçilenler için doğrudan göster
-                    switch seciliSekme {
-                    case .butceler:
-                        ButcelerView()
-                    case .raporlar:
-                        RaporlarView()
-                    case .detayliRaporlar:
-                        DetayliRaporlarView()
-                    default:
-                        EmptyView()
+                    // --- 🔥 DEĞİŞİKLİK BURADA BAŞLIYOR 🔥 ---
+                    Group {
+                        switch seciliSekme {
+                        case .butceler:
+                            ButcelerView()
+                        case .raporlar:
+                            RaporlarView()
+                        case .detayliRaporlar:
+                            DetayliRaporlarView()
+                        default:
+                            EmptyView()
+                        }
                     }
+                    // Alttaki özel Tab Bar'ın içeriği örtmesini engellemek için
+                    // yaklaşık olarak Tab Bar yüksekliği kadar bir boşluk ekliyoruz.
+                    .padding(.bottom, 80)
+                    // --- 🔥 DEĞİŞİKLİK SONU 🔥 ---
                 }
             }
             
