@@ -39,11 +39,11 @@ struct DonutChartView: View {
                 if let anchor = chartProxy.plotFrame {
                     let frame = geometry[anchor]
                     VStack {
-                        // Eğer bir dilim seçilmemişse, "Kategori Dağılımı" yazar.
-                        Text(secilenKategoriAdi ?? NSLocalizedString("reports.detailed.category_distribution", comment: ""))
+                        // --- DEĞİŞEN SATIR ---
+                        Text(secilenKategoriAdi ?? NSLocalizedString("common.total_amount", comment: "")) // "Kategori Dağılımı" yerine "Toplam Tutar"
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        // Seçilen dilimin veya toplam tutarın değeri
+                        // --- DEĞİŞİKLİK SONU ---
                         Text(formatCurrency(
                             amount: secilenTutar ?? data.reduce(0, { $0 + $1.tutar }),
                             currencyCode: "TRY",

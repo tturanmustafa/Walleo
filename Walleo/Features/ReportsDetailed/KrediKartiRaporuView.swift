@@ -11,12 +11,55 @@
 import SwiftUI
 import SwiftData
 
+struct KategoriLegendiView: View {
+    let kategoriler: [KategoriHarcamasi]
+    let toplamTutar: Double
+    @EnvironmentObject var appSettings: AppSettings
+
+    var body: some View {
+        VStack(spacing: 14) {
+            ForEach(kategoriler) { kategori in
+                HStack(spacing: 12) {
+                    Image(systemName: kategori.ikonAdi)
+                        .font(.callout)
+                        .foregroundColor(kategori.renk)
+                        .frame(width: 38, height: 38)
+                        .background(kategori.renk.opacity(0.15))
+                        .cornerRadius(8)
+                    
+                    Text(LocalizedStringKey(kategori.localizationKey ?? kategori.kategori))
+                        .fontWeight(.medium)
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text(formatCurrency(
+                            amount: kategori.tutar,
+                            currencyCode: appSettings.currencyCode,
+                            localeIdentifier: appSettings.languageCode
+                        ))
+                        .font(.callout.bold())
+                        
+                        if toplamTutar > 0 {
+                            Text(String(format: "%.1f%%", (kategori.tutar / toplamTutar) * 100))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(.top, 15)
+    }
+}
+
 struct KrediKartiRaporuView: View {
     @Environment(\.modelContext) private var modelContext
     
     // --- DÜZELTME 1: @StateObject yerine @State kullanılıyor ---
     @State private var viewModel: KrediKartiRaporuViewModel
-    
+    @EnvironmentObject var appSettings: AppSettings
+
     let baslangicTarihi: Date
     let bitisTarihi: Date
     
@@ -85,7 +128,6 @@ struct KrediKartiRaporuView: View {
             isExpanded: Binding<Bool>(
                 get: { acikPaneller.contains(rapor.id) },
                 set: { isExpanded in
-                    // Animasyon ile açılıp kapanmasını sağlıyoruz.
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                         if isExpanded {
                             acikPaneller.insert(rapor.id)
@@ -97,20 +139,23 @@ struct KrediKartiRaporuView: View {
             ),
             content: {
                 VStack(alignment: .leading, spacing: 25) {
-                    // 1. 3D Donut Grafik
+                    // 1. 3D Donut Grafik ve Lejantı
                     Text("reports.detailed.category_distribution")
                         .font(.headline)
                         .padding(.top)
                     
                     DonutChartView(data: rapor.kategoriDagilimi)
                     
+                    KategoriLegendiView(kategoriler: rapor.kategoriDagilimi, toplamTutar: rapor.toplamHarcama)
+                        .environmentObject(appSettings)
+                    
                     Divider()
                     
-                    // 2. İnteraktif Çizgi Grafik
-                    Text("reports.detailed.daily_spending_trend")
-                        .font(.headline)
-                        
+                    // 2. İnteraktif Çizgi Grafik (Artık kendi başlığını içeriyor)
+                    // --- DEĞİŞEN SATIRLAR ---
                     InteractiveLineChartView(data: rapor.gunlukHarcamaTrendi, renk: rapor.hesap.renk)
+                        .environmentObject(appSettings) // EnvironmentObject'i buraya da geçiyoruz
+                    // --- DEĞİŞİKLİK SONU ---
                 }
                 .padding(.top)
                 .frame(maxWidth: .infinity)
@@ -201,3 +246,4 @@ private struct MetrikView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
+

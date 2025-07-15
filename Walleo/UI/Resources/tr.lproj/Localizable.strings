@@ -21,6 +21,7 @@
 "common.back" = "Geri";
 "common.total" = "Toplam";
 "common.net" = "Net";
+"common.total_amount" = "Toplam Tutar";
 
 // MARK: - Ana Sekmeler
 "tab.dashboard" = "Panel";

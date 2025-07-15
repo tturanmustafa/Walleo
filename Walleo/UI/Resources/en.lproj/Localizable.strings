@@ -21,6 +21,7 @@
 "common.back" = "Back";
 "common.total" = "Total";
 "common.net" = "Net";
+"common.total_amount" = "Total Amount";
 
 // MARK: - Main Tabs
 "tab.dashboard" = "Dashboard";

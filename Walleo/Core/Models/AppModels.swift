@@ -85,6 +85,7 @@ struct KategoriHarcamasi: Identifiable {
     var tutar: Double
     var renk: Color
     var localizationKey: String?
+    var ikonAdi: String = "tag.fill"
 }
 
 public enum IslemTuru: String, Codable, CaseIterable {
