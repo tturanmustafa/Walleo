@@ -14,25 +14,29 @@ struct ButceDetayView: View {
     
     // Sheet ve Alert'leri kontrol eden durumlar
     @State private var duzenlenecekIslem: Islem?
-    @State private var silinecekIslem: Islem?
     @State private var butceDuzenleGoster = false
     @State private var butceSilUyarisiGoster = false
     
-    // Bütçenin geçmiş bir döneme ait olup olmadığını kontrol eder
+    // --- 🔥 YENİ & GÜNCELLENMİŞ STATE'LER 🔥 ---
+    // Her silme türü için ayrı bir state tanımlayarak doğru uyarıyı tetikliyoruz.
+    @State private var silinecekTekilIslem: Islem?
+    @State private var silinecekTekrarliIslem: Islem?
+    @State private var silinecekTaksitliIslem: Islem?
+    @State private var isDeletingSeries = false // Seri silinirken ProgressView göstermek için
+    
+    // Bütçenin geçmiş bir döneme ait olup olmadığını kontrol eder (Bu kod aynı kalıyor)
     private var isGecmisDonem: Bool {
         let bugun = Calendar.current.startOfDay(for: Date())
         let butceDonemi = viewModel.butce.periyot
         
-        // Mevcut ayın başlangıcını güvenli bir şekilde bul
         guard let mevcutAyBasi = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: bugun)) else {
-            return false // Hata durumunda düzenlemeye izin ver (güvenli varsayım)
+            return false
         }
         
-        // Bütçenin dönemi, mevcut ayın başlangıcından önceyse, geçmiş dönemdir.
         return butceDonemi < mevcutAyBasi
     }
 
-    // MARK: - Init
+    // MARK: - Init (Bu kod aynı kalıyor)
     
     init(butce: Butce) {
         _viewModel = State(initialValue: ButceDetayViewModel(butce: butce))
@@ -41,63 +45,97 @@ struct ButceDetayView: View {
     // MARK: - Ana Body
     
     var body: some View {
-        List {
-            anaKartSection
-            donemBilgileriSection
-            islemlerSection
-        }
-        .navigationTitle(viewModel.butce.isim)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar { /* Toolbar artık boş, çünkü tüm aksiyonlar kartın içindeki menüde. */ }
-        // Görünüm ekrana geldiğinde ve veri değiştiğinde ViewModel'ı tetikle
-        .onAppear {
-            viewModel.fetchData(context: modelContext)
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .transactionsDidChange)) { _ in
-            viewModel.fetchData(context: modelContext)
-        }
-        // İşlem düzenleme ekranını açar
-        .sheet(item: $duzenlenecekIslem) { islem in
-            IslemEkleView(duzenlenecekIslem: islem)
-                .environmentObject(appSettings)
-        }
-        // Bütçe düzenleme ekranını açar
-        .sheet(isPresented: $butceDuzenleGoster) {
-            ButceEkleDuzenleView(duzenlenecekButce: viewModel.butce)
-                .environmentObject(appSettings)
-        }
-        // Bütçe silme uyarısını gösterir
-        .alert(
-            LocalizedStringKey("alert.delete_confirmation.title"),
-            isPresented: $butceSilUyarisiGoster
-        ) {
-            Button("common.delete", role: .destructive, action: deleteBudget)
-            Button("common.cancel", role: .cancel) { }
-        } message: {
-            // --- DÜZELTİLMİŞ YAPI ---
-            // Önce formatlanacak ana metni lokalizasyon dosyasından alıyoruz.
-            let formatString = NSLocalizedString("alert.delete_budget.message_format", comment: "")
-            // Sonra String(format:) ile bütçe ismini içine yerleştiriyoruz.
-            Text(String(format: formatString, viewModel.butce.isim))
-            // --- DÜZELTME SONU ---
-        }
-        // İşlem silme uyarısını gösterir
-        .confirmationDialog(
-            "İşlemi Sil",
-            isPresented: .constant(silinecekIslem != nil),
-            presenting: silinecekIslem
-        ) { islem in
-            Button("alert.delete_this_only", role: .destructive) {
-                deleteTransaction(islem)
+        // ZStack, seri silinirken ProgressView'i ekranın üzerinde göstermek için eklendi.
+        ZStack {
+            List {
+                anaKartSection
+                donemBilgileriSection
+                islemlerSection
             }
-            if islem.tekrar != .tekSeferlik {
-                Button("alert.delete_series", role: .destructive) {
-                    deleteTransactionSeries(islem)
+            .disabled(isDeletingSeries) // Seri silinirken arayüzü pasif hale getir
+            .navigationTitle(viewModel.butce.isim)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { /* Toolbar boş kalabilir, menü kartın içinde */ }
+            .onAppear {
+                viewModel.fetchData(context: modelContext)
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .transactionsDidChange)) { _ in
+                viewModel.fetchData(context: modelContext)
+            }
+            .sheet(item: $duzenlenecekIslem) { islem in
+                IslemEkleView(duzenlenecekIslem: islem)
+                    .environmentObject(appSettings)
+            }
+            .sheet(isPresented: $butceDuzenleGoster) {
+                ButceEkleDuzenleView(duzenlenecekButce: viewModel.butce)
+                    .environmentObject(appSettings)
+            }
+            .alert(
+                LocalizedStringKey("alert.delete_confirmation.title"),
+                isPresented: $butceSilUyarisiGoster
+            ) {
+                Button("common.delete", role: .destructive, action: deleteBudget)
+                Button("common.cancel", role: .cancel) { }
+            } message: {
+                let formatString = NSLocalizedString("alert.delete_budget.message_format", comment: "")
+                Text(String(format: formatString, viewModel.butce.isim))
+            }
+            
+            // --- 🔥 YENİ EKLENEN/GÜNCELLENEN ALERT VE DIALOG'LAR 🔥 ---
+            
+            // 1. Tekrarlanan İşlem Silme Onayı
+            .confirmationDialog(
+                LocalizedStringKey("alert.recurring_transaction"),
+                isPresented: Binding(isPresented: $silinecekTekrarliIslem),
+                presenting: silinecekTekrarliIslem
+            ) { islem in
+                Button("alert.delete_this_only", role: .destructive) {
+                    viewModel.deleteSingleTransaction(islem, context: modelContext)
                 }
+                Button("alert.delete_series", role: .destructive) {
+                    Task {
+                        isDeletingSeries = true
+                        await viewModel.deleteTransactionSeries(islem)
+                        isDeletingSeries = false
+                    }
+                }
+                Button("common.cancel", role: .cancel) { }
             }
-            Button("common.cancel", role: .cancel) { silinecekIslem = nil }
-        } message: { islem in
-             Text(islem.tekrar != .tekSeferlik ? LocalizedStringKey("alert.recurring_transaction") : LocalizedStringKey("alert.delete_transaction.message"))
+            
+            // 2. Taksitli İşlem Silme Uyarısı
+            .alert(
+                LocalizedStringKey("alert.installment.delete_title"),
+                isPresented: Binding(isPresented: $silinecekTaksitliIslem),
+                presenting: silinecekTaksitliIslem
+            ) { islem in
+                Button(role: .destructive) {
+                    viewModel.deleteInstallmentTransaction(islem, context: modelContext)
+                } label: { Text("common.delete") }
+            } message: { islem in
+                Text(String(format: NSLocalizedString("transaction.installment.delete_warning", comment: ""), islem.toplamTaksitSayisi))
+            }
+
+            // 3. Tekil İşlem Silme Uyarısı
+            .alert(
+                LocalizedStringKey("alert.delete_confirmation.title"),
+                isPresented: Binding(isPresented: $silinecekTekilIslem),
+                presenting: silinecekTekilIslem
+            ) { islem in
+                Button(role: .destructive) {
+                    viewModel.deleteSingleTransaction(islem, context: modelContext)
+                } label: { Text("common.delete") }
+            } message: { islem in
+                Text("alert.delete_transaction.message")
+            }
+            
+            // Yükleme göstergesi
+            if isDeletingSeries {
+                ProgressView("Seri Siliniyor...")
+                    .padding(25)
+                    .background(Material.thick)
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
+            }
         }
     }
     
@@ -174,7 +212,7 @@ struct ButceDetayView: View {
                     IslemSatirView(
                         islem: islem,
                         onEdit: { duzenlenecekIslem = islem },
-                        onDelete: { silinecekIslem = islem }
+                        onDelete: { silmeyiBaslat(islem) } // <-- ÖNEMLİ DEĞİŞİKLİK
                     )
                 }
             }
@@ -182,24 +220,18 @@ struct ButceDetayView: View {
     }
     
     // MARK: - Yardımcı Fonksiyonlar
-    
-    /// Bütçeyi siler.
     private func deleteBudget() {
         viewModel.deleteButce(context: modelContext)
         dismiss()
     }
-    
-    /// Tek bir işlemi siler.
-    private func deleteTransaction(_ islem: Islem) {
-        TransactionService.shared.deleteTransaction(islem, in: modelContext)
-        silinecekIslem = nil // Dialog'u kapat
-    }
-    
-    /// Tekrarlanan bir işlem serisini siler.
-    private func deleteTransactionSeries(_ islem: Islem) {
-        Task {
-            await TransactionService.shared.deleteSeriesInBackground(tekrarID: islem.tekrarID, from: modelContext.container)
-            silinecekIslem = nil // Dialog'u kapat
+
+    private func silmeyiBaslat(_ islem: Islem) {
+        if islem.taksitliMi {
+            silinecekTaksitliIslem = islem
+        } else if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
+            silinecekTekrarliIslem = islem
+        } else {
+            silinecekTekilIslem = islem
         }
     }
 }

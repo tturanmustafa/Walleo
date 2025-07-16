@@ -5,6 +5,7 @@ import SwiftData
 @Observable
 class ButceDetayViewModel {
     let butce: Butce
+    var modelContainer: ModelContainer? // <-- YENİ: Eklendi
     
     var gosterilecekButce: GosterilecekButce?
     var donemIslemleri: [Islem] = []
@@ -21,6 +22,7 @@ class ButceDetayViewModel {
     
     /// Bütçe detayları için gerekli tüm verileri çeken ana fonksiyon.
     func fetchData(context: ModelContext) {
+        self.modelContainer = context.container // <-- YENİ: Container'ı sakla
         guard let ayAraligi = Calendar.current.dateInterval(of: .month, for: self.butce.periyot),
               let kategoriIDleri = butce.kategoriler?.map({ $0.id }), !kategoriIDleri.isEmpty else {
             self.donemIslemleri = []
@@ -63,5 +65,20 @@ class ButceDetayViewModel {
         } catch {
             Logger.log("Bütçe detay verisi çekilirken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
+    }
+    
+    func deleteSingleTransaction(_ islem: Islem, context: ModelContext) {
+        TransactionService.shared.deleteTransaction(islem, in: context)
+    }
+
+    /// Tekrarlanan bir işlem serisini arka planda siler.
+    func deleteTransactionSeries(_ islem: Islem) async {
+        guard let container = modelContainer else { return }
+        await TransactionService.shared.deleteSeriesInBackground(tekrarID: islem.tekrarID, from: container)
+    }
+    
+    /// Taksitli bir işlemin tüm serisini siler.
+    func deleteInstallmentTransaction(_ islem: Islem, context: ModelContext) {
+        TransactionService.shared.deleteTaksitliIslem(islem, in: context)
     }
 }
