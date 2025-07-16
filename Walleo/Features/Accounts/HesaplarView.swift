@@ -1,16 +1,19 @@
+// Walleo/Features/Accounts/HesaplarView.swift
+
 import SwiftUI
 import SwiftData
 
 struct HesaplarView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var appSettings: AppSettings
-    
+
     @State private var viewModel: HesaplarViewModel?
-    
+
+    // Sheet'leri ve Alert'leri yönetmek için kullanılan State'ler
     enum SheetTuru: Identifiable {
         case cuzdanEkle, krediKartiEkle, krediEkle
         case cuzdanDuzenle(Hesap), krediKartiDuzenle(Hesap), krediDuzenle(Hesap)
-        
+
         var id: String {
             switch self {
             case .cuzdanEkle: "cuzdanEkle"
@@ -23,19 +26,40 @@ struct HesaplarView: View {
         }
     }
     @State private var gosterilecekSheet: SheetTuru?
-    
     @State private var silinecekHesap: Hesap?
 
     var body: some View {
         NavigationStack {
             Group {
                 if let viewModel = viewModel {
-                    hesapListesi(viewModel: viewModel)
-                        .overlay {
-                            if viewModel.gosterilecekHesaplar.isEmpty {
-                                ContentUnavailableView(LocalizedStringKey("accounts.empty.title"), systemImage: "wallet.pass", description: Text(LocalizedStringKey("accounts.empty.description")))
+                    if viewModel.cuzdanHesaplari.isEmpty && viewModel.krediKartiHesaplari.isEmpty && viewModel.krediHesaplari.isEmpty {
+                        ContentUnavailableView(LocalizedStringKey("accounts.empty.title"), systemImage: "wallet.pass", description: Text(LocalizedStringKey("accounts.empty.description")))
+                    } else {
+                        // ANA GÖRÜNÜM: List yerine ScrollView kullanarak tam stil kontrolü sağlıyoruz.
+                        ScrollView {
+                            LazyVStack(alignment: .leading, spacing: 28) { // Gruplar arasına daha fazla boşluk
+                                // Cüzdanlar Grubu
+                                if !viewModel.cuzdanHesaplari.isEmpty {
+                                    hesapGrubu(titleKey: "accounts.group.wallets", hesaplar: viewModel.cuzdanHesaplari, viewModel: viewModel)
+                                }
+
+                                // Kredi Kartları Grubu
+                                if !viewModel.krediKartiHesaplari.isEmpty {
+                                    hesapGrubu(titleKey: "accounts.group.credit_cards", hesaplar: viewModel.krediKartiHesaplari, viewModel: viewModel)
+                                }
+
+                                // Krediler Grubu
+                                if !viewModel.krediHesaplari.isEmpty {
+                                    hesapGrubu(titleKey: "accounts.group.loans", hesaplar: viewModel.krediHesaplari, viewModel: viewModel)
+                                }
                             }
+                            .padding(.horizontal) // Kenarlara boşluk
+                            .padding(.top, 10)
+                            .padding(.bottom, 90)
                         }
+                        // ÖNCEKİ GÖRÜNÜM: Arka planı tekrar beyaz (.systemBackground) yapıyoruz.
+                        .background(Color(.systemBackground))
+                    }
                 } else {
                     ProgressView()
                 }
@@ -66,56 +90,42 @@ struct HesaplarView: View {
                 Text("common.delete")
             }
         } message: { hesap in
+            // Bu kısım aynı kalabilir
             let dilKodu = appSettings.languageCode
             guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
                   let languageBundle = Bundle(path: path) else {
-                return Text(hesap.isim) // Fallback
+                return Text(hesap.isim)
             }
-            
             let key: String
             switch hesap.detay {
-            case .cuzdan:
-                key = "alert.delete_wallet.message_format"
-            case .krediKarti:
-                key = "alert.delete_credit_card.message_format"
-            case .kredi:
-                key = "alert.delete_loan.message_format"
+            case .cuzdan: key = "alert.delete_wallet.message_format"
+            case .krediKarti: key = "alert.delete_credit_card.message_format"
+            case .kredi: key = "alert.delete_loan.message_format"
             }
-            
             let formatString = languageBundle.localizedString(forKey: key, value: "", table: nil)
             return Text(String(format: formatString, hesap.isim))
         }
     }
-    
-    // GÜNCELLENMİŞ FONKSİYON
-    private func hesapListesi(viewModel: HesaplarViewModel) -> some View {
-        ScrollView {
-            LazyVStack(spacing: 16) {
-                ForEach(viewModel.gosterilecekHesaplar) { bilgi in
-                    // GÜNCELLEME: Artık cüzdan tipi de bir NavigationLink içinde.
-                    if case .kredi = bilgi.hesap.detay {
-                        NavigationLink(destination: KrediDetayView(hesap: bilgi.hesap, modelContext: self.modelContext)) {
-                            hesapKarti(for: bilgi, viewModel: viewModel)
-                        }
-                        .buttonStyle(.plain)
-                    } else if case .krediKarti = bilgi.hesap.detay {
-                        NavigationLink(destination: KrediKartiDetayView(kartHesabi: bilgi.hesap, modelContext: self.modelContext)) {
-                            hesapKarti(for: bilgi, viewModel: viewModel)
-                        }
-                        .buttonStyle(.plain)
-                    } else {
-                        // YENİ: Cüzdan tipi için NavigationLink eklendi.
-                        NavigationLink(destination: CuzdanDetayView(hesap: bilgi.hesap)) {
-                            hesapKarti(for: bilgi, viewModel: viewModel)
-                        }
-                        .buttonStyle(.plain)
-                    }
+
+    // Her bir hesap grubunu (başlık + kartlar) oluşturan yardımcı fonksiyon
+    @ViewBuilder
+    private func hesapGrubu(titleKey: LocalizedStringKey, hesaplar: [GosterilecekHesap], viewModel: HesaplarViewModel) -> some View {
+        VStack(alignment: .leading, spacing: 16) { // Kartlar arasına boşluk
+            Text(titleKey)
+                .font(.title2.bold()) // Başlığı daha belirgin yapıyoruz
+                .foregroundColor(.primary)
+                .padding(.leading, 8) // Başlığa hafif bir iç boşluk
+
+            ForEach(hesaplar) { bilgi in
+                NavigationLink(destination: navigationDestination(for: bilgi.hesap)) {
+                    hesapKarti(for: bilgi, viewModel: viewModel)
                 }
+                .buttonStyle(PlainButtonStyle()) // Tıklama efektini ve oku kaldırır
             }
-            .padding()
         }
     }
-    
+
+    // Bu yardımcı fonksiyonlarda değişiklik yok
     @ViewBuilder
     private func hesapKarti(for bilgi: GosterilecekHesap, viewModel: HesaplarViewModel) -> some View {
         HesapKartView(
@@ -125,10 +135,9 @@ struct HesaplarView: View {
         )
         .environmentObject(appSettings)
     }
-    
+
     private func toolbarIcerigi() -> some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
-            // DİKKAT: Sadece Menu'nün label'ı değişti
             Menu {
                 Button(action: { gosterilecekSheet = .cuzdanEkle }) {
                     Label(LocalizedStringKey("accounts.add.wallet"), systemImage: "wallet.pass.fill")
@@ -147,7 +156,7 @@ struct HesaplarView: View {
             }
         }
     }
-    
+
     private func presentEditSheet(for hesap: Hesap) {
         switch hesap.detay {
         case .cuzdan: gosterilecekSheet = .cuzdanDuzenle(hesap)
@@ -157,18 +166,19 @@ struct HesaplarView: View {
     }
 
     @ViewBuilder
-    private func detayEkraniniGetir(hesap: Hesap) -> some View {
+    private func navigationDestination(for hesap: Hesap) -> some View {
         switch hesap.detay {
-        case .kredi: KrediDetayView(hesap: hesap, modelContext: self.modelContext)
-        case .krediKarti: KrediKartiDetayView(kartHesabi: hesap, modelContext: self.modelContext)
-        default:
-            // Bu case normalde cüzdan için çağrılmayacak ama güvenlik için burada.
-            let title = String.localizedStringWithFormat(NSLocalizedString("account_details.generic_title", comment: ""), hesap.isim)
-            Text(title)
+        case .kredi:
+            KrediDetayView(hesap: hesap, modelContext: self.modelContext)
+        case .krediKarti:
+            KrediKartiDetayView(kartHesabi: hesap, modelContext: self.modelContext)
+        case .cuzdan:
+            CuzdanDetayView(hesap: hesap)
         }
     }
 }
 
+// Bu extension'da değişiklik yok
 extension HesaplarView.SheetTuru {
     @ViewBuilder
     var view: some View {
@@ -182,3 +192,4 @@ extension HesaplarView.SheetTuru {
         }
     }
 }
+

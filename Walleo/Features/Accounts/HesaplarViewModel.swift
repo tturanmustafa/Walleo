@@ -1,47 +1,35 @@
+// Walleo/Features/Accounts/HesaplarViewModel.swift
+
 import SwiftUI
 import SwiftData
 
 @MainActor
 @Observable
-
 class HesaplarViewModel {
     var modelContext: ModelContext
-    var gosterilecekHesaplar: [GosterilecekHesap] = []
+    
+    // ViewModel artık doğrudan bu üç listeyi yönetiyor
+    var cuzdanHesaplari: [GosterilecekHesap] = []
+    var krediKartiHesaplari: [GosterilecekHesap] = []
+    var krediHesaplari: [GosterilecekHesap] = []
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(hesaplamalariTetikle(notification:)),
+            selector: #selector(hesaplamalariTetikle), // Fonksiyon adı daha genel hale getirildi
             name: .transactionsDidChange,
             object: nil
         )
     }
     
-    @objc func hesaplamalariTetikle(notification: Notification) {
-        // Gelen bildirimin içinde yeni payload'ımız var mı diye kontrol et
-        guard let payload = notification.userInfo?["payload"] as? TransactionChangePayload else {
-            // Eğer yoksa (eski sistem veya genel bir bildirim), her şeyi yeniden hesapla
-            Task { await hesaplamalariYap() }
-            return
-        }
-        
-        // Mevcut hesaplarımızın ID'lerini bir set olarak alalım
-        let currentAccountIDs = Set(gosterilecekHesaplar.map { $0.id })
-        
-        // Etkilenen hesaplardan en az biri benim listemde var mı?
-        let isRelevantChange = !Set(payload.affectedAccountIDs).isDisjoint(with: currentAccountIDs)
-        
-        if isRelevantChange {
-            // Evet, değişiklik beni ilgilendiriyor. Sadece etkilenen hesapları güncelle.
-            Task { await guncelBakiyeHesapla(for: payload.affectedAccountIDs) }
-        } else {
-            // Hayır, bu değişiklik benim yönettiğim hesaplarla ilgili değil. Hiçbir şey yapma.
-            print("HesaplarViewModel: Değişiklik fark edildi ancak ilgili hesap bulunmadığı için güncelleme yapılmadı.")
-        }
+    // Herhangi bir veri değişikliğinde bu fonksiyon tetiklenir.
+    @objc func hesaplamalariTetikle() {
+        Task { await hesaplamalariYap() }
     }
     
+    // Bu ana fonksiyon, tüm hesapları ve bakiyeleri sıfırdan hesaplayıp doğru listelere atar.
     func hesaplamalariYap() async {
         do {
             let hesaplar = try modelContext.fetch(FetchDescriptor<Hesap>(sortBy: [SortDescriptor(\.olusturmaTarihi)]))
@@ -54,98 +42,56 @@ class HesaplarViewModel {
                 netDegisimler[hesapID, default: 0] += tutarDegisimi
             }
             
-            var yeniListe: [GosterilecekHesap] = []
+            // Her seferinde listeleri temizle
+            var yeniCuzdanlar: [GosterilecekHesap] = []
+            var yeniKrediKartlari: [GosterilecekHesap] = []
+            var yeniKrediler: [GosterilecekHesap] = []
+            
             for hesap in hesaplar {
                 let netDegisim = netDegisimler[hesap.id] ?? 0
                 let guncelBakiye = hesap.baslangicBakiyesi + netDegisim
                 var gosterilecekHesap = GosterilecekHesap(hesap: hesap, guncelBakiye: guncelBakiye)
                 
                 switch hesap.detay {
+                case .cuzdan:
+                    yeniCuzdanlar.append(gosterilecekHesap)
+                    
                 case .krediKarti(let limit, _, _):
                     let harcamalarToplami = netDegisim < 0 ? abs(netDegisim) : 0
                     let guncelBorc = abs(hesap.baslangicBakiyesi) + harcamalarToplami
                     let kullanilabilirLimit = max(0, limit - guncelBorc)
                     gosterilecekHesap.krediKartiDetay = .init(guncelBorc: guncelBorc, kullanilabilirLimit: kullanilabilirLimit)
                     gosterilecekHesap.guncelBakiye = -guncelBorc
+                    yeniKrediKartlari.append(gosterilecekHesap)
                     
                 case .kredi(_, _, _, let taksitSayisi, _, let taksitler):
                     let odenenTaksitSayisi = taksitler.filter { $0.odendiMi }.count
                     gosterilecekHesap.krediDetay = .init(kalanTaksitSayisi: taksitSayisi - odenenTaksitSayisi, odenenTaksitSayisi: odenenTaksitSayisi)
-                    
-                case .cuzdan:
-                    break
+                    yeniKrediler.append(gosterilecekHesap)
                 }
-                yeniListe.append(gosterilecekHesap)
             }
-            self.gosterilecekHesaplar = yeniListe
+            // Yeni listeleri ata
+            self.cuzdanHesaplari = yeniCuzdanlar
+            self.krediKartiHesaplari = yeniKrediKartlari
+            self.krediHesaplari = yeniKrediler
             
         } catch {
             Logger.log("Hesap ViewModel genel hesaplama hatası: \(error.localizedDescription)", log: Logger.data, type: .error)
         }
     }
     
-    private func guncelBakiyeHesapla(for accountIDs: [UUID]) async {
-        let uniqueIDs = Set(accountIDs)
-        
-        for accountID in uniqueIDs {
-            guard let index = gosterilecekHesaplar.firstIndex(where: { $0.hesap.id == accountID }) else {
-                await hesaplamalariYap()
-                return
-            }
-            
-            let hesap = gosterilecekHesaplar[index].hesap
-            
-            do {
-                let predicate = #Predicate<Islem> { $0.hesap?.id == accountID }
-                let descriptor = FetchDescriptor<Islem>(predicate: predicate)
-                let islemler = try modelContext.fetch(descriptor)
-                
-                let netDegisim = islemler.reduce(0) { $0 + ($1.tur == .gelir ? $1.tutar : -$1.tutar) }
-                let guncelBakiye = hesap.baslangicBakiyesi + netDegisim
-                
-                gosterilecekHesaplar[index].guncelBakiye = guncelBakiye
-                
-                // --- DÜZELTME BURADA ---
-                // if case'i 3 parametreyi de karşılayacak şekilde güncelliyoruz.
-                if case .krediKarti(let limit, _, _) = hesap.detay {
-                    let harcamalarToplami = islemler.filter { $0.tur == .gider }.reduce(0) { $0 + $1.tutar }
-                    let guncelBorc = abs(hesap.baslangicBakiyesi) + harcamalarToplami
-                    let kullanilabilirLimit = max(0, limit - guncelBorc)
-                    gosterilecekHesaplar[index].krediKartiDetay = .init(guncelBorc: guncelBorc, kullanilabilirLimit: kullanilabilirLimit)
-                } else if case .kredi(_, _, _, let taksitSayisi, _, let taksitler) = hesap.detay {
-                    let odenenTaksitSayisi = taksitler.filter { $0.odendiMi }.count
-                    gosterilecekHesaplar[index].krediDetay = .init(kalanTaksitSayisi: taksitSayisi - odenenTaksitSayisi, odenenTaksitSayisi: odenenTaksitSayisi)
-                }
-                
-            } catch {
-                Logger.log("Hedefe yönelik bakiye hesaplama sırasında hata: \(error.localizedDescription)", log: Logger.data, type: .error)
-            }
-        }
-    }
-    
+    // Silme fonksiyonu aynı kalabilir
     func hesabiSil(hesap: Hesap) {
         do {
-            // İlişkili işlemleri güvenli şekilde ayır
             if let iliskiliIslemler = hesap.islemler {
                 for islem in iliskiliIslemler {
                     islem.hesap = nil
                 }
             }
-            
-            // Hesabı sil
             modelContext.delete(hesap)
-            
-            // Değişiklikleri kaydet
             try modelContext.save()
-            
-            // Listeyi güncelle
-            Task {
-                await hesaplamalariYap()
-            }
-            
-            // Bildirim gönder
+            Task { await hesaplamalariYap() }
             NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
-            
         } catch {
             Logger.log("Hesap silme hatası: \(error)", log: Logger.service, type: .error)
         }
