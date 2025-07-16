@@ -163,6 +163,8 @@ struct KrediKartiEkleView: View {
         } else {
             let yeniHesap = Hesap(isim: isim, ikonAdi: "creditcard.fill", renkHex: renkHex, baslangicBakiyesi: -guncelBorc, detay: kartDetayi)
             modelContext.insert(yeniHesap)
+            
+            NotificationCenter.default.post(name: .accountDetailsDidChange, object: nil)
         }
         dismiss()
     }
