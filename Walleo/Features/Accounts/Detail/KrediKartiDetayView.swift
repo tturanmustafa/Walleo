@@ -1,4 +1,4 @@
-// Dosya: Walleo/Features/Accounts/Detail/KrediKartiDetayView.swift
+// Dosya: KrediKartiDetayView.swift
 
 import SwiftUI
 import SwiftData
@@ -36,23 +36,49 @@ struct KrediKartiDetayView: View {
                 }
                 
                 List {
-                    ForEach(viewModel.donemIslemleri) { islem in
-                        IslemSatirView(
-                            islem: islem,
-                            onEdit: { duzenlenecekIslem = islem },
-                            onDelete: { silmeyiBaslat(islem) }
-                        )
+                    // Harcamalar Bölümü
+                    Section(header: Text(LocalizedStringKey("transfer.section.expenses"))) {
+                        if viewModel.donemIslemleri.isEmpty {
+                            HStack {
+                                Spacer()
+                                Text(LocalizedStringKey("credit_card_details.no_expenses_for_month"))
+                                    .foregroundColor(.secondary)
+                                    .padding()
+                                Spacer()
+                            }
+                        } else {
+                            ForEach(viewModel.donemIslemleri) { islem in
+                                IslemSatirView(
+                                    islem: islem,
+                                    onEdit: { duzenlenecekIslem = islem },
+                                    onDelete: { silmeyiBaslat(islem) }
+                                )
+                            }
+                        }
+                    }
+                    
+                    // Ödemeler (Transferler) Bölümü
+                    Section(header: Text(LocalizedStringKey("transfer.section.payments"))) {
+                        if viewModel.tumTransferler.isEmpty {
+                            HStack {
+                                Spacer()
+                                Text(LocalizedStringKey("transfer.no_payments"))
+                                    .foregroundColor(.secondary)
+                                    .padding()
+                                Spacer()
+                            }
+                        } else {
+                            ForEach(viewModel.tumTransferler) { transfer in
+                                TransferSatirView(
+                                    transfer: transfer,
+                                    hesapID: viewModel.kartHesabi.id
+                                )
+                                .environmentObject(appSettings)
+                            }
+                        }
                     }
                 }
                 .listStyle(.plain)
-                .overlay {
-                    if viewModel.donemIslemleri.isEmpty && !isDeletingSeries {
-                        ContentUnavailableView(
-                            LocalizedStringKey("credit_card_details.no_expenses_for_month"),
-                            systemImage: "creditcard.fill"
-                        )
-                    }
-                }
             }
             .disabled(isDeletingSeries)
             
@@ -67,9 +93,8 @@ struct KrediKartiDetayView: View {
         .navigationTitle(viewModel.kartHesabi.isim)
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            // Görünüm ekrana geldiğinde veriyi çekmesi için bu çağrı önemlidir.
-            // Önceki hatanın sebebi bu fonksiyonun 'private' olmasıydı. Artık değil.
             viewModel.islemleriGetir()
+            viewModel.transferleriGetir()
         }
         .sheet(item: $duzenlenecekIslem) { islem in
             IslemEkleView(duzenlenecekIslem: islem)
@@ -86,7 +111,10 @@ struct KrediKartiDetayView: View {
             Button("alert.delete_series", role: .destructive) {
                 Task {
                     isDeletingSeries = true
-                    await TransactionService.shared.deleteSeriesInBackground(tekrarID: islem.tekrarID, from: modelContext.container)
+                    await TransactionService.shared.deleteSeriesInBackground(
+                        tekrarID: islem.tekrarID,
+                        from: modelContext.container
+                    )
                     isDeletingSeries = false
                 }
             }
@@ -99,7 +127,9 @@ struct KrediKartiDetayView: View {
         ) { islem in
             Button(role: .destructive) {
                 TransactionService.shared.deleteTransaction(islem, in: modelContext)
-            } label: { Text("common.delete") }
+            } label: {
+                Text("common.delete")
+            }
         } message: { islem in
             Text("alert.delete_transaction.message")
         }

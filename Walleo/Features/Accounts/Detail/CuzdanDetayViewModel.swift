@@ -6,40 +6,67 @@ import SwiftData
 @MainActor
 @Observable
 class CuzdanDetayViewModel {
-    // DÜZELTME: modelContext artık opsiyonel.
     var modelContext: ModelContext?
     var hesap: Hesap
     
     var currentDate = Date() {
-        didSet { islemleriGetir() }
+        didSet {
+            islemleriGetir()
+            transferleriGetir()
+        }
     }
     
     var donemIslemleri: [Islem] = []
     var toplamGelir: Double = 0.0
     var toplamGider: Double = 0.0
+    var tumTransferler: [Transfer] = []
     
-    // DÜZELTME: init artık context almıyor.
     init(hesap: Hesap) {
         self.hesap = hesap
     }
     
-    // YENİ FONKSİYON: View göründüğünde çağrılarak doğru context ile başlatılır.
     func initialize(modelContext: ModelContext) {
-        guard self.modelContext == nil else { return } // Sadece bir kere başlatılmasını garantiler.
+        guard self.modelContext == nil else { return }
         
         self.modelContext = modelContext
-        islemleriGetir() // İlk veriyi çek
+        islemleriGetir()
+        transferleriGetir()
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(islemleriGetir),
+            selector: #selector(verilerDegisti),
             name: .transactionsDidChange,
             object: nil
         )
     }
     
-    @objc func islemleriGetir() {
-        // DÜZELTME: Artık opsiyonel olan context güvenli bir şekilde kullanılır.
+    @objc private func verilerDegisti() {
+        islemleriGetir()
+        transferleriGetir()
+    }
+    
+    func transferleriGetir() {
+        guard let modelContext = self.modelContext else { return }
+        
+        let hesapID = hesap.id
+        let predicate = #Predicate<Transfer> { transfer in
+            transfer.kaynakHesap?.id == hesapID || transfer.hedefHesap?.id == hesapID
+        }
+        
+        let descriptor = FetchDescriptor<Transfer>(
+            predicate: predicate,
+            sortBy: [SortDescriptor(\.tarih, order: .reverse)]
+        )
+        
+        do {
+            let transferler = try modelContext.fetch(descriptor)
+            self.tumTransferler = transferler
+        } catch {
+            Logger.log("Transfer verileri çekilirken hata: \(error)", log: Logger.data, type: .error)
+        }
+    }
+    
+    private func islemleriGetir() {
         guard let modelContext = self.modelContext else { return }
         
         let calendar = Calendar.current
@@ -53,7 +80,10 @@ class CuzdanDetayViewModel {
             islem.tarih < monthInterval.end
         }
         
-        let descriptor = FetchDescriptor<Islem>(predicate: predicate, sortBy: [SortDescriptor(\.tarih, order: .reverse)])
+        let descriptor = FetchDescriptor<Islem>(
+            predicate: predicate,
+            sortBy: [SortDescriptor(\.tarih, order: .reverse)]
+        )
         
         do {
             let islemler = try modelContext.fetch(descriptor)

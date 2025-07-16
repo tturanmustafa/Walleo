@@ -1,4 +1,4 @@
-// Dosya: Walleo/Features/Accounts/Detail/KrediKartiDetayViewModel.swift
+// Dosya: KrediKartiDetayViewModel.swift
 
 import SwiftUI
 import SwiftData
@@ -12,6 +12,7 @@ class KrediKartiDetayViewModel {
     var donemBaslangicTarihi: Date
     var donemBitisTarihi: Date
     var donemIslemleri: [Islem] = []
+    var tumTransferler: [Transfer] = []
     
     var toplamHarcama: Double {
         donemIslemleri.reduce(0) { $0 + $1.tutar }
@@ -42,11 +43,29 @@ class KrediKartiDetayViewModel {
     }
     
     @objc func yenile() {
-        // DÜZELTME: Veri değiştiğinde direkt olarak işlemleri getir.
         self.islemleriGetir()
+        self.transferleriGetir()
+    }
+    
+    func transferleriGetir() {
+        let kartID = kartHesabi.id
+        let predicate = #Predicate<Transfer> { transfer in
+            transfer.hedefHesap?.id == kartID // Kredi kartına sadece para gelebilir
+        }
+        
+        let descriptor = FetchDescriptor<Transfer>(
+            predicate: predicate,
+            sortBy: [SortDescriptor(\.tarih, order: .reverse)]
+        )
+        
+        do {
+            let transferler = try modelContext.fetch(descriptor)
+            self.tumTransferler = transferler
+        } catch {
+            Logger.log("Kredi kartı transferleri çekilirken hata: \(error)", log: Logger.data, type: .error)
+        }
     }
 
-    // DÜZELTME: 'private' kaldırıldı, artık View tarafından erişilebilir.
     func islemleriGetir() {
         let takvim = Calendar.current
         let sorguBitisTarihi = takvim.date(byAdding: .day, value: 1, to: self.donemBitisTarihi)!
@@ -54,26 +73,23 @@ class KrediKartiDetayViewModel {
         let kartID = kartHesabi.id
         let giderTuruRawValue = IslemTuru.gider.rawValue
         
-        // --- DERLEYİCİ HATASI İÇİN KESİN ÇÖZÜM ---
         let baslangic = self.donemBaslangicTarihi
         let bitis = sorguBitisTarihi
         
-        // 1. ADIM: Sadece tarih ve türe göre basit bir sorgu oluştur.
         let basitPredicate = #Predicate<Islem> { islem in
             islem.tarih >= baslangic &&
             islem.tarih < bitis &&
             islem.turRawValue == giderTuruRawValue
         }
         
-        let descriptor = FetchDescriptor<Islem>(predicate: basitPredicate, sortBy: [SortDescriptor(\.tarih, order: .reverse)])
+        let descriptor = FetchDescriptor<Islem>(
+            predicate: basitPredicate,
+            sortBy: [SortDescriptor(\.tarih, order: .reverse)]
+        )
         
         do {
-            // 2. ADIM: Veritabanından ön-filtreli listeyi çek.
             let donemGiderleri = try modelContext.fetch(descriptor)
-            
-            // 3. ADIM: Nihai filtrelemeyi (hesap ID'sine göre) hafızada yap.
             self.donemIslemleri = donemGiderleri.filter { $0.hesap?.id == kartID }
-            
         } catch {
             Logger.log("Kredi kartı detay işlemleri çekilirken hata: \(error.localizedDescription)", log: Logger.data, type: .error)
             self.donemIslemleri = []
@@ -81,32 +97,23 @@ class KrediKartiDetayViewModel {
     }
     
     func sonrakiDonem() {
-        // Mevcut dönemin bitiş tarihinden BİR GÜN SONRASINI referans al.
         guard let yeniReferansTarih = Calendar.current.date(byAdding: .day, value: 1, to: self.donemBitisTarihi) else { return }
         guncelDonemiHesapla(referansTarih: yeniReferansTarih)
     }
 
-    /// Bir önceki ekstre dönemini yükler.
     func oncekiDonem() {
-        // Mevcut dönemin başlangıç tarihinden BİR GÜN ÖNCESİNİ referans al.
         guard let yeniReferansTarih = Calendar.current.date(byAdding: .day, value: -1, to: self.donemBaslangicTarihi) else { return }
         guncelDonemiHesapla(referansTarih: yeniReferansTarih)
     }
     
     private func guncelDonemiHesapla(referansTarih: Date) {
-        // --- BU SATIRDAKİ HATANIN ÇÖZÜMÜ ---
-        // 1. Karşılaştırılacak ID'yi önce bir değişkene atıyoruz.
         let idToFetch = self.kartHesabi.id
-        
-        // 2. Predicate içinde `self` yerine bu yeni değişkeni kullanıyoruz.
         let hesapPredicate = #Predicate<Hesap> { $0.id == idToFetch }
         
-        // Veritabanından en güncel hesap bilgisini çekiyoruz.
         guard let guncelHesap = try? modelContext.fetch(FetchDescriptor(predicate: hesapPredicate)).first else {
             return
         }
         self.kartHesabi = guncelHesap
-        // --- ÇÖZÜM SONU ---
         
         guard case .krediKarti(_, let kesimTarihi, _) = kartHesabi.detay else { return }
         
@@ -129,5 +136,6 @@ class KrediKartiDetayViewModel {
         }
         
         islemleriGetir()
+        transferleriGetir()
     }
 }

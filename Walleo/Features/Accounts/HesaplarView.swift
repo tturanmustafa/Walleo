@@ -27,6 +27,7 @@ struct HesaplarView: View {
     }
     @State private var gosterilecekSheet: SheetTuru?
     @State private var silinecekHesap: Hesap?
+    @State private var transferSheetGoster = false // YENİ EKLENEN STATE
 
     var body: some View {
         NavigationStack {
@@ -73,6 +74,10 @@ struct HesaplarView: View {
             sheet.view
                 .environmentObject(appSettings)
         }
+        .sheet(isPresented: $transferSheetGoster) { // YENİ EKLENEN SHEET
+            HesaplarArasiTransferView()
+                .environmentObject(appSettings)
+        }
         .task {
             if viewModel == nil {
                 viewModel = HesaplarViewModel(modelContext: self.modelContext)
@@ -107,20 +112,34 @@ struct HesaplarView: View {
         }
     }
 
-    // Her bir hesap grubunu (başlık + kartlar) oluşturan yardımcı fonksiyon
+    // Her bir hesap grubunu (başlık + kartlar) oluşturan yardımcı fonksiyon - GÜNCELLENDİ
     @ViewBuilder
     private func hesapGrubu(titleKey: LocalizedStringKey, hesaplar: [GosterilecekHesap], viewModel: HesaplarViewModel) -> some View {
-        VStack(alignment: .leading, spacing: 16) { // Kartlar arasına boşluk
-            Text(titleKey)
-                .font(.title2.bold()) // Başlığı daha belirgin yapıyoruz
-                .foregroundColor(.primary)
-                .padding(.leading, 8) // Başlığa hafif bir iç boşluk
+        VStack(alignment: .leading, spacing: 16) {
+            // Başlık ve Transfer Butonu
+            HStack {
+                Text(titleKey)
+                    .font(.title2.bold())
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                // Transfer butonu sadece Cüzdanlar ve Kredi Kartları için göster
+                if titleKey == "accounts.group.wallets" || titleKey == "accounts.group.credit_cards" {
+                    Button(action: { transferSheetGoster = true }) {
+                        Image(systemName: "arrow.left.arrow.right.circle.fill")
+                            .font(.title2)
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
+            .padding(.horizontal, 8)
 
             ForEach(hesaplar) { bilgi in
                 NavigationLink(destination: navigationDestination(for: bilgi.hesap)) {
                     hesapKarti(for: bilgi, viewModel: viewModel)
                 }
-                .buttonStyle(PlainButtonStyle()) // Tıklama efektini ve oku kaldırır
+                .buttonStyle(PlainButtonStyle())
             }
         }
     }
@@ -192,4 +211,3 @@ extension HesaplarView.SheetTuru {
         }
     }
 }
-
