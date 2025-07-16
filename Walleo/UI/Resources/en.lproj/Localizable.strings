@@ -149,6 +149,10 @@
 "budget.name_placeholder" = "Budget Name (e.g., Groceries)";
 "budget.limit_placeholder" = "Monthly Limit (e.g., 400)";
 "accounts.add.loan_amount" = "Loan Amount";
+"accounts.card.initial_balance" = "Initial Balance";
+"accounts.card.current_balance" = "Current Balance";
+"accounts.card.total_limit" = "Card Limit";
+"accounts.card.statement_date" = "Statement Date";
 
 // MARK: - Other Screens & Alerts
 "all_transactions.title" = "All Transactions";

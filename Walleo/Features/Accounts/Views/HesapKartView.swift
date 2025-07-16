@@ -47,33 +47,110 @@ struct HesapKartView: View {
     // --- YENİ BÖLÜM SONU ---
     
     // Geri kalan yardımcı View'lar (cuzdanView, krediKartiView, krediView) aynı kalıyor.
-    @ViewBuilder private func cuzdanView() -> some View {
-        HStack {
-            Text(LocalizedStringKey("accounts.add.wallet")).font(.subheadline).foregroundStyle(.secondary)
-            Spacer()
-            Text(formatCurrency(amount: gosterilecekHesap.guncelBakiye, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)).font(.title2.bold()).foregroundColor(gosterilecekHesap.guncelBakiye < 0 ? .red : .primary)
+    @ViewBuilder
+    private func cuzdanView() -> some View {
+        // Tek bir satır yerine, iki satır göstermek için VStack kullanıyoruz.
+        VStack(alignment: .leading, spacing: 10) {
+            
+            // 1. Satır: Başlangıç Bakiyesi
+            HStack {
+                // Lokalizasyon anahtarı ile etiket
+                Text(LocalizedStringKey("accounts.card.initial_balance"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                // Başlangıç bakiyesi verisi (hesap.baslangicBakiyesi)
+                Text(formatCurrency(
+                    amount: gosterilecekHesap.hesap.baslangicBakiyesi,
+                    currencyCode: appSettings.currencyCode,
+                    localeIdentifier: appSettings.languageCode
+                ))
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundColor(.secondary)
+            }
+            
+            // 2. Satır: Güncel Bakiye
+            HStack {
+                // Lokalizasyon anahtarı ile etiket
+                Text(LocalizedStringKey("accounts.card.current_balance"))
+                    .font(.headline)
+                    .fontWeight(.bold)
+                
+                Spacer()
+                
+                // Güncel bakiye verisi (gosterilecekHesap.guncelBakiye)
+                Text(formatCurrency(
+                    amount: gosterilecekHesap.guncelBakiye,
+                    currencyCode: appSettings.currencyCode,
+                    localeIdentifier: appSettings.languageCode
+                ))
+                .font(.title2.bold())
+                .foregroundColor(gosterilecekHesap.guncelBakiye < 0 ? .red : .primary)
+            }
         }
     }
     
-    @ViewBuilder private func krediKartiView(limit: Double) -> some View {
-        if let detay = gosterilecekHesap.krediKartiDetay {
+    @ViewBuilder
+    private func krediKartiView(limit: Double) -> some View {
+        // Verileri güvenli bir şekilde çekmek için if let yapısını genişletiyoruz.
+        if let detay = gosterilecekHesap.krediKartiDetay,
+           case .krediKarti(_, let kesimTarihi, _) = gosterilecekHesap.hesap.detay {
+            
             VStack(spacing: 12) {
+                // --- Bu bölüm aynı kalıyor ---
                 let isOverLimit = detay.guncelBorc > limit && limit > 0
                 let progressValue = min(detay.guncelBorc, limit)
                 
                 ProgressView(value: progressValue, total: limit > 0 ? limit : 1)
                     .tint(isOverLimit ? .purple : .red)
+                
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(LocalizedStringKey("accounts.card.current_debt")).font(.caption).foregroundColor(.secondary)
-                        Text(formatCurrency(amount: detay.guncelBorc, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)).font(.callout.bold()).foregroundStyle(.red)
+                        Text(LocalizedStringKey("accounts.card.current_debt"))
+                            .font(.caption).foregroundColor(.secondary)
+                        Text(formatCurrency(amount: detay.guncelBorc, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
+                            .font(.callout.bold()).foregroundStyle(.red)
                     }
                     Spacer()
                     VStack(alignment: .trailing) {
-                        Text(LocalizedStringKey("accounts.card.available_limit")).font(.caption).foregroundColor(.secondary)
-                        Text(formatCurrency(amount: detay.kullanilabilirLimit, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)).font(.callout.bold()).foregroundStyle(.green)
+                        Text(LocalizedStringKey("accounts.card.available_limit"))
+                            .font(.caption).foregroundColor(.secondary)
+                        Text(formatCurrency(amount: detay.kullanilabilirLimit, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
+                            .font(.callout.bold()).foregroundStyle(.green)
                     }
                 }
+                
+                // --- YENİ EKLENEN BÖLÜM ---
+                Divider().padding(.top, 4)
+                
+                VStack(spacing: 6) {
+                    // Toplam Limit Satırı
+                    HStack {
+                        Text(LocalizedStringKey("accounts.card.total_limit"))
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                        Spacer()
+                        Text(formatCurrency(amount: limit, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
+                            .font(.caption2.bold())
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    // Hesap Kesim Tarihi Satırı
+                    HStack {
+                        Text(LocalizedStringKey("accounts.card.statement_date"))
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                        Spacer()
+                        // Yukarıda eklediğimiz yeni yardımcı fonksiyonu burada kullanıyoruz
+                        Text(formatNextStatementDate(from: kesimTarihi))
+                            .font(.caption2.bold())
+                            .foregroundColor(.secondary)
+                    }
+                }
+                // --- YENİ BÖLÜM SONU ---
             }
         }
     }
@@ -96,5 +173,39 @@ struct HesapKartView: View {
                 }
             }
         }
+    }
+    private func formatNextStatementDate(from statementDate: Date) -> String {
+        let calendar = Calendar.current
+        let today = Date()
+        
+        // Kayıtlı hesap kesim gününü al (örn: 12)
+        let statementDayComponent = calendar.component(.day, from: statementDate)
+        
+        // Bugünün tarih bileşenlerini al
+        var todayComponents = calendar.dateComponents([.year, .month, .day], from: today)
+        
+        let nextStatementDate: Date
+        
+        // Eğer bugün, kesim gününü geçmişse, bir sonraki ayın kesim tarihini hedefle
+        if todayComponents.day! > statementDayComponent {
+            guard let nextMonthDate = calendar.date(byAdding: .month, value: 1, to: today) else {
+                return ""
+            }
+            var nextMonthComponents = calendar.dateComponents([.year, .month], from: nextMonthDate)
+            nextMonthComponents.day = statementDayComponent
+            nextStatementDate = calendar.date(from: nextMonthComponents) ?? today
+        }
+        // Eğer bugün, kesim günü veya daha öncesiyse, bu ayın kesim tarihini hedefle
+        else {
+            var currentMonthComponents = calendar.dateComponents([.year, .month], from: today)
+            currentMonthComponents.day = statementDayComponent
+            nextStatementDate = calendar.date(from: currentMonthComponents) ?? today
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM yyyy" // "12 Ağustos 2025" formatı
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        
+        return formatter.string(from: nextStatementDate)
     }
 }
