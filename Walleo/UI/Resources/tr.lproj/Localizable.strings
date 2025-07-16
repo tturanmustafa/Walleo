@@ -613,3 +613,15 @@
 "transfer.no_payments" = "Ödeme bulunmuyor";
 
 
+// Taksitli işlem
+"transaction.installment.toggle" = "Taksitli İşlem";
+"transaction.installment.count" = "Taksit Sayısı";
+"transaction.installment.preview" = "%d taksit x %@ = %@";
+"transaction.installment.edit_warning_title" = "Taksitli İşlem Düzenleme";
+"transaction.installment.edit_warning" = "Bu değişiklik tüm taksitleri yeniden oluşturacak. Devam etmek istiyor musunuz?";
+"transaction.installment.delete_warning" = "Bu taksitli işlemin tamamı (%d taksit) silinecek. Onaylıyor musunuz?";
+"transaction.edit_installment" = "Taksitli İşlem Düzenle";
+"credit_card.installment_purchases" = "Taksitli Harcamalar";
+"installment.completed" = "Tamamlandı";
+"alert.installment.delete_title" = "Taksitli İşlem Silme";
+"credit_card_details.period_total" = "Dönem Toplamı";

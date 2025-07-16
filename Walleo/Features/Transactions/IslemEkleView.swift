@@ -1,4 +1,4 @@
-// Dosya: IslemEkleView.swift
+// DÜZELTME: IslemEkleView.swift
 
 import SwiftUI
 import SwiftData
@@ -24,6 +24,12 @@ struct IslemEkleView: View {
     @State private var bitisTarihiEtkin: Bool = false
     @State private var bitisTarihi: Date = Calendar.current.date(byAdding: .year, value: 1, to: Date()) ?? Date()
 
+    // YENİ: Taksitli işlem state'leri
+    @State private var taksitliIslem: Bool = false
+    @State private var taksitSayisi: Int = 2
+    @State private var isDuzenlemeModuTaksitli: Bool = false
+    @State private var taksitGuncellemeUyarisiGoster = false // YENİ: Kaydet'e basınca gösterilecek
+    
     @State private var orijinalTekrar: TekrarTuru = .tekSeferlik
     @State private var guncellemeSecenekleriGoster = false
 
@@ -36,6 +42,30 @@ struct IslemEkleView: View {
         !isTutarGecersiz &&
         secilenKategoriID != nil &&
         secilenHesapID != nil
+    }
+    
+    // YENİ: Seçilen hesabın kredi kartı olup olmadığını kontrol
+    private var isKrediKartiSecili: Bool {
+        guard let hesapID = secilenHesapID,
+              let hesap = tumHesaplar.first(where: { $0.id == hesapID }) else {
+            return false
+        }
+        if case .krediKarti = hesap.detay {
+            return true
+        }
+        return false
+    }
+    
+    // YENİ: Taksit önizleme metni
+    private var taksitOnizlemeMetni: String {
+        let tutar = stringToDouble(tutarString, locale: Locale(identifier: appSettings.languageCode))
+        guard tutar > 0 else { return "" }
+        
+        let aylikTaksit = tutar / Double(taksitSayisi)
+        let aylikTaksitStr = formatCurrency(amount: aylikTaksit, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
+        let toplamTutarStr = formatCurrency(amount: tutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
+        
+        return String(format: NSLocalizedString("transaction.installment.preview", comment: ""), taksitSayisi, aylikTaksitStr, toplamTutarStr)
     }
     
     var filtrelenmisKategoriler: [Kategori] {
@@ -55,7 +85,10 @@ struct IslemEkleView: View {
     }
     
     private var navigationTitleKey: LocalizedStringKey {
-        duzenlenecekIslem == nil ? "transaction.new" : "transaction.edit"
+        if isDuzenlemeModuTaksitli {
+            return "transaction.edit_installment"
+        }
+        return duzenlenecekIslem == nil ? "transaction.new" : "transaction.edit"
     }
 
     var body: some View {
@@ -64,13 +97,11 @@ struct IslemEkleView: View {
                 Section {
                     Picker("İşlem Türü", selection: $secilenTur.animation()) {
                         ForEach(IslemTuru.allCases, id: \.self) { tur in
-                            // GÜNCELLEME: tur.localized yerine, SwiftUI'ın kendi
-                            // dil motorunu kullanan LocalizedStringKey yapısını kullanıyoruz.
-                            // Bu, AppModels'ı değiştirmeden sorunu çözer.
                             Text(LocalizedStringKey(tur.rawValue)).tag(tur)
                         }
                     }
                     .pickerStyle(.segmented)
+                    .disabled(isDuzenlemeModuTaksitli) // Taksitli işlem düzenlemede değiştirilemez
                 }
                 
                 Section(header: Text(LocalizedStringKey("transaction.section_details"))) {
@@ -108,8 +139,9 @@ struct IslemEkleView: View {
                             Label(hesap.isim, systemImage: hesap.ikonAdi).tag(hesap.id as Hesap.ID?)
                         }
                     }
+                    .disabled(isDuzenlemeModuTaksitli) // Taksitli işlem düzenlemede hesap değiştirilemez
+                    
                     DatePicker(LocalizedStringKey("common.date"), selection: $tarih, displayedComponents: .date)
-                        // GÜNCELLEME: Başlangıç tarihi değiştiğinde, bitiş tarihinin de ondan ileri bir tarihte kalmasını sağla
                         .onChange(of: tarih) {
                             if bitisTarihi < tarih {
                                 bitisTarihi = tarih
@@ -117,24 +149,54 @@ struct IslemEkleView: View {
                         }
                 }
                 
-                Section {
-                    Picker(LocalizedStringKey("transaction.recurrence"), selection: $secilenTekrar) {
-                        ForEach(TekrarTuru.allCases) { tekrar in
-                            Label { Text(LocalizedStringKey(tekrar.rawValue)) } icon: { Image(systemName: iconFor(tekrar: tekrar)) }.tag(tekrar)
+                // YENİ: Taksitli işlem bölümü - DÜZENLEME MODUNDA DA GÖSTER
+                if secilenTur == .gider && isKrediKartiSecili {
+                    Section {
+                        Toggle(LocalizedStringKey("transaction.installment.toggle"), isOn: $taksitliIslem)
+                        
+                        if taksitliIslem {
+                            Stepper(value: $taksitSayisi, in: 2...36) {
+                                HStack {
+                                    Text(LocalizedStringKey("transaction.installment.count"))
+                                    Spacer()
+                                    Text("\(taksitSayisi)")
+                                        .foregroundColor(.secondary)
+                                }
+                            }
+                            
+                            if !tutarString.isEmpty && !isTutarGecersiz {
+                                Text(taksitOnizlemeMetni)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .padding(.top, 4)
+                            }
                         }
                     }
-                    
-                    // YENİ: Bitiş tarihi belirleme arayüzü eklendi.
-                    // Sadece tekrarlanan bir işlem türü seçildiğinde görünür olacak.
-                    // --- DEĞİŞİKLİK BURADA ---
-                    // Toggle kaldırıldı. Tekrarlanan bir işlem seçildiğinde DatePicker doğrudan görünüyor.
-                    if secilenTekrar != .tekSeferlik {
-                        DatePicker("form.label.end_date", selection: $bitisTarihi, in: tarih..., displayedComponents: .date)
-                    }                }
+                }
+                
+                // Tekrar bölümü - Taksitli işlem değilse göster
+                if !taksitliIslem && !isDuzenlemeModuTaksitli {
+                    Section {
+                        Picker(LocalizedStringKey("transaction.recurrence"), selection: $secilenTekrar) {
+                            ForEach(TekrarTuru.allCases) { tekrar in
+                                Label { Text(LocalizedStringKey(tekrar.rawValue)) } icon: { Image(systemName: iconFor(tekrar: tekrar)) }.tag(tekrar)
+                            }
+                        }
+                        
+                        if secilenTekrar != .tekSeferlik {
+                            DatePicker("form.label.end_date", selection: $bitisTarihi, in: tarih..., displayedComponents: .date)
+                        }
+                    }
+                }
             }
-            // KATEGORİ ÖNERME MANTIĞI İÇİN YENİ EKLENEN MODIFIER
             .onChange(of: isim) {
                 suggestCategory(for: isim)
+            }
+            .onChange(of: secilenHesapID) {
+                // Hesap değiştiğinde taksitli işlem toggle'ını kapat
+                if !isKrediKartiSecili {
+                    taksitliIslem = false
+                }
             }
             .disabled(isSaving)
             .navigationTitle(navigationTitleKey).navigationBarTitleDisplayMode(.inline)
@@ -154,6 +216,11 @@ struct IslemEkleView: View {
             .onChange(of: secilenTur) {
                 if !filtrelenmisKategoriler.contains(where: { $0.id == secilenKategoriID }) { secilenKategoriID = nil }
                 if !filtrelenmisHesaplar.contains(where: { $0.id == secilenHesapID }) { secilenHesapID = nil }
+                
+                // Gelir seçilirse taksitli işlemi kapat
+                if secilenTur == .gelir {
+                    taksitliIslem = false
+                }
             }
             .onAppear(perform: formuDoldur)
             .confirmationDialog(LocalizedStringKey("alert.recurring_transaction"), isPresented: $guncellemeSecenekleriGoster, titleVisibility: .visible) {
@@ -161,61 +228,175 @@ struct IslemEkleView: View {
                 Button(LocalizedStringKey("alert.update_future")) { Task { await guncelle(tekil: false) } }
                 Button(LocalizedStringKey("common.cancel"), role: .cancel) { }
             }
+            // YENİ: Taksitli işlem güncelleme uyarısı - KAYDET'E BASINCA GÖSTER
+            .alert(LocalizedStringKey("transaction.installment.edit_warning_title"), isPresented: $taksitGuncellemeUyarisiGoster) {
+                Button(LocalizedStringKey("common.continue"), role: .destructive) {
+                    Task { await taksitliIslemiGuncelle() }
+                }
+                Button(LocalizedStringKey("common.cancel"), role: .cancel) { }
+            } message: {
+                Text(LocalizedStringKey("transaction.installment.edit_warning"))
+            }
         }
     }
     
     private func formuDoldur() {
         guard let islem = duzenlenecekIslem else { return }
-        isim = islem.isim
-        tutarString = formatAmountForEditing(amount: islem.tutar, localeIdentifier: appSettings.languageCode)
-        isTutarGecersiz = false
-        tarih = islem.tarih
-        secilenTur = islem.tur
-        secilenKategoriID = islem.kategori?.id
-        secilenHesapID = islem.hesap?.id
-        secilenTekrar = islem.tekrar
-        orijinalTekrar = islem.tekrar
         
-        // Bitiş tarihi alanını doldurma güncellendi
-        if let bitis = islem.tekrarBitisTarihi {
-            bitisTarihi = bitis
+        // Taksitli işlem kontrolü
+        if islem.taksitliMi, let anaID = islem.anaTaksitliIslemID {
+            isDuzenlemeModuTaksitli = true
+            
+            // Ana işlem bilgilerini yükle
+            isim = islem.isim.replacingOccurrences(of: " (\(islem.mevcutTaksitNo)/\(islem.toplamTaksitSayisi))", with: "")
+            tutarString = formatAmountForEditing(amount: islem.anaIslemTutari, localeIdentifier: appSettings.languageCode)
+            taksitSayisi = islem.toplamTaksitSayisi
+            taksitliIslem = true // DÜZELTME: Toggle'ı aç
+            
+            // İlk taksidin tarihini bul
+            let predicate = #Predicate<Islem> { $0.anaTaksitliIslemID == anaID && $0.mevcutTaksitNo == 1 }
+            if let ilkTaksit = try? modelContext.fetch(FetchDescriptor(predicate: predicate)).first {
+                tarih = ilkTaksit.tarih
+            } else {
+                tarih = islem.tarih
+            }
         } else {
-            // Eğer kayıtlı bitiş tarihi yoksa ama tekrarlanan bir işlemse, varsayılan bir değer ata
-            if islem.tekrar != .tekSeferlik {
+            // Normal işlem
+            isim = islem.isim
+            tutarString = formatAmountForEditing(amount: islem.tutar, localeIdentifier: appSettings.languageCode)
+            tarih = islem.tarih
+            secilenTekrar = islem.tekrar
+            orijinalTekrar = islem.tekrar
+            
+            if let bitis = islem.tekrarBitisTarihi {
+                bitisTarihi = bitis
+            } else if islem.tekrar != .tekSeferlik {
                 bitisTarihi = Calendar.current.date(byAdding: .year, value: 1, to: islem.tarih) ?? islem.tarih
             }
         }
+        
+        isTutarGecersiz = false
+        secilenTur = islem.tur
+        secilenKategoriID = islem.kategori?.id
+        secilenHesapID = islem.hesap?.id
     }
     
     private func kaydetmeIsleminiBaslat() async {
-        if duzenlenecekIslem != nil && orijinalTekrar != .tekSeferlik {
+        if isDuzenlemeModuTaksitli {
+            // Taksitli işlem düzenlemesi - uyarıyı göster
+            taksitGuncellemeUyarisiGoster = true
+        } else if duzenlenecekIslem != nil && orijinalTekrar != .tekSeferlik {
             guncellemeSecenekleriGoster = true
         } else {
             await guncelle(tekil: true)
         }
     }
     
-    private func guncelle(tekil: Bool) async {
+    // YENİ: Taksitli işlem güncelleme fonksiyonu
+    private func taksitliIslemiGuncelle() async {
         isSaving = true
-        defer { isSaving = false } // Her durumda isSaving'i false yap
+        defer { isSaving = false }
+        
+        guard let islem = duzenlenecekIslem,
+              let anaID = islem.anaTaksitliIslemID else { return }
         
         do {
-            // Güvenli double dönüşümü
+            // Eski taksitleri sil
+            let predicate = #Predicate<Islem> { $0.anaTaksitliIslemID == anaID }
+            let eskiTaksitler = try modelContext.fetch(FetchDescriptor(predicate: predicate))
+            
+            for taksit in eskiTaksitler {
+                modelContext.delete(taksit)
+            }
+            
+            // Yeni taksitleri oluştur
+            await taksitliIslemOlustur()
+            
+            dismiss()
+            
+        } catch {
+            Logger.log("Taksitli işlem güncelleme hatası: \(error)", log: Logger.view, type: .error)
+        }
+    }
+    
+    private func guncelle(tekil: Bool) async {
+        isSaving = true
+        defer { isSaving = false }
+        
+        do {
             let tutar = stringToDouble(tutarString, locale: Locale(identifier: appSettings.languageCode))
             guard tutar > 0 else {
                 Logger.log("Geçersiz tutar: \(tutarString)", log: Logger.view, type: .error)
                 return
             }
             
-            // Kategori ve hesap kontrolü
             guard let secilenKategori = kategoriler.first(where: { $0.id == secilenKategoriID }),
                   let secilenHesap = tumHesaplar.first(where: { $0.id == secilenHesapID }) else {
                 Logger.log("Kategori veya hesap bulunamadı", log: Logger.view, type: .error)
                 return
             }
             
-            let sonBitisTarihi: Date? = secilenTekrar == .tekSeferlik ? nil : bitisTarihi
+            // DÜZELTME: Düzenleme modunda taksitli işlem değişikliği kontrolü
+            if let mevcutIslem = duzenlenecekIslem {
+                // Mevcut işlem taksitli mi kontrol et
+                let eskidenTaksitliMi = mevcutIslem.taksitliMi
+                
+                // Taksitli -> Normal veya Normal -> Taksitli dönüşüm
+                if eskidenTaksitliMi != taksitliIslem {
+                    // Eski taksitleri sil (varsa)
+                    if eskidenTaksitliMi, let anaID = mevcutIslem.anaTaksitliIslemID {
+                        let predicate = #Predicate<Islem> { $0.anaTaksitliIslemID == anaID }
+                        let eskiTaksitler = try modelContext.fetch(FetchDescriptor(predicate: predicate))
+                        for taksit in eskiTaksitler {
+                            modelContext.delete(taksit)
+                        }
+                    }
+                    
+                    // Yeni duruma göre işlem oluştur
+                    if taksitliIslem && isKrediKartiSecili {
+                        // Normal -> Taksitli
+                        await taksitliIslemOlustur()
+                    } else {
+                        // Taksitli -> Normal
+                        let yeniIslem = Islem(
+                            isim: isim.trimmingCharacters(in: .whitespaces),
+                            tutar: tutar,
+                            tarih: tarih,
+                            tur: secilenTur,
+                            tekrar: secilenTekrar,
+                            kategori: secilenKategori,
+                            hesap: secilenHesap,
+                            tekrarBitisTarihi: secilenTekrar == .tekSeferlik ? nil : bitisTarihi
+                        )
+                        modelContext.insert(yeniIslem)
+                    }
+                    
+                    try modelContext.save()
+                    
+                    NotificationCenter.default.post(
+                        name: .transactionsDidChange,
+                        object: nil,
+                        userInfo: ["payload": TransactionChangePayload(
+                            type: .update,
+                            affectedAccountIDs: [secilenHesap.id],
+                            affectedCategoryIDs: [secilenKategori.id]
+                        )]
+                    )
+                    
+                    dismiss()
+                    return
+                }
+            }
             
+            // Yeni taksitli işlem oluşturma
+            if taksitliIslem && secilenTur == .gider && isKrediKartiSecili && duzenlenecekIslem == nil {
+                await taksitliIslemOlustur()
+                dismiss()
+                return
+            }
+            
+            // Normal işlem güncelleme/oluşturma mantığı
+            let sonBitisTarihi: Date? = secilenTekrar == .tekSeferlik ? nil : bitisTarihi
             var affectedAccountIDs: Set<UUID> = [secilenHesap.id]
             
             let islemToUpdate: Islem
@@ -238,14 +419,12 @@ struct IslemEkleView: View {
                 modelContext.insert(islemToUpdate)
             }
             
-            // Güvenli seri silme
             if !tekil && duzenlenecekIslem != nil {
                 await MainActor.run {
                     seriyiSil(islem: islemToUpdate, sadeceGelecek: true)
                 }
             }
             
-            // İşlem güncelleme
             islemToUpdate.isim = isim.trimmingCharacters(in: .whitespaces)
             islemToUpdate.tutar = tutar
             islemToUpdate.tarih = tarih
@@ -259,7 +438,6 @@ struct IslemEkleView: View {
                 islemToUpdate.tekrarID = UUID()
             }
             
-            // Yeni seri oluşturma kontrolü
             if (!tekil && secilenTekrar != .tekSeferlik) ||
                (orijinalTekrar == .tekSeferlik && secilenTekrar != .tekSeferlik) {
                 await MainActor.run {
@@ -267,10 +445,8 @@ struct IslemEkleView: View {
                 }
             }
             
-            // Hafıza güncelleme
             await updateTransactionMemory(name: isim, categoryID: secilenKategoriID)
             
-            // Değişiklik bildirimi
             let changeType: TransactionChangePayload.ChangeType = duzenlenecekIslem == nil ? .add : .update
             let payload = TransactionChangePayload(
                 type: changeType,
@@ -278,10 +454,8 @@ struct IslemEkleView: View {
                 affectedCategoryIDs: [secilenKategori.id]
             )
             
-            // Model kaydetme
             try modelContext.save()
             
-            // Bildirimler
             await MainActor.run {
                 NotificationCenter.default.post(
                     name: .transactionsDidChange,
@@ -299,13 +473,64 @@ struct IslemEkleView: View {
             
         } catch {
             Logger.log("İşlem kaydetme hatası: \(error)", log: Logger.view, type: .error)
-            // Kullanıcıya hata göster
-            await MainActor.run {
-                // Hata alert'i göstermek için state ekleyebilirsiniz
-            }
         }
     }
     
+    // YENİ: Taksitli işlem oluşturma
+    private func taksitliIslemOlustur() async {
+        let tutar = stringToDouble(tutarString, locale: Locale(identifier: appSettings.languageCode))
+        guard tutar > 0,
+              let secilenKategori = kategoriler.first(where: { $0.id == secilenKategoriID }),
+              let secilenHesap = tumHesaplar.first(where: { $0.id == secilenHesapID }) else {
+            return
+        }
+        
+        let anaIslemID = UUID()
+        let aylikTaksit = tutar / Double(taksitSayisi)
+        let temizIsim = isim.trimmingCharacters(in: .whitespaces)
+        
+        do {
+            for i in 0..<taksitSayisi {
+                let taksitTarihi = Calendar.current.date(byAdding: .month, value: i, to: tarih) ?? tarih
+                let taksitIsmi = "\(temizIsim) (\(i+1)/\(taksitSayisi))"
+                
+                let taksit = Islem(
+                    isim: taksitIsmi,
+                    tutar: aylikTaksit,
+                    tarih: taksitTarihi,
+                    tur: .gider,
+                    kategori: secilenKategori,
+                    hesap: secilenHesap,
+                    taksitliMi: true,
+                    toplamTaksitSayisi: taksitSayisi,
+                    mevcutTaksitNo: i + 1,
+                    anaTaksitliIslemID: anaIslemID,
+                    anaIslemTutari: tutar
+                )
+                
+                modelContext.insert(taksit)
+            }
+            
+            try modelContext.save()
+            
+            await MainActor.run {
+                NotificationCenter.default.post(
+                    name: .transactionsDidChange,
+                    object: nil,
+                    userInfo: ["payload": TransactionChangePayload(
+                        type: .add,
+                        affectedAccountIDs: [secilenHesap.id],
+                        affectedCategoryIDs: [secilenKategori.id]
+                    )]
+                )
+            }
+            
+        } catch {
+            Logger.log("Taksitli işlem oluşturma hatası: \(error)", log: Logger.view, type: .error)
+        }
+    }
+    
+    // Diğer fonksiyonlar aynı kalıyor...
     private func seriyiSil(islem: Islem, sadeceGelecek: Bool) {
         let anaIslemID = islem.id
         let tekrarID = islem.tekrarID
@@ -324,12 +549,10 @@ struct IslemEkleView: View {
         try? modelContext.delete(model: Islem.self, where: predicate)
     }
     
-    // --- DEĞİŞİKLİK BURADA: FONKSİYON TAMAMEN YENİLENDİ ---
     private func yeniSeriOlustur(islem: Islem, bitis: Date?) {
         guard let bitisTarihi = bitis,
               secilenTekrar != .tekSeferlik else { return }
         
-        // Maksimum tekrar sayısı kontrolü (performans için)
         let maxTekrar = 100
         var tekrarSayisi = 0
         

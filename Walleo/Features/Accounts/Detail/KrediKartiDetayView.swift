@@ -12,7 +12,11 @@ struct KrediKartiDetayView: View {
     @State private var duzenlenecekIslem: Islem?
     @State private var silinecekTekilIslem: Islem?
     @State private var silinecekTekrarliIslem: Islem?
+    @State private var silinecekTaksitliIslem: Islem?
     @State private var isDeletingSeries: Bool = false
+    
+    // YENİ: Taksitli işlem grubunu açık/kapalı tutmak için
+    @State private var expandedGroups: Set<UUID> = []
     
     init(kartHesabi: Hesap, modelContext: ModelContext) {
         _viewModel = State(initialValue: KrediKartiDetayViewModel(modelContext: modelContext, kartHesabi: kartHesabi))
@@ -36,17 +40,9 @@ struct KrediKartiDetayView: View {
                 }
                 
                 List {
-                    // Harcamalar Bölümü
-                    Section(header: Text(LocalizedStringKey("transfer.section.expenses"))) {
-                        if viewModel.donemIslemleri.isEmpty {
-                            HStack {
-                                Spacer()
-                                Text(LocalizedStringKey("credit_card_details.no_expenses_for_month"))
-                                    .foregroundColor(.secondary)
-                                    .padding()
-                                Spacer()
-                            }
-                        } else {
+                    // Normal Harcamalar Bölümü
+                    if !viewModel.donemIslemleri.isEmpty {
+                        Section(header: Text(LocalizedStringKey("transfer.section.expenses"))) {
                             ForEach(viewModel.donemIslemleri) { islem in
                                 IslemSatirView(
                                     islem: islem,
@@ -57,17 +53,25 @@ struct KrediKartiDetayView: View {
                         }
                     }
                     
-                    // Ödemeler (Transferler) Bölümü
-                    Section(header: Text(LocalizedStringKey("transfer.section.payments"))) {
-                        if viewModel.tumTransferler.isEmpty {
-                            HStack {
-                                Spacer()
-                                Text(LocalizedStringKey("transfer.no_payments"))
-                                    .foregroundColor(.secondary)
-                                    .padding()
-                                Spacer()
+                    // YENİ: Taksitli Harcamalar Bölümü
+                    if !viewModel.taksitliIslemGruplari.isEmpty {
+                        Section(header: Text(LocalizedStringKey("credit_card.installment_purchases"))) {
+                            ForEach(viewModel.taksitliIslemGruplari) { grup in
+                                TaksitliIslemGrubuView(
+                                    grup: grup,
+                                    isExpanded: expandedGroups.contains(grup.id),
+                                    onToggle: { toggleGroup(grup.id) },
+                                    onEdit: { taksit in duzenlenecekIslem = taksit },
+                                    onDelete: { taksit in silmeyiBaslat(taksit) }
+                                )
+                                .environmentObject(appSettings)
                             }
-                        } else {
+                        }
+                    }
+                    
+                    // Ödemeler (Transferler) Bölümü
+                    if !viewModel.tumTransferler.isEmpty {
+                        Section(header: Text(LocalizedStringKey("transfer.section.payments"))) {
                             ForEach(viewModel.tumTransferler) { transfer in
                                 TransferSatirView(
                                     transfer: transfer,
@@ -75,6 +79,19 @@ struct KrediKartiDetayView: View {
                                 )
                                 .environmentObject(appSettings)
                             }
+                        }
+                    }
+                    
+                    // Hiç işlem yoksa
+                    if viewModel.donemIslemleri.isEmpty &&
+                       viewModel.taksitliIslemGruplari.isEmpty &&
+                       viewModel.tumTransferler.isEmpty {
+                        HStack {
+                            Spacer()
+                            Text(LocalizedStringKey("credit_card_details.no_expenses_for_month"))
+                                .foregroundColor(.secondary)
+                                .padding()
+                            Spacer()
                         }
                     }
                 }
@@ -133,13 +150,37 @@ struct KrediKartiDetayView: View {
         } message: { islem in
             Text("alert.delete_transaction.message")
         }
+        // YENİ: Taksitli işlem silme alert'i
+        .alert(
+            LocalizedStringKey("alert.installment.delete_title"),
+            isPresented: Binding(isPresented: $silinecekTaksitliIslem),
+            presenting: silinecekTaksitliIslem
+        ) { islem in
+            Button(role: .destructive) {
+                TransactionService.shared.deleteTaksitliIslem(islem, in: modelContext)
+            } label: {
+                Text("common.delete")
+            }
+        } message: { islem in
+            Text(String(format: NSLocalizedString("transaction.installment.delete_warning", comment: ""), islem.toplamTaksitSayisi))
+        }
     }
     
     private func silmeyiBaslat(_ islem: Islem) {
-        if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
+        if islem.taksitliMi {
+            silinecekTaksitliIslem = islem
+        } else if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
             silinecekTekrarliIslem = islem
         } else {
             silinecekTekilIslem = islem
+        }
+    }
+    
+    private func toggleGroup(_ groupID: UUID) {
+        if expandedGroups.contains(groupID) {
+            expandedGroups.remove(groupID)
+        } else {
+            expandedGroups.insert(groupID)
         }
     }
 }

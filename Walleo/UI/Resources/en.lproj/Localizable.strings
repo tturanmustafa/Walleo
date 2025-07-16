@@ -610,3 +610,17 @@
 "transfer.section.expenses" = "Expenses";
 "transfer.section.payments" = "Payments";
 "transfer.no_payments" = "No payments found";
+
+// Installment
+"transaction.installment.toggle" = "Installment Purchase";
+"transaction.installment.count" = "Number of Installments";
+"transaction.installment.preview" = "%d installments x %@ = %@";
+"transaction.installment.edit_warning_title" = "Edit Installment Purchase";
+"transaction.installment.edit_warning" = "This change will recreate all installments. Do you want to continue?";
+"transaction.installment.delete_warning" = "All installments (%d) of this purchase will be deleted. Are you sure?";
+"transaction.edit_installment" = "Edit Installment";
+"credit_card.installment_purchases" = "Installment Purchases";
+"installment.completed" = "Completed";
+
+"alert.installment.delete_title" = "Delete Installment Purchase";
+"credit_card_details.period_total" = "Period Total";

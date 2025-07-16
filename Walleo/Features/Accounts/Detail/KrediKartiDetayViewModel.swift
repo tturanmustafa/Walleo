@@ -14,8 +14,25 @@ class KrediKartiDetayViewModel {
     var donemIslemleri: [Islem] = []
     var tumTransferler: [Transfer] = []
     
+    // YENİ: Taksitli işlemler için
+    var taksitliIslemGruplari: [TaksitliIslemGrubu] = []
+    
     var toplamHarcama: Double {
         donemIslemleri.reduce(0) { $0 + $1.tutar }
+    }
+    
+    // YENİ: Taksitli işlem grubu yapısı
+    struct TaksitliIslemGrubu: Identifiable {
+        let id: UUID
+        let anaIsim: String
+        let toplamTutar: Double
+        let taksitler: [Islem]
+        let tamamlananTaksitSayisi: Int
+        
+        var aciklamaMetni: String {
+            let tamamlanan = taksitler.filter { $0.tarih <= Date() }.count
+            return "\(formatCurrency(amount: toplamTutar, currencyCode: AppSettings().currencyCode, localeIdentifier: AppSettings().languageCode)) - \(tamamlanan)/\(taksitler.count) taksit"
+        }
     }
     
     init(modelContext: ModelContext, kartHesabi: Hesap) {
@@ -89,11 +106,45 @@ class KrediKartiDetayViewModel {
         
         do {
             let donemGiderleri = try modelContext.fetch(descriptor)
-            self.donemIslemleri = donemGiderleri.filter { $0.hesap?.id == kartID }
+            let kartaAitIslemler = donemGiderleri.filter { $0.hesap?.id == kartID }
+            
+            // Normal işlemler (taksitli olmayanlar)
+            self.donemIslemleri = kartaAitIslemler.filter { !$0.taksitliMi }
+            
+            // Taksitli işlemleri grupla
+            grupTaksitliIslemler(from: kartaAitIslemler.filter { $0.taksitliMi })
+            
         } catch {
             Logger.log("Kredi kartı detay işlemleri çekilirken hata: \(error.localizedDescription)", log: Logger.data, type: .error)
             self.donemIslemleri = []
+            self.taksitliIslemGruplari = []
         }
+    }
+    
+    // YENİ: Taksitli işlemleri gruplama
+    private func grupTaksitliIslemler(from taksitler: [Islem]) {
+        let gruplar = Dictionary(grouping: taksitler) { $0.anaTaksitliIslemID ?? UUID() }
+        
+        self.taksitliIslemGruplari = gruplar.compactMap { (anaID, taksitler) in
+            guard let ilkTaksit = taksitler.first else { return nil }
+            
+            // Ana ismi çıkar (örn: "Araba (1/6)" -> "Araba")
+            let anaIsim = ilkTaksit.isim.replacingOccurrences(
+                of: " (\(ilkTaksit.mevcutTaksitNo)/\(ilkTaksit.toplamTaksitSayisi))",
+                with: ""
+            )
+            
+            // Taksitleri sırala
+            let siraliTaksitler = taksitler.sorted { $0.mevcutTaksitNo < $1.mevcutTaksitNo }
+            
+            return TaksitliIslemGrubu(
+                id: anaID,
+                anaIsim: anaIsim,
+                toplamTutar: ilkTaksit.anaIslemTutari,
+                taksitler: siraliTaksitler,
+                tamamlananTaksitSayisi: taksitler.filter { $0.tarih <= Date() }.count
+            )
+        }.sorted { $0.anaIsim < $1.anaIsim }
     }
     
     func sonrakiDonem() {

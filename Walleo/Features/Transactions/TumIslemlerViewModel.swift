@@ -94,4 +94,12 @@ class TumIslemlerViewModel {
             isDeleting = false
         }
     }
+    
+    func deleteTaksitliIslem(_ islem: Islem) {
+        TransactionService.shared.deleteTaksitliIslem(islem, in: modelContext)
+        // Liste güncelleme
+        if let anaID = islem.anaTaksitliIslemID {
+            islemler.removeAll { $0.anaTaksitliIslemID == anaID }
+        }
+    }
 }

@@ -108,3 +108,58 @@ class TransactionService {
         }
     }
 }
+
+// TransactionService.swift'e ekleme
+
+extension TransactionService {
+    /// Taksitli bir işlemin tüm taksitlerini siler
+    @MainActor
+    func deleteTaksitliIslem(_ islem: Islem, in context: ModelContext) {
+        guard islem.taksitliMi, let anaID = islem.anaTaksitliIslemID else {
+            // Normal işlem silme
+            deleteTransaction(islem, in: context)
+            return
+        }
+        
+        do {
+            // Tüm taksitleri bul
+            let predicate = #Predicate<Islem> { $0.anaTaksitliIslemID == anaID }
+            let tumTaksitler = try context.fetch(FetchDescriptor(predicate: predicate))
+            
+            var affectedAccountIDs: Set<UUID> = []
+            var affectedCategoryIDs: Set<UUID> = []
+            
+            // Tüm taksitleri sil
+            for taksit in tumTaksitler {
+                if let hesapID = taksit.hesap?.id {
+                    affectedAccountIDs.insert(hesapID)
+                }
+                if let kategoriID = taksit.kategori?.id {
+                    affectedCategoryIDs.insert(kategoriID)
+                }
+                context.delete(taksit)
+            }
+            
+            // Kaydet
+            try context.save()
+            
+            // Bildirim gönder
+            let payload = TransactionChangePayload(
+                type: .delete,
+                affectedAccountIDs: Array(affectedAccountIDs),
+                affectedCategoryIDs: Array(affectedCategoryIDs)
+            )
+            
+            NotificationCenter.default.post(
+                name: .transactionsDidChange,
+                object: nil,
+                userInfo: ["payload": payload]
+            )
+            
+            Logger.log("Taksitli işlem başarıyla silindi: \(tumTaksitler.count) taksit", log: Logger.service)
+            
+        } catch {
+            Logger.log("Taksitli işlem silme hatası: \(error)", log: Logger.service, type: .error)
+        }
+    }
+}
