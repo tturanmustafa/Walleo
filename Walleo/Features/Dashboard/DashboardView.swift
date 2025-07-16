@@ -50,6 +50,8 @@ struct DashboardView: View {
     
     @State private var isShowingSettings = false
     @State private var isShowingNotifications = false
+    @State private var silinecekTaksitliIslem: Islem?
+
     
     @Namespace private var animation
 
@@ -160,6 +162,19 @@ struct DashboardView: View {
                 onDeleteSeries: { islem in viewModel.deleteSeri(for: islem) }
             )
             .alert(
+                LocalizedStringKey("alert.installment.delete_title"),
+                isPresented: Binding(isPresented: $silinecekTaksitliIslem),
+                presenting: silinecekTaksitliIslem
+            ) { islem in
+                Button(role: .destructive) {
+                    TransactionService.shared.deleteTaksitliIslem(islem, in: modelContext)
+                } label: {
+                    Text("common.delete")
+                }
+            } message: { islem in
+                Text(String(format: NSLocalizedString("transaction.installment.delete_warning", comment: ""), islem.toplamTaksitSayisi))
+            }
+            .alert(
                 LocalizedStringKey("alert.delete_confirmation.title"),
                 isPresented: Binding(isPresented: $silinecekTekilIslem),
                 presenting: silinecekTekilIslem
@@ -212,7 +227,10 @@ struct DashboardView: View {
     
     // GÜNCELLENMİŞ FONKSİYON
     private func silmeyiBaslat(_ islem: Islem) {
-        if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
+        // Taksitli işlem kontrolü
+        if islem.taksitliMi {
+            silinecekTaksitliIslem = islem
+        } else if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
             silinecekTekrarliIslem = islem
         } else {
             silinecekTekilIslem = islem

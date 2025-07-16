@@ -119,6 +119,8 @@ class DashboardViewModel {
         fetchData()
     }
     
+    
+    
     // GÜNCELLENMİŞ FONKSİYON
     func deleteSeri(for islem: Islem) {
         Task {

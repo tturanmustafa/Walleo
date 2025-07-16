@@ -16,6 +16,8 @@ struct TumIslemlerView: View {
     @State private var duzenlenecekIslem: Islem?
     @State private var silinecekTekrarliIslem: Islem?
     @State private var silinecekTekilIslem: Islem?
+    @State private var silinecekTaksitliIslem: Islem?
+
     
     init(modelContext: ModelContext, baslangicTarihi: Date? = nil) {
         _viewModel = State(initialValue: TumIslemlerViewModel(modelContext: modelContext, baslangicTarihi: baslangicTarihi))
@@ -70,6 +72,19 @@ struct TumIslemlerView: View {
                 onDeleteSeries: { islem in viewModel.deleteSeri(islem) }
             )
             .alert(
+                LocalizedStringKey("alert.installment.delete_title"),
+                isPresented: Binding(isPresented: $silinecekTaksitliIslem),
+                presenting: silinecekTaksitliIslem
+            ) { islem in
+                Button(role: .destructive) {
+                    TransactionService.shared.deleteTaksitliIslem(islem, in: modelContext)
+                } label: {
+                    Text("common.delete")
+                }
+            } message: { islem in
+                Text(String(format: NSLocalizedString("transaction.installment.delete_warning", comment: ""), islem.toplamTaksitSayisi))
+            }
+            .alert(
                 LocalizedStringKey("alert.delete_confirmation.title"),
                 isPresented: Binding(isPresented: $silinecekTekilIslem),
                 presenting: silinecekTekilIslem
@@ -92,7 +107,9 @@ struct TumIslemlerView: View {
     }
     
     private func silmeyiBaslat(_ islem: Islem) {
-        if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
+        if islem.taksitliMi {
+            silinecekTaksitliIslem = islem
+        } else if islem.tekrar != .tekSeferlik && islem.tekrarID != UUID() {
             silinecekTekrarliIslem = islem
         } else {
             silinecekTekilIslem = islem
