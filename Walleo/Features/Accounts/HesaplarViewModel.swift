@@ -16,10 +16,21 @@ class HesaplarViewModel {
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
         
+        // Mevcut bildirim dinleyiciniz
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(hesaplamalariTetikle), // Fonksiyon adı daha genel hale getirildi
+            selector: #selector(hesaplamalariTetikle),
             name: .transactionsDidChange,
+            object: nil
+        )
+        
+        // --- 🔥 EKLENECEK KOD BURADA 🔥 ---
+        // Hesap detayları değiştiğinde de listenin yenilenmesini sağlıyoruz.
+        // Bu, yeni hesap eklendiğinde veya mevcut bir hesap düzenlendiğinde tetiklenir.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(hesaplamalariTetikle),
+            name: .accountDetailsDidChange, // Doğru bildirimi dinliyoruz
             object: nil
         )
     }

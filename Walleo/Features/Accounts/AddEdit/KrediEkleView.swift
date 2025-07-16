@@ -123,6 +123,9 @@ struct KrediEkleView: View {
             let yeniHesap = Hesap(isim: isim, ikonAdi: "banknote.fill", renkHex: "#5E5CE6", baslangicBakiyesi: -cekilenTutar, detay: krediDetayi)
             modelContext.insert(yeniHesap)
         }
+        
+        NotificationCenter.default.post(name: .accountDetailsDidChange, object: nil)
+
         dismiss()
     }
     

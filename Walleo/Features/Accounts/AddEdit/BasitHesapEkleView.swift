@@ -83,6 +83,8 @@ struct BasitHesapEkleView: View {
             )
             modelContext.insert(yeniHesap)
         }
+        NotificationCenter.default.post(name: .accountDetailsDidChange, object: nil)
+
         dismiss()
     }
 }
