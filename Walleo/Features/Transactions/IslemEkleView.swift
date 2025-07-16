@@ -74,13 +74,23 @@ struct IslemEkleView: View {
     
     private var filtrelenmisHesaplar: [Hesap] {
         if secilenTur == .gelir {
-            return tumHesaplar.filter {
-                if case .cuzdan = $0.detay { return true }
-                if case .krediKarti = $0.detay { return true }
+            // --- DEĞİŞİKLİK BURADA ---
+            // Gelir artık sadece "cüzdan" tipindeki hesaplara eklenebilir.
+            // Kredi kartları bu listeden çıkarıldı.
+            return tumHesaplar.filter { hesap in
+                if case .cuzdan = hesap.detay {
+                    return true
+                }
                 return false
             }
-        } else {
-            return tumHesaplar.filter { if case .kredi = $0.detay { return false }; return true }
+        } else { // Gider durumu
+            // Gider, kredi hesapları hariç tüm hesaplardan yapılabilir.
+            return tumHesaplar.filter { hesap in
+                if case .kredi = hesap.detay {
+                    return false
+                }
+                return true
+            }
         }
     }
     

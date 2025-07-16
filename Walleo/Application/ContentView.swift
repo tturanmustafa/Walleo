@@ -65,7 +65,9 @@ struct ContentView: View {
     @EnvironmentObject var entitlementManager: EntitlementManager
     @EnvironmentObject var appSettings: AppSettings
     @State private var hesapYokUyarisiGoster = false
-    
+    @Query private var cuzdanHesaplari: [Hesap]
+    @State private var acilacakSheet: HesaplarView.SheetTuru?
+
     @Query private var kullanilabilirHesaplar: [Hesap]
     @State private var showPaywall = false
     
@@ -79,11 +81,20 @@ struct ContentView: View {
     }
 
     init() {
+        // Mevcut sorgunuz aynı kalıyor
         let krediTuruRawValue = HesapTuru.kredi.rawValue
         let predicate = #Predicate<Hesap> { hesap in
             hesap.hesapTuruRawValue != krediTuruRawValue
         }
         _kullanilabilirHesaplar = Query(filter: predicate)
+        
+        // --- 🔥 2. ADIM: YENİ SORGUMUZU INIT İÇİNDE BAŞLATIN 🔥 ---
+        // Yeni sorgumuzun filtresini burada tanımlıyoruz.
+        let cuzdanTuruRawValue = HesapTuru.cuzdan.rawValue
+        let cuzdanPredicate = #Predicate<Hesap> { hesap in
+            hesap.hesapTuruRawValue == cuzdanTuruRawValue
+        }
+        _cuzdanHesaplari = Query(filter: cuzdanPredicate)
     }
 
     enum Sekme: Hashable {
@@ -182,23 +193,31 @@ struct ContentView: View {
             IslemEkleView()
                 .environmentObject(appSettings)
         }
+        .ignoresSafeArea(.keyboard)
+        // 🔥 3. ADIM: BU YENİ SHEET MODIFIER'INI EKLEYİN
+        .sheet(item: $acilacakSheet) { sheet in
+            sheet.view
+                .environmentObject(appSettings)
+        }
         .alert(
             LocalizedStringKey("alert.no_accounts.title"),
             isPresented: $hesapYokUyarisiGoster
         ) {
             Button(LocalizedStringKey("alert.no_accounts.add_account_button")) {
-                seciliSekme = .hesaplar
+                // 🔥 4. ADIM: SADECE SHEET'İ AÇMA KOMUTU VERİN
+                // Sekmeyi değiştirmeye gerek yok, sheet zaten her yerden açılabilir.
+                acilacakSheet = .cuzdanEkle
             }
-            Button(LocalizedStringKey("common.cancel"), role: .cancel) { }
+            Button("common.cancel", role: .cancel) { }
         } message: {
-            Text("alert.no_accounts.message")
+            Text(LocalizedStringKey("alert.no_wallet.message"))
         }
     }
 
     // "+" Butonu
     var addTransactionButton: some View {
         Button(action: {
-            if kullanilabilirHesaplar.isEmpty {
+            if cuzdanHesaplari.isEmpty {
                 hesapYokUyarisiGoster = true
             } else {
                 yeniIslemEkleShowing = true
