@@ -12,6 +12,7 @@ struct DetayliRaporlarView: View {
         case harcamalar = "reports.detailed.spending_heatmap"
         case krediKarti = "reports.detailed.credit_card_report"
         case kredi = "reports.detailed.loan_report"
+        case kategoriler = "reports.detailed.categories_report" // YENİ
         
         var id: String { self.rawValue }
     }
@@ -51,6 +52,13 @@ struct DetayliRaporlarView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 case .kredi:
                     KrediRaporuView(
+                        modelContext: modelContext,
+                        baslangicTarihi: viewModel.baslangicTarihi,
+                        bitisTarihi: viewModel.bitisTarihi
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                case .kategoriler: // YENİ
+                    KategoriRaporuView(
                         modelContext: modelContext,
                         baslangicTarihi: viewModel.baslangicTarihi,
                         bitisTarihi: viewModel.bitisTarihi
