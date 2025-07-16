@@ -1,12 +1,4 @@
-//
-//  RadyalSaatGrafigi.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 15.07.2025.
-//
-
-
-// >> YENİ DOSYA: Features/ReportsDetailed/Views/RadyalSaatGrafigi.swift
+// >> TAM GÜNCELLENECEK DOSYA: RadyalSaatGrafigi.swift
 
 import SwiftUI
 import Charts
@@ -27,9 +19,36 @@ struct RadyalSaatGrafigi: View {
     
     var body: some View {
         VStack(spacing: 12) {
-            Text("reports.heatmap.hourly_distribution")
-                .font(.headline)
-                .foregroundStyle(.secondary)
+            // *** DEĞİŞİKLİK 1: BAŞLIK VE SEÇİLİ SAAT DETAYI EKLENDI ***
+            HStack {
+                Text("reports.heatmap.hourly_distribution")
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                
+                Spacer()
+                
+                // Seçili saat detayını sağ üstte göster
+                if let saat = secilenSaat,
+                   let veri = saatlikDagilim.first(where: { $0.saat == saat }) {
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text("\(saat):00-\((saat + 1) % 24):00")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                        Text(formatCurrency(
+                            amount: veri.toplamTutar,
+                            currencyCode: appSettings.currencyCode,
+                            localeIdentifier: appSettings.languageCode
+                        ))
+                        .font(.subheadline.bold())
+                        .foregroundColor(.accentColor)
+                        Text("\(veri.islemSayisi) işlem")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                    .transition(.scale.combined(with: .opacity))
+                }
+            }
+            // *** DEĞİŞİKLİK 1 SONU ***
             
             ZStack {
                 // Arka plan çemberleri
@@ -60,33 +79,19 @@ struct RadyalSaatGrafigi: View {
                     }
                 }
                 
-                // Merkez bilgi
+                // *** DEĞİŞİKLİK 2: MERKEZ BİLGİ KISMI GÜNCELLENDİ ***
+                // Merkez bilgi - seçili saat varsa üstte gösterdiğimiz için burada göstermeye gerek yok
                 VStack(spacing: 4) {
-                    if let saat = secilenSaat,
-                       let veri = saatlikDagilim.first(where: { $0.saat == saat }) {
-                        Text("\(saat):00")
-                            .font(.caption2)
-                            .fontWeight(.medium)
-                        Text(formatCurrency(
-                            amount: veri.toplamTutar,
-                            currencyCode: appSettings.currencyCode,
-                            localeIdentifier: appSettings.languageCode
-                        ))
+                    Image(systemName: "clock.fill")
+                        .font(.title2)
+                        .foregroundStyle(.secondary)
+                    Text("24 Saat")
                         .font(.caption)
-                        .fontWeight(.bold)
-                        Text("\(veri.islemSayisi) işlem")
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                    } else {
-                        Image(systemName: "clock.fill")
-                            .font(.title2)
-                            .foregroundStyle(.secondary)
-                        Text("24 Saat")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
+                        .foregroundStyle(.secondary)
                 }
                 .frame(width: 70)
+                .opacity(secilenSaat == nil ? 1 : 0.5) // Seçim varsa merkezi soluklaştır
+                // *** DEĞİŞİKLİK 2 SONU ***
             }
             .frame(width: 180, height: 180)
             .onAppear {
@@ -113,7 +118,7 @@ struct RadyalSaatGrafigi: View {
     }
 }
 
-// Saat işareti
+// Saat işareti - DEĞİŞİKLİK YOK
 struct SaatIsareti: View {
     let saat: Int
     
@@ -135,7 +140,7 @@ struct SaatIsareti: View {
     }
 }
 
-// Radyal bar
+// Radyal bar - DEĞİŞİKLİK YOK
 struct RadyalBar: View {
     let veri: SaatlikDagilimVerisi
     let maksimumDeger: Double

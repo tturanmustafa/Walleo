@@ -56,20 +56,19 @@ struct HarcamaIsiHaritasiView: View {
                     .padding(.horizontal)
                     
                     // Alt grafikler
-                    HStack(spacing: 16) {
+                    VStack(spacing: 20) {
                         // 24 Saatlik Radyal Grafik
                         RadyalSaatGrafigi(
                             saatlikDagilim: viewModel.saatlikDagilim
                         )
-                        .frame(height: 200)
+                        .padding(.horizontal)
                         
                         // Periyodik Karşılaştırma
                         PeriyodikKarsilastirmaView(
-                            veriler: viewModel.karsilastirmaVerileri // <--- Doğru kullanım
+                            veriler: viewModel.karsilastirmaVerileri
                         )
-                        .frame(height: 200)
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
                     
                     // Akıllı İçgörüler
                     if !viewModel.icgoruler.isEmpty {
