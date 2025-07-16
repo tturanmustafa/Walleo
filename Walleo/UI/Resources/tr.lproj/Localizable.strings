@@ -149,6 +149,10 @@
 "budget.name_placeholder" = "Bütçe Adı (örn: Mutfak Giderleri)";
 "budget.limit_placeholder" = "Aylık Limit (örn: 2500)";
 "accounts.add.loan_amount" = "Kredi Tutarı";
+"accounts.card.initial_balance" = "Başlangıç Bakiyesi";
+"accounts.card.current_balance" = "Güncel Bakiye";
+"accounts.card.total_limit" = "Kart Limiti";
+"accounts.card.statement_date" = "Hesap Kesim Tarihi";
 
 // MARK: - Diğer Ekranlar ve Uyarılar
 "all_transactions.title" = "Tüm İşlemler";
