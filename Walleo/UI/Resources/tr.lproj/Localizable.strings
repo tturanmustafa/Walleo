@@ -627,3 +627,16 @@
 "credit_card_details.period_total" = "Dönem Toplamı";
 
 "alert.no_wallet.message" = "İşlem ekleyebilmek için **öncelikle** bir **Cüzdan** hesabı **oluşturmanız** gerekmektedir.";
+
+// Türkçe
+"reports.detailed.categories_report" = "Kategoriler";
+"reports.category.summary" = "Kategori Özeti";
+"reports.category.total_categories" = "Toplam Kategori";
+"reports.category.active_categories" = "Aktif Kategori";
+"reports.category.most_spent" = "En Çok Harcanan";
+"reports.category.view_list" = "Liste";
+"reports.category.view_chart" = "Grafik";
+"reports.category.view_comparison" = "Karşılaştırma";
+"reports.category.distribution" = "Kategori Dağılımı";
+
+

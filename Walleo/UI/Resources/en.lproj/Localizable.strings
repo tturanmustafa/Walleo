@@ -626,3 +626,14 @@
 "credit_card_details.period_total" = "Period Total";
 
 "alert.no_wallet.message" = "You must **first create** a **Wallet** account to be able to add a transaction.";
+
+// İngilizce
+"reports.detailed.categories_report" = "Categories";
+"reports.category.summary" = "Category Summary";
+"reports.category.total_categories" = "Total Categories";
+"reports.category.active_categories" = "Active Categories";
+"reports.category.most_spent" = "Most Spent";
+"reports.category.view_list" = "List";
+"reports.category.view_chart" = "Chart";
+"reports.category.view_comparison" = "Comparison";
+"reports.category.distribution" = "Category Distribution";

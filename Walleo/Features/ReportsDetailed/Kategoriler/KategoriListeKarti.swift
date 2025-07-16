@@ -1,0 +1,115 @@
+//
+//  KategoriListeKarti.swift
+//  Walleo
+//
+//  Created by Mustafa Turan on 17.07.2025.
+//
+
+
+import SwiftUI
+
+struct KategoriListeKarti: View {
+    let rapor: KategoriRaporVerisi
+    let onTap: () -> Void
+    @EnvironmentObject var appSettings: AppSettings
+    
+    var body: some View {
+        Button(action: onTap) {
+            VStack(alignment: .leading, spacing: 12) {
+                // Başlık
+                HStack {
+                    Image(systemName: rapor.kategori.ikonAdi)
+                        .font(.title2)
+                        .foregroundColor(rapor.kategori.renk)
+                        .frame(width: 40, height: 40)
+                        .background(rapor.kategori.renk.opacity(0.15))
+                        .cornerRadius(8)
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(LocalizedStringKey(rapor.kategori.localizationKey ?? rapor.kategori.isim))
+                            .font(.headline)
+                        
+                        Text("\(rapor.islemSayisi) işlem")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text(formatCurrency(
+                            amount: rapor.toplamTutar,
+                            currencyCode: appSettings.currencyCode,
+                            localeIdentifier: appSettings.languageCode
+                        ))
+                        .font(.headline.bold())
+                        
+                        Text(formatCurrency(
+                            amount: rapor.gunlukOrtalama,
+                            currencyCode: appSettings.currencyCode,
+                            localeIdentifier: appSettings.languageCode
+                        ) + "/gün")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    }
+                }
+                
+                // Mini trend grafiği
+                if !rapor.aylikTrend.isEmpty {
+                    MiniTrendChart(data: rapor.aylikTrend, color: rapor.kategori.renk)
+                        .frame(height: 40)
+                }
+                
+                // En sık kullanılan isimler
+                if !rapor.enSikKullanilanIsimler.isEmpty {
+                    HStack {
+                        Image(systemName: "tag.fill")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        
+                        Text(rapor.enSikKullanilanIsimler.prefix(3).map { $0.isim }.joined(separator: ", "))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                    }
+                }
+            }
+            .padding()
+            .background(Color(.systemBackground))
+            .cornerRadius(12)
+            .shadow(color: .black.opacity(0.05), radius: 5, y: 2)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// Mini trend grafiği
+struct MiniTrendChart: View {
+    let data: [AylikTrendNokta]
+    let color: Color
+    
+    var body: some View {
+        GeometryReader { geometry in
+            Path { path in
+                guard !data.isEmpty else { return }
+                
+                let maxValue = data.map { $0.tutar }.max() ?? 1
+                let minValue = data.map { $0.tutar }.min() ?? 0
+                let range = maxValue - minValue
+                
+                for (index, nokta) in data.enumerated() {
+                    let x = geometry.size.width * CGFloat(index) / CGFloat(max(data.count - 1, 1))
+                    let normalizedValue = range > 0 ? (nokta.tutar - minValue) / range : 0.5
+                    let y = geometry.size.height * (1 - normalizedValue)
+                    
+                    if index == 0 {
+                        path.move(to: CGPoint(x: x, y: y))
+                    } else {
+                        path.addLine(to: CGPoint(x: x, y: y))
+                    }
+                }
+            }
+            .stroke(color, lineWidth: 2)
+        }
+    }
+}
