@@ -77,7 +77,9 @@ struct TumIslemlerView: View {
                 presenting: silinecekTaksitliIslem
             ) { islem in
                 Button(role: .destructive) {
-                    TransactionService.shared.deleteTaksitliIslem(islem, in: modelContext)
+                    // --- DEĞİŞİKLİK BURADA ---
+                    // Doğrudan servisi çağırmak yerine ViewModel'daki fonksiyonu çağırıyoruz.
+                    viewModel.deleteTaksitliIslem(islem)
                 } label: {
                     Text("common.delete")
                 }

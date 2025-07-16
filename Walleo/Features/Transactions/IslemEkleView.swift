@@ -230,7 +230,7 @@ struct IslemEkleView: View {
             }
             // YENİ: Taksitli işlem güncelleme uyarısı - KAYDET'E BASINCA GÖSTER
             .alert(LocalizedStringKey("transaction.installment.edit_warning_title"), isPresented: $taksitGuncellemeUyarisiGoster) {
-                Button(LocalizedStringKey("common.continue"), role: .destructive) {
+                Button(LocalizedStringKey("common.apply"), role: .destructive) {
                     Task { await taksitliIslemiGuncelle() }
                 }
                 Button(LocalizedStringKey("common.cancel"), role: .cancel) { }
@@ -282,13 +282,29 @@ struct IslemEkleView: View {
     }
     
     private func kaydetmeIsleminiBaslat() async {
+        // Durum 1: Taksitli bir işlemi düzenleme modundayız.
         if isDuzenlemeModuTaksitli {
-            // Taksitli işlem düzenlemesi - uyarıyı göster
-            taksitGuncellemeUyarisiGoster = true
-        } else if duzenlenecekIslem != nil && orijinalTekrar != .tekSeferlik {
-            guncellemeSecenekleriGoster = true
-        } else {
-            await guncelle(tekil: true)
+            // Durum 1a: Kullanıcı işlemi taksitli olarak BIRAKTI (tutar/sayı değişti).
+            // Bu, eski seriyi silip yenisini oluşturacağı için yıkıcı bir eylemdir. UYARI GÖSTER.
+            if taksitliIslem {
+                taksitGuncellemeUyarisiGoster = true
+            }
+            // Durum 1b: Kullanıcı taksitli işlemi normale ÇEVİRDİ.
+            // Bu durumda, uyarı göstermeden doğrudan ana `guncelle` fonksiyonunu çağırıyoruz.
+            else {
+                await guncelle(tekil: true)
+            }
+        }
+        // Durum 2: Normal bir işlemi düzenliyoruz veya yeni bir işlem oluşturuyoruz.
+        else {
+            // Tekrarlanan bir normal işlemi düzenliyorsak, seçenekler dialog'unu göster.
+            if duzenlenecekIslem != nil && orijinalTekrar != .tekSeferlik {
+                guncellemeSecenekleriGoster = true
+            }
+            // Yeni işlem veya tek seferlik işlem düzenlemesi ise, doğrudan güncelle.
+            else {
+                await guncelle(tekil: true)
+            }
         }
     }
     
@@ -350,6 +366,10 @@ struct IslemEkleView: View {
                         for taksit in eskiTaksitler {
                             modelContext.delete(taksit)
                         }
+                    }
+                    
+                    if !eskidenTaksitliMi && taksitliIslem {
+                        modelContext.delete(mevcutIslem)
                     }
                     
                     // Yeni duruma göre işlem oluştur
