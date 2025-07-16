@@ -624,3 +624,5 @@
 
 "alert.installment.delete_title" = "Delete Installment Purchase";
 "credit_card_details.period_total" = "Period Total";
+
+"alert.no_wallet.message" = "You must **first create** a **Wallet** account to be able to add a transaction.";

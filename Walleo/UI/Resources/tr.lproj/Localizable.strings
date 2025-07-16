@@ -625,3 +625,5 @@
 "installment.completed" = "Tamamlandı";
 "alert.installment.delete_title" = "Taksitli İşlem Silme";
 "credit_card_details.period_total" = "Dönem Toplamı";
+
+"alert.no_wallet.message" = "İşlem ekleyebilmek için **öncelikle** bir **Cüzdan** hesabı **oluşturmanız** gerekmektedir.";
