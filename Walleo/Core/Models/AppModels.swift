@@ -160,9 +160,15 @@ extension Notification.Name {
     static let categoriesDidChange = Notification.Name("categoriesDidChange")
 }
 
+extension Notification.Name {
+    // Mevcut olanın altına yenisini ekliyoruz.
+    static let accountDetailsDidChange = Notification.Name("accountDetailsDidChange")
+}
+
 extension Date: @retroactive Identifiable {
     public var id: Date { self }
 }
+
 
 // Dosya: AppModels.swift -> Sadece bu extension'ı güncelleyin
 

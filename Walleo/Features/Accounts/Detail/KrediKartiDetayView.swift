@@ -1,4 +1,4 @@
-// Dosya: KrediKartiDetayView.swift
+// Dosya: Walleo/Features/Accounts/Detail/KrediKartiDetayView.swift
 
 import SwiftUI
 import SwiftData
@@ -21,8 +21,13 @@ struct KrediKartiDetayView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
-                MonthNavigatorView(currentDate: $viewModel.currentDate)
-                    .padding(.bottom, 10)
+                DonemNavigatorView(
+                    baslangicTarihi: viewModel.donemBaslangicTarihi,
+                    bitisTarihi: viewModel.donemBitisTarihi,
+                    onOnceki: { viewModel.oncekiDonem() },
+                    onSonraki: { viewModel.sonrakiDonem() }
+                )
+                .padding(.bottom, 10)
                 
                 if viewModel.toplamHarcama > 0 {
                     DonemHarcamaOzetKarti(toplamTutar: viewModel.toplamHarcama)
@@ -42,7 +47,6 @@ struct KrediKartiDetayView: View {
                 .listStyle(.plain)
                 .overlay {
                     if viewModel.donemIslemleri.isEmpty && !isDeletingSeries {
-                        // GÜNCELLEME: Var olmayan 'creditcard.slash' ikonu, 'creditcard.fill' ile değiştirildi.
                         ContentUnavailableView(
                             LocalizedStringKey("credit_card_details.no_expenses_for_month"),
                             systemImage: "creditcard.fill"
@@ -63,6 +67,8 @@ struct KrediKartiDetayView: View {
         .navigationTitle(viewModel.kartHesabi.isim)
         .navigationBarTitleDisplayMode(.inline)
         .task {
+            // Görünüm ekrana geldiğinde veriyi çekmesi için bu çağrı önemlidir.
+            // Önceki hatanın sebebi bu fonksiyonun 'private' olmasıydı. Artık değil.
             viewModel.islemleriGetir()
         }
         .sheet(item: $duzenlenecekIslem) { islem in
