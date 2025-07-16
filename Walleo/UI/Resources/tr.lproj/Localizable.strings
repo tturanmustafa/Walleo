@@ -153,6 +153,9 @@
 "accounts.card.current_balance" = "Güncel Bakiye";
 "accounts.card.total_limit" = "Kart Limiti";
 "accounts.card.statement_date" = "Hesap Kesim Tarihi";
+"accounts.group.wallets" = "Basit Cüzdanlar";
+"accounts.group.credit_cards" = "Kredi Kartları";
+"accounts.group.loans" = "Krediler";
 
 // MARK: - Diğer Ekranlar ve Uyarılar
 "all_transactions.title" = "Tüm İşlemler";

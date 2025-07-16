@@ -153,6 +153,9 @@
 "accounts.card.current_balance" = "Current Balance";
 "accounts.card.total_limit" = "Card Limit";
 "accounts.card.statement_date" = "Statement Date";
+"accounts.group.wallets" = "Wallets";
+"accounts.group.credit_cards" = "Credit Cards";
+"accounts.group.loans" = "Credits";
 
 // MARK: - Other Screens & Alerts
 "all_transactions.title" = "All Transactions";
