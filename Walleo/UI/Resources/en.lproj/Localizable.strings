@@ -163,6 +163,7 @@
 "all_transactions.not_found_desc" = "Try changing your filter criteria.";
 "filter.date_range" = "Date Range";
 "filter.sort_by" = "Sort By";
+"filter.accounts" = "Accounts";
 "alert.recurring_transaction" = "This is a recurring transaction.";
 "alert.update_this_only" = "Update Only This One";
 "alert.update_future" = "Update This & Future Ones";

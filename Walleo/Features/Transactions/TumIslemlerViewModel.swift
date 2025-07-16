@@ -72,6 +72,17 @@ class TumIslemlerViewModel {
                     return secilenKategoriIDleri.contains(kategori.id)
                 }
             }
+            
+            let hesapFiltresiAktif = !filtreAyarlari.secilenHesaplar.isEmpty
+            let secilenHesapIDleri = filtreAyarlari.secilenHesaplar
+
+            if hesapFiltresiAktif {
+                filtrelenmisSonuclar = filtrelenmisSonuclar.filter { islem in
+                    guard let hesapID = islem.hesap?.id else { return false }
+                    return secilenHesapIDleri.contains(hesapID)
+                }
+            }
+            
             self.islemler = filtrelenmisSonuclar
         } catch {
             Logger.log("Filtreli veri çekme hatası (NİHAİ): \(error.localizedDescription)", log: Logger.data, type: .error)

@@ -45,7 +45,7 @@ public enum Currency: String, CaseIterable, Identifiable {
 class AppSettings: ObservableObject {
     // MARK: - General Settings
     @AppStorage("colorScheme") var colorSchemeValue: Int = 0
-    @AppStorage("language") var languageCode: String = "tr"
+    @AppStorage("language") var languageCode: String = "en" // "tr" olan değeri "en" olarak değiştirin
     @AppStorage("currencyCode") var currencyCode: String = Currency.TRY.rawValue
     @AppStorage("isCloudKitEnabled") var isCloudKitEnabled: Bool = true
     @AppStorage("hasCompletedOnboarding") var hasCompletedOnboarding: Bool = false
@@ -146,6 +146,7 @@ struct FiltreAyarlari {
     var tarihAraligi: TarihAraligi = .buAy
     var secilenTurler: Set<IslemTuru> = [.gelir, .gider]
     var secilenKategoriler: Set<UUID> = []
+    var secilenHesaplar: Set<UUID> = [] // <-- BU SATIRI EKLEYİN
     var sortOrder: SortOrder = .tarihAzalan
     var baslangicTarihi: Date? = nil
     var bitisTarihi: Date? = nil

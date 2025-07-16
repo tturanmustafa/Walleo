@@ -163,6 +163,7 @@
 "all_transactions.not_found_desc" = "Filtre kriterlerinizi değiştirmeyi deneyin.";
 "filter.date_range" = "Tarih Aralığı";
 "filter.sort_by" = "Sırala";
+"filter.accounts" = "Hesaplar";
 "alert.recurring_transaction" = "Bu tekrarlayan bir işlemdir.";
 "alert.update_this_only" = "Sadece Bu İşlemi Güncelle";
 "alert.update_future" = "Bu ve Gelecekteki İşlemleri Güncelle";
@@ -638,5 +639,3 @@
 "reports.category.view_chart" = "Grafik";
 "reports.category.view_comparison" = "Karşılaştırma";
 "reports.category.distribution" = "Kategori Dağılımı";
-
-

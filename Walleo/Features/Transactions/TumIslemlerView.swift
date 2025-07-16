@@ -17,6 +17,7 @@ struct TumIslemlerView: View {
     @State private var silinecekTekrarliIslem: Islem?
     @State private var silinecekTekilIslem: Islem?
     @State private var silinecekTaksitliIslem: Islem?
+    @State private var hesapFiltreGosteriliyor = false // <-- BU SATIRI EKLEYİN
 
     
     init(modelContext: ModelContext, baslangicTarihi: Date? = nil) {
@@ -49,6 +50,9 @@ struct TumIslemlerView: View {
             }
             .sheet(isPresented: $kategoriFiltreGosteriliyor) {
                 KategoriSecimView(secilenKategoriler: $viewModel.filtreAyarlari.secilenKategoriler).environmentObject(appSettings)
+            }
+            .sheet(isPresented: $hesapFiltreGosteriliyor) {
+                HesapSecimFiltreView(secilenHesaplar: $viewModel.filtreAyarlari.secilenHesaplar)
             }
             .sheet(isPresented: $tarihFiltreGosteriliyor) {
                 TarihAraligiSecimView(filtreAyarlari: $viewModel.filtreAyarlari).environmentObject(appSettings)
@@ -145,6 +149,24 @@ struct TumIslemlerView: View {
                 .overlay(alignment: .topTrailing) {
                     if !viewModel.filtreAyarlari.secilenKategoriler.isEmpty {
                         Text(String(viewModel.filtreAyarlari.secilenKategoriler.count))
+                            .font(.caption2.bold())
+                            .foregroundColor(.white)
+                            .padding(5)
+                            .background(Circle().fill(.red))
+                            .offset(x: 8, y: -8)
+                    }
+                }
+                
+                Button(action: { hesapFiltreGosteriliyor = true }) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "wallet.pass.fill")
+                        Text("filter.accounts")
+                    }
+                }
+                .buttonStyle(FiltreButonStyle(aktif: !viewModel.filtreAyarlari.secilenHesaplar.isEmpty))
+                .overlay(alignment: .topTrailing) {
+                    if !viewModel.filtreAyarlari.secilenHesaplar.isEmpty {
+                        Text(String(viewModel.filtreAyarlari.secilenHesaplar.count))
                             .font(.caption2.bold())
                             .foregroundColor(.white)
                             .padding(5)

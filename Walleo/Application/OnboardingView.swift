@@ -87,6 +87,15 @@ struct OnboardingView: View {
                             case .success(let authorization):
                                 if let _ = authorization.credential as? ASAuthorizationAppleIDCredential {
                                     
+                                    let preferredLanguage = Locale.preferredLanguages.first ?? "en"
+                                    // Eğer dil "tr" ile başlıyorsa, uygulama dilini Türkçe yap.
+                                    if preferredLanguage.lowercased().starts(with: "tr") {
+                                        appSettings.languageCode = "tr"
+                                    } else {
+                                        // Değilse, İngilizce yap.
+                                        appSettings.languageCode = "en"
+                                    }
+                                    
                                     // --- DİKKAT: EN ÖNEMLİ DEĞİŞİKLİK BURADA ---
                                     // 1. Giriş başarılı olduğu anda ilk verileri oluştur.
                                     seedInitialData()
