@@ -51,6 +51,12 @@ class Hesap {
     @Relationship(deleteRule: .nullify, inverse: \Islem.hesap)
     var islemler: [Islem]? = []
     
+    @Relationship(deleteRule: .nullify, inverse: \Transfer.kaynakHesap)
+    var gidenTransferler: [Transfer]? = []
+
+    @Relationship(deleteRule: .nullify, inverse: \Transfer.hedefHesap)
+    var gelenTransferler: [Transfer]? = []
+    
     var detay: HesapDetayi {
         get {
             do {

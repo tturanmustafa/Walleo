@@ -13,7 +13,6 @@ struct CuzdanDetayView: View {
     @State private var silinecekTekilIslem: Islem?
     @State private var silinecekTekrarliIslem: Islem?
     
-    // DÜZELTİLMİŞ INIT: Artık sadece 'hesap' alıyor ve kendi container'ını oluşturmuyor.
     init(hesap: Hesap) {
         _viewModel = State(initialValue: CuzdanDetayViewModel(hesap: hesap))
     }
@@ -28,33 +27,85 @@ struct CuzdanDetayView: View {
                 .padding(.bottom, 10)
             
             List {
-                ForEach(viewModel.donemIslemleri) { islem in
-                    IslemSatirView(islem: islem, onEdit: { duzenlenecekIslem = islem }, onDelete: { silmeyiBaslat(islem) })
+                // İşlemler Bölümü
+                Section(header: Text(LocalizedStringKey("transfer.section.transactions"))) {
+                    if viewModel.donemIslemleri.isEmpty {
+                        HStack {
+                            Spacer()
+                            Text(LocalizedStringKey("transfer.no_transactions"))
+                                .foregroundColor(.secondary)
+                                .padding()
+                            Spacer()
+                        }
+                    } else {
+                        ForEach(viewModel.donemIslemleri) { islem in
+                            IslemSatirView(
+                                islem: islem,
+                                onEdit: { duzenlenecekIslem = islem },
+                                onDelete: { silmeyiBaslat(islem) }
+                            )
+                        }
+                    }
+                }
+                
+                // Transferler Bölümü
+                Section(header: Text(LocalizedStringKey("transfer.section.transfers"))) {
+                    if viewModel.tumTransferler.isEmpty {
+                        HStack {
+                            Spacer()
+                            Text(LocalizedStringKey("transfer.no_transfers"))
+                                .foregroundColor(.secondary)
+                                .padding()
+                            Spacer()
+                        }
+                    } else {
+                        ForEach(viewModel.tumTransferler) { transfer in
+                            TransferSatirView(
+                                transfer: transfer,
+                                hesapID: viewModel.hesap.id
+                            )
+                            .environmentObject(appSettings)
+                        }
+                    }
                 }
             }
             .listStyle(.plain)
-            .overlay {
-                if viewModel.donemIslemleri.isEmpty {
-                    ContentUnavailableView(
-                        "Bu Ay İşlem Yok",
-                        systemImage: "wallet.pass.fill"
-                    )
-                }
-            }
         }
         .navigationTitle(viewModel.hesap.isim)
         .navigationBarTitleDisplayMode(.inline)
-        // YENİ MODIFIER: ViewModel'ı doğru context ile başlatır.
         .onAppear {
             viewModel.initialize(modelContext: self.modelContext)
         }
         .sheet(item: $duzenlenecekIslem) { islem in
             IslemEkleView(duzenlenecekIslem: islem).environmentObject(appSettings)
         }
-        .recurringTransactionAlert(for: $silinecekTekrarliIslem, onDeleteSingle: { islem in TransactionService.shared.deleteTransaction(islem, in: modelContext) }, onDeleteSeries: { islem in Task { await TransactionService.shared.deleteSeriesInBackground(tekrarID: islem.tekrarID, from: modelContext.container) }})
-        .alert(LocalizedStringKey("alert.delete_confirmation.title"), isPresented: Binding(isPresented: $silinecekTekilIslem), presenting: silinecekTekilIslem) { islem in
-            Button(role: .destructive) { TransactionService.shared.deleteTransaction(islem, in: modelContext) } label: { Text("common.delete") }
-        } message: { islem in Text("alert.delete_transaction.message") }
+        .recurringTransactionAlert(
+            for: $silinecekTekrarliIslem,
+            onDeleteSingle: { islem in
+                TransactionService.shared.deleteTransaction(islem, in: modelContext)
+            },
+            onDeleteSeries: { islem in
+                Task {
+                    await TransactionService.shared.deleteSeriesInBackground(
+                        tekrarID: islem.tekrarID,
+                        from: modelContext.container
+                    )
+                }
+            }
+        )
+        .alert(
+            LocalizedStringKey("alert.delete_confirmation.title"),
+            isPresented: Binding(isPresented: $silinecekTekilIslem),
+            presenting: silinecekTekilIslem
+        ) { islem in
+            Button(role: .destructive) {
+                TransactionService.shared.deleteTransaction(islem, in: modelContext)
+            } label: {
+                Text("common.delete")
+            }
+        } message: { islem in
+            Text("alert.delete_transaction.message")
+        }
     }
     
     private func silmeyiBaslat(_ islem: Islem) {

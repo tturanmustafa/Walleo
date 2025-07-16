@@ -577,3 +577,39 @@
 "reports.heatmap.insight.busiest_hour" = "En aktif saat: %@";
 "reports.heatmap.insight.weekend_comparison" = "Hafta sonları %%%@ daha fazla harcama";
 "reports.heatmap.insight.no_spending_days" = "%@ gün hiç harcama yapılmamış";
+
+
+// Türkçe (tr.lproj/Localizable.strings) dosyasına eklenecek anahtarlar:
+
+// Transfer
+"transfer.title" = "Hesaplar Arası Transfer";
+"transfer.source_account" = "Paranın Çekileceği Cüzdan";
+"transfer.target_account" = "Paranın Yatırılacağı Cüzdan veya Kredi Kartı";
+"transfer.amount_label" = "Transfer Tutarı";
+"transfer.amount_placeholder" = "Aktarılacak tutarı giriniz";
+"transfer.button" = "Transfer Et";
+"transfer.select_wallet" = "Cüzdan Seçin";
+"transfer.select_account" = "Hesap Seçin";
+"transfer.source_details" = "Kaynak Hesap Detayları";
+"transfer.target_details" = "Hedef Hesap Detayları";
+"transfer.name" = "İsim:";
+"transfer.initial_balance" = "Başlangıç Bakiyesi:";
+"transfer.current_balance" = "Güncel Bakiye:";
+"transfer.total_limit" = "Toplam Limit:";
+"transfer.available_limit" = "Kullanılabilir Limit:";
+"transfer.current_debt" = "Güncel Borç:";
+"transfer.statement_date" = "Hesap Kesim Tarihi:";
+"transfer.type.wallet" = "Cüzdan";
+"transfer.type.credit_card" = "Kredi Kartı";
+"transfer.incoming" = "Gelen Transfer";
+"transfer.outgoing" = "Giden Transfer";
+"transfer.unknown_account" = "Bilinmeyen Hesap";
+"transfer.section.transactions" = "İşlemler";
+"transfer.section.transfers" = "Transferler";
+"transfer.no_transactions" = "Bu dönemde işlem yok";
+"transfer.no_transfers" = "Transfer bulunmuyor";
+"transfer.section.expenses" = "Harcamalar";
+"transfer.section.payments" = "Ödemeler";
+"transfer.no_payments" = "Ödeme bulunmuyor";
+
+

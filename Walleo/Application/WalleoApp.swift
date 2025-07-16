@@ -39,6 +39,7 @@ struct WalleoApp: App {
                 for: Hesap.self, Islem.self, Kategori.self, Butce.self,
                      Bildirim.self, TransactionMemory.self, AppMetadata.self,
                      AileHesabi.self, AileUyesi.self, AileDavet.self,
+                     Transfer.self, // YENİ EKLENEN MODEL
                 configurations: config
             )
         } catch {

@@ -34,12 +34,25 @@ class HesaplarViewModel {
         do {
             let hesaplar = try modelContext.fetch(FetchDescriptor<Hesap>(sortBy: [SortDescriptor(\.olusturmaTarihi)]))
             let islemler = try modelContext.fetch(FetchDescriptor<Islem>())
+            let transferler = try modelContext.fetch(FetchDescriptor<Transfer>()) // YENİ
             
+            // İşlem bazlı değişimler
             var netDegisimler: [UUID: Double] = [:]
             for islem in islemler {
                 guard let hesapID = islem.hesap?.id else { continue }
                 let tutarDegisimi = islem.tur == .gelir ? islem.tutar : -islem.tutar
                 netDegisimler[hesapID, default: 0] += tutarDegisimi
+            }
+            
+            // Transfer bazlı değişimler - YENİ
+            var transferDegisimleri: [UUID: Double] = [:]
+            for transfer in transferler {
+                if let kaynakID = transfer.kaynakHesap?.id {
+                    transferDegisimleri[kaynakID, default: 0] -= transfer.tutar
+                }
+                if let hedefID = transfer.hedefHesap?.id {
+                    transferDegisimleri[hedefID, default: 0] += transfer.tutar
+                }
             }
             
             // Her seferinde listeleri temizle
@@ -48,8 +61,11 @@ class HesaplarViewModel {
             var yeniKrediler: [GosterilecekHesap] = []
             
             for hesap in hesaplar {
-                let netDegisim = netDegisimler[hesap.id] ?? 0
-                let guncelBakiye = hesap.baslangicBakiyesi + netDegisim
+                let islemDegisimi = netDegisimler[hesap.id] ?? 0
+                let transferDegisimi = transferDegisimleri[hesap.id] ?? 0 // YENİ
+                let toplamDegisim = islemDegisimi + transferDegisimi // YENİ
+                let guncelBakiye = hesap.baslangicBakiyesi + toplamDegisim // GÜNCELLENDİ
+                
                 var gosterilecekHesap = GosterilecekHesap(hesap: hesap, guncelBakiye: guncelBakiye)
                 
                 switch hesap.detay {
@@ -57,19 +73,35 @@ class HesaplarViewModel {
                     yeniCuzdanlar.append(gosterilecekHesap)
                     
                 case .krediKarti(let limit, _, _):
-                    let harcamalarToplami = netDegisim < 0 ? abs(netDegisim) : 0
-                    let guncelBorc = abs(hesap.baslangicBakiyesi) + harcamalarToplami
+                    // Kredi kartı için özel hesaplama
+                    let initialBorc = abs(hesap.baslangicBakiyesi)
+                    let harcamalar = islemler
+                        .filter { $0.hesap?.id == hesap.id && $0.tur == .gider }
+                        .reduce(0) { $0 + $1.tutar }
+                    let odemeler = transferler
+                        .filter { $0.hedefHesap?.id == hesap.id }
+                        .reduce(0) { $0 + $1.tutar }
+                    
+                    let guncelBorc = initialBorc + harcamalar - odemeler
                     let kullanilabilirLimit = max(0, limit - guncelBorc)
-                    gosterilecekHesap.krediKartiDetay = .init(guncelBorc: guncelBorc, kullanilabilirLimit: kullanilabilirLimit)
+                    
+                    gosterilecekHesap.krediKartiDetay = .init(
+                        guncelBorc: guncelBorc,
+                        kullanilabilirLimit: kullanilabilirLimit
+                    )
                     gosterilecekHesap.guncelBakiye = -guncelBorc
                     yeniKrediKartlari.append(gosterilecekHesap)
                     
                 case .kredi(_, _, _, let taksitSayisi, _, let taksitler):
                     let odenenTaksitSayisi = taksitler.filter { $0.odendiMi }.count
-                    gosterilecekHesap.krediDetay = .init(kalanTaksitSayisi: taksitSayisi - odenenTaksitSayisi, odenenTaksitSayisi: odenenTaksitSayisi)
+                    gosterilecekHesap.krediDetay = .init(
+                        kalanTaksitSayisi: taksitSayisi - odenenTaksitSayisi,
+                        odenenTaksitSayisi: odenenTaksitSayisi
+                    )
                     yeniKrediler.append(gosterilecekHesap)
                 }
             }
+            
             // Yeni listeleri ata
             self.cuzdanHesaplari = yeniCuzdanlar
             self.krediKartiHesaplari = yeniKrediKartlari

@@ -577,3 +577,36 @@
 "reports.heatmap.insight.busiest_hour" = "Most active hour: %@";
 "reports.heatmap.insight.weekend_comparison" = "%%%@ more spending on weekends";
 "reports.heatmap.insight.no_spending_days" = "No spending for %@ days";
+
+// İngilizce (en.lproj/Localizable.strings) dosyasına eklenecek anahtarlar:
+
+// Transfer
+"transfer.title" = "Transfer Between Accounts";
+"transfer.source_account" = "Source Wallet";
+"transfer.target_account" = "Target Wallet or Credit Card";
+"transfer.amount_label" = "Transfer Amount";
+"transfer.amount_placeholder" = "Enter amount to transfer";
+"transfer.button" = "Transfer";
+"transfer.select_wallet" = "Select Wallet";
+"transfer.select_account" = "Select Account";
+"transfer.source_details" = "Source Account Details";
+"transfer.target_details" = "Target Account Details";
+"transfer.name" = "Name:";
+"transfer.initial_balance" = "Initial Balance:";
+"transfer.current_balance" = "Current Balance:";
+"transfer.total_limit" = "Total Limit:";
+"transfer.available_limit" = "Available Limit:";
+"transfer.current_debt" = "Current Debt:";
+"transfer.statement_date" = "Statement Date:";
+"transfer.type.wallet" = "Wallet";
+"transfer.type.credit_card" = "Credit Card";
+"transfer.incoming" = "Incoming Transfer";
+"transfer.outgoing" = "Outgoing Transfer";
+"transfer.unknown_account" = "Unknown Account";
+"transfer.section.transactions" = "Transactions";
+"transfer.section.transfers" = "Transfers";
+"transfer.no_transactions" = "No transactions in this period";
+"transfer.no_transfers" = "No transfers found";
+"transfer.section.expenses" = "Expenses";
+"transfer.section.payments" = "Payments";
+"transfer.no_payments" = "No payments found";
