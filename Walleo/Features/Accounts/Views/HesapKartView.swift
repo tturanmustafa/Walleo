@@ -166,7 +166,7 @@ struct HesapKartView: View {
                     }
                     Spacer()
                     VStack(alignment: .trailing) {
-                        Text(LocalizedStringKey("accounts.card.remaining_debt")).font(.caption).foregroundColor(.secondary)
+                        Text(LocalizedStringKey("accounts.add.loan_amount")).font(.caption).foregroundColor(.secondary)
                         Text(formatCurrency(amount: abs(gosterilecekHesap.guncelBakiye), currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
                             .font(.callout.bold()).foregroundStyle(.red)
                     }
