@@ -155,6 +155,11 @@ struct KrediKartiEkleView: View {
             hesap.baslangicBakiyesi = -guncelBorc
             hesap.renkHex = renkHex
             hesap.detay = kartDetayi
+            
+            // --- YENİ SATIRI BURAYA EKLEYİN ---
+            // Değişiklik kaydedildi, şimdi sinyali gönder!
+            NotificationCenter.default.post(name: .accountDetailsDidChange, object: nil)
+            
         } else {
             let yeniHesap = Hesap(isim: isim, ikonAdi: "creditcard.fill", renkHex: renkHex, baslangicBakiyesi: -guncelBorc, detay: kartDetayi)
             modelContext.insert(yeniHesap)
