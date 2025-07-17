@@ -28,8 +28,8 @@ class Butce {
     var devredenGelenTutar: Double = 0.0
     
     /// "Haziran'dan: 150 TL" gibi detaylı devir geçmişini JSON olarak saklar.
-    var devredenGecmisi: Data?
-    
+    var devredenGecmisiJSON: String?
+
     /// Bu bütçenin, hangi ana "şablon" bütçeden yenilenerek türediğini belirtir.
     var anaButceID: UUID?
 
@@ -50,19 +50,21 @@ class Butce {
     /// Bu, kodun diğer yerlerinde bu veriyi kolayca okuyup yazmamızı sağlar.
     var devirGecmisiSozlugu: [String: Double] {
         get {
-            guard let data = devredenGecmisi else { return [:] }
+            guard let jsonString = devredenGecmisiJSON,
+                  let data = jsonString.data(using: .utf8) else { return [:] }
             do {
                 return try JSONDecoder().decode([String: Double].self, from: data)
             } catch {
-                Logger.log("Devir geçmişi Data'dan dönüştürülemedi: \(error)", log: Logger.data)
+                Logger.log("Devir geçmişi JSON'dan dönüştürülemedi: \(error)", log: Logger.data)
                 return [:]
             }
         }
         set {
             do {
-                devredenGecmisi = try JSONEncoder().encode(newValue)
+                let data = try JSONEncoder().encode(newValue)
+                devredenGecmisiJSON = String(data: data, encoding: .utf8)
             } catch {
-                Logger.log("Devir geçmişi Data'ya dönüştürülemedi: \(error)", log: Logger.data)
+                Logger.log("Devir geçmişi JSON'a dönüştürülemedi: \(error)", log: Logger.data)
             }
         }
     }

@@ -34,7 +34,4 @@ class Kategori {
         self.localizationKey = localizationKey
         self.turRawValue = tur.rawValue
     }
-    
-    // BU FONKSİYONU SİLİN VEYA YORUM SATIRI YAPIN
-    // init() { }
 }

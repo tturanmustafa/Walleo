@@ -30,8 +30,20 @@ class KrediKartiDetayViewModel {
         let tamamlananTaksitSayisi: Int
         
         var aciklamaMetni: String {
-            let tamamlanan = taksitler.filter { $0.tarih <= Date() }.count
-            return "\(formatCurrency(amount: toplamTutar, currencyCode: AppSettings().currencyCode, localeIdentifier: AppSettings().languageCode)) - \(tamamlanan)/\(taksitler.count) taksit"
+            // --- ESKİ KODU SİLİN ---
+            // let tamamlanan = taksitler.filter { $0.tarih <= Date() }.count
+            // return "\(formatCurrency(amount: toplamTutar, currencyCode: AppSettings().currencyCode, localeIdentifier: AppSettings().languageCode)) - \(tamamlanan)/\(taksitler.count) taksit"
+
+            // +++ YENİ KODU EKLEYİN +++
+            // Gruptaki ilk taksidi referans alarak doğru bilgileri çekiyoruz.
+            guard let ilkTaksit = taksitler.first else { return "" }
+            
+            let toplamTutarStr = formatCurrency(amount: toplamTutar, currencyCode: AppSettings().currencyCode, localeIdentifier: AppSettings().languageCode)
+            let mevcutTaksit = ilkTaksit.mevcutTaksitNo
+            let toplamTaksit = ilkTaksit.toplamTaksitSayisi
+            
+            // İstenen formatı oluşturuyoruz: "₺987.883.210,00 - 1/12 taksit"
+            return "\(toplamTutarStr) - \(mevcutTaksit)/\(toplamTaksit) taksit"
         }
     }
     
