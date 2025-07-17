@@ -66,8 +66,16 @@ class KrediKartiDetayViewModel {
     
     func transferleriGetir() {
         let kartID = kartHesabi.id
+        let takvim = Calendar.current
+        let sorguBitisTarihi = takvim.date(byAdding: .day, value: 1, to: self.donemBitisTarihi)!
+        let baslangic = self.donemBaslangicTarihi
+        let bitis = sorguBitisTarihi
+        
+        // Predicate'e tarih kontrolü ekliyoruz.
         let predicate = #Predicate<Transfer> { transfer in
-            transfer.hedefHesap?.id == kartID // Kredi kartına sadece para gelebilir
+            transfer.hedefHesap?.id == kartID &&
+            transfer.tarih >= baslangic && // Sadece bu döneme ait transferleri al
+            transfer.tarih < bitis        // Sadece bu döneme ait transferleri al
         }
         
         let descriptor = FetchDescriptor<Transfer>(

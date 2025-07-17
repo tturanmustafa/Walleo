@@ -48,9 +48,21 @@ class CuzdanDetayViewModel {
     func transferleriGetir() {
         guard let modelContext = self.modelContext else { return }
         
+        // --- DEĞİŞİKLİK BURADA BAŞLIYOR ---
+        // 1. İşlemleri filtrelemek için kullandığımız ay aralığını burada da kullanacağız.
+        let calendar = Calendar.current
+        guard let monthInterval = calendar.dateInterval(of: .month, for: currentDate) else { return }
+        
+        let baslangic = monthInterval.start
+        let bitis = monthInterval.end
+        // --- DEĞİŞİKLİK SONU ---
+        
         let hesapID = hesap.id
+        
+        // 2. Predicate'e tarih filtresi ekliyoruz.
         let predicate = #Predicate<Transfer> { transfer in
-            transfer.kaynakHesap?.id == hesapID || transfer.hedefHesap?.id == hesapID
+            (transfer.kaynakHesap?.id == hesapID || transfer.hedefHesap?.id == hesapID) &&
+            (transfer.tarih >= baslangic && transfer.tarih < bitis) // <-- EKLENEN SATIR
         }
         
         let descriptor = FetchDescriptor<Transfer>(
