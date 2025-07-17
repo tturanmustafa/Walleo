@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6E55E95D2E17EACE00647BE9 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 6E55E95C2E17EACE00647BE9 /* RevenueCat */; };
-		6E55E95F2E17EACE00647BE9 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6E55E95E2E17EACE00647BE9 /* RevenueCatUI */; };
+		6E8650302E29A9C2002555CF /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 6E86502F2E29A9C2002555CF /* RevenueCat */; };
+		6E8650322E29A9C2002555CF /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6E8650312E29A9C2002555CF /* RevenueCatUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,8 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E55E95F2E17EACE00647BE9 /* RevenueCatUI in Frameworks */,
-				6E55E95D2E17EACE00647BE9 /* RevenueCat in Frameworks */,
+				6E8650322E29A9C2002555CF /* RevenueCatUI in Frameworks */,
+				6E8650302E29A9C2002555CF /* RevenueCat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,8 +93,8 @@
 			);
 			name = Walleo;
 			packageProductDependencies = (
-				6E55E95C2E17EACE00647BE9 /* RevenueCat */,
-				6E55E95E2E17EACE00647BE9 /* RevenueCatUI */,
+				6E86502F2E29A9C2002555CF /* RevenueCat */,
+				6E8650312E29A9C2002555CF /* RevenueCatUI */,
 			);
 			productName = Budgee;
 			productReference = 6ED144E72DFCAC0900531E9A /* Walleo.app */;
@@ -126,7 +126,7 @@
 			mainGroup = 6ED144DE2DFCAC0900531E9A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				6E55E95B2E17EACE00647BE9 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+				6E86502E2E29A9C2002555CF /* XCRemoteSwiftPackageReference "purchases-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6ED144E82DFCAC0900531E9A /* Products */;
@@ -372,25 +372,25 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		6E55E95B2E17EACE00647BE9 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
+		6E86502E2E29A9C2002555CF /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RevenueCat/purchases-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.31.0;
+				minimumVersion = 5.33.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6E55E95C2E17EACE00647BE9 /* RevenueCat */ = {
+		6E86502F2E29A9C2002555CF /* RevenueCat */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6E55E95B2E17EACE00647BE9 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			package = 6E86502E2E29A9C2002555CF /* XCRemoteSwiftPackageReference "purchases-ios" */;
 			productName = RevenueCat;
 		};
-		6E55E95E2E17EACE00647BE9 /* RevenueCatUI */ = {
+		6E8650312E29A9C2002555CF /* RevenueCatUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6E55E95B2E17EACE00647BE9 /* XCRemoteSwiftPackageReference "purchases-ios" */;
+			package = 6E86502E2E29A9C2002555CF /* XCRemoteSwiftPackageReference "purchases-ios" */;
 			productName = RevenueCatUI;
 		};
 /* End XCSwiftPackageProductDependency section */

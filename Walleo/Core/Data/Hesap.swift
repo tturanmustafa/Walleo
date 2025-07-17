@@ -41,12 +41,10 @@ class Hesap {
     var olusturmaTarihi: Date = Date()
     var baslangicBakiyesi: Double = 0.0
     
-    // +++ YENİ EKLENDİ +++
-    // Predicate'in sorgulayabilmesi için hesap türünü saklayan yeni özellik.
     var hesapTuruRawValue: String = HesapTuru.cuzdan.rawValue
     
-    // Güvenli bir varsayılan değer atıyoruz.
-    private var detayData: Data = try! JSONEncoder().encode(HesapDetayi.cuzdan)
+    // ÖNEMLİ: Varsayılan değeri kaldırıyoruz
+    private var detayData: Data?
     
     @Relationship(deleteRule: .nullify, inverse: \Islem.hesap)
     var islemler: [Islem]? = []
@@ -59,17 +57,19 @@ class Hesap {
     
     var detay: HesapDetayi {
         get {
+            guard let data = detayData else { return .cuzdan }
             do {
-                return try JSONDecoder().decode(HesapDetayi.self, from: detayData)
+                return try JSONDecoder().decode(HesapDetayi.self, from: data)
             } catch {
+                Logger.log("HesapDetayi çözümlenemedi: \(error)", log: Logger.data, type: .error)
                 return .cuzdan
             }
         }
         set {
             do {
                 detayData = try JSONEncoder().encode(newValue)
-                // +++ DEĞİŞİKLİK BURADA +++
-                // 'detay' her ayarlandığında, sorgulanabilir 'hesapTuruRawValue' de güncellenir.
+                
+                // hesapTuruRawValue'yi güncelle
                 switch newValue {
                 case .cuzdan:
                     self.hesapTuruRawValue = HesapTuru.cuzdan.rawValue
@@ -78,6 +78,8 @@ class Hesap {
                 case .kredi:
                     self.hesapTuruRawValue = HesapTuru.kredi.rawValue
                 }
+                
+                Logger.log("Hesap detayı güncellendi: \(String(describing: newValue))", log: Logger.data)
             } catch {
                 Logger.log("HesapDetayi şifrelenemedi: \(error.localizedDescription)", log: Logger.data, type: .error)
             }
@@ -93,8 +95,31 @@ class Hesap {
         self.renkHex = renkHex
         self.olusturmaTarihi = Date()
         self.baslangicBakiyesi = baslangicBakiyesi
-        // 'detay' özelliğini atamak, yeni 'hesapTuruRawValue' özelliğini de otomatik olarak ayarlar.
-        self.detay = detay
+        
+        // Detayı encode etmeden önce logla
+        Logger.log("Init'e gelen detay: \(String(describing: detay))", log: Logger.data)
+        
+        do {
+            self.detayData = try JSONEncoder().encode(detay)
+            
+            switch detay {
+            case .cuzdan:
+                self.hesapTuruRawValue = HesapTuru.cuzdan.rawValue
+            case .krediKarti(let limit, _, _):
+                self.hesapTuruRawValue = HesapTuru.krediKarti.rawValue
+                Logger.log("Kredi kartı init - Limit: \(limit)", log: Logger.data)
+            case .kredi(let tutar, _, _, let taksitSayisi, _, _):
+                self.hesapTuruRawValue = HesapTuru.kredi.rawValue
+                Logger.log("Kredi init - Tutar: \(tutar), Taksit: \(taksitSayisi)", log: Logger.data)
+            }
+            
+            // Kayıttan sonra kontrol
+            Logger.log("Kaydedilen hesap türü: \(self.hesapTuruRawValue)", log: Logger.data)
+            
+        } catch {
+            Logger.log("Init sırasında HesapDetayi encode edilemedi: \(error)", log: Logger.data, type: .error)
+            self.detayData = try? JSONEncoder().encode(HesapDetayi.cuzdan)
+            self.hesapTuruRawValue = HesapTuru.cuzdan.rawValue
+        }
     }
 }
-
