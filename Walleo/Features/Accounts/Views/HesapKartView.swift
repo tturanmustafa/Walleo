@@ -102,7 +102,10 @@ struct HesapKartView: View {
             VStack(spacing: 12) {
                 // --- Bu bölüm aynı kalıyor ---
                 let isOverLimit = detay.guncelBorc > limit && limit > 0
-                let progressValue = min(detay.guncelBorc, limit)
+                
+                // 1. Borcun negatif olmamasını sağla (max(0, ...))
+                // 2. Borcun limiti geçmemesini sağla (min(..., limit))
+                let progressValue = max(0, min(detay.guncelBorc, limit))
                 
                 ProgressView(value: progressValue, total: limit > 0 ? limit : 1)
                     .tint(isOverLimit ? .purple : .red)
