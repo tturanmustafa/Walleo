@@ -638,3 +638,130 @@
 "reports.category.view_chart" = "Chart";
 "reports.category.view_comparison" = "Comparison";
 "reports.category.distribution" = "Category Distribution";
+"reports.detailed.cash_flow" = "Cash Flow";
+
+// MARK: - Cash Flow Report
+"cashflow.title" = "Cash Flow Report";
+"cashflow.view.summary" = "Summary";
+"cashflow.view.flow" = "Flow";
+"cashflow.view.categories" = "Categories";
+"cashflow.view.accounts" = "Accounts";
+"cashflow.view.projection" = "Projection";
+
+"cashflow.insights" = "Insights";
+"cashflow.net_flow" = "Net Flow";
+"cashflow.of_income" = "% of Income";
+"cashflow.daily_avg" = "Daily Avg.";
+
+"cashflow.normal_transactions" = "Normal Transactions";
+"cashflow.installment_transactions" = "Installment Transactions";
+"cashflow.recurring_transactions" = "Recurring Transactions";
+
+"cashflow.opening_balance" = "Opening Balance";
+"cashflow.closing_balance" = "Closing Balance";
+"cashflow.inflows" = "Inflows";
+"cashflow.outflows" = "Outflows";
+"cashflow.daily_average" = "Daily Average";
+
+"cashflow.daily_details" = "Daily Details";
+"cashflow.cumulative_balance" = "Cumulative Balance";
+
+"cashflow.flow_chart" = "Flow Chart";
+"cashflow.income_expense" = "Income/Expense";
+"cashflow.detailed" = "Detailed";
+"cashflow.cumulative" = "Cumulative";
+
+"cashflow.transaction_type_distribution" = "Transaction Type Distribution";
+"cashflow.category_flow" = "Category Flow";
+"cashflow.show_trend" = "Show Trend";
+"cashflow.hide_trend" = "Hide Trend";
+"cashflow.largest_transaction" = "Largest Transaction";
+
+"cashflow.transfers" = "Transfers";
+"cashflow.most_frequent_transfer" = "Most Frequent Transfer";
+"cashflow.show_details" = "Show Details";
+"cashflow.hide_details" = "Hide Details";
+
+// Projection
+"cashflow.projection.title" = "Future Projection";
+"cashflow.projection.days" = "%d day projection";
+"cashflow.projection.income" = "Estimated Income";
+"cashflow.projection.expense" = "Estimated Expense";
+"cashflow.projection.net" = "Estimated Net";
+"cashflow.projection.chart" = "Projection Chart";
+
+// Risk
+"cashflow.risk.analysis" = "Risk Analysis";
+"cashflow.risk.low" = "Low Risk";
+"cashflow.risk.medium" = "Medium Risk";
+"cashflow.risk.high" = "High Risk";
+"cashflow.risk.low_message" = "Your cash flow looks healthy. You can achieve your financial goals with current spending habits.";
+"cashflow.risk.medium_message" = "There are some imbalances in your cash flow. It's recommended to review your expenses.";
+"cashflow.risk.high_message" = "Warning! Your cash flow is negative. You need to take urgent action.";
+
+"cashflow.suggestions" = "Suggestions";
+"cashflow.suggestion.low_1" = "Consider investing your surplus funds";
+"cashflow.suggestion.low_2" = "Think about creating an emergency fund";
+"cashflow.suggestion.medium_1" = "Reduce unnecessary expenses";
+"cashflow.suggestion.medium_2" = "Create additional income sources";
+"cashflow.suggestion.medium_3" = "Review budget limits";
+"cashflow.suggestion.high_1" = "Stop non-essential spending immediately";
+"cashflow.suggestion.high_2" = "Limit credit card usage";
+"cashflow.suggestion.high_3" = "Seek professional financial advice";
+
+// Insights
+"cashflow.insight.positive_flow" = "Positive Cash Flow";
+"cashflow.insight.positive_flow_message" = "You have %@ positive cash flow. You can increase your savings.";
+"cashflow.insight.negative_flow" = "Negative Cash Flow";
+"cashflow.insight.negative_flow_message" = "You have %@ negative cash flow. You need to control your spending.";
+"cashflow.insight.high_installment" = "High Installment Spending";
+"cashflow.insight.high_installment_message" = "%@%% of your spending is on installments. This ratio seems high.";
+"cashflow.insight.projection_warning" = "Projection Warning";
+"cashflow.insight.projection_warning_message" = "With current spending habits, you may face cash shortage in the upcoming period.";
+
+// General
+"common.loading" = "Loading...";
+"common.close" = "Close";
+"common.expenses" = "Expenses";
+"common.incomes" = "Incomes";
+"common.expense" = "Expense";
+"common.income" = "Income";
+"time.day_short" = "day";
+
+// Category Reports
+"reports.category.view_list" = "List View";
+"reports.category.view_chart" = "Chart View";
+"reports.category.view_comparison" = "Comparison";
+"reports.category.display_type" = "Display Type";
+"reports.category.transaction_type" = "Transaction Type";
+"reports.category.distribution" = "Category Distribution";
+"reports.category.no_comparison_data" = "No Comparison Data";
+"reports.category.no_previous_period" = "No previous period data found";
+
+// Category Summary Card
+"reports.category.summary" = "Summary";
+"reports.category.total_categories" = "Total Categories";
+"reports.category.active_categories" = "Active Categories";
+"reports.category.most_spent" = "Most Spent";
+
+// Category Detail
+"reports.category.detail_type" = "Detail Type";
+"reports.category.names" = "Names";
+"reports.category.days" = "Days";
+"reports.category.hours" = "Hours";
+"reports.category.trend" = "Trend";
+"reports.category.total_spending" = "Total Spending";
+"reports.category.transaction" = "Transaction";
+"reports.category.average" = "Average";
+"reports.category.daily" = "Daily";
+"reports.category.most_frequent_names" = "Most Frequent Transaction Names";
+"reports.category.used_times" = "Used %d times";
+"reports.category.avg_short" = "Avg";
+"reports.category.distribution_by_days" = "Distribution by Days";
+"reports.category.distribution_by_hours" = "Distribution by Hours";
+"reports.category.monthly_trend" = "Monthly Trend";
+"reports.category.transaction_count" = "%d transactions";
+"reports.category.previous" = "Previous";
+"reports.category.day" = "Day";
+"reports.category.amount" = "Amount";
+"reports.category.month" = "Month";

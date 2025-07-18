@@ -639,3 +639,131 @@
 "reports.category.view_chart" = "Grafik";
 "reports.category.view_comparison" = "Karşılaştırma";
 "reports.category.distribution" = "Kategori Dağılımı";
+"reports.detailed.cash_flow" = "Nakit Akışı";
+
+
+// MARK: - Cash Flow Report
+"cashflow.title" = "Nakit Akışı Raporu";
+"cashflow.view.summary" = "Özet";
+"cashflow.view.flow" = "Akış";
+"cashflow.view.categories" = "Kategoriler";
+"cashflow.view.accounts" = "Hesaplar";
+"cashflow.view.projection" = "Projeksiyon";
+
+"cashflow.insights" = "İçgörüler";
+"cashflow.net_flow" = "Net Akış";
+"cashflow.of_income" = "Gelirin %'si";
+"cashflow.daily_avg" = "Günlük Ort.";
+
+"cashflow.normal_transactions" = "Normal İşlemler";
+"cashflow.installment_transactions" = "Taksitli İşlemler";
+"cashflow.recurring_transactions" = "Tekrarlı İşlemler";
+
+"cashflow.opening_balance" = "Açılış Bakiyesi";
+"cashflow.closing_balance" = "Kapanış Bakiyesi";
+"cashflow.inflows" = "Girişler";
+"cashflow.outflows" = "Çıkışlar";
+"cashflow.daily_average" = "Günlük Ortalama";
+
+"cashflow.daily_details" = "Günlük Detaylar";
+"cashflow.cumulative_balance" = "Kümülatif Bakiye";
+
+"cashflow.flow_chart" = "Akış Grafiği";
+"cashflow.income_expense" = "Gelir/Gider";
+"cashflow.detailed" = "Detaylı";
+"cashflow.cumulative" = "Kümülatif";
+
+"cashflow.transaction_type_distribution" = "İşlem Tipi Dağılımı";
+"cashflow.category_flow" = "Kategori Akışı";
+"cashflow.show_trend" = "Trendi Göster";
+"cashflow.hide_trend" = "Trendi Gizle";
+"cashflow.largest_transaction" = "En Büyük İşlem";
+
+"cashflow.transfers" = "Transferler";
+"cashflow.most_frequent_transfer" = "En Sık Transfer";
+"cashflow.show_details" = "Detayları Göster";
+"cashflow.hide_details" = "Detayları Gizle";
+
+// Projeksiyon
+"cashflow.projection.title" = "Gelecek Projeksiyonu";
+"cashflow.projection.days" = "%d günlük projeksiyon";
+"cashflow.projection.income" = "Tahmini Gelir";
+"cashflow.projection.expense" = "Tahmini Gider";
+"cashflow.projection.net" = "Tahmini Net";
+"cashflow.projection.chart" = "Projeksiyon Grafiği";
+
+// Risk
+"cashflow.risk.analysis" = "Risk Analizi";
+"cashflow.risk.low" = "Düşük Risk";
+"cashflow.risk.medium" = "Orta Risk";
+"cashflow.risk.high" = "Yüksek Risk";
+"cashflow.risk.low_message" = "Nakit akışınız sağlıklı görünüyor. Mevcut harcama alışkanlıklarınızla finansal hedeflerinize ulaşabilirsiniz.";
+"cashflow.risk.medium_message" = "Nakit akışınızda bazı dengesizlikler var. Harcamalarınızı gözden geçirmeniz önerilir.";
+"cashflow.risk.high_message" = "Dikkat! Nakit akışınız negatif yönde. Acil önlem almanız gerekiyor.";
+
+"cashflow.suggestions" = "Öneriler";
+"cashflow.suggestion.low_1" = "Fazla paranızı yatırıma yönlendirebilirsiniz";
+"cashflow.suggestion.low_2" = "Acil durum fonu oluşturmayı düşünün";
+"cashflow.suggestion.medium_1" = "Gereksiz harcamaları azaltın";
+"cashflow.suggestion.medium_2" = "Ek gelir kaynakları oluşturun";
+"cashflow.suggestion.medium_3" = "Bütçe limitlerini gözden geçirin";
+"cashflow.suggestion.high_1" = "Acil harcamaları durdurun";
+"cashflow.suggestion.high_2" = "Kredi kartı kullanımını sınırlandırın";
+"cashflow.suggestion.high_3" = "Profesyonel finansal danışmanlık alın";
+
+// İçgörüler
+"cashflow.insight.positive_flow" = "Pozitif Nakit Akışı";
+"cashflow.insight.positive_flow_message" = "%@ pozitif nakit akışınız var. Tasarruflarınızı artırabilirsiniz.";
+"cashflow.insight.negative_flow" = "Negatif Nakit Akışı";
+"cashflow.insight.negative_flow_message" = "%@ negatif nakit akışınız var. Harcamalarınızı kontrol altına almalısınız.";
+"cashflow.insight.high_installment" = "Yüksek Taksitli Harcama";
+"cashflow.insight.high_installment_message" = "Harcamalarınızın %%%@'i taksitli. Bu oran yüksek görünüyor.";
+"cashflow.insight.projection_warning" = "Projeksiyon Uyarısı";
+"cashflow.insight.projection_warning_message" = "Mevcut harcama alışkanlıklarınızla önümüzdeki dönemde nakit sıkıntısı yaşayabilirsiniz.";
+
+// Genel
+"common.loading" = "Yükleniyor...";
+"common.close" = "Kapat";
+"common.expenses" = "Giderler";
+"common.incomes" = "Gelirler";
+"common.expense" = "Gider";
+"common.income" = "Gelir";
+"time.day_short" = "gün";
+
+// Kategori Raporları
+"reports.category.view_list" = "Liste Görünümü";
+"reports.category.view_chart" = "Grafik Görünümü";
+"reports.category.view_comparison" = "Karşılaştırma";
+"reports.category.display_type" = "Görünüm Tipi";
+"reports.category.transaction_type" = "İşlem Türü";
+"reports.category.distribution" = "Kategori Dağılımı";
+"reports.category.no_comparison_data" = "Karşılaştırma Verisi Yok";
+"reports.category.no_previous_period" = "Önceki dönem verisi bulunamadı";
+
+// Kategori Özet Kartı
+"reports.category.summary" = "Özet";
+"reports.category.total_categories" = "Toplam Kategori";
+"reports.category.active_categories" = "Aktif Kategori";
+"reports.category.most_spent" = "En Çok Harcanan";
+
+// Kategori Detay
+"reports.category.detail_type" = "Detay Tipi";
+"reports.category.names" = "İsimler";
+"reports.category.days" = "Günler";
+"reports.category.hours" = "Saatler";
+"reports.category.trend" = "Trend";
+"reports.category.total_spending" = "Toplam Harcama";
+"reports.category.transaction" = "İşlem";
+"reports.category.average" = "Ortalama";
+"reports.category.daily" = "Günlük";
+"reports.category.most_frequent_names" = "En Sık Kullanılan İşlem İsimleri";
+"reports.category.used_times" = "%d kez kullanıldı";
+"reports.category.avg_short" = "Ort";
+"reports.category.distribution_by_days" = "Günlere Göre Dağılım";
+"reports.category.distribution_by_hours" = "Saatlere Göre Dağılım";
+"reports.category.monthly_trend" = "Aylık Trend";
+"reports.category.transaction_count" = "%d işlem";
+"reports.category.previous" = "Önceki";
+"reports.category.day" = "Gün";
+"reports.category.amount" = "Tutar";
+"reports.category.month" = "Ay";

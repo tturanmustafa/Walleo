@@ -1,11 +1,3 @@
-//
-//  KategoriListeKarti.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 17.07.2025.
-//
-
-
 import SwiftUI
 
 struct KategoriListeKarti: View {
@@ -29,7 +21,7 @@ struct KategoriListeKarti: View {
                         Text(LocalizedStringKey(rapor.kategori.localizationKey ?? rapor.kategori.isim))
                             .font(.headline)
                         
-                        Text("\(rapor.islemSayisi) işlem")
+                        Text(String(format: NSLocalizedString("reports.category.transaction_count", comment: ""), rapor.islemSayisi))
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -48,7 +40,7 @@ struct KategoriListeKarti: View {
                             amount: rapor.gunlukOrtalama,
                             currencyCode: appSettings.currencyCode,
                             localeIdentifier: appSettings.languageCode
-                        ) + "/gün")
+                        ) + "/" + NSLocalizedString("time.day_short", comment: ""))
                         .font(.caption)
                         .foregroundColor(.secondary)
                     }
