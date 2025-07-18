@@ -16,12 +16,16 @@ struct KategoriDetayView: View {
                     anaOzetKarti
                     
                     // Tab seçici
-                    Picker("Detay Tipi", selection: $secilenTab) {
-                        Text("İsimler").tag(0)
-                        Text("Günler").tag(1)
-                        Text("Saatler").tag(2)
-                        Text("Trend").tag(3)
-                    }
+                    Picker("reports.category.detail_type", selection: $secilenTab) {
+                        Text("reports.category.names").tag(0)
+                        Text("reports.category.days").tag(1)
+                        Text("reports.category.hours").tag(2)
+                        Text("reports.category.trend").tag(3)
+                        .padding()
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(12)
+        .padding(.horizontal)
+    }
                     .pickerStyle(.segmented)
                     .padding(.horizontal)
                     
@@ -45,7 +49,7 @@ struct KategoriDetayView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Kapat") { dismiss() }
+                    Button("common.close") { dismiss() }
                 }
             }
         }
@@ -63,7 +67,7 @@ struct KategoriDetayView: View {
                     .cornerRadius(12)
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Toplam Harcama")
+                    Text("reports.category.total_spending")
                         .font(.caption)
                         .foregroundColor(.secondary)
                     
@@ -79,41 +83,32 @@ struct KategoriDetayView: View {
             }
             
             HStack(spacing: 20) {
-                VStack {
-                    Text("\(rapor.islemSayisi)")
-                        .font(.title2.bold())
-                    Text("İşlem")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
+                metrikKutusu(
+                    deger: "\(rapor.islemSayisi)",
+                    baslik: "reports.category.transaction"
+                )
                 
                 Divider()
                 
-                VStack {
-                    Text(formatCurrency(
+                metrikKutusu(
+                    deger: formatCurrency(
                         amount: rapor.ortalamaTutar,
                         currencyCode: appSettings.currencyCode,
                         localeIdentifier: appSettings.languageCode
-                    ))
-                    .font(.title3.bold())
-                    Text("Ortalama")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
+                    ),
+                    baslik: "reports.category.average"
+                )
                 
                 Divider()
                 
-                VStack {
-                    Text(formatCurrency(
+                metrikKutusu(
+                    deger: formatCurrency(
                         amount: rapor.gunlukOrtalama,
                         currencyCode: appSettings.currencyCode,
                         localeIdentifier: appSettings.languageCode
-                    ))
-                    .font(.title3.bold())
-                    Text("Günlük")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
+                    ),
+                    baslik: "reports.category.daily"
+                )
             }
         }
         .padding()
@@ -123,9 +118,20 @@ struct KategoriDetayView: View {
     }
     
     @ViewBuilder
+    private func metrikKutusu(deger: String, baslik: LocalizedStringKey) -> some View {
+        VStack {
+            Text(deger)
+                .font(.title2.bold())
+            Text(baslik)
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+    }
+    
+    @ViewBuilder
     private var isimlerDetayi: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("En Sık Kullanılan İşlem İsimleri")
+            Text("reports.category.most_frequent_names")
                 .font(.headline)
                 .padding(.horizontal)
             
@@ -136,7 +142,7 @@ struct KategoriDetayView: View {
                             .font(.subheadline)
                             .fontWeight(.medium)
                         
-                        Text("\(isimFrekansi.frekans) kez kullanıldı")
+                        Text(String(format: NSLocalizedString("reports.category.used_times", comment: ""), isimFrekansi.frekans))
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -151,13 +157,21 @@ struct KategoriDetayView: View {
                         ))
                         .font(.subheadline.bold())
                         
-                        Text("Ort: " + formatCurrency(
-                            amount: isimFrekansi.ortalamatutar,
-                            currencyCode: appSettings.currencyCode,
-                            localeIdentifier: appSettings.languageCode
-                        ))
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                        HStack(spacing: 2) {
+                            Text("reports.category.avg_short")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text(": ")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text(formatCurrency(
+                                amount: isimFrekansi.ortalamatutar,
+                                currencyCode: appSettings.currencyCode,
+                                localeIdentifier: appSettings.languageCode
+                            ))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        }
                     }
                 }
                 .padding()
@@ -171,14 +185,14 @@ struct KategoriDetayView: View {
     @ViewBuilder
     private var gunlerDetayi: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Günlere Göre Dağılım")
+            Text("reports.category.distribution_by_days")
                 .font(.headline)
                 .padding(.horizontal)
             
             Chart(rapor.gunlereGoreDagilim) { gun in
                 BarMark(
-                    x: .value("Gün", gun.gunAdi),
-                    y: .value("Tutar", gun.tutar)
+                    x: .value("Day", gun.gunAdi),
+                    y: .value("Amount", gun.tutar)
                 )
                 .foregroundStyle(rapor.kategori.renk)
                 .cornerRadius(4)
@@ -201,7 +215,7 @@ struct KategoriDetayView: View {
                         ))
                         .fontWeight(.semibold)
                         
-                        Text("\(gun.islemSayisi) işlem")
+                        Text(String(format: NSLocalizedString("reports.category.transaction_count", comment: ""), gun.islemSayisi))
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -218,7 +232,7 @@ struct KategoriDetayView: View {
     @ViewBuilder
     private var saatlerDetayi: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Saatlere Göre Dağılım")
+            Text("reports.category.distribution_by_hours")
                 .font(.headline)
                 .padding(.horizontal)
             
@@ -233,6 +247,7 @@ struct KategoriDetayView: View {
                     )
                 }
             )
+            .environmentObject(appSettings)
             .padding(.horizontal)
         }
     }
@@ -240,22 +255,22 @@ struct KategoriDetayView: View {
     @ViewBuilder
     private var trendDetayi: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Aylık Trend")
+            Text("reports.category.monthly_trend")
                 .font(.headline)
                 .padding(.horizontal)
             
             if !rapor.aylikTrend.isEmpty {
                 Chart(rapor.aylikTrend) { nokta in
                     LineMark(
-                        x: .value("Ay", nokta.ay),
-                        y: .value("Tutar", nokta.tutar)
+                        x: .value("Month", nokta.ay),
+                        y: .value("Amount", nokta.tutar)
                     )
                     .foregroundStyle(rapor.kategori.renk)
                     .interpolationMethod(.catmullRom)
                     
                     PointMark(
-                        x: .value("Ay", nokta.ay),
-                        y: .value("Tutar", nokta.tutar)
+                        x: .value("Month", nokta.ay),
+                        y: .value("Amount", nokta.tutar)
                     )
                     .foregroundStyle(rapor.kategori.renk)
                     .symbolSize(100)

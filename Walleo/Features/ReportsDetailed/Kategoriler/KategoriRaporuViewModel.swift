@@ -13,6 +13,7 @@ import SwiftData
 @Observable
 class KategoriRaporuViewModel {
     private var modelContext: ModelContext
+    var appSettings: AppSettings
     var baslangicTarihi: Date
     var bitisTarihi: Date
     
@@ -34,8 +35,9 @@ class KategoriRaporuViewModel {
     var secilenTur: IslemTuru = .gider
     var minimumIslemSayisi: Int = 0
     
-    init(modelContext: ModelContext, baslangicTarihi: Date, bitisTarihi: Date) {
+    init(modelContext: ModelContext, baslangicTarihi: Date, bitisTarihi: Date, appSettings: AppSettings = AppSettings()) {
         self.modelContext = modelContext
+        self.appSettings = appSettings
         self.baslangicTarihi = baslangicTarihi
         self.bitisTarihi = bitisTarihi
         
@@ -199,8 +201,8 @@ class KategoriRaporuViewModel {
     private func calculateDailyDistribution(islemler: [Islem]) -> [GunlukDagilim] {
         let calendar = Calendar.current
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "tr_TR")
-        formatter.dateFormat = "EEEE"
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        formatter.dateFormat = "EEEE" // Tam gün adı
         
         var gunlikGruplar: [Int: (tutar: Double, sayi: Int)] = [:]
         
@@ -210,19 +212,33 @@ class KategoriRaporuViewModel {
             gunlikGruplar[gun, default: (0, 0)].sayi += 1
         }
         
-        return gunlikGruplar.map { (gun, veri) in
-            let tarih = calendar.date(from: DateComponents(weekday: gun))!
-            return GunlukDagilim(
-                gunAdi: formatter.string(from: tarih),
-                tutar: veri.tutar,
-                islemSayisi: veri.sayi
-            )
-        }.sorted { gun1, gun2 in
-            let gunSirasi = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"]
-            let index1 = gunSirasi.firstIndex(of: gun1.gunAdi) ?? 0
-            let index2 = gunSirasi.firstIndex(of: gun2.gunAdi) ?? 0
-            return index1 < index2
+        // Haftanın günlerini doğru sırayla oluştur
+        var gunler: [GunlukDagilim] = []
+        
+        // iOS'ta 1 = Pazar, 2 = Pazartesi, ..., 7 = Cumartesi
+        // Pazartesi'den başlayarak sıralama için özel bir düzen oluştur
+        let gunSirasi: [Int] = [2, 3, 4, 5, 6, 7, 1] // Pazartesi'den Pazar'a
+        
+        for gunIndex in gunSirasi {
+            if let veri = gunlikGruplar[gunIndex] {
+                // Bu günün tarihini oluştur
+                var components = DateComponents()
+                components.weekday = gunIndex
+                components.weekOfYear = 1
+                components.year = 2024 // Herhangi bir yıl, sadece gün adını almak için
+                
+                if let tarih = calendar.date(from: components) {
+                    let gunAdi = formatter.string(from: tarih)
+                    gunler.append(GunlukDagilim(
+                        gunAdi: gunAdi,
+                        tutar: veri.tutar,
+                        islemSayisi: veri.sayi
+                    ))
+                }
+            }
         }
+        
+        return gunler
     }
     
     private func calculateHourlyDistribution(islemler: [Islem]) -> [SaatlikDagilim] {

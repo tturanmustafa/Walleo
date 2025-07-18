@@ -1,11 +1,3 @@
-//
-//  KategoriRaporuView.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 17.07.2025.
-//
-
-
 import SwiftUI
 import SwiftData
 import Charts
@@ -41,7 +33,7 @@ struct KategoriRaporuView: View {
         ScrollView {
             VStack(spacing: 20) {
                 if viewModel.isLoading {
-                    ProgressView("Yükleniyor...")
+                    ProgressView(LocalizedStringKey("common.loading"))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(.top, 100)
                 } else {
@@ -50,7 +42,7 @@ struct KategoriRaporuView: View {
                         .padding(.horizontal)
                     
                     // Gösterim tipi seçici
-                    Picker("Gösterim Tipi", selection: $gosterimTipi) {
+                    Picker("reports.category.display_type", selection: $gosterimTipi) {
                         ForEach(GosterimTipi.allCases, id: \.self) { tip in
                             Text(LocalizedStringKey(tip.rawValue)).tag(tip)
                         }
@@ -78,7 +70,10 @@ struct KategoriRaporuView: View {
                     .environmentObject(appSettings)
             }
         }
-        .onAppear { Task { await viewModel.fetchData() } }
+        .onAppear {
+            viewModel.appSettings = appSettings
+            Task { await viewModel.fetchData() }
+        }
         .onChange(of: baslangicTarihi) {
             viewModel.baslangicTarihi = baslangicTarihi
             viewModel.bitisTarihi = bitisTarihi
@@ -89,15 +84,19 @@ struct KategoriRaporuView: View {
             viewModel.bitisTarihi = bitisTarihi
             Task { await viewModel.fetchData() }
         }
+        .onChange(of: appSettings.languageCode) {
+            viewModel.appSettings = appSettings
+            Task { await viewModel.fetchData() }
+        }
     }
     
     @ViewBuilder
     private var listeGorunumu: some View {
         VStack(spacing: 20) {
             // Tür seçici
-            Picker("İşlem Türü", selection: $viewModel.secilenTur) {
-                Text("Giderler").tag(IslemTuru.gider)
-                Text("Gelirler").tag(IslemTuru.gelir)
+            Picker("reports.category.transaction_type", selection: $viewModel.secilenTur) {
+                Text("common.expenses").tag(IslemTuru.gider)
+                Text("common.incomes").tag(IslemTuru.gelir)
             }
             .pickerStyle(.segmented)
             .padding(.horizontal)
@@ -122,20 +121,21 @@ struct KategoriRaporuView: View {
         VStack(spacing: 20) {
             // Pasta grafiği
             if !viewModel.giderKategorileri.isEmpty || !viewModel.gelirKategorileri.isEmpty {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 20) {
                     Text("reports.category.distribution")
                         .font(.headline)
                         .padding(.horizontal)
                     
-                    HStack(alignment: .top, spacing: 0) {
+                    // Grafikler yan yana değil alt alta olacak
+                    VStack(spacing: 30) {
                         // Gider pasta grafiği ve detayları
                         if !viewModel.giderKategorileri.isEmpty {
-                            VStack(spacing: 16) {
-                                VStack(spacing: 8) {
+                            VStack(spacing: 20) {
+                                VStack(spacing: 12) {
                                     Text("common.expense")
-                                        .font(.subheadline)
-                                        .fontWeight(.medium)
-                                        .foregroundColor(.secondary)
+                                        .font(.title3)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.red)
                                     
                                     DonutChartView(data: viewModel.giderKategorileri.map { rapor in
                                         KategoriHarcamasi(
@@ -146,35 +146,33 @@ struct KategoriRaporuView: View {
                                             ikonAdi: rapor.kategori.ikonAdi
                                         )
                                     })
-                                    .frame(height: 200)
+                                    .frame(height: 220)
                                 }
                                 
                                 // Gider kategorileri listesi
-                                VStack(spacing: 8) {
+                                VStack(spacing: 12) {
                                     ForEach(viewModel.giderKategorileri.prefix(5)) { rapor in
                                         kategoriDetaySatiri(rapor: rapor, toplamTutar: viewModel.ozet.toplamHarcama)
                                     }
                                 }
+                                .padding(.horizontal)
                             }
-                            .frame(maxWidth: .infinity)
                         }
                         
-                        // Ayırıcı çizgi
+                        // Ayırıcı
                         if !viewModel.giderKategorileri.isEmpty && !viewModel.gelirKategorileri.isEmpty {
                             Divider()
-                                .frame(width: 1)
-                                .background(Color.gray.opacity(0.3))
-                                .padding(.vertical, 20)
+                                .padding(.horizontal, 40)
                         }
                         
                         // Gelir pasta grafiği ve detayları
                         if !viewModel.gelirKategorileri.isEmpty {
-                            VStack(spacing: 16) {
-                                VStack(spacing: 8) {
+                            VStack(spacing: 20) {
+                                VStack(spacing: 12) {
                                     Text("common.income")
-                                        .font(.subheadline)
-                                        .fontWeight(.medium)
-                                        .foregroundColor(.secondary)
+                                        .font(.title3)
+                                        .fontWeight(.semibold)
+                                        .foregroundColor(.green)
                                     
                                     DonutChartView(data: viewModel.gelirKategorileri.map { rapor in
                                         KategoriHarcamasi(
@@ -185,24 +183,23 @@ struct KategoriRaporuView: View {
                                             ikonAdi: rapor.kategori.ikonAdi
                                         )
                                     })
-                                    .frame(height: 200)
+                                    .frame(height: 220)
                                 }
                                 
                                 // Gelir kategorileri listesi
-                                VStack(spacing: 8) {
+                                VStack(spacing: 12) {
                                     ForEach(viewModel.gelirKategorileri.prefix(5)) { rapor in
                                         kategoriDetaySatiri(rapor: rapor, toplamTutar: viewModel.ozet.toplamGelir)
                                     }
                                 }
+                                .padding(.horizontal)
                             }
-                            .frame(maxWidth: .infinity)
                         }
                     }
-                    .padding(.horizontal)
                 }
                 .padding()
                 .background(Color(.secondarySystemGroupedBackground))
-                .cornerRadius(12)
+                .cornerRadius(16)
                 .padding(.horizontal)
             }
         }
@@ -211,28 +208,29 @@ struct KategoriRaporuView: View {
     // Yeni yardımcı fonksiyon - kategori detay satırı
     @ViewBuilder
     private func kategoriDetaySatiri(rapor: KategoriRaporVerisi, toplamTutar: Double) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 12) {
             // İkon
             Image(systemName: rapor.kategori.ikonAdi)
-                .font(.caption)
+                .font(.title3)
                 .foregroundColor(rapor.kategori.renk)
-                .frame(width: 24, height: 24)
+                .frame(width: 36, height: 36)
                 .background(rapor.kategori.renk.opacity(0.15))
-                .cornerRadius(6)
+                .cornerRadius(8)
             
-            // Kategori adı
-            Text(LocalizedStringKey(rapor.kategori.localizationKey ?? rapor.kategori.isim))
-                .font(.caption)
-                .fontWeight(.medium)
-                .lineLimit(1)
+            // Kategori adı ve yüzde
+            VStack(alignment: .leading, spacing: 2) {
+                Text(LocalizedStringKey(rapor.kategori.localizationKey ?? rapor.kategori.isim))
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .lineLimit(1)
+                
+                // Yüzde bilgisi
+                Text(String(format: "%.1f%%", toplamTutar > 0 ? (rapor.toplamTutar / toplamTutar) * 100 : 0))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
             
             Spacer()
-            
-            // Yüzde
-            Text(String(format: "%.1f%%", toplamTutar > 0 ? (rapor.toplamTutar / toplamTutar) * 100 : 0))
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .frame(width: 45, alignment: .trailing)
             
             // Tutar
             Text(formatCurrency(
@@ -240,12 +238,14 @@ struct KategoriRaporuView: View {
                 currencyCode: appSettings.currencyCode,
                 localeIdentifier: appSettings.languageCode
             ))
-            .font(.caption)
+            .font(.subheadline)
             .fontWeight(.semibold)
-            .lineLimit(1)
-            .minimumScaleFactor(0.8)
-            .frame(width: 80, alignment: .trailing)
+            .foregroundColor(.primary)
         }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .background(Color(.tertiarySystemGroupedBackground))
+        .cornerRadius(10)
     }
     
     @ViewBuilder
@@ -258,9 +258,9 @@ struct KategoriRaporuView: View {
                 }
             } else {
                 ContentUnavailableView(
-                    "Karşılaştırma Verisi Yok",
+                    LocalizedStringKey("reports.category.no_comparison_data"),
                     systemImage: "chart.line.uptrend.xyaxis",
-                    description: Text("Önceki dönem verisi bulunamadı")
+                    description: Text("reports.category.no_previous_period")
                 )
                 .padding(.top, 50)
             }

@@ -1,11 +1,3 @@
-//
-//  KategoriKarsilastirmaKarti.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 17.07.2025.
-//
-
-
 import SwiftUI
 
 struct KategoriKarsilastirmaKarti: View {
@@ -85,7 +77,7 @@ struct KategoriKarsilastirmaKarti: View {
                 
                 // Önceki dönem bilgisi
                 VStack(alignment: .trailing, spacing: 4) {
-                    Text("Önceki")
+                    Text("reports.category.previous")
                         .font(.caption2)
                         .foregroundColor(.secondary)
                     
