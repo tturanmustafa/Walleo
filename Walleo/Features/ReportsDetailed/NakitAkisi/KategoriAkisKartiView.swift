@@ -17,8 +17,8 @@ struct KategoriAkisKartiView: View {
     @State private var trendGoster = false
     
     var body: some View {
-        // Metinleri burada oluştur
         let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        // --- DÜZELTME 1: Metinleri AppSettings'e göre oluştur ---
         let islemSayisiMetni = String(
             format: languageBundle.localizedString(forKey: "reports.transaction_count", value: "", table: nil),
             kategoriAkis.islemSayisi
@@ -29,57 +29,47 @@ struct KategoriAkisKartiView: View {
         )
 
         return VStack(spacing: 0) {
-            // Ana bilgi satırı
             HStack(spacing: 12) {
-                // Kategori ikonu
                 Image(systemName: kategoriAkis.kategori.ikonAdi)
-                    .font(.title2)
-                    .foregroundColor(kategoriAkis.kategori.renk)
-                    .frame(width: 44, height: 44)
-                    .background(kategoriAkis.kategori.renk.opacity(0.15))
-                    .cornerRadius(10)
+                    .font(.title2).foregroundColor(kategoriAkis.kategori.renk)
+                    .frame(width: 44, height: 44).background(kategoriAkis.kategori.renk.opacity(0.15)).cornerRadius(10)
                 
-                // Kategori bilgileri
                 VStack(alignment: .leading, spacing: 4) {
                     Text(LocalizedStringKey(kategoriAkis.kategori.localizationKey ?? kategoriAkis.kategori.isim))
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
+                        .font(.subheadline).fontWeight(.semibold)
                     
-                    HStack(spacing: 8) {
-                        Text(islemSayisiMetni) // Düzeltildi
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                    // --- DÜZELTME 2: Esnek Arayüz (ViewThatFits) ---
+                    // Bu yapı, metinlerin sığmazsa alt alta gelmesini sağlar.
+                    ViewThatFits {
+                        // Geniş ekran için yatay (HStack)
+                        HStack(spacing: 8) {
+                            Text(islemSayisiMetni).font(.caption).foregroundStyle(.secondary)
+                            Text("•").font(.caption).foregroundStyle(.tertiary)
+                            Text(ortalamaTutarMetni).font(.caption).foregroundStyle(.secondary)
+                        }
                         
-                        Text("•")
-                            .font(.caption)
-                            .foregroundStyle(.tertiary)
-                        
-                        Text(ortalamaTutarMetni) // Düzeltildi
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        // Dar ekran için dikey (VStack)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(islemSayisiMetni).font(.caption).foregroundStyle(.secondary)
+                            Text(ortalamaTutarMetni).font(.caption).foregroundStyle(.secondary)
+                        }
                     }
+                    // --- DÜZELTME SONU ---
                 }
                 
                 Spacer()
                 
-                // Toplam tutar
                 VStack(alignment: .trailing, spacing: 2) {
                     Text(formatCurrency(
                         amount: abs(kategoriAkis.toplamTutar),
                         currencyCode: appSettings.currencyCode,
                         localeIdentifier: appSettings.languageCode
-                    ))
-                    .font(.headline.bold())
-                    .foregroundColor(kategoriAkis.kategori.tur == .gelir ? .green : .red)
+                    )).font(.headline.bold()).foregroundColor(kategoriAkis.kategori.tur == .gelir ? .green : .red)
                     
                     if kategoriAkis.kategori.tur == .gelir {
-                        Label(LocalizedStringKey("common.income"), systemImage: "arrow.up") // Düzeltildi
-                            .font(.caption2)
-                            .foregroundColor(.green)
+                        Label(LocalizedStringKey("common.income"), systemImage: "arrow.up").font(.caption2).foregroundColor(.green)
                     } else {
-                        Label(LocalizedStringKey("common.expense"), systemImage: "arrow.down") // Düzeltildi
-                            .font(.caption2)
-                            .foregroundColor(.red)
+                        Label(LocalizedStringKey("common.expense"), systemImage: "arrow.down").font(.caption2).foregroundColor(.red)
                     }
                 }
             }

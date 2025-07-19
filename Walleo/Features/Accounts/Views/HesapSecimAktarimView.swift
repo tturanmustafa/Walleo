@@ -29,8 +29,14 @@ struct HesapSecimAktarimView: View {
     
     // Metinleri doğru dilde ve formatta oluşturmak için
     private var aciklamaMetni: String {
+        // 1. AppSettings'ten doğru dil paketini al
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        
+        // 2. Formatlanacak ana metni bu paketten çek
+        let formatString = languageBundle.localizedString(forKey: "transfer_transactions.message_format", value: "", table: nil)
+        
+        // 3. Metni verilerle formatla
         let islemSayisi = silinecekHesap.islemler?.count ?? 0
-        let formatString = NSLocalizedString("transfer_transactions.message_format", comment: "")
         return String(format: formatString, silinecekHesap.isim, islemSayisi)
     }
 

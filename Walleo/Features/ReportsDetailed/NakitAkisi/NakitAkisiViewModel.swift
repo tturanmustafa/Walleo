@@ -78,12 +78,6 @@ class NakitAkisiViewModel {
                 transferler: transferler
             )
             
-            // 6. Gelecek projeksiyonunu hesapla
-            let gelecekProjeksiyonu = calculateFutureProjection(
-                islemler: islemler,
-                gunSayisi: 30
-            )
-            
             // 7. Transfer özetini hesapla
             let transferOzeti = calculateTransferSummary(transferler: transferler)
             
@@ -102,7 +96,6 @@ class NakitAkisiViewModel {
                 islemTipiDagilimi: islemTipiDagilimi,
                 kategoriAkislari: kategoriAkislari,
                 hesapAkislari: hesapAkislari,
-                gelecekProjeksiyonu: gelecekProjeksiyonu,
                 transferOzeti: transferOzeti
             )
             
@@ -373,67 +366,7 @@ class NakitAkisiViewModel {
         
         return hesapAkislari.sorted { abs($0.netDegisim) > abs($1.netDegisim) }
     }
-    
-    private func calculateFutureProjection(islemler: [Islem], gunSayisi: Int) -> GelecekProjeksiyonu {
-        let tekrarliIslemler = islemler.filter { $0.tekrar != .tekSeferlik }
-        var gunlukProjeksiyonlar: [GelecekProjeksiyonu.GunlukProjeksiyon] = []
-        var kumulatifBakiye = nakitAkisiRaporu?.gunlukAkisVerisi.last?.kumulatifBakiye ?? 0
         
-        let calendar = Calendar.current
-        var tahminiToplamGelir = 0.0
-        var tahminiToplamGider = 0.0
-        
-        for gunOffset in 1...gunSayisi {
-            guard let projeksiyonTarihi = calendar.date(byAdding: .day, value: gunOffset, to: bitisTarihi) else { continue }
-            
-            var gunlukGelir = 0.0
-            var gunlukGider = 0.0
-            
-            // Tekrarlı işlemleri projekte et
-            for islem in tekrarliIslemler {
-                if shouldProjectTransaction(islem: islem, tarih: projeksiyonTarihi) {
-                    if islem.tur == .gelir {
-                        gunlukGelir += islem.tutar
-                    } else {
-                        gunlukGider += islem.tutar
-                    }
-                }
-            }
-            
-            let netAkis = gunlukGelir - gunlukGider
-            kumulatifBakiye += netAkis
-            
-            tahminiToplamGelir += gunlukGelir
-            tahminiToplamGider += gunlukGider
-            
-            gunlukProjeksiyonlar.append(GelecekProjeksiyonu.GunlukProjeksiyon(
-                tarih: projeksiyonTarihi,
-                tahminiGelir: gunlukGelir,
-                tahminiGider: gunlukGider,
-                tahminiKumulatifBakiye: kumulatifBakiye
-            ))
-        }
-        
-        // Risk seviyesini belirle
-        let riskSeviyesi: GelecekProjeksiyonu.RiskSeviyesi
-        if kumulatifBakiye < 0 {
-            riskSeviyesi = .yuksek
-        } else if kumulatifBakiye < 1000 { // Bu değer kullanıcıya göre ayarlanabilir
-            riskSeviyesi = .orta
-        } else {
-            riskSeviyesi = .dusuk
-        }
-        
-        return GelecekProjeksiyonu(
-            projeksiyonSuresi: gunSayisi,
-            tahminiGelir: tahminiToplamGelir,
-            tahminiGider: tahminiToplamGider,
-            tahminiNetAkis: tahminiToplamGelir - tahminiToplamGider,
-            gunlukProjeksiyon: gunlukProjeksiyonlar,
-            riskSeviyesi: riskSeviyesi
-        )
-    }
-    
     private func shouldProjectTransaction(islem: Islem, tarih: Date) -> Bool {
         let calendar = Calendar.current
         
@@ -536,20 +469,6 @@ class NakitAkisiViewModel {
                 renk: .orange
             ))
         }
-        
-        // 3. Projeksiyon uyarısı
-        if rapor.gelecekProjeksiyonu.riskSeviyesi == .yuksek {
-            icgoruler.append(NakitAkisiIcgoru(
-                tip: .projeksiyonUyari,
-                baslik: "cashflow.insight.projection_warning",
-                mesajKey: "cashflow.insight.projection_warning_message", // Değişti
-                parametreler: [],                                        // Değişti
-                oncelik: 1,
-                ikon: "exclamationmark.triangle.fill",
-                renk: .red
-            ))
-        }
-        
         return icgoruler.sorted { $0.oncelik < $1.oncelik }
     }
 }

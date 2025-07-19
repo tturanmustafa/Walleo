@@ -67,7 +67,13 @@ struct AdaptifIsiHaritasi: View {
                     )
                     .onTapGesture {
                         withAnimation(.spring(response: 0.3)) {
-                            secilenDilim = dilim
+                            // Eğer tıklanan kutu zaten seçili ise, seçimi kaldır (kapat)
+                            if secilenDilim?.id == dilim.id {
+                                secilenDilim = nil
+                            } else {
+                            // Değilse, yeni kutuyu seç
+                                secilenDilim = dilim
+                            }
                         }
                     }
                 }
@@ -173,6 +179,20 @@ struct DilimDetayView: View {
     let dilim: ZamanDilimiVerisi
     @EnvironmentObject var appSettings: AppSettings
     
+    // --- DÜZELTME BAŞLIYOR ---
+    // Metni, AppSettings'e göre doğru dilde oluşturan yeni bir yardımcı değişken
+    private var islemSayisiMetni: String {
+        // 1. Doğru dil paketini bul
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        
+        // 2. Formatlanacak ana metni bu paketten al
+        let formatString = languageBundle.localizedString(forKey: "reports.transaction_count", value: "", table: nil)
+        
+        // 3. Metni verilerle formatla
+        return String(format: formatString, dilim.islemSayisi)
+    }
+    // --- DÜZELTME BİTİYOR ---
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -189,7 +209,8 @@ struct DilimDetayView: View {
                 .fontWeight(.bold)
             }
             
-            Text(String(format: NSLocalizedString("reports.transaction_count", comment: ""), dilim.islemSayisi))
+            // Düzeltilmiş metin burada kullanılıyor
+            Text(islemSayisiMetni)
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
