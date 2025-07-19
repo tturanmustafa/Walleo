@@ -26,7 +26,7 @@
 // MARK: - Main Tabs
 "tab.dashboard" = "Dashboard";
 "tab.calendar" = "Calendar";
-"tab.reports" = "Reports";
+"tab.reports" = "Summary";
 "tab.settings" = "Settings";
 "tab.budgets" = "Budgets";
 "tab.more" = "More";
@@ -356,7 +356,7 @@
 "notification.daily.title" = "Time to Wrap Up the Day!";
 "notification.daily.body" = "Have you added today's income and expenses to Walleo? Now is the best time to track your financial health.";
 "notification.weekly.title" = "Your Weekly Report is Ready!";
-"notification.weekly.body" = "Discover last week's financial summary now. Detailed insights on your spending and income await you on the Reports screen.";
+"notification.weekly.body" = "Discover last week's financial summary now. Detailed insights on your spending and income await you on the Summary screen.";
 
 // ... your existing strings ...
 
@@ -449,7 +449,7 @@
 "notification.budget.renewal_summary.body" = "Welcome, %@! ☕️ %d of your budgets have been automatically renewed for this month.";
 
 // MARK: - Detailed Reports
-"reports.detailed.title" = "Detailed Reports";
+"reports.detailed.title" = "Reports";
 "reports.detailed.credit_card_report" = "Credit Card Report";
 "reports.detailed.loan_report" = "Loan Report";
 "reports.detailed.start_date" = "Start Date";

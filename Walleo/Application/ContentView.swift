@@ -26,19 +26,19 @@ struct FloatingActionMenu: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Button(action: { seciliSekme = .detayliRaporlar; isShowing = false }) {
-                Label("reports.detailed.title", systemImage: "magnifyingglass")
-            }
-            .buttonStyle(FloatingActionButtonStyle())
-            .opacity(showButtons[0] ? 1 : 0)
-            .offset(y: showButtons[0] ? 0 : 20)
-
             Button(action: { seciliSekme = .raporlar; isShowing = false }) {
                 Label("tab.reports", systemImage: "chart.bar.xaxis")
             }
             .buttonStyle(FloatingActionButtonStyle())
             .opacity(showButtons[1] ? 1 : 0)
             .offset(y: showButtons[1] ? 0 : 20)
+            
+            Button(action: { seciliSekme = .detayliRaporlar; isShowing = false }) {
+                Label("reports.detailed.title", systemImage: "magnifyingglass")
+            }
+            .buttonStyle(FloatingActionButtonStyle())
+            .opacity(showButtons[0] ? 1 : 0)
+            .offset(y: showButtons[0] ? 0 : 20)
             
             Button(action: { seciliSekme = .butceler; isShowing = false }) {
                 Label("tab.budgets", systemImage: "chart.pie.fill")

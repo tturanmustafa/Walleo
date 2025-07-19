@@ -26,7 +26,7 @@
 // MARK: - Ana Sekmeler
 "tab.dashboard" = "Panel";
 "tab.calendar" = "Takvim";
-"tab.reports" = "Raporlar";
+"tab.reports" = "Özet";
 "tab.settings" = "Ayarlar";
 "tab.budgets" = "Bütçeler";
 "tab.more" = "Daha Fazla";
@@ -355,7 +355,7 @@
 "notification.daily.title" = "Günü Tamamlama Zamanı!";
 "notification.daily.body" = "Bugünkü gelir ve giderlerinizi Walleo'ya eklediniz mi? Finansal sağlığınızı takip etmek için en iyi zaman.";
 "notification.weekly.title" = "Haftalık Raporunuz Hazır!";
-"notification.weekly.body" = "Geçen haftanın finansal özetini şimdi keşfedin. Harcamalarınız ve gelirleriniz hakkında detaylı bilgi Raporlar ekranında sizi bekliyor.";
+"notification.weekly.body" = "Geçen haftanın finansal özetini şimdi keşfedin. Harcamalarınız ve gelirleriniz hakkında detaylı bilgi Özet ekranında sizi bekliyor.";
 
 // ... mevcut metinleriniz ...
 
@@ -448,7 +448,7 @@
 "notification.budget.renewal_summary.body" = "Hoş geldin %@! ☕️ Bu ay için %d bütçeniz otomatik olarak yenilendi.";
 
 // MARK: - Detaylı Raporlar
-"reports.detailed.title" = "Detaylı Raporlar";
+"reports.detailed.title" = "Raporlar";
 "reports.detailed.credit_card_report" = "Kredi Kartı Raporu";
 "reports.detailed.loan_report" = "Kredi Raporu";
 "reports.detailed.start_date" = "Başlangıç Tarihi";
