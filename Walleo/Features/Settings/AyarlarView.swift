@@ -16,14 +16,11 @@ struct AyarlarView: View {
     @State private var dilDegisikligiUyarisiGoster = false
     @State private var cloudKitDegisiklikUyarisiGoster = false
     @State private var showingDeleteConfirmationAlert = false
-    @State private var showFamilyActiveWarning = false
-    @State private var showCloudKitFamilyWarning = false
 
     @State private var isExporting = false
     @State private var shareableURL: ShareableURL?
 
     @State private var showPaywall = false
-    @State private var aileHesabiYonetimGoster = false
 
     var body: some View {
         Form {
@@ -40,8 +37,6 @@ struct AyarlarView: View {
                 shareableURL: $shareableURL,
                 showingDeleteConfirmationAlert: $showingDeleteConfirmationAlert,
                 showPaywall: $showPaywall,
-                aileHesabiYonetimGoster: $aileHesabiYonetimGoster,
-                showCloudKitFamilyWarning: $showCloudKitFamilyWarning
             )
             
             BilgiBolumu()
@@ -59,11 +54,6 @@ struct AyarlarView: View {
         .sheet(isPresented: $showPaywall) {
             PaywallView()
         }
-        .sheet(isPresented: $aileHesabiYonetimGoster) {
-            AileHesabiYonetimView()
-                .environmentObject(appSettings)
-                .environmentObject(entitlementManager)
-        }
         // CHANGE HANDLERS
         .onChange(of: entitlementManager.hasPremiumAccess) { _, yeniDurum in
             if yeniDurum {
@@ -76,14 +66,9 @@ struct AyarlarView: View {
             }
         }
         .onChange(of: cloudKitToggleAcik) { _, _ in
+            // Aile Hesabı kontrolü buradan kaldırıldı.
             if cloudKitToggleAcik != appSettings.isCloudKitEnabled {
-                // Aile hesabı kontrolü
-                if !cloudKitToggleAcik && AileHesabiService.shared.mevcutAileHesabi != nil {
-                    showCloudKitFamilyWarning = true
-                    cloudKitToggleAcik = true // Toggle'ı geri aç
-                } else {
-                    cloudKitDegisiklikUyarisiGoster = true
-                }
+                cloudKitDegisiklikUyarisiGoster = true
             }
         }
         // ALERTS
@@ -111,27 +96,13 @@ struct AyarlarView: View {
         }
         .alert(LocalizedStringKey("alert.delete_all_data.title"), isPresented: $showingDeleteConfirmationAlert) {
             Button("common.confirm_delete", role: .destructive) {
-                // Aile hesabı kontrolü
-                if AileHesabiService.shared.mevcutAileHesabi != nil {
-                    showFamilyActiveWarning = true
-                } else {
-                    NotificationCenter.default.post(name: .appShouldDeleteAllData, object: nil)
-                    dismiss()
-                }
+                // Aile Hesabı kontrolü buradan kaldırıldı.
+                NotificationCenter.default.post(name: .appShouldDeleteAllData, object: nil)
+                dismiss()
             }
             Button("common.cancel", role: .cancel) {}
         } message: {
             Text(LocalizedStringKey("alert.delete_all_data.message"))
-        }
-        .alert("family.error.cannot_delete_with_family", isPresented: $showFamilyActiveWarning) {
-            Button("common.ok", role: .cancel) {}
-        } message: {
-            Text("family.error.must_leave_family_first")
-        }
-        .alert("family.error.cannot_disable_icloud", isPresented: $showCloudKitFamilyWarning) {
-            Button("common.ok", role: .cancel) {}
-        } message: {
-            Text("family.error.icloud_required_for_family")
         }
     }
 }
@@ -228,51 +199,10 @@ struct VeriYonetimiBolumu: View {
     @Binding var shareableURL: ShareableURL?
     @Binding var showingDeleteConfirmationAlert: Bool
     @Binding var showPaywall: Bool
-    @Binding var aileHesabiYonetimGoster: Bool
-    @Binding var showCloudKitFamilyWarning: Bool
-    
-    @State private var aileHesabindanAyrilUyarisi = false
-    @StateObject private var aileService = AileHesabiService.shared
-    @StateObject private var cloudKit = CloudKitManager.shared
-    
+        
     var body: some View {
         Section(LocalizedStringKey("settings.section.data_management")) {
             
-            // Aile Hesabı Yönetimi - Premium kontrolü kaldırıldı
-            Button(action: {
-                aileHesabiYonetimGoster = true
-            }) {
-                HStack {
-                    AyarIkonu(iconName: "person.3.fill", color: .indigo)
-                    VStack(alignment: .leading) {
-                        Text(LocalizedStringKey("settings.family.manage"))
-                        if let aileHesabi = aileService.mevcutAileHesabi {
-                            HStack {
-                                Text(aileHesabi.isim)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                if aileHesabi.adminID == cloudKit.currentUserID {
-                                    Text("Admin")
-                                        .font(.caption2)
-                                        .padding(.horizontal, 6)
-                                        .padding(.vertical, 2)
-                                        .background(Color.accentColor.opacity(0.2))
-                                        .cornerRadius(4)
-                                }
-                            }
-                        }
-                    }
-                    Spacer()
-                    if !aileService.bekleyenDavetler.isEmpty {
-                        BadgeView(count: aileService.bekleyenDavetler.count)
-                    }
-                    Image(systemName: "chevron.right")
-                        .font(.caption.bold())
-                        .foregroundColor(.secondary.opacity(0.5))
-                }
-            }
-            .foregroundColor(.primary)
-            .padding(.vertical, 4)
                         
             // iCloud Toggle
             HStack {
@@ -308,9 +238,6 @@ struct VeriYonetimiBolumu: View {
                 }
             }
             .padding(.vertical, 4)
-        }
-        .onAppear {
-            aileService.configure(with: modelContext)
         }
     }
     
