@@ -43,7 +43,7 @@ struct AdaptifIsiHaritasi: View {
                 
                 // Renk skalası göstergesi
                 HStack(spacing: 2) {
-                    Text("Az")
+                    Text(LocalizedStringKey("common.low"))
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                     ForEach(0..<5) { index in
@@ -52,7 +52,7 @@ struct AdaptifIsiHaritasi: View {
                             .frame(width: 16, height: 16)
                             .cornerRadius(3)
                     }
-                    Text("Çok")
+                    Text(LocalizedStringKey("common.high"))
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }
@@ -89,11 +89,11 @@ struct AdaptifIsiHaritasi: View {
     
     private func getBaslik() -> LocalizedStringKey {
         switch gunSayisi {
-        case 1: return "Saatlik Harcama Dağılımı"
-        case 2...7: return "Günlük Harcama Dağılımı"
-        case 8...35: return "Aylık Harcama Dağılımı"
-        case 36...90: return "Haftalık Harcama Dağılımı"
-        default: return "Aylık Harcama Özeti"
+        case 1: return LocalizedStringKey("reports.heatmap.title.hourly")
+        case 2...7: return LocalizedStringKey("reports.heatmap.title.daily")
+        case 8...35: return LocalizedStringKey("reports.heatmap.title.monthly")
+        case 36...90: return LocalizedStringKey("reports.heatmap.title.weekly")
+        default: return LocalizedStringKey("reports.heatmap.title.monthly_summary")
         }
     }
     
@@ -189,7 +189,7 @@ struct DilimDetayView: View {
                 .fontWeight(.bold)
             }
             
-            Text("\(dilim.islemSayisi) işlem")
+            Text(String(format: NSLocalizedString("reports.transaction_count", comment: ""), dilim.islemSayisi))
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

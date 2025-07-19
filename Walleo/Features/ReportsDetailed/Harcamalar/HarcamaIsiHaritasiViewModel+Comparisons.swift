@@ -26,7 +26,7 @@ extension HarcamaIsiHaritasiViewModel {
             let periodTotal = periodTransactions.reduce(0) { $0 + $1.tutar }
             let percentage = toplamHarcama > 0 ? (periodTotal / toplamHarcama) * 100 : 0
             
-            return HarcamaKarsilastirmaVerisi(  // <- Tip değişti
+            return HarcamaKarsilastirmaVerisi(
                 etiket: NSLocalizedString(period.key, comment: ""),
                 localizationKey: period.key,
                 deger: periodTotal,
@@ -66,7 +66,6 @@ extension HarcamaIsiHaritasiViewModel {
             )
         }
     }
-    
     // Hafta içi vs Hafta sonu karşılaştırması
     func createWeekdayWeekendComparison(islemler: [Islem]) -> [HarcamaKarsilastirmaVerisi] {
         let calendar = Calendar.current
@@ -112,17 +111,14 @@ extension HarcamaIsiHaritasiViewModel {
         }
         
         let sortedWeeks = weeklyTotals.keys.sorted()
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: appSettings.languageCode)
-        formatter.dateFormat = "d MMM"
         
         return sortedWeeks.enumerated().map { index, weekStart in
             let total = weeklyTotals[weekStart] ?? 0
             let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart)!
             
             return HarcamaKarsilastirmaVerisi(
-                etiket: "\(index + 1). Hafta",
-                localizationKey: nil,
+                etiket: String(format: NSLocalizedString("reports.heatmap.week_format", comment: ""), index + 1),
+                localizationKey: nil, // Formatlı olduğu için key kullanmıyoruz
                 deger: total,
                 yuzde: 0,
                 renk: Color.blue.opacity(0.8 - Double(index) * 0.1)

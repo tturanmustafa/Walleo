@@ -35,7 +35,7 @@ struct KategoriAkisKartiView: View {
                         .fontWeight(.semibold)
                     
                     HStack(spacing: 8) {
-                        Text("\(kategoriAkis.islemSayisi) işlem")
+                        Text(String(format: NSLocalizedString("reports.transaction_count", comment: ""), kategoriAkis.islemSayisi))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         
@@ -43,7 +43,7 @@ struct KategoriAkisKartiView: View {
                             .font(.caption)
                             .foregroundStyle(.tertiary)
                         
-                        Text("Ort: \(formatCurrency(amount: kategoriAkis.ortalamaIslemTutari, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))")
+                        Text(String(format: NSLocalizedString("reports.average_with_amount", comment: ""), formatCurrency(amount: kategoriAkis.ortalamaIslemTutari, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }

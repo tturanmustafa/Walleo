@@ -275,7 +275,7 @@ struct NakitAkisiGrafigiView: View {
                         Image(systemName: "arrow.up")
                             .font(.caption2)
                             .foregroundColor(.green)
-                        Text("Gelir")
+                        Text(LocalizedStringKey("common.income")) // DÜZELTİLDİ
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
@@ -292,7 +292,7 @@ struct NakitAkisiGrafigiView: View {
                         Image(systemName: "arrow.down")
                             .font(.caption2)
                             .foregroundColor(.red)
-                        Text("Gider")
+                        Text(LocalizedStringKey("common.expense")) // DÜZELTİLDİ
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }

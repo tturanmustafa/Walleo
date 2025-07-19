@@ -47,7 +47,7 @@ struct PeriyodikKarsilastirmaView: View {
             
             if veriler.isEmpty {
                 ContentUnavailableView(
-                    "Karşılaştırma verisi yok",
+                    LocalizedStringKey("reports.comparison.no_data_title"),
                     systemImage: "chart.bar.fill"
                 )
                 .frame(height: 120)
@@ -65,7 +65,7 @@ struct PeriyodikKarsilastirmaView: View {
                     .cornerRadius(4)
                     
                     // Ortalama çizgisi
-                    RuleMark(y: .value("Ortalama", ortalamaDeger))
+                    RuleMark(y: .value(NSLocalizedString("common.average", comment: ""), ortalamaDeger))
                         .foregroundStyle(.gray.opacity(0.5))
                         .lineStyle(StrokeStyle(lineWidth: 1, dash: [5, 3]))
                 }
@@ -112,7 +112,7 @@ struct PeriyodikKarsilastirmaView: View {
                 // Özet bilgi - alt kısım
                 HStack(spacing: 16) {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("En Yüksek")
+                        Text(LocalizedStringKey("common.highest"))
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                         if let maxVeri = veriler.max(by: { $0.deger < $1.deger }) {
@@ -139,7 +139,7 @@ struct PeriyodikKarsilastirmaView: View {
                     Spacer()
                     
                     VStack(alignment: .trailing, spacing: 2) {
-                        Text("Ortalama")
+                        Text(LocalizedStringKey("common.average"))
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                         Text(formatCurrency(

@@ -765,3 +765,30 @@
 "reports.category.day" = "Day";
 "reports.category.amount" = "Amount";
 "reports.category.month" = "Month";
+
+"reports.heatmap.24_hours" = "24 Hours";
+"reports.transaction_count" = "%d transactions";
+"reports.average_with_amount" = "Avg: %@";
+"reports.heatmap.busiest_hours" = "Busiest: %@";
+
+// MARK: - Common Use Additions
+"common.low" = "Low";
+"common.high" = "High";
+"common.average" = "Average";
+"common.highest" = "Highest";
+
+// MARK: - Reports
+"reports.heatmap.try_different_date_range" = "Try a different date range";
+"reports.heatmap.title.hourly" = "Hourly Spending Distribution";
+"reports.heatmap.title.daily" = "Daily Spending Distribution";
+"reports.heatmap.title.monthly" = "Monthly Spending Distribution";
+"reports.heatmap.title.weekly" = "Weekly Spending Distribution";
+"reports.heatmap.title.monthly_summary" = "Monthly Spending Summary";
+"reports.heatmap.week_format" = "Week %d";
+"reports.comparison.no_data_title" = "No Comparison Data";
+"reports.category.avg_short_format" = "Avg: %@";
+
+// MARK: - Cash Flow Report
+"reports.cashflow.no_data_title" = "No Data Found";
+"reports.cashflow.no_data_desc" = "No transactions found in the selected date range.";
+"reports.category.daily_average_format" = "%@/day";

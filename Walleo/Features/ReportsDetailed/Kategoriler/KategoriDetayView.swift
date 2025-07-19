@@ -157,21 +157,14 @@ struct KategoriDetayView: View {
                         ))
                         .font(.subheadline.bold())
                         
-                        HStack(spacing: 2) {
-                            Text("reports.category.avg_short")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Text(": ")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Text(formatCurrency(
-                                amount: isimFrekansi.ortalamatutar,
-                                currencyCode: appSettings.currencyCode,
-                                localeIdentifier: appSettings.languageCode
-                            ))
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                        }
+                        // İki nokta üst üste kullanımı düzeltildi
+                        Text(String(format: NSLocalizedString("reports.category.avg_short_format", comment: ""), formatCurrency(
+                            amount: isimFrekansi.ortalamatutar,
+                            currencyCode: appSettings.currencyCode,
+                            localeIdentifier: appSettings.languageCode
+                        )))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                     }
                 }
                 .padding()

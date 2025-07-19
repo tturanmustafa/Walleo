@@ -6,6 +6,34 @@ struct KategoriListeKarti: View {
     @EnvironmentObject var appSettings: AppSettings
     
     var body: some View {
+        // 1. AppSettings'e göre doğru dil paketini (bundle) manuel olarak bulalım.
+        let languageBundle: Bundle = {
+            let langCode = appSettings.languageCode
+            // Dil koduna uygun .lproj klasörünün yolunu bul
+            if let path = Bundle.main.path(forResource: langCode, ofType: "lproj"),
+               let bundle = Bundle(path: path) {
+                return bundle
+            }
+            // Eğer bulunamazsa, varsayılan (genellikle İngilizce) paketi kullan
+            return .main
+        }()
+        
+        // 2. Bulduğumuz dil paketini kullanarak metinleri oluşturalım.
+        let islemSayisiMetni = String(
+            format: languageBundle.localizedString(forKey: "reports.category.transaction_count", value: "", table: nil),
+            rapor.islemSayisi
+        )
+
+        let gunlukOrtalamaMetni = String(
+            format: languageBundle.localizedString(forKey: "reports.category.daily_average_format", value: "", table: nil),
+            formatCurrency(
+                amount: rapor.gunlukOrtalama,
+                currencyCode: appSettings.currencyCode,
+                localeIdentifier: appSettings.languageCode
+            )
+        )
+        
+        // 3. View'da bu hazır metinleri kullanalım.
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 12) {
                 // Başlık
@@ -21,7 +49,8 @@ struct KategoriListeKarti: View {
                         Text(LocalizedStringKey(rapor.kategori.localizationKey ?? rapor.kategori.isim))
                             .font(.headline)
                         
-                        Text(String(format: NSLocalizedString("reports.category.transaction_count", comment: ""), rapor.islemSayisi))
+                        // "2 işlem" sorununu çözen satır
+                        Text(islemSayisiMetni)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -36,11 +65,8 @@ struct KategoriListeKarti: View {
                         ))
                         .font(.headline.bold())
                         
-                        Text(formatCurrency(
-                            amount: rapor.gunlukOrtalama,
-                            currencyCode: appSettings.currencyCode,
-                            localeIdentifier: appSettings.languageCode
-                        ) + "/" + NSLocalizedString("time.day_short", comment: ""))
+                        // "/gün" sorununu çözen satır
+                        Text(gunlukOrtalamaMetni)
                         .font(.caption)
                         .foregroundColor(.secondary)
                     }
@@ -75,7 +101,7 @@ struct KategoriListeKarti: View {
     }
 }
 
-// Mini trend grafiği
+// Mini trend grafiği (Bu kısım aynı kalacak)
 struct MiniTrendChart: View {
     let data: [AylikTrendNokta]
     let color: Color
