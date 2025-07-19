@@ -9,6 +9,8 @@ struct WalleoApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var entitlementManager = EntitlementManager()
     @StateObject private var appSettings = AppSettings()
+    @StateObject private var sharingHandler = CloudKitSharingHandler.shared
+
     
     let modelContainer: ModelContainer
     @State private var viewID = UUID()
@@ -33,6 +35,7 @@ struct WalleoApp: App {
             modelContainer = try ModelContainer(
                 for: Hesap.self, Islem.self, Kategori.self, Butce.self,
                      Bildirim.self, TransactionMemory.self, AppMetadata.self, Transfer.self,
+                     Aile.self, AileUyesi.self, AileDavet.self,
                 configurations: config
             )
         } catch {
@@ -57,9 +60,13 @@ struct WalleoApp: App {
                         deleteAllData()
                     }
                     .task {
-                        // CloudKit durumunu kontrol et
-                        // CloudKit permissions'ları request et
                         await requestCloudKitPermissions()
+                    }
+                    .onOpenURL { url in
+                        _ = sharingHandler.handleURL(url)
+                    }
+                    .sheet(item: $sharingHandler.presentingShareMetadata) { wrapper in
+                        AcceptShareView(metadata: wrapper.metadata)
                     }
             } else {
                 OnboardingView()
@@ -92,6 +99,9 @@ struct WalleoApp: App {
                     try context.delete(model: Bildirim.self)
                     try context.delete(model: TransactionMemory.self)
                     try context.delete(model: AppMetadata.self)
+                    try context.delete(model: AileUyesi.self)
+                    try context.delete(model: AileDavet.self)
+                    try context.delete(model: Aile.self)
                     try context.save()
                     viewID = UUID()
                 } catch {

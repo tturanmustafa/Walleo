@@ -398,117 +398,41 @@
 "settings.ai_assistant_title" = "Chat with AI Assistant";
 
 
-// MARK: - Family Account
-"family.title" = "Family Account";
-"family.empty.title" = "No Family Account";
-"family.empty.description" = "Create a family account to share your financial data with your family members.";
-"family.create" = "Create Family Account";
-"family.create.title" = "Create Family Account";
-"family.create.name_label" = "Family Account Name";
-"family.create.name_placeholder" = "e.g., Smith Family";
-"family.create.name_helper" = "Choose a name that represents your family (3-30 characters)";
-"family.create.info.header" = "WHAT IS A FAMILY ACCOUNT?";
-"family.create.info.members" = "Share financial data with up to 4 family members";
-"family.create.info.admin" = "You'll be the administrator with full control";
-"family.create.info.sync" = "All data syncs automatically via iCloud";
-
+// Family Account
+"settings.family_account" = "Family Account";
+"family.no_family_title" = "No Family Account";
+"family.no_family_description" = "Create a family account to share your financial data with family members";
+"family.create_family" = "Create Family Account";
+"family.info_section" = "Family Information";
 "family.name" = "Family Name";
-"family.admin" = "Admin";
-"family.members" = "MEMBERS";
-"family.add_member" = "Add Member";
-"family.leave" = "Leave Family Account";
-"family.leave.title" = "Leave Family Account?";
-"family.leave.message" = "You will keep a copy of current data, but will no longer sync with the family account. This action cannot be undone.";
-"family.leave.confirm" = "Yes, Leave";
-
-"family.invite.title" = "Invite Member";
-"family.invite.header" = "MEMBER INFORMATION";
-"family.invite.email" = "Email Address";
-"family.invite.display_name" = "Display Name";
-"family.invite.footer" = "The person must use the same Apple ID email to join.";
-"family.invite.info" = "An invitation will be sent to this person. They must accept within 7 days.";
-"family.invite.send" = "Send Invitation";
-
-"family.invitation.title" = "Family Invitation";
-"family.invitation.invites_you" = "invites you to join";
-"family.invitation.warning.title" = "Important Notice";
-"family.invitation.warning.message" = "Accepting this invitation will replace all your current data with the family's shared data.";
-"family.invitation.sync.title" = "Automatic Sync";
-"family.invitation.sync.message" = "Once joined, all transactions will be automatically synchronized among family members.";
-"family.invitation.expiry.title" = "Invitation Expires";
-"family.invitation.expiry.message" = "This invitation expires in %d days.";
-"family.invitation.accept" = "Accept Invitation";
-"family.invitation.decline" = "Decline";
-"family.invitation.confirm.title" = "Confirm Acceptance";
-"family.invitation.confirm.message" = "Your current data will be permanently replaced with the family's data. This action cannot be undone.";
-"family.invitation.confirm.accept" = "Yes, Accept";
-
-"family.invitations" = "PENDING INVITATIONS";
-"family.invited_by" = "Invited by %@";
-
-"family.processing" = "Processing...";
-"family.creating" = "Creating family account...";
-"family.inviting" = "Sending invitation...";
-"family.joining" = "Joining family account...";
-"family.declining" = "Declining invitation...";
-"family.leaving" = "Leaving family account...";
-"family.processing.sync" = "Synchronizing Data";
-"family.processing.please_wait" = "This may take a few moments...";
-
-"family.created.notification.title" = "Family Account Created";
-"family.created.notification.message" = "Your family account '%@' has been successfully created.";
-"family.left.notification.title" = "Left Family Account";
-"family.left.notification.message" = "You have left the family account. Your data has been preserved.";
-
-"family.error.title" = "Error";
-"family.error.no_context" = "Database connection error";
-"family.error.no_user_id" = "Could not identify user";
-"family.error.no_family" = "No family account found";
-"family.error.already_has_family" = "You already belong to a family account";
-"family.error.no_permission" = "You don't have permission for this action";
-"family.error.max_members" = "Maximum number of members (4) reached";
-"family.error.invitation_not_found" = "Invitation not found";
-
-"settings.family.manage" = "Manage Family Account";
-"settings.family.leave" = "Leave Family Account";
-
-// MARK: - Family Account Additional
-"family.pending_invites" = "PENDING INVITATIONS";
-"family.member.remove.title" = "Remove Member?";
-"family.member.remove.message" = "Are you sure you want to remove this member from the family account?";
-"family.invite.cancel.title" = "Cancel Invitation?";
-"family.invite.cancel.message" = "Are you sure you want to cancel this invitation?";
-"family.invite.cancel.confirm" = "Yes, Cancel";
-"common.remove" = "Remove";
-"common.ok" = "OK";
-
-"family.error.already_invited" = "This email has already been invited";
-"family.error.already_member" = "This person is already a member";
-"family.error.invite_invalid" = "This invitation is no longer valid";
-"family.error.invalid_code" = "Invalid invitation code";
-"family.error.code_expired" = "Invitation code has expired";
-
-// MARK: - Family Account Additional
-"family.edit.title" = "Edit Family Name";
-"family.groups.my_groups" = "My Groups";
-"family.invites.my_invites" = "My Invitations";
-"family.invites.sent" = "Sent Invitations";
-"family.invites.received" = "Received Invitations";
-"family.invites.no_invites" = "No Invitations";
-"family.invites.no_invites.desc" = "Your sent and received invitations will appear here";
-"family.invite.status.beklemede" = "Pending";
-"family.invite.status.kabul" = "Accepted";
-"family.invite.status.red" = "Declined";
-"family.invite.status.otoRed" = "Auto-declined";
-"family.invite.status.suresiDoldu" = "Expired";
-"family.delete.title" = "Delete Family Account?";
-"family.delete.message.no_members" = "Are you sure you want to delete this family account?";
-"family.warning.delete_with_members" = "Warning: There are %d members in this family. All shared data will be lost.";
-"family.error.icloud_required" = "iCloud must be enabled to use family features";
-"family.error.cannot_delete_with_family" = "Cannot Delete Data While in Family";
-"family.error.must_leave_family_first" = "You must leave the family account before deleting all data";
-"family.error.cannot_disable_icloud" = "Cannot Disable iCloud";
-"family.error.icloud_required_for_family" = "iCloud is required for family account sync";
+"family.owner" = "Owner";
+"family.you" = "You";
+"family.member_count" = "Members";
+"family.created_date" = "Created";
+"family.members_section" = "Family Members";
+"family.pending" = "Pending";
+"family.invite_member" = "Invite Member";
+"family.leave_family" = "Leave Family";
+"family.owner_cannot_leave" = "As the owner, you cannot leave the family. Transfer ownership first.";
+"family.create_new" = "New Family Account";
+"family.name_placeholder" = "Enter family name";
+"family.create_description" = "All your financial data will be shared with family members";
+"family.create_title" = "Create Family";
+"family.invite_instructions" = "Generate an invitation link to share with your family member";
+"family.generate_invite_link" = "Generate Invitation Link";
+"family.leave_confirmation_title" = "Leave Family Account?";
+"family.leave_confirmation_message" = "You will no longer have access to shared family data. This action cannot be undone.";
+"family.leave_confirm" = "Leave Family";
+"family.cloudkit_warning_title" = "iCloud Required for Family Account";
+"family.cloudkit_warning_message" = "You cannot disable iCloud backup while using a family account. Please leave the family account first.";
+"family.delete_warning_title" = "Cannot Delete Data";
+"family.delete_warning_message" = "You cannot delete all data while part of a family account. Please leave the family account first.";
+"family.invitation_title" = "Family Account Invitation";
+"family.invitation_description" = "You've been invited to join a family account. All financial data will be shared between family members.";
+"family.accepting_invitation" = "Accepting invitation...";
+"family.invitation_accepted" = "Invitation Accepted!";
+"family.accept_invitation" = "Accept Invitation";
+"family.join_family" = "Join Family";
 
 // MARK: - Budgets Additional
 "budget.automation_settings" = "Automation Settings";

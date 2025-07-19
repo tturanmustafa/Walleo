@@ -397,118 +397,41 @@
 "settings.section_ai_assistant" = "YAPAY ZEKA ASİSTANI";
 "settings.ai_assistant_title" = "AI Asistan ile Sohbet Et";
 
-// MARK: - Aile Hesabı
-"family.title" = "Aile Hesabı";
-"family.empty.title" = "Henüz Aile Hesabı Yok";
-"family.empty.description" = "Finansal verilerinizi aile üyelerinizle paylaşmak için bir aile hesabı oluşturun.";
-"family.create" = "Aile Hesabı Oluştur";
-"family.create.title" = "Aile Hesabı Oluştur";
-"family.create.name_label" = "Aile Hesabı Adı";
-"family.create.name_placeholder" = "örn: Yılmaz Ailesi";
-"family.create.name_helper" = "Ailenizi temsil eden bir isim seçin (3-30 karakter)";
-"family.create.info.header" = "AİLE HESABI NEDİR?";
-"family.create.info.members" = "Finansal verilerinizi 4 aile üyesine kadar paylaşın";
-"family.create.info.admin" = "Tam kontrol sahibi yönetici siz olacaksınız";
-"family.create.info.sync" = "Tüm veriler iCloud üzerinden otomatik senkronize olur";
-
+// Aile Hesabı
+"settings.family_account" = "Aile Hesabı";
+"family.no_family_title" = "Aile Hesabı Yok";
+"family.no_family_description" = "Finansal verilerinizi aile üyeleriyle paylaşmak için bir aile hesabı oluşturun";
+"family.create_family" = "Aile Hesabı Oluştur";
+"family.info_section" = "Aile Bilgileri";
 "family.name" = "Aile Adı";
-"family.admin" = "Yönetici";
-"family.members" = "ÜYELER";
-"family.add_member" = "Üye Ekle";
-"family.leave" = "Aile Hesabından Ayrıl";
-"family.leave.title" = "Aile Hesabından Ayrılsın mı?";
-"family.leave.message" = "Mevcut verilerin bir kopyasını alacaksınız ancak artık aile hesabı ile senkronize olmayacaksınız. Bu işlem geri alınamaz.";
-"family.leave.confirm" = "Evet, Ayrıl";
-
-"family.invite.title" = "Üye Davet Et";
-"family.invite.header" = "ÜYE BİLGİLERİ";
-"family.invite.email" = "E-posta Adresi";
-"family.invite.display_name" = "Görünüm Adı";
-"family.invite.footer" = "Kişi katılmak için aynı Apple ID e-postasını kullanmalıdır.";
-"family.invite.info" = "Bu kişiye bir davet gönderilecek. 7 gün içinde kabul etmesi gerekir.";
-"family.invite.send" = "Davet Gönder";
-
-"family.invitation.title" = "Aile Daveti";
-"family.invitation.invites_you" = "sizi davet ediyor";
-"family.invitation.warning.title" = "Önemli Uyarı";
-"family.invitation.warning.message" = "Bu daveti kabul ettiğinizde tüm mevcut verileriniz ailenin ortak verileriyle değiştirilecektir.";
-"family.invitation.sync.title" = "Otomatik Senkronizasyon";
-"family.invitation.sync.message" = "Katıldıktan sonra tüm işlemler aile üyeleri arasında otomatik olarak senkronize edilecektir.";
-"family.invitation.expiry.title" = "Davet Süresi";
-"family.invitation.expiry.message" = "Bu davet %d gün içinde sona erecek.";
-"family.invitation.accept" = "Daveti Kabul Et";
-"family.invitation.decline" = "Reddet";
-"family.invitation.confirm.title" = "Kabul Onayı";
-"family.invitation.confirm.message" = "Mevcut verileriniz kalıcı olarak ailenin verileriyle değiştirilecek. Bu işlem geri alınamaz.";
-"family.invitation.confirm.accept" = "Evet, Kabul Et";
-
-"family.invitations" = "BEKLEYEN DAVETLER";
-"family.invited_by" = "%@ tarafından davet edildiniz";
-
-"family.processing" = "İşleniyor...";
-"family.creating" = "Aile hesabı oluşturuluyor...";
-"family.inviting" = "Davet gönderiliyor...";
-"family.joining" = "Aile hesabına katılınıyor...";
-"family.declining" = "Davet reddediliyor...";
-"family.leaving" = "Aile hesabından ayrılınıyor...";
-"family.processing.sync" = "Veriler Senkronize Ediliyor";
-"family.processing.please_wait" = "Bu işlem birkaç dakika sürebilir...";
-
-"family.created.notification.title" = "Aile Hesabı Oluşturuldu";
-"family.created.notification.message" = "'%@' aile hesabınız başarıyla oluşturuldu.";
-"family.left.notification.title" = "Aile Hesabından Ayrıldınız";
-"family.left.notification.message" = "Aile hesabından ayrıldınız. Verileriniz korundu.";
-
-"family.error.title" = "Hata";
-"family.error.no_context" = "Veritabanı bağlantı hatası";
-"family.error.no_user_id" = "Kullanıcı kimliği belirlenemedi";
-"family.error.no_family" = "Aile hesabı bulunamadı";
-"family.error.already_has_family" = "Zaten bir aile hesabına üyesiniz";
-"family.error.no_permission" = "Bu işlem için yetkiniz yok";
-"family.error.max_members" = "Maksimum üye sayısına (4) ulaşıldı";
-"family.error.invitation_not_found" = "Davet bulunamadı";
-
-"settings.family.manage" = "Aile Hesabını Yönet";
-"settings.family.leave" = "Aile Hesabından Ayrıl";
-
-// MARK: - Aile Hesabı Ek
-"family.pending_invites" = "BEKLEYEN DAVETLER";
-"family.member.remove.title" = "Üye Silinsin mi?";
-"family.member.remove.message" = "Bu üyeyi aile hesabından çıkarmak istediğinizden emin misiniz?";
-"family.invite.cancel.title" = "Davet İptal Edilsin mi?";
-"family.invite.cancel.message" = "Bu daveti iptal etmek istediğinizden emin misiniz?";
-"family.invite.cancel.confirm" = "Evet, İptal Et";
-"common.remove" = "Çıkar";
-"common.ok" = "Tamam";
-
-"family.error.already_invited" = "Bu e-posta adresi zaten davet edilmiş";
-"family.error.already_member" = "Bu kişi zaten üye";
-"family.error.invite_invalid" = "Bu davet artık geçerli değil";
-"family.error.invalid_code" = "Geçersiz davet kodu";
-"family.error.code_expired" = "Davet kodunun süresi dolmuş";
-
-// MARK: - Aile Hesabı Ek
-"family.edit.title" = "Aile Adını Düzenle";
-"family.groups.my_groups" = "Gruplarım";
-"family.invites.my_invites" = "Davetlerim";
-"family.invites.sent" = "Gönderilen Davetler";
-"family.invites.received" = "Alınan Davetler";
-"family.invites.no_invites" = "Davet Yok";
-"family.invites.no_invites.desc" = "Gönderilen ve alınan davetleriniz burada görünecek";
-"family.invite.status.beklemede" = "Beklemede";
-"family.invite.status.kabul" = "Kabul edildi";
-"family.invite.status.red" = "Reddedildi";
-"family.invite.status.otoRed" = "Otomatik reddedildi";
-"family.invite.status.suresiDoldu" = "Süresi doldu";
-"family.delete.title" = "Aile Hesabı Silinsin mi?";
-"family.delete.message.no_members" = "Bu aile hesabını silmek istediğinizden emin misiniz?";
-"family.warning.delete_with_members" = "Uyarı: Bu ailede %d üye var. Tüm paylaşılan veriler kaybolacak.";
-"family.error.icloud_required" = "Aile özelliklerini kullanmak için iCloud etkin olmalıdır";
-"family.error.cannot_delete_with_family" = "Aile İçindeyken Veri Silinemez";
-"family.error.must_leave_family_first" = "Tüm verileri silmeden önce aile hesabından ayrılmalısınız";
-"family.error.cannot_disable_icloud" = "iCloud Devre Dışı Bırakılamaz";
-"family.error.icloud_required_for_family" = "Aile hesabı senkronizasyonu için iCloud gereklidir";
-
+"family.owner" = "Sahip";
+"family.you" = "Siz";
+"family.member_count" = "Üye Sayısı";
+"family.created_date" = "Oluşturulma";
+"family.members_section" = "Aile Üyeleri";
+"family.pending" = "Beklemede";
+"family.invite_member" = "Üye Davet Et";
+"family.leave_family" = "Aileden Ayrıl";
+"family.owner_cannot_leave" = "Aile sahibi olarak aileden ayrılamazsınız. Önce sahipliği devredin.";
+"family.create_new" = "Yeni Aile Hesabı";
+"family.name_placeholder" = "Aile adını girin";
+"family.create_description" = "Tüm finansal verileriniz aile üyeleriyle paylaşılacaktır";
+"family.create_title" = "Aile Oluştur";
+"family.invite_instructions" = "Aile üyenizle paylaşmak için bir davet bağlantısı oluşturun";
+"family.generate_invite_link" = "Davet Bağlantısı Oluştur";
+"family.leave_confirmation_title" = "Aileden Ayrılmak İstediğinize Emin Misiniz?";
+"family.leave_confirmation_message" = "Paylaşılan aile verilerine artık erişemeyeceksiniz. Bu işlem geri alınamaz.";
+"family.leave_confirm" = "Aileden Ayrıl";
+"family.cloudkit_warning_title" = "Aile Hesabı için iCloud Gerekli";
+"family.cloudkit_warning_message" = "Aile hesabı kullanırken iCloud yedeklemeyi kapatamazsınız. Lütfen önce aile hesabından ayrılın.";
+"family.delete_warning_title" = "Veriler Silinemez";
+"family.delete_warning_message" = "Bir aile hesabının parçasıyken tüm verileri silemezsiniz. Lütfen önce aile hesabından ayrılın.";
+"family.invitation_title" = "Aile Hesabı Daveti";
+"family.invitation_description" = "Bir aile hesabına katılmaya davet edildiniz. Tüm finansal veriler aile üyeleri arasında paylaşılacaktır.";
+"family.accepting_invitation" = "Davet kabul ediliyor...";
+"family.invitation_accepted" = "Davet Kabul Edildi!";
+"family.accept_invitation" = "Daveti Kabul Et";
+"family.join_family" = "Aileye Katıl";
 
 // MARK: - Bütçe Ek
 "budget.automation_settings" = "Otomasyon Ayarları";
