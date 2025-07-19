@@ -494,22 +494,28 @@ class NakitAkisiViewModel {
     
     private func generateInsights(rapor: NakitAkisiRaporu) -> [NakitAkisiIcgoru] {
         var icgoruler: [NakitAkisiIcgoru] = []
-        
+        let currencyCode = "TRY" // Bu değeri AppSettings'ten almalısınız
+        let localeIdentifier = "tr_TR" // Bu değeri AppSettings'ten almalısınız
+
         // 1. Net akış durumu
         if rapor.netAkis > 0 {
+            let param = formatCurrency(amount: rapor.netAkis, currencyCode: currencyCode, localeIdentifier: localeIdentifier)
             icgoruler.append(NakitAkisiIcgoru(
                 tip: .pozitifAkis,
                 baslik: "cashflow.insight.positive_flow",
-                mesaj: String(format: NSLocalizedString("cashflow.insight.positive_flow_message", comment: ""), formatCurrency(amount: rapor.netAkis, currencyCode: "TRY", localeIdentifier: "tr_TR")),
+                mesajKey: "cashflow.insight.positive_flow_message", // Değişti
+                parametreler: [param],                              // Değişti
                 oncelik: 1,
                 ikon: "arrow.up.circle.fill",
                 renk: .green
             ))
         } else if rapor.netAkis < 0 {
+            let param = formatCurrency(amount: abs(rapor.netAkis), currencyCode: currencyCode, localeIdentifier: localeIdentifier)
             icgoruler.append(NakitAkisiIcgoru(
                 tip: .negatifAkis,
                 baslik: "cashflow.insight.negative_flow",
-                mesaj: String(format: NSLocalizedString("cashflow.insight.negative_flow_message", comment: ""), formatCurrency(amount: abs(rapor.netAkis), currencyCode: "TRY", localeIdentifier: "tr_TR")),
+                mesajKey: "cashflow.insight.negative_flow_message", // Değişti
+                parametreler: [param],                              // Değişti
                 oncelik: 1,
                 ikon: "arrow.down.circle.fill",
                 renk: .red
@@ -519,10 +525,12 @@ class NakitAkisiViewModel {
         // 2. Taksitli işlem uyarısı
         let taksitliOran = rapor.islemTipiDagilimi.taksitliIslemler.yuzdePayi
         if taksitliOran > 30 {
+            let param = String(format: "%.1f", taksitliOran)
             icgoruler.append(NakitAkisiIcgoru(
                 tip: .yuksekTaksit,
                 baslik: "cashflow.insight.high_installment",
-                mesaj: String(format: NSLocalizedString("cashflow.insight.high_installment_message", comment: ""), String(format: "%.1f", taksitliOran)),
+                mesajKey: "cashflow.insight.high_installment_message", // Değişti
+                parametreler: [param],                                 // Değişti
                 oncelik: 2,
                 ikon: "creditcard.viewfinder",
                 renk: .orange
@@ -534,7 +542,8 @@ class NakitAkisiViewModel {
             icgoruler.append(NakitAkisiIcgoru(
                 tip: .projeksiyonUyari,
                 baslik: "cashflow.insight.projection_warning",
-                mesaj: NSLocalizedString("cashflow.insight.projection_warning_message", comment: ""),
+                mesajKey: "cashflow.insight.projection_warning_message", // Değişti
+                parametreler: [],                                        // Değişti
                 oncelik: 1,
                 ikon: "exclamationmark.triangle.fill",
                 renk: .red

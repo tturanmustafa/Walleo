@@ -182,6 +182,7 @@ struct NakitAkisiRaporuView: View {
 struct NakitAkisiIcgoruleriView: View {
     let icgoruler: [NakitAkisiIcgoru]
     @State private var gorunurIcgoruIndex = 0
+    @EnvironmentObject var appSettings: AppSettings // AppSettings'i ekle
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -192,6 +193,17 @@ struct NakitAkisiIcgoruleriView: View {
             if !icgoruler.isEmpty {
                 TabView(selection: $gorunurIcgoruIndex) {
                     ForEach(Array(icgoruler.enumerated()), id: \.element.id) { index, icgoru in
+                        
+                        // Formatlama burada yapılıyor
+                        let mesajMetni: String = {
+                            let dilKodu = appSettings.languageCode
+                            let languageBundle = Bundle.main.path(forResource: dilKodu, ofType: "lproj")
+                                .flatMap(Bundle.init(path:)) ?? .main
+                            
+                            let formatString = languageBundle.localizedString(forKey: icgoru.mesajKey, value: "", table: nil)
+                            return String(format: formatString, arguments: icgoru.parametreler)
+                        }()
+                        
                         HStack(spacing: 12) {
                             Image(systemName: icgoru.ikon)
                                 .font(.title2)
@@ -205,7 +217,7 @@ struct NakitAkisiIcgoruleriView: View {
                                     .font(.subheadline)
                                     .fontWeight(.semibold)
                                 
-                                Text(icgoru.mesaj)
+                                Text(mesajMetni) // Değişti
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                                     .lineLimit(2)

@@ -1,11 +1,3 @@
-//
-//  TransferOzetiView.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 18.07.2025.
-//
-
-
 // Walleo/Features/ReportsDetailed/NakitAkisi/Views/TransferOzetiView.swift
 
 import SwiftUI
@@ -16,7 +8,14 @@ struct TransferOzetiView: View {
     @State private var detaylariGoster = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        // Dil değişimlerinde güncellenecek metni burada oluştur
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        let transferSayisiMetni = String(
+            format: languageBundle.localizedString(forKey: "cashflow.transfer_count", value: "", table: nil),
+            ozet.toplamTransferSayisi
+        )
+
+        return VStack(alignment: .leading, spacing: 16) {
             // Başlık
             HStack {
                 Image(systemName: "arrow.left.arrow.right.circle.fill")
@@ -24,11 +23,11 @@ struct TransferOzetiView: View {
                     .foregroundColor(.blue)
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("cashflow.transfers")
+                    Text(LocalizedStringKey("cashflow.transfers"))
                         .font(.headline)
                         .foregroundStyle(.primary)
                     
-                    Text("\(ozet.toplamTransferSayisi) transfer")
+                    Text(transferSayisiMetni) // Düzeltildi
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -46,7 +45,7 @@ struct TransferOzetiView: View {
             // En sık transfer
             if let enSik = ozet.enSikTransferYapilan {
                 HStack {
-                    Text("cashflow.most_frequent_transfer")
+                    Text(LocalizedStringKey("cashflow.most_frequent_transfer"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                     
@@ -69,9 +68,9 @@ struct TransferOzetiView: View {
             }
             
             // Detayları göster butonu
-            Button(action: { withAnimation { detaylariGoster.toggle() } }) {
+            Button(action: { withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { detaylariGoster.toggle() } }) {
                 HStack {
-                    Text(detaylariGoster ? "cashflow.hide_details" : "cashflow.show_details")
+                    Text(detaylariGoster ? LocalizedStringKey("cashflow.hide_details") : LocalizedStringKey("cashflow.show_details"))
                         .font(.caption)
                     
                     Image(systemName: detaylariGoster ? "chevron.up" : "chevron.down")
@@ -100,6 +99,12 @@ struct TransferOzetiView: View {
     
     @ViewBuilder
     private func transferDetaySatiri(detay: TransferOzeti.TransferDetay) -> some View {
+        // Dil değişimlerinde güncellenecek metni burada oluştur
+        let islemSayisiMetni = String(
+            format: Bundle.getLanguageBundle(for: appSettings.languageCode).localizedString(forKey: "common.times_suffix", value: "", table: nil),
+            detay.islemSayisi
+        )
+
         HStack {
             // Kaynak hesap
             HStack(spacing: 6) {
@@ -140,7 +145,7 @@ struct TransferOzetiView: View {
                 ))
                 .font(.caption.bold())
                 
-                Text("\(detay.islemSayisi)x")
+                Text(islemSayisiMetni) // Düzeltildi
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }

@@ -1,11 +1,3 @@
-//
-//  HesapAkisKartiView.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 18.07.2025.
-//
-
-
 // Walleo/Features/ReportsDetailed/NakitAkisi/Views/HesapAkisKartiView.swift
 
 import SwiftUI
@@ -18,11 +10,14 @@ struct HesapAkisKartiView: View {
     private var hesapTipiAciklamasi: String {
         switch hesapAkis.hesap.detay {
         case .cuzdan:
+            // Yeni eklenen lokalizasyon anahtarını kullan
             return NSLocalizedString("account_type.wallet", comment: "")
         case .krediKarti:
+            // Yeni eklenen lokalizasyon anahtarını kullan
             return NSLocalizedString("account_type.credit_card", comment: "")
         case .kredi:
-            return NSLocalizedString("accounts.add.loan", comment: "")
+            // Yeni eklenen lokalizasyon anahtarını kullan
+            return NSLocalizedString("account_type.loan", comment: "")
         }
     }
     
@@ -32,9 +27,16 @@ struct HesapAkisKartiView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
+        // Dil değişimlerinde güncellenecek metni burada oluştur
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        let islemSayisiMetni = String(
+            format: languageBundle.localizedString(forKey: "reports.transaction_count", value: "", table: nil),
+            hesapAkis.islemSayisi
+        )
+        
+        return VStack(spacing: 0) {
             // Ana bilgi satırı
-            Button(action: { withAnimation { detaylariGoster.toggle() } }) {
+            Button(action: { withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { detaylariGoster.toggle() } }) {
                 HStack(spacing: 12) {
                     // Hesap ikonu
                     Image(systemName: hesapAkis.hesap.ikonAdi)
@@ -51,7 +53,7 @@ struct HesapAkisKartiView: View {
                             .fontWeight(.semibold)
                         
                         HStack(spacing: 8) {
-                            Text(hesapTipiAciklamasi)
+                            Text(hesapTipiAciklamasi) // Düzeltildi
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                             
@@ -60,9 +62,10 @@ struct HesapAkisKartiView: View {
                                     .font(.caption)
                                     .foregroundStyle(.tertiary)
                                 
-                                Text(String(format: NSLocalizedString("reports.transaction_count", comment: ""), hesapAkis.islemSayisi))
+                                Text(islemSayisiMetni) // Düzeltildi
                                     .font(.caption)
-                                    .foregroundStyle(.secondary)                            }
+                                    .foregroundStyle(.secondary)
+                            }
                         }
                     }
                     
@@ -124,7 +127,7 @@ struct HesapAkisKartiView: View {
                     // Giriş ve çıkışlar
                     HStack(spacing: 16) {
                         VStack(alignment: .leading, spacing: 8) {
-                            Label("cashflow.inflows", systemImage: "arrow.down.circle")
+                            Label(LocalizedStringKey("cashflow.inflows"), systemImage: "arrow.down.circle")
                                 .font(.caption)
                                 .foregroundColor(.green)
                             
@@ -141,7 +144,7 @@ struct HesapAkisKartiView: View {
                             .frame(height: 40)
                         
                         VStack(alignment: .leading, spacing: 8) {
-                            Label("cashflow.outflows", systemImage: "arrow.up.circle")
+                            Label(LocalizedStringKey("cashflow.outflows"), systemImage: "arrow.up.circle")
                                 .font(.caption)
                                 .foregroundColor(.red)
                             
@@ -157,7 +160,7 @@ struct HesapAkisKartiView: View {
                     
                     // Günlük ortalama
                     HStack {
-                        Text("cashflow.daily_average")
+                        Text(LocalizedStringKey("cashflow.daily_average"))
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         

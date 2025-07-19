@@ -149,7 +149,8 @@ struct NakitAkisiIcgoru: Identifiable {
     let id = UUID()
     let tip: IcgoruTipi
     let baslik: String
-    let mesaj: String
+    let mesajKey: String
+    let parametreler: [CVarArg]
     let oncelik: Int
     let ikon: String
     let renk: Color

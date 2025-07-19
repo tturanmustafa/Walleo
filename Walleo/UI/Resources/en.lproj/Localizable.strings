@@ -792,3 +792,9 @@
 "reports.cashflow.no_data_title" = "No Data Found";
 "reports.cashflow.no_data_desc" = "No transactions found in the selected date range.";
 "reports.category.daily_average_format" = "%@/day";
+
+"cashflow.transfer_count" = "%d transfer";
+"common.times_suffix" = "%dx";
+"account_type.wallet" = "Wallet";
+"account_type.credit_card" = "Credit Card";
+"account_type.loan" = "Credit";
