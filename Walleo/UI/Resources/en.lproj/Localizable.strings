@@ -798,3 +798,56 @@
 "account_type.wallet" = "Wallet";
 "account_type.credit_card" = "Credit Card";
 "account_type.loan" = "Credit";
+
+// Credit Card Reports - New Keys
+"reports.creditcard.detail_view" = "Detail View";
+"reports.creditcard.comparison_view" = "Comparison";
+"reports.creditcard.summary_view" = "Summary";
+"reports.creditcard.no_data" = "No Data Found";
+"reports.creditcard.no_data_desc" = "No credit card expenses found for the selected date range.";
+"reports.creditcard.total_spending" = "Total Spending";
+"reports.creditcard.active_cards" = "Active Cards";
+"reports.creditcard.transactions" = "Transactions";
+"reports.creditcard.daily_avg" = "Daily Average";
+"reports.creditcard.most_used" = "Most Used Card";
+"reports.creditcard.limit" = "Limit:";
+"reports.creditcard.usage" = "Usage";
+"reports.creditcard.hide_metrics" = "Hide Details";
+"reports.creditcard.show_metrics" = "Show Details";
+"reports.creditcard.current_debt" = "Current Debt";
+"reports.creditcard.available" = "Available";
+"reports.creditcard.highest_day" = "Highest Day";
+"reports.creditcard.avg_transaction" = "Avg. Transaction";
+"reports.creditcard.category_analysis" = "Category Analysis";
+"reports.creditcard.more_categories" = "+%d more categories";
+"reports.creditcard.spending_trend" = "Spending Trend";
+"reports.creditcard.daily" = "Daily";
+"reports.creditcard.weekly" = "Weekly";
+"reports.creditcard.by_category" = "By Category";
+"reports.creditcard.installments" = "Installment Purchases";
+"reports.creditcard.installment_count" = "%d installment purchases";
+"reports.creditcard.monthly_total" = "Monthly Total";
+"reports.creditcard.monthly" = "monthly";
+"reports.creditcard.progress" = "Progress";
+"reports.creditcard.total_amount" = "Total Amount";
+"reports.creditcard.remaining" = "Remaining";
+"reports.creditcard.card_comparison" = "Card Comparison";
+"reports.creditcard.detailed_comparison" = "Detailed Comparison";
+"reports.creditcard.card" = "Card";
+"reports.creditcard.spending" = "Spending";
+"reports.creditcard.total_distribution" = "Total Distribution";
+"reports.creditcard.category_summary" = "Category Summary";
+"reports.creditcard.no_categories" = "No category data available";
+"reports.creditcard.daily_averages" = "Daily Averages";
+"account_type.wallet" = "Wallet";
+"account_type.credit_card" = "Credit Card";
+"account_type.loan" = "Loan";
+
+// MARK: - Account Deletion & Transaction Transfer
+"alert.no_eligible_account.title" = "No Eligible Account";
+"alert.no_eligible_account.message" = "To delete this account, you must first create another Wallet/Credit Card account to transfer its transactions to.";
+"transfer_transactions.title" = "Transfer Transactions & Delete";
+"transfer_transactions.message_format" = "You are about to delete the '%@' account, which has %d transactions. Please select a new account to move these transactions to.";
+"transfer_transactions.confirm_button" = "Transfer & Delete";
+"alert.no_eligible_wallet.title" = "No Eligible Wallet Found";
+"alert.no_eligible_wallet.message" = "The account you want to delete contains income transactions. To transfer these transactions, you must first create another 'Wallet' type account.";

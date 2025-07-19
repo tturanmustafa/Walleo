@@ -1,5 +1,3 @@
-// Walleo/Features/Accounts/HesaplarView.swift
-
 import SwiftUI
 import SwiftData
 
@@ -7,100 +5,110 @@ struct HesaplarView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var appSettings: AppSettings
 
-    @State private var viewModel: HesaplarViewModel?
+    // GÜNCELLENDİ: ViewModel artık @State olarak ve init içinde kuruluyor. Bu daha stabil bir yöntem.
+    @State private var viewModel: HesaplarViewModel
 
-    // Sheet'leri ve Alert'leri yönetmek için kullanılan State'ler
+    // YENİ: Sheet'leri ve Alert'leri yönetmek için enum yapısı ve state'ler.
+    // Bu yapı, hem ekleme hem düzenleme sheet'lerini tek bir yerden yönetmemizi sağlar.
     enum SheetTuru: Identifiable {
         case cuzdanEkle, krediKartiEkle, krediEkle
         case cuzdanDuzenle(Hesap), krediKartiDuzenle(Hesap), krediDuzenle(Hesap)
-
         var id: String {
             switch self {
             case .cuzdanEkle: "cuzdanEkle"
             case .krediKartiEkle: "krediKartiEkle"
             case .krediEkle: "krediEkle"
-            case .cuzdanDuzenle(let hesap): "cuzdanDuzenle-\(hesap.id)"
-            case .krediKartiDuzenle(let hesap): "krediKartiDuzenle-\(hesap.id)"
-            case .krediDuzenle(let hesap): "krediDuzenle-\(hesap.id)"
+            case .cuzdanDuzenle(let h): "cuzdanDuzenle-\(h.id)"
+            case .krediKartiDuzenle(let h): "krediKartiDuzenle-\(h.id)"
+            case .krediDuzenle(let h): "krediDuzenle-\(h.id)"
             }
         }
     }
     @State private var gosterilecekSheet: SheetTuru?
-    @State private var silinecekHesap: Hesap?
-    @State private var transferSheetGoster = false // YENİ EKLENEN STATE
+    @State private var transferSheetGoster = false
+    @State private var aktarimSheetiGoster = false // YENİ: İşlem aktarım sheet'i için state
+
+    // GÜNCELLENDİ: init metodu viewModel'ı kuracak şekilde güncellendi
+    init() {
+        // ViewModel'ı bu view'a özel bir @State olarak başlatıyoruz.
+        // Bu, SwiftData context'inin view yeniden çizildiğinde kaybolmamasını sağlar.
+        // Geçici bir container ile başlatıyoruz, onAppear içinde gerçeğiyle değiştireceğiz.
+        let container = try! ModelContainer(for: Hesap.self, Islem.self, Transfer.self)
+        _viewModel = State(initialValue: HesaplarViewModel(modelContext: ModelContext(container)))
+    }
 
     var body: some View {
         NavigationStack {
             Group {
-                if let viewModel = viewModel {
-                    if viewModel.cuzdanHesaplari.isEmpty && viewModel.krediKartiHesaplari.isEmpty && viewModel.krediHesaplari.isEmpty {
-                        ContentUnavailableView(LocalizedStringKey("accounts.empty.title"), systemImage: "wallet.pass", description: Text(LocalizedStringKey("accounts.empty.description")))
-                    } else {
-                        // ANA GÖRÜNÜM: List yerine ScrollView kullanarak tam stil kontrolü sağlıyoruz.
-                        ScrollView {
-                            LazyVStack(alignment: .leading, spacing: 28) { // Gruplar arasına daha fazla boşluk
-                                // Cüzdanlar Grubu
-                                if !viewModel.cuzdanHesaplari.isEmpty {
-                                    hesapGrubu(titleKey: "accounts.group.wallets", hesaplar: viewModel.cuzdanHesaplari, viewModel: viewModel)
-                                }
-
-                                // Kredi Kartları Grubu
-                                if !viewModel.krediKartiHesaplari.isEmpty {
-                                    hesapGrubu(titleKey: "accounts.group.credit_cards", hesaplar: viewModel.krediKartiHesaplari, viewModel: viewModel)
-                                }
-
-                                // Krediler Grubu
-                                if !viewModel.krediHesaplari.isEmpty {
-                                    hesapGrubu(titleKey: "accounts.group.loans", hesaplar: viewModel.krediHesaplari, viewModel: viewModel)
-                                }
-                            }
-                            .padding(.horizontal) // Kenarlara boşluk
-                            .padding(.top, 10)
-                            .padding(.bottom, 90)
-                        }
-                        // ÖNCEKİ GÖRÜNÜM: Arka planı tekrar beyaz (.systemBackground) yapıyoruz.
-                        .background(Color(.systemBackground))
-                    }
+                if viewModel.cuzdanHesaplari.isEmpty && viewModel.krediKartiHesaplari.isEmpty && viewModel.krediHesaplari.isEmpty {
+                    ContentUnavailableView(LocalizedStringKey("accounts.empty.title"), systemImage: "wallet.pass", description: Text(LocalizedStringKey("accounts.empty.description")))
                 } else {
-                    ProgressView()
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 28) {
+                            if !viewModel.cuzdanHesaplari.isEmpty {
+                                hesapGrubu(titleKey: "accounts.group.wallets", hesaplar: viewModel.cuzdanHesaplari)
+                            }
+                            if !viewModel.krediKartiHesaplari.isEmpty {
+                                hesapGrubu(titleKey: "accounts.group.credit_cards", hesaplar: viewModel.krediKartiHesaplari)
+                            }
+                            if !viewModel.krediHesaplari.isEmpty {
+                                hesapGrubu(titleKey: "accounts.group.loans", hesaplar: viewModel.krediHesaplari)
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.top, 10)
+                        .padding(.bottom, 90)
+                    }
+                    .background(Color(.systemBackground))
                 }
             }
             .navigationTitle(LocalizedStringKey("accounts.title"))
             .toolbar { toolbarIcerigi() }
         }
+        .onAppear {
+            // View ekrana geldiğinde, environment'tan gelen doğru modelContext'i ViewModel'e atıyoruz.
+            viewModel.modelContext = self.modelContext
+            Task { await viewModel.hesaplamalariYap() }
+        }
         .sheet(item: $gosterilecekSheet, onDismiss: {
-            Task { await viewModel?.hesaplamalariYap() }
+            Task { await viewModel.hesaplamalariYap() }
         }) { sheet in
-            sheet.view
-                .environmentObject(appSettings)
+            sheet.view.environmentObject(appSettings)
         }
-        .sheet(isPresented: $transferSheetGoster) { // YENİ EKLENEN SHEET
-            HesaplarArasiTransferView()
-                .environmentObject(appSettings)
+        .sheet(isPresented: $transferSheetGoster) {
+            HesaplarArasiTransferView().environmentObject(appSettings)
         }
-        .task {
-            if viewModel == nil {
-                viewModel = HesaplarViewModel(modelContext: self.modelContext)
-                await viewModel?.hesaplamalariYap()
+        // YENİ: İşlem Aktarım Ekranını gösteren sheet
+        .sheet(isPresented: $aktarimSheetiGoster, onDismiss: {
+            viewModel.aktarilacakHesap = nil // Sheet kapanınca state'i temizle
+        }) {
+            if let hesap = viewModel.aktarilacakHesap {
+                HesapSecimAktarimView(
+                    silinecekHesap: hesap,
+                    uygunHesaplar: viewModel.uygunAktarimHesaplari,
+                    onConfirm: { hedefHesap in
+                        viewModel.hesabiSilVeIslemleriAktar(hedefHesap: hedefHesap)
+                    }
+                )
+                .environmentObject(appSettings)
             }
         }
+        // GÜNCELLENDİ: Bu alert artık SADECE işlemi olmayan hesaplar için çalışacak
         .alert(
             LocalizedStringKey("alert.delete_confirmation.title"),
-            isPresented: Binding(isPresented: $silinecekHesap),
-            presenting: silinecekHesap
+            isPresented: .constant(viewModel.silinecekHesap != nil),
+            presenting: viewModel.silinecekHesap
         ) { hesap in
             Button(role: .destructive) {
-                viewModel?.hesabiSil(hesap: hesap)
-            } label: {
-                Text("common.delete")
+                viewModel.basitHesabiSil()
+            } label: { Text("common.delete") }
+            Button("common.cancel", role: .cancel) {
+                viewModel.silinecekHesap = nil
             }
         } message: { hesap in
-            // Bu kısım aynı kalabilir
             let dilKodu = appSettings.languageCode
             guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
-                  let languageBundle = Bundle(path: path) else {
-                return Text(hesap.isim)
-            }
+                  let languageBundle = Bundle(path: path) else { return Text(hesap.isim) }
             let key: String
             switch hesap.detay {
             case .cuzdan: key = "alert.delete_wallet.message_format"
@@ -110,51 +118,65 @@ struct HesaplarView: View {
             let formatString = languageBundle.localizedString(forKey: key, value: "", table: nil)
             return Text(String(format: formatString, hesap.isim))
         }
+        // YENİ: Uygun hesap bulunamadığında gösterilecek uyarı
+        .alert(
+            LocalizedStringKey("alert.no_eligible_account.title"),
+            isPresented: $viewModel.uygunHesapYokUyarisiGoster
+        ) {
+            Button("common.ok", role: .cancel) {
+                viewModel.uygunHesapYokUyarisiGoster = false // Uyarıyı kapat
+            }
+        } message: {
+            Text(LocalizedStringKey("alert.no_eligible_account.message"))
+        }
+        // YENİ: ViewModel'deki değişiklikleri dinleyip sheet'i tetikleyen yapı
+        .onChange(of: viewModel.aktarilacakHesap) { _, newValue in
+            aktarimSheetiGoster = (newValue != nil)
+        }
+        .alert(
+            LocalizedStringKey("alert.no_eligible_wallet.title"),
+            isPresented: $viewModel.sadeceCuzdanGerekliUyarisiGoster
+        ) {
+            Button("common.ok", role: .cancel) {
+                viewModel.sadeceCuzdanGerekliUyarisiGoster = false // Uyarıyı kapat
+            }
+        } message: {
+            Text(LocalizedStringKey("alert.no_eligible_wallet.message"))
+        }
     }
 
-    // Her bir hesap grubunu (başlık + kartlar) oluşturan yardımcı fonksiyon - GÜNCELLENDİ
     @ViewBuilder
-    private func hesapGrubu(titleKey: LocalizedStringKey, hesaplar: [GosterilecekHesap], viewModel: HesaplarViewModel) -> some View {
+    private func hesapGrubu(titleKey: LocalizedStringKey, hesaplar: [GosterilecekHesap]) -> some View {
         VStack(alignment: .leading, spacing: 16) {
-            // Başlık ve Transfer Butonu
             HStack {
-                Text(titleKey)
-                    .font(.title2.bold())
-                    .foregroundColor(.primary)
-                
+                Text(titleKey).font(.title2.bold()).foregroundColor(.primary)
                 Spacer()
-                
-                // Transfer butonu sadece Cüzdanlar ve Kredi Kartları için göster
                 if titleKey == "accounts.group.wallets" || titleKey == "accounts.group.credit_cards" {
                     Button(action: { transferSheetGoster = true }) {
-                        Image(systemName: "arrow.left.arrow.right.circle.fill")
-                            .font(.title2)
-                            .foregroundColor(.blue)
+                        Image(systemName: "arrow.left.arrow.right.circle.fill").font(.title2).foregroundColor(.blue)
                     }
                 }
             }
             .padding(.horizontal, 8)
-
             ForEach(hesaplar) { bilgi in
                 NavigationLink(destination: navigationDestination(for: bilgi.hesap)) {
-                    hesapKarti(for: bilgi, viewModel: viewModel)
+                    hesapKarti(for: bilgi)
                 }
                 .buttonStyle(PlainButtonStyle())
             }
         }
     }
 
-    // Bu yardımcı fonksiyonlarda değişiklik yok
     @ViewBuilder
-    private func hesapKarti(for bilgi: GosterilecekHesap, viewModel: HesaplarViewModel) -> some View {
+    private func hesapKarti(for bilgi: GosterilecekHesap) -> some View {
         HesapKartView(
             gosterilecekHesap: bilgi,
             onEdit: { presentEditSheet(for: bilgi.hesap) },
-            onDelete: { silinecekHesap = bilgi.hesap }
+            // GÜNCELLENDİ: onDelete artık ViewModel'deki yeni akıllı fonksiyonu çağırıyor
+            onDelete: { viewModel.silmeIsleminiBaslat(hesap: bilgi.hesap) }
         )
         .environmentObject(appSettings)
     }
-
     private func toolbarIcerigi() -> some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
             Menu {

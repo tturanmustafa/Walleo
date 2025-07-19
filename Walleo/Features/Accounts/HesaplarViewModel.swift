@@ -12,6 +12,11 @@ class HesaplarViewModel {
     var cuzdanHesaplari: [GosterilecekHesap] = []
     var krediKartiHesaplari: [GosterilecekHesap] = []
     var krediHesaplari: [GosterilecekHesap] = []
+    var silinecekHesap: Hesap? // Basit silme onayı için
+    var aktarilacakHesap: Hesap? // İşlemleri aktarılacak hesap
+    var uygunAktarimHesaplari: [Hesap] = [] // İşlemlerin aktarılabileceği hesap listesi
+    var uygunHesapYokUyarisiGoster = false // Uyarı durumu
+    var sadeceCuzdanGerekliUyarisiGoster = false
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
@@ -124,19 +129,114 @@ class HesaplarViewModel {
     }
     
     // Silme fonksiyonu aynı kalabilir
-    func hesabiSil(hesap: Hesap) {
-        do {
-            if let iliskiliIslemler = hesap.islemler {
-                for islem in iliskiliIslemler {
-                    islem.hesap = nil
-                }
+    func silmeIsleminiBaslat(hesap: Hesap) {
+        // 1. Silinecek hesabın işlemleri var mı?
+        guard let islemler = hesap.islemler, !islemler.isEmpty else {
+            // İşlemi yoksa, eski usul basit silme onayı göster.
+            self.silinecekHesap = hesap
+            return
+        }
+        
+        // 2. İşlemlerin türünü analiz et: İçinde HİÇ gelir var mı?
+        let gelirIceriyorMu = islemler.contains { $0.tur == .gelir }
+        
+        // 3. Aktarım için uygun diğer hesapları bul (silinecek olan hariç)
+        let digerHesaplar = (try? modelContext.fetch(FetchDescriptor<Hesap>()))?.filter { $0.id != hesap.id } ?? []
+        
+        var uygunHesaplar: [Hesap] = []
+        
+        if gelirIceriyorMu {
+            // EĞER GELİR İÇERİYORSA: Aktarım yapılacak hesaplar SADECE diğer cüzdanlar olabilir.
+            uygunHesaplar = digerHesaplar.filter {
+                if case .cuzdan = $0.detay { return true }
+                return false
             }
-            modelContext.delete(hesap)
+            
+            // Uygun cüzdan yoksa, özel bir uyarı göster.
+            if uygunHesaplar.isEmpty {
+                self.sadeceCuzdanGerekliUyarisiGoster = true
+                return
+            }
+            
+        } else {
+            // EĞER SADECE GİDER VARSA: Aktarım yapılacak hesaplar cüzdanlar veya kredi kartları olabilir.
+            uygunHesaplar = digerHesaplar.filter {
+                if case .kredi = $0.detay { return false } // Kredi hesapları hariç
+                return true
+            }
+        }
+        
+        // 4. Duruma göre yönlendir
+        if uygunHesaplar.isEmpty {
+            // Genel "uygun hesap yok" uyarısını göster. (Bu durum sadece gider varken ve başka hesap olmadığında tetiklenir)
+            self.uygunHesapYokUyarisiGoster = true
+        } else {
+            // Aktarılacak uygun hesaplar varsa, aktarım ekranını tetikle.
+            self.uygunAktarimHesaplari = uygunHesaplar
+            self.aktarilacakHesap = hesap
+        }
+    }
+    
+    // --- YENİ FONKSİYON 2: ASIL SİLME VE AKTARMA İŞLEMİ ---
+    /// Kullanıcı aktarım ekranında bir hedef hesap seçip onayladığında bu fonksiyon çalışır.
+    func hesabiSilVeIslemleriAktar(hedefHesap: Hesap) {
+        guard let kaynakHesap = aktarilacakHesap,
+              let kaynakIslemler = kaynakHesap.islemler else {
+            return
+        }
+        
+        Logger.log("İşlem aktarımı başladı: \(kaynakIslemler.count) adet işlem \(kaynakHesap.isim) -> \(hedefHesap.isim) hesabına aktarılacak.", log: Logger.service)
+        
+        // 1. İşlemlerin hesap ilişkisini güncelle
+        for islem in kaynakIslemler {
+            islem.hesap = hedefHesap
+        }
+        
+        // 2. Kaynak hesabı sil
+        modelContext.delete(kaynakHesap)
+        
+        do {
+            try modelContext.save()
+            Logger.log("İşlem aktarımı ve hesap silme başarılı.", log: Logger.service)
+            
+            // 3. Değişiklikleri tüm uygulamaya bildir
+            NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
+            
+            // 4. Hesaplar listesini yenile
+            Task { await hesaplamalariYap() }
+            
+        } catch {
+            Logger.log("Hesap silme ve işlem aktarma sırasında hata: \(error.localizedDescription)", log: Logger.data, type: .error)
+        }
+        
+        // State'leri temizle
+        self.aktarilacakHesap = nil
+        self.uygunAktarimHesaplari = []
+    }
+
+    // --- ESKİ `hesabiSil` FONKSİYONUNU GÜNCELLE ---
+    /// Bu fonksiyon artık sadece işlemi olmayan hesapları veya kullanıcıdan onay alınmış basit silmeleri yapar.
+    func basitHesabiSil() {
+        guard let hesap = silinecekHesap else { return }
+        
+        // Hesaba bağlı işlemlerin ilişkisini kopar (bu senaryoda işlem olmamalı ama garanti olsun)
+        if let iliskiliIslemler = hesap.islemler {
+            for islem in iliskiliIslemler {
+                islem.hesap = nil
+            }
+        }
+        
+        modelContext.delete(hesap)
+        
+        do {
             try modelContext.save()
             Task { await hesaplamalariYap() }
+            // İşlem bağlantısı koptuğu için genel bir güncelleme bildirimi gönder
             NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
         } catch {
-            Logger.log("Hesap silme hatası: \(error)", log: Logger.service, type: .error)
+            Logger.log("Basit hesap silme hatası: \(error)", log: Logger.service, type: .error)
         }
+        
+        self.silinecekHesap = nil
     }
 }

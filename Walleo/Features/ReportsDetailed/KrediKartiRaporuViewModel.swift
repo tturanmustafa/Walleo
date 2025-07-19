@@ -1,12 +1,4 @@
-//
-//  KrediKartiRaporuViewModel.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 14.07.2025.
-//
-
-
-// >> YENİ DOSYA: Features/Reports/KrediKartiRaporuViewModel.swift
+// Walleo/Features/ReportsDetailed/KrediKartiRaporuViewModel.swift
 
 import SwiftUI
 import SwiftData
@@ -22,6 +14,9 @@ class KrediKartiRaporuViewModel {
     var genelOzet = KrediKartiGenelOzet()
     var kartDetayRaporlari: [KartDetayRaporu] = []
     var isLoading = false
+    
+    // Önceki dönem verileri (karşılaştırma için)
+    private var oncekiDonemToplam: Double = 0
 
     init(modelContext: ModelContext, baslangicTarihi: Date, bitisTarihi: Date) {
         self.modelContext = modelContext
@@ -45,96 +40,312 @@ class KrediKartiRaporuViewModel {
         isLoading = true
         Logger.log("KrediKarti Raporu: Veri çekme başladı. Tarih aralığı: \(baslangicTarihi) - \(bitisTarihi)", log: Logger.service)
         
-        let sorguBitisTarihi = Calendar.current.date(byAdding: .day, value: 1, to: bitisTarihi) ?? bitisTarihi
-
-        let krediKartiTuru = HesapTuru.krediKarti.rawValue
-        let hesapPredicate = #Predicate<Hesap> { $0.hesapTuruRawValue == krediKartiTuru }
-        guard let kartHesaplari = try? modelContext.fetch(FetchDescriptor(predicate: hesapPredicate)) else {
-            Logger.log("KrediKarti Raporu: Hiç kredi kartı hesabı bulunamadı", log: Logger.service, type: .error)
-            isLoading = false
-            return
-        }
-        
-        Logger.log("KrediKarti Raporu: \(kartHesaplari.count) adet kart bulundu", log: Logger.service)
-        let kartHesapIDleri = Set(kartHesaplari.map { $0.id }) // Daha hızlı arama için Set'e çeviriyoruz.
-        
-        // --- DÜZELTME BAŞLIYOR ---
-
-        // 1. ADIM: Predicate'i basitleştir. Sadece tarih ve türe göre filtrele.
-        let giderTuru = IslemTuru.gider.rawValue
-        let baslangic = self.baslangicTarihi
-        let bitis = sorguBitisTarihi
-
-        let basitIslemPredicate = #Predicate<Islem> { islem in
-            islem.tarih >= baslangic &&
-            islem.tarih < bitis &&
-            islem.turRawValue == giderTuru
-        }
-        
         do {
-            // 2. ADIM: Basit predicate ile veritabanından işlemleri çek.
-            let donemIslemleri = try modelContext.fetch(FetchDescriptor(predicate: basitIslemPredicate))
-            
-            // 3. ADIM: Çekilen sonuçları hafızada kart ID'lerine göre yeniden filtrele.
-            // Bu, derleyici hatasını %100 çözer.
-            let tumIslemler = donemIslemleri.filter { islem in
-                guard let hesapID = islem.hesap?.id else { return false }
-                return kartHesapIDleri.contains(hesapID)
+            // 1. Kredi kartı hesaplarını çek
+            let kartHesaplari = try await fetchCreditCardAccounts()
+            guard !kartHesaplari.isEmpty else {
+                Logger.log("KrediKarti Raporu: Hiç kredi kartı hesabı bulunamadı", log: Logger.service)
+                isLoading = false
+                return
             }
-        
-            // 4. ADIM: Verileri işle ve raporları oluştur. (Bu kısım aynı kalıyor)
-            Logger.log("KrediKarti Raporu: \(tumIslemler.count) adet işlem bulundu", log: Logger.service)
-            hesaplamalariYap(kartHesaplari: kartHesaplari, tumIslemler: tumIslemler)
+            
+            // 2. İşlemleri çek
+            let tumIslemler = try await fetchTransactions(for: kartHesaplari)
+            
+            // 3. Transferleri çek (kredi kartı ödemeleri için)
+            let transferler = try await fetchTransfers(for: kartHesaplari)
+            
+            // 4. Önceki dönem verilerini çek (karşılaştırma için)
+            await fetchPreviousPeriodData(for: kartHesaplari)
+            
+            // 5. Hesaplamaları yap
+            hesaplamalariYap(
+                kartHesaplari: kartHesaplari,
+                tumIslemler: tumIslemler,
+                transferler: transferler
+            )
             
         } catch {
-            Logger.log("Detaylı Raporlar için işlem verisi çekilirken hata: \(error.localizedDescription)", log: Logger.service, type: .error)
+            Logger.log("Detaylı Raporlar için veri çekilirken hata: \(error.localizedDescription)", log: Logger.service, type: .error)
         }
-        
-        // --- DÜZELTME BİTİYOR ---
         
         isLoading = false
         Logger.log("KrediKarti Raporu: Veri çekme tamamlandı. Rapor sayısı: \(kartDetayRaporlari.count)", log: Logger.service)
     }
     
-    private func hesaplamalariYap(kartHesaplari: [Hesap], tumIslemler: [Islem]) {
+    // MARK: - Veri Çekme Fonksiyonları
+    
+    private func fetchCreditCardAccounts() async throws -> [Hesap] {
+        let krediKartiTuru = HesapTuru.krediKarti.rawValue
+        let hesapPredicate = #Predicate<Hesap> { $0.hesapTuruRawValue == krediKartiTuru }
+        return try modelContext.fetch(FetchDescriptor(predicate: hesapPredicate))
+    }
+    
+    private func fetchTransactions(for kartHesaplari: [Hesap]) async throws -> [Islem] {
+        let kartHesapIDleri = Set(kartHesaplari.map { $0.id })
+        let giderTuru = IslemTuru.gider.rawValue
+        let baslangic = self.baslangicTarihi
+        let bitis = Calendar.current.date(byAdding: .day, value: 1, to: self.bitisTarihi) ?? self.bitisTarihi
+        
+        let predicate = #Predicate<Islem> { islem in
+            islem.tarih >= baslangic &&
+            islem.tarih < bitis &&
+            islem.turRawValue == giderTuru
+        }
+        
+        let tumIslemler = try modelContext.fetch(FetchDescriptor(predicate: predicate))
+        
+        // Sadece kredi kartı hesaplarına ait işlemleri filtrele
+        return tumIslemler.filter { islem in
+            guard let hesapID = islem.hesap?.id else { return false }
+            return kartHesapIDleri.contains(hesapID)
+        }
+    }
+    
+    private func fetchTransfers(for kartHesaplari: [Hesap]) async throws -> [Transfer] {
+        let kartHesapIDleri = Set(kartHesaplari.map { $0.id })
+        let baslangic = self.baslangicTarihi
+        let bitis = Calendar.current.date(byAdding: .day, value: 1, to: self.bitisTarihi) ?? self.bitisTarihi
+        
+        let predicate = #Predicate<Transfer> { transfer in
+            transfer.tarih >= baslangic && transfer.tarih < bitis
+        }
+        
+        let tumTransferler = try modelContext.fetch(FetchDescriptor(predicate: predicate))
+        
+        // Kredi kartına yapılan ödemeleri (hedef hesap kredi kartı olanları) filtrele
+        return tumTransferler.filter { transfer in
+            guard let hedefID = transfer.hedefHesap?.id else { return false }
+            return kartHesapIDleri.contains(hedefID)
+        }
+    }
+    
+    private func fetchPreviousPeriodData(for kartHesaplari: [Hesap]) async {
+        let gunFarki = Calendar.current.dateComponents([.day], from: baslangicTarihi, to: bitisTarihi).day ?? 30
+        guard let oncekiBaslangic = Calendar.current.date(byAdding: .day, value: -gunFarki - 1, to: baslangicTarihi),
+              let oncekiBitis = Calendar.current.date(byAdding: .day, value: -1, to: baslangicTarihi) else { return }
+        
+        let kartHesapIDleri = Set(kartHesaplari.map { $0.id })
+        let giderTuru = IslemTuru.gider.rawValue
+        
+        let predicate = #Predicate<Islem> { islem in
+            islem.tarih >= oncekiBaslangic &&
+            islem.tarih <= oncekiBitis &&
+            islem.turRawValue == giderTuru
+        }
+        
+        do {
+            let oncekiIslemler = try modelContext.fetch(FetchDescriptor(predicate: predicate))
+            let oncekiKartIslemleri = oncekiIslemler.filter { islem in
+                guard let hesapID = islem.hesap?.id else { return false }
+                return kartHesapIDleri.contains(hesapID)
+            }
+            
+            self.oncekiDonemToplam = oncekiKartIslemleri.reduce(0) { $0 + $1.tutar }
+        } catch {
+            Logger.log("Önceki dönem verileri çekilirken hata: \(error)", log: Logger.service, type: .error)
+        }
+    }
+    
+    // MARK: - Hesaplama Fonksiyonları
+    
+    private func hesaplamalariYap(kartHesaplari: [Hesap], tumIslemler: [Islem], transferler: [Transfer]) {
         // Genel Özeti Hesapla
         var yeniGenelOzet = KrediKartiGenelOzet()
         yeniGenelOzet.toplamHarcama = tumIslemler.reduce(0) { $0 + $1.tutar }
         yeniGenelOzet.islemSayisi = tumIslemler.count
         yeniGenelOzet.enYuksekHarcama = tumIslemler.max(by: { $0.tutar < $1.tutar })
+        yeniGenelOzet.aktifKartSayisi = kartHesaplari.count
         
+        // Günlük ortalama
+        let gunSayisi = Calendar.current.dateComponents([.day], from: baslangicTarihi, to: bitisTarihi).day ?? 1
+        yeniGenelOzet.gunlukOrtalama = yeniGenelOzet.toplamHarcama / Double(max(gunSayisi, 1))
+        
+        // Önceki döneme göre değişim
+        if oncekiDonemToplam > 0 {
+            yeniGenelOzet.oncekiDonemeDegisimYuzdesi = ((yeniGenelOzet.toplamHarcama - oncekiDonemToplam) / oncekiDonemToplam) * 100
+        }
+        
+        // En çok kullanılan kart
         let gruplanmisIslemler = Dictionary(grouping: tumIslemler, by: { $0.hesap! })
         if let enCokKullanilan = gruplanmisIslemler.max(by: { $0.value.count < $1.value.count }) {
             yeniGenelOzet.enCokKullanilanKart = enCokKullanilan.key
+            let kartHarcamasi = enCokKullanilan.value.reduce(0) { $0 + $1.tutar }
+            yeniGenelOzet.enCokKullanilanKartKullanimOrani = (kartHarcamasi / yeniGenelOzet.toplamHarcama) * 100
         }
+        
         self.genelOzet = yeniGenelOzet
         
         // Kart Bazında Detayları Hesapla
         var yeniRaporlar: [KartDetayRaporu] = []
+        
         for kart in kartHesaplari {
-            let kartaAitIslemler = gruplanmisIslemler[kart] ?? []
-            if kartaAitIslemler.isEmpty { continue }
-            
-            var kartRaporu = KartDetayRaporu(id: kart.id, hesap: kart)
-            kartRaporu.toplamHarcama = kartaAitIslemler.reduce(0) { $0 + $1.tutar }
-            
-            // Kategori dağılımını hesapla (Pasta Grafik için)
-            let kategoriGruplari = Dictionary(grouping: kartaAitIslemler, by: { $0.kategori! })
-            kartRaporu.kategoriDagilimi = kategoriGruplari.map { (kategori, islemler) in
-                let toplam = islemler.reduce(0) { $0 + $1.tutar }
-                // --- GÜNCELLENEN SATIR ---
-                return KategoriHarcamasi(kategori: kategori.isim, tutar: toplam, renk: kategori.renk, localizationKey: kategori.localizationKey, ikonAdi: kategori.ikonAdi)
-            }.sorted(by: { $0.tutar > $1.tutar })
-            
-            // Günlük trendi hesapla (Çizgi Grafik için)
-            let gunlukGruplar = Dictionary(grouping: kartaAitIslemler, by: { Calendar.current.startOfDay(for: $0.tarih) })
-            kartRaporu.gunlukHarcamaTrendi = gunlukGruplar.map { (gun, islemler) in
-                let toplam = islemler.reduce(0) { $0 + $1.tutar }
-                return GunlukHarcama(gun: gun, tutar: toplam)
-            }.sorted(by: { $0.gun < $1.gun })
+            var kartRaporu = createKartDetayRaporu(
+                kart: kart,
+                islemler: gruplanmisIslemler[kart] ?? [],
+                transferler: transferler.filter { $0.hedefHesap?.id == kart.id }
+            )
             
             yeniRaporlar.append(kartRaporu)
         }
+        
         self.kartDetayRaporlari = yeniRaporlar.sorted(by: { $0.toplamHarcama > $1.toplamHarcama })
+    }
+    
+    private func createKartDetayRaporu(kart: Hesap, islemler: [Islem], transferler: [Transfer]) -> KartDetayRaporu {
+        var kartRaporu = KartDetayRaporu(id: kart.id, hesap: kart)
+        
+        // Toplam harcama
+        kartRaporu.toplamHarcama = islemler.reduce(0) { $0 + $1.tutar }
+        kartRaporu.islemSayisi = islemler.count
+        
+        // Ortalama işlem tutarı
+        if islemler.count > 0 {
+            kartRaporu.ortalamaIslemTutari = kartRaporu.toplamHarcama / Double(islemler.count)
+        }
+        
+        // Kategori dağılımını hesapla
+        kartRaporu.kategoriDagilimi = calculateCategoryDistribution(islemler: islemler)
+        
+        // Günlük trendi hesapla
+        kartRaporu.gunlukHarcamaTrendi = calculateDailyTrend(islemler: islemler)
+        
+        // En yüksek günlük harcama
+        kartRaporu.enYuksekGunlukHarcama = kartRaporu.gunlukHarcamaTrendi.map { $0.tutar }.max()
+        
+        // Kart limit ve doluluk bilgileri
+        if case .krediKarti(let limit, _, _) = kart.detay {
+            kartRaporu.kartLimiti = limit
+            
+            // Güncel borç hesaplama
+            let baslangicBorc = abs(kart.baslangicBakiyesi)
+            let donemHarcamalari = kartRaporu.toplamHarcama
+            let donemOdemeleri = transferler.reduce(0) { $0 + $1.tutar }
+            
+            kartRaporu.guncelBorc = baslangicBorc + donemHarcamalari - donemOdemeleri
+            let guncelBorc = kartRaporu.guncelBorc ?? 0.0
+
+            kartRaporu.kullanilabilirLimit = max(0, limit - guncelBorc)
+            // Limitin 0'dan büyük olduğunu kontrol ederek sıfıra bölme hatasını da önleyelim.
+            if limit > 0 {
+                kartRaporu.kartDolulukOrani = (guncelBorc / limit) * 100
+            } else {
+                kartRaporu.kartDolulukOrani = 0
+            }
+        }
+        
+        // Taksitli işlemleri hesapla
+        kartRaporu.taksitliIslemler = calculateInstallmentSummary(islemler: islemler)
+        
+        // Kategori zamanlı dağılım
+        kartRaporu.kategoriZamanliDagilim = calculateCategoryTimeDistribution(islemler: islemler)
+        
+        return kartRaporu
+    }
+    
+    private func calculateCategoryDistribution(islemler: [Islem]) -> [KategoriHarcamasi] {
+        // Gruplamayı güvenli bir şekilde yapalım. Anahtar tipi 'Kategori?' olacaktır.
+        let kategoriGruplari = Dictionary(grouping: islemler, by: { $0.kategori })
+
+        return kategoriGruplari.compactMap { (kategori, islemler) -> KategoriHarcamasi? in
+            // 'kategori' artık opsiyonel olduğu için bu kontrol doğru ve gereklidir.
+            // Kategorisi olmayan işlemleri (key'i nil olanları) atlar.
+            guard let kategori = kategori else { return nil }
+
+            let toplam = islemler.reduce(0) { $0 + $1.tutar }
+            return KategoriHarcamasi(
+                kategori: kategori.isim,
+                tutar: toplam,
+                renk: kategori.renk,
+                localizationKey: kategori.localizationKey,
+                ikonAdi: kategori.ikonAdi
+            )
+        }.sorted(by: { $0.tutar > $1.tutar })
+    }
+    
+    private func calculateDailyTrend(islemler: [Islem]) -> [GunlukHarcama] {
+        let calendar = Calendar.current
+        let gunlukGruplar = Dictionary(grouping: islemler, by: { calendar.startOfDay(for: $0.tarih) })
+        
+        var gunlukHarcamalar: [GunlukHarcama] = []
+        
+        // Dönem içindeki tüm günleri oluştur
+        var currentDate = baslangicTarihi
+        while currentDate <= bitisTarihi {
+            let gunBaslangici = calendar.startOfDay(for: currentDate)
+            let gunIslemleri = gunlukGruplar[gunBaslangici] ?? []
+            let toplam = gunIslemleri.reduce(0) { $0 + $1.tutar }
+            
+            gunlukHarcamalar.append(GunlukHarcama(
+                gun: gunBaslangici,
+                tutar: toplam,
+                islemSayisi: gunIslemleri.count
+            ))
+            
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+        
+        return gunlukHarcamalar.sorted(by: { $0.gun < $1.gun })
+    }
+    
+    private func calculateInstallmentSummary(islemler: [Islem]) -> [TaksitliIslemOzeti] {
+        let taksitliIslemler = islemler.filter { $0.taksitliMi }
+        
+        // Ana taksit ID'sine göre grupla
+        let taksitGruplari = Dictionary(grouping: taksitliIslemler) { islem in
+            islem.anaTaksitliIslemID ?? UUID()
+        }
+        
+        return taksitGruplari.compactMap { (anaID, taksitler) -> TaksitliIslemOzeti? in
+            guard let ilkTaksit = taksitler.first else { return nil }
+            
+            // Ana ismi çıkar
+            let anaIsim = ilkTaksit.isim.replacingOccurrences(
+                of: " (\(ilkTaksit.mevcutTaksitNo)/\(ilkTaksit.toplamTaksitSayisi))",
+                with: ""
+            )
+            
+            let odenenTaksitSayisi = ilkTaksit.mevcutTaksitNo
+            let toplamTaksitSayisi = ilkTaksit.toplamTaksitSayisi
+            let kalanTutar = Double(toplamTaksitSayisi - odenenTaksitSayisi) * ilkTaksit.tutar
+
+            return TaksitliIslemOzeti(
+                id: anaID,
+                isim: anaIsim,
+                toplamTutar: ilkTaksit.anaIslemTutari,
+                aylikTaksitTutari: ilkTaksit.tutar,
+                odenenTaksitSayisi: odenenTaksitSayisi,
+                toplamTaksitSayisi: toplamTaksitSayisi,
+                kalanTutar: kalanTutar
+            )
+        }.sorted { $0.aylikTaksitTutari > $1.aylikTaksitTutari }
+    }
+    
+    private func calculateCategoryTimeDistribution(islemler: [Islem]) -> [KategoriZamanliDagilim] {
+        var dagilimlar: [KategoriZamanliDagilim] = []
+        let calendar = Calendar.current
+        
+        // Her kategori için günlük toplamları hesapla
+        let kategoriGruplari = Dictionary(grouping: islemler) { $0.kategori }
+        
+        for (kategori, kategoriIslemleri) in kategoriGruplari {
+            guard let kategori = kategori else { continue }
+            
+            let gunlukGruplar = Dictionary(grouping: kategoriIslemleri) { islem in
+                calendar.startOfDay(for: islem.tarih)
+            }
+            
+            for (gun, gunIslemleri) in gunlukGruplar {
+                let toplam = gunIslemleri.reduce(0) { $0 + $1.tutar }
+                
+                dagilimlar.append(KategoriZamanliDagilim(
+                    tarih: gun,
+                    kategoriAdi: NSLocalizedString(kategori.localizationKey ?? kategori.isim, comment: ""),
+                    tutar: toplam
+                ))
+            }
+        }
+        
+        return dagilimlar.sorted { $0.tarih < $1.tarih }
     }
 }

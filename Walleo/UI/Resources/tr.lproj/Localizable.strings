@@ -800,3 +800,56 @@
 "account_type.wallet" = "Cüzdan";
 "account_type.credit_card" = "Kredi Kartı";
 "account_type.loan" = "Kredi";
+
+// Kredi Kartı Raporları - Yeni Anahtarlar
+"reports.creditcard.detail_view" = "Detaylı Görünüm";
+"reports.creditcard.comparison_view" = "Karşılaştırma";
+"reports.creditcard.summary_view" = "Özet";
+"reports.creditcard.no_data" = "Veri Bulunamadı";
+"reports.creditcard.no_data_desc" = "Seçilen tarih aralığında kredi kartı harcaması bulunamadı.";
+"reports.creditcard.total_spending" = "Toplam Harcama";
+"reports.creditcard.active_cards" = "Aktif Kartlar";
+"reports.creditcard.transactions" = "İşlemler";
+"reports.creditcard.daily_avg" = "Günlük Ortalama";
+"reports.creditcard.most_used" = "En Çok Kullanılan";
+"reports.creditcard.limit" = "Limit:";
+"reports.creditcard.usage" = "Kullanım";
+"reports.creditcard.hide_metrics" = "Detayları Gizle";
+"reports.creditcard.show_metrics" = "Detayları Göster";
+"reports.creditcard.current_debt" = "Güncel Borç";
+"reports.creditcard.available" = "Kullanılabilir";
+"reports.creditcard.highest_day" = "En Yüksek Gün";
+"reports.creditcard.avg_transaction" = "Ort. İşlem";
+"reports.creditcard.category_analysis" = "Kategori Analizi";
+"reports.creditcard.more_categories" = "+%d kategori daha";
+"reports.creditcard.spending_trend" = "Harcama Trendi";
+"reports.creditcard.daily" = "Günlük";
+"reports.creditcard.weekly" = "Haftalık";
+"reports.creditcard.by_category" = "Kategoriye Göre";
+"reports.creditcard.installments" = "Taksitli Harcamalar";
+"reports.creditcard.installment_count" = "%d taksitli harcama";
+"reports.creditcard.monthly_total" = "Aylık Toplam";
+"reports.creditcard.monthly" = "aylık";
+"reports.creditcard.progress" = "İlerleme";
+"reports.creditcard.total_amount" = "Toplam Tutar";
+"reports.creditcard.remaining" = "Kalan";
+"reports.creditcard.card_comparison" = "Kart Karşılaştırması";
+"reports.creditcard.detailed_comparison" = "Detaylı Karşılaştırma";
+"reports.creditcard.card" = "Kart";
+"reports.creditcard.spending" = "Harcama";
+"reports.creditcard.total_distribution" = "Toplam Dağılım";
+"reports.creditcard.category_summary" = "Kategori Özeti";
+"reports.creditcard.no_categories" = "Kategori verisi bulunamadı";
+"reports.creditcard.daily_averages" = "Günlük Ortalamalar";
+"account_type.wallet" = "Cüzdan";
+"account_type.credit_card" = "Kredi Kartı";
+"account_type.loan" = "Kredi";
+
+// MARK: - Hesap Silme ve İşlem Aktarımı
+"alert.no_eligible_account.title" = "Uygun Hesap Yok";
+"alert.no_eligible_account.message" = "Bu hesabı silebilmek için önce işlemlerini aktarabileceğiniz başka bir Cüzdan veya Kredi Kartı hesabı oluşturmalısınız.";
+"transfer_transactions.title" = "İşlemleri Aktar ve Sil";
+"transfer_transactions.message_format" = "'%@' hesabını silmek üzeresiniz. Bu hesaba ait %d adet işlem bulunmaktadır. Lütfen bu işlemlerin aktarılacağı yeni bir hesap seçin.";
+"transfer_transactions.confirm_button" = "Aktar ve Sil";
+"alert.no_eligible_wallet.title" = "Uygun Cüzdan Bulunamadı";
+"alert.no_eligible_wallet.message" = "Silmek istediğiniz hesap gelir işlemleri içeriyor. Bu işlemleri aktarabilmek için önce başka bir 'Cüzdan' tipi hesap oluşturmalısınız.";
