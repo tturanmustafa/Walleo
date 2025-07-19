@@ -535,7 +535,8 @@
 "transfer.section.expenses" = "Harcamalar";
 "transfer.section.payments" = "Ödemeler";
 "transfer.no_payments" = "Ödeme bulunmuyor";
-
+"credit_card.installment_summary_format" = "%@ - %d/%d taksit";
+"credit_card.installment_number_format" = "%d. Taksit";
 
 // Taksitli işlem
 "transaction.installment.toggle" = "Taksitli İşlem";

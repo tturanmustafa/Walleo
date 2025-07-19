@@ -535,6 +535,8 @@
 "transfer.section.expenses" = "Expenses";
 "transfer.section.payments" = "Payments";
 "transfer.no_payments" = "No payments found";
+"credit_card.installment_summary_format" = "%@ - %d/%d installments";
+"credit_card.installment_number_format" = "Installment %d";
 
 // Installment
 "transaction.installment.toggle" = "Installment Purchase";

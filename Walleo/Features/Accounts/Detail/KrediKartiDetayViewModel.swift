@@ -29,21 +29,24 @@ class KrediKartiDetayViewModel {
         let taksitler: [Islem]
         let tamamlananTaksitSayisi: Int
         
-        var aciklamaMetni: String {
-            // --- ESKİ KODU SİLİN ---
-            // let tamamlanan = taksitler.filter { $0.tarih <= Date() }.count
-            // return "\(formatCurrency(amount: toplamTutar, currencyCode: AppSettings().currencyCode, localeIdentifier: AppSettings().languageCode)) - \(tamamlanan)/\(taksitler.count) taksit"
-
-            // +++ YENİ KODU EKLEYİN +++
-            // Gruptaki ilk taksidi referans alarak doğru bilgileri çekiyoruz.
+        // --- DÜZELTME: Artık bir property değil, AppSettings alan bir fonksiyon ---
+        // Bu, doğru dil ayarını kullanarak metni oluşturmamızı sağlar.
+        func aciklamaMetni(using appSettings: AppSettings) -> String {
             guard let ilkTaksit = taksitler.first else { return "" }
             
-            let toplamTutarStr = formatCurrency(amount: toplamTutar, currencyCode: AppSettings().currencyCode, localeIdentifier: AppSettings().languageCode)
+            let dilKodu = appSettings.languageCode
+            let paraKodu = appSettings.currencyCode
+            
+            let toplamTutarStr = formatCurrency(amount: toplamTutar, currencyCode: paraKodu, localeIdentifier: dilKodu)
             let mevcutTaksit = ilkTaksit.mevcutTaksitNo
             let toplamTaksit = ilkTaksit.toplamTaksitSayisi
             
-            // İstenen formatı oluşturuyoruz: "₺987.883.210,00 - 1/12 taksit"
-            return "\(toplamTutarStr) - \(mevcutTaksit)/\(toplamTaksit) taksit"
+            // Doğru dil paketinden formatlanacak metni alıyoruz
+            let languageBundle = Bundle.getLanguageBundle(for: dilKodu)
+            let formatString = languageBundle.localizedString(forKey: "credit_card.installment_summary_format", value: "", table: nil)
+            
+            // Metni formatlayıp döndürüyoruz
+            return String(format: formatString, toplamTutarStr, mevcutTaksit, toplamTaksit)
         }
     }
     
