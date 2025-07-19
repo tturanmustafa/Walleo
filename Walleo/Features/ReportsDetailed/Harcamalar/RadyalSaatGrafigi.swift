@@ -16,8 +16,33 @@ struct RadyalSaatGrafigi: View {
     }
     
     var body: some View {
-        VStack(spacing: 12) {
-            // *** DEĞİŞİKLİK 1: BAŞLIK VE SEÇİLİ SAAT DETAYI EKLENDI ***
+        // Dil değişimlerinde güncellenecek metinleri burada oluşturuyoruz.
+        let dilKodu = appSettings.languageCode
+        let languageBundle: Bundle = {
+            if let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"), let bundle = Bundle(path: path) {
+                return bundle
+            }
+            return .main
+        }()
+        
+        let seciliIslemSayisiMetni: String? = {
+            if let saat = secilenSaat, let veri = saatlikDagilim.first(where: { $0.saat == saat }) {
+                let formatString = languageBundle.localizedString(forKey: "reports.transaction_count", value: "", table: nil)
+                return String(format: formatString, veri.islemSayisi)
+            }
+            return nil
+        }()
+        
+        let enYogunSaatlerMetni: String? = {
+            if !enYogunSaatler.isEmpty {
+                let formatString = languageBundle.localizedString(forKey: "reports.heatmap.busiest_hours", value: "", table: nil)
+                let saatlerString = enYogunSaatler.map { "\($0):00" }.joined(separator: ", ")
+                return String(format: formatString, saatlerString)
+            }
+            return nil
+        }()
+
+        return VStack(spacing: 12) {
             HStack {
                 Text("reports.heatmap.hourly_distribution")
                     .font(.headline)
@@ -25,9 +50,9 @@ struct RadyalSaatGrafigi: View {
                 
                 Spacer()
                 
-                // Seçili saat detayını sağ üstte göster
                 if let saat = secilenSaat,
-                   let veri = saatlikDagilim.first(where: { $0.saat == saat }) {
+                   let veri = saatlikDagilim.first(where: { $0.saat == saat }),
+                   let metin = seciliIslemSayisiMetni {
                     VStack(alignment: .trailing, spacing: 2) {
                         Text("\(saat):00-\((saat + 1) % 24):00")
                             .font(.caption)
@@ -39,14 +64,13 @@ struct RadyalSaatGrafigi: View {
                         ))
                         .font(.subheadline.bold())
                         .foregroundColor(.accentColor)
-                        Text(String(format: NSLocalizedString("reports.transaction_count", comment: ""), veri.islemSayisi))
+                        Text(metin) // <--- Düzeltilmiş metin kullanılıyor
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
                     .transition(.scale.combined(with: .opacity))
                 }
             }
-            // *** DEĞİŞİKLİK 1 SONU ***
             
             ZStack {
                 // Arka plan çemberleri
@@ -77,8 +101,7 @@ struct RadyalSaatGrafigi: View {
                     }
                 }
                 
-                // *** DEĞİŞİKLİK 2: MERKEZ BİLGİ KISMI GÜNCELLENDİ ***
-                // Merkez bilgi - seçili saat varsa üstte gösterdiğimiz için burada göstermeye gerek yok
+                // Merkez bilgi
                 VStack(spacing: 4) {
                     Image(systemName: "clock.fill")
                         .font(.title2)
@@ -88,8 +111,7 @@ struct RadyalSaatGrafigi: View {
                         .foregroundStyle(.secondary)
                 }
                 .frame(width: 70)
-                .opacity(secilenSaat == nil ? 1 : 0.5) // Seçim varsa merkezi soluklaştır
-                // *** DEĞİŞİKLİK 2 SONU ***
+                .opacity(secilenSaat == nil ? 1 : 0.5)
             }
             .frame(width: 180, height: 180)
             .onAppear {
@@ -99,12 +121,12 @@ struct RadyalSaatGrafigi: View {
             }
             
             // En yoğun saatler
-            if !enYogunSaatler.isEmpty {
+            if let metin = enYogunSaatlerMetni {
                 HStack(spacing: 8) {
                     Image(systemName: "flame.fill")
                         .font(.caption)
                         .foregroundColor(.orange)
-                    Text(String(format: NSLocalizedString("reports.heatmap.busiest_hours", comment: ""), enYogunSaatler.map { "\($0):00" }.joined(separator: ", ")))
+                    Text(metin) // <--- Düzeltilmiş metin kullanılıyor
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -116,29 +138,29 @@ struct RadyalSaatGrafigi: View {
     }
 }
 
-// Saat işareti - DEĞİŞİKLİK YOK
+// Saat işareti (Değişiklik yok)
 struct SaatIsareti: View {
     let saat: Int
     
     private var angle: Double {
-        Double(saat) * 15 - 90 // 360/24 = 15 derece, -90 ile 12'yi yukarı alıyoruz
+        Double(saat) * 15 - 90
     }
     
     private var isMainHour: Bool {
-        saat % 6 == 0 // 0, 6, 12, 18
+        saat % 6 == 0
     }
     
     var body: some View {
         Text(isMainHour ? "\(saat)" : "")
             .font(.caption2)
             .foregroundStyle(.secondary)
-            .rotationEffect(.degrees(-angle)) // Metni düz tutmak için ters çevir
+            .rotationEffect(.degrees(-angle))
             .offset(x: 95 * cos(angle * .pi / 180),
                    y: 95 * sin(angle * .pi / 180))
     }
 }
 
-// Radyal bar - DEĞİŞİKLİK YOK
+// Radyal bar (Değişiklik yok)
 struct RadyalBar: View {
     let veri: SaatlikDagilimVerisi
     let maksimumDeger: Double
@@ -148,7 +170,7 @@ struct RadyalBar: View {
     
     private var normalizedHeight: Double {
         guard maksimumDeger > 0 else { return 0 }
-        return (veri.toplamTutar / maksimumDeger) * 60 // Maksimum 60 piksel
+        return (veri.toplamTutar / maksimumDeger) * 60
     }
     
     private var angle: Double {

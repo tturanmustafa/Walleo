@@ -83,14 +83,33 @@ struct AkilliIcgorulerPaneli: View {
 struct IcgoruKarti: View {
     let icgoru: HarcamaIcgorusu
     @EnvironmentObject var appSettings: AppSettings
-    
+
     var body: some View {
+        // --- 1. Metni burada oluştur ---
+        let insightMessage: String = {
+            let dilKodu = appSettings.languageCode
+            guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+                  let languageBundle = Bundle(path: path) else {
+                return icgoru.mesajKey // Hata durumunda anahtarı göster
+            }
+
+            let formatString = languageBundle.localizedString(forKey: icgoru.mesajKey, value: "", table: nil)
+            
+            if let parametre = icgoru.parametreler.first?.value {
+                // String(format:) farklı tiplerle çalışabilir, bu yüzden tek bir formatlama yeterli
+                return String(format: formatString, parametre as! CVarArg)
+            }
+            
+            return formatString
+        }()
+
+        // --- 2. View'da bu metni kullan ---
         HStack(spacing: 12) {
             Text(icgoru.ikon)
                 .font(.title2)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(formatInsightMessage())
+                Text(insightMessage) // <--- Değişen satır
                     .font(.subheadline)
                     .fontWeight(.medium)
                     .lineLimit(2)
@@ -102,25 +121,5 @@ struct IcgoruKarti: View {
         .padding()
         .background(Color(.tertiarySystemGroupedBackground))
         .cornerRadius(12)
-    }
-    
-    // Düzeltilmiş fonksiyon
-    private func formatInsightMessage() -> String {
-        let baseMessage = NSLocalizedString(icgoru.mesajKey, comment: "")
-        
-        // Parametreleri 'String(format:)' ile daha güvenli bir şekilde yerleştir
-        // Şu anki yapı tek parametre aldığı için basit tutulabilir,
-        // ancak birden fazla parametre için bu yapı daha güvenlidir.
-        if let parametre = icgoru.parametreler.first?.value {
-            if let stringValue = parametre as? String {
-                return String(format: baseMessage, stringValue)
-            } else if let intValue = parametre as? Int {
-                return String(format: baseMessage, intValue)
-            } else if let doubleValue = parametre as? Double {
-                return String(format: baseMessage, doubleValue)
-            }
-        }
-        
-        return baseMessage
     }
 }

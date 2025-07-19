@@ -105,6 +105,17 @@ extension HarcamaIsiHaritasiViewModel {
         let calendar = Calendar.current
         var weeklyTotals: [Date: Double] = [:]
         
+        // appSettings'ten dil kodunu ve ilgili dil paketini al
+        let dilKodu = self.appSettings.languageCode
+        let languageBundle: Bundle = {
+            if let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"), let bundle = Bundle(path: path) {
+                return bundle
+            }
+            return .main
+        }()
+        
+        let formatString = languageBundle.localizedString(forKey: "reports.heatmap.week_format", value: "", table: nil)
+        
         for islem in islemler {
             let weekStart = calendar.dateInterval(of: .weekOfYear, for: islem.tarih)!.start
             weeklyTotals[weekStart, default: 0] += islem.tutar
@@ -114,11 +125,13 @@ extension HarcamaIsiHaritasiViewModel {
         
         return sortedWeeks.enumerated().map { index, weekStart in
             let total = weeklyTotals[weekStart] ?? 0
-            let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart)!
+            
+            // Formatlı metni burada oluştur
+            let etiket = String(format: formatString, index + 1)
             
             return HarcamaKarsilastirmaVerisi(
-                etiket: String(format: NSLocalizedString("reports.heatmap.week_format", comment: ""), index + 1),
-                localizationKey: nil, // Formatlı olduğu için key kullanmıyoruz
+                etiket: etiket, // Oluşturulan metni ata
+                localizationKey: nil, // Artık key kullanmıyoruz
                 deger: total,
                 yuzde: 0,
                 renk: Color.blue.opacity(0.8 - Double(index) * 0.1)

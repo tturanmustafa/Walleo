@@ -794,3 +794,9 @@
 "reports.cashflow.no_data_title" = "Veri Bulunamadı";
 "reports.cashflow.no_data_desc" = "Seçilen tarih aralığında işlem bulunamadı.";
 "reports.category.daily_average_format" = "%@/gün";
+
+"cashflow.transfer_count" = "%d transfer";
+"common.times_suffix" = "%dx";
+"account_type.wallet" = "Cüzdan";
+"account_type.credit_card" = "Kredi Kartı";
+"account_type.loan" = "Kredi";

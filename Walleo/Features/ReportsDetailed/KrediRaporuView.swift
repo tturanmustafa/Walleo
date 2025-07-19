@@ -14,6 +14,8 @@ import SwiftData
 struct KrediRaporuView: View {
     // --- DÜZELTME 1: @StateObject yerine @State kullanılıyor ---
     @State private var viewModel: KrediRaporuViewModel
+    @EnvironmentObject var appSettings: AppSettings // <--- appSettings'i ekle
+
     
     let baslangicTarihi: Date
     let bitisTarihi: Date
@@ -47,6 +49,7 @@ struct KrediRaporuView: View {
                 } else {
                     // Genel özet kartı
                     KrediGenelOzetKarti(ozet: viewModel.genelOzet)
+                        .environmentObject(appSettings) // <--- environmentObject'i geçir
                         .padding(.horizontal)
                     
                     // Her kredi için detay paneli
@@ -127,38 +130,68 @@ struct KrediRaporuView: View {
 // Genel kredi özetini gösteren kart
 struct KrediGenelOzetKarti: View {
     let ozet: KrediGenelOzet
-    
+    @EnvironmentObject var appSettings: AppSettings // <--- 1. AppSettings'i ekle
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("reports.detailed.overall_loan_summary")
-                .font(.title2.bold())
-            
-            HStack {
-                Text(formatCurrency(amount: ozet.donemdekiToplamTaksitTutari, currencyCode: "TRY", localeIdentifier: "tr_TR"))
-                    .font(.system(size: 32, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
-                Spacer()
-                Text(String(format: NSLocalizedString("reports.detailed.active_loan_count", comment: ""), ozet.aktifKrediSayisi))
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.secondary)
-            }
-            
-            ProgressView(value: ozet.odenenToplamTaksitTutari, total: ozet.donemdekiToplamTaksitTutari > 0 ? ozet.donemdekiToplamTaksitTutari : 1)
-                .tint(.blue)
-            
-            HStack {
-                Text(String(format: NSLocalizedString("reports.detailed.paid_installments_count", comment: ""), ozet.odenenTaksitSayisi))
-                    .font(.caption)
-                Spacer()
-                Text(String(format: NSLocalizedString("reports.detailed.unpaid_installments_count", comment: ""), ozet.odenmeyenTaksitSayisi))
-                    .font(.caption)
-                    .foregroundColor(.red)
-            }
+        // --- 2. Metinleri burada oluştur ---
+        let dilKodu = appSettings.languageCode
+        guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+              let languageBundle = Bundle(path: path) else {
+            // Hata durumunda boş metinler
+            return AnyView(EmptyView())
         }
-        .padding()
-        .background(Color(.secondarySystemGroupedBackground))
-        .cornerRadius(12)
+        
+        let aktifKrediMetni = String(
+            format: languageBundle.localizedString(forKey: "reports.detailed.active_loan_count", value: "", table: nil),
+            ozet.aktifKrediSayisi
+        )
+        let odenenTaksitMetni = String(
+            format: languageBundle.localizedString(forKey: "reports.detailed.paid_installments_count", value: "", table: nil),
+            ozet.odenenTaksitSayisi
+        )
+        let odenmeyenTaksitMetni = String(
+            format: languageBundle.localizedString(forKey: "reports.detailed.unpaid_installments_count", value: "", table: nil),
+            ozet.odenmeyenTaksitSayisi
+        )
+        let toplamTaksitTutariMetni = formatCurrency(
+            amount: ozet.donemdekiToplamTaksitTutari,
+            currencyCode: appSettings.currencyCode,
+            localeIdentifier: appSettings.languageCode
+        )
+
+        // --- 3. View'da bu metinleri kullan ---
+        return AnyView(
+            VStack(alignment: .leading, spacing: 16) {
+                Text("reports.detailed.overall_loan_summary")
+                    .font(.title2.bold())
+                
+                HStack {
+                    Text(toplamTaksitTutariMetni) // Değişti
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .foregroundColor(.primary)
+                    Spacer()
+                    Text(aktifKrediMetni) // Değişti
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(.secondary)
+                }
+                
+                ProgressView(value: ozet.odenenToplamTaksitTutari, total: ozet.donemdekiToplamTaksitTutari > 0 ? ozet.donemdekiToplamTaksitTutari : 1)
+                    .tint(.blue)
+                
+                HStack {
+                    Text(odenenTaksitMetni) // Değişti
+                        .font(.caption)
+                    Spacer()
+                    Text(odenmeyenTaksitMetni) // Değişti
+                        .font(.caption)
+                        .foregroundColor(.red)
+                }
+            }
+            .padding()
+            .background(Color(.secondarySystemGroupedBackground))
+            .cornerRadius(12)
+        )
     }
 }
 

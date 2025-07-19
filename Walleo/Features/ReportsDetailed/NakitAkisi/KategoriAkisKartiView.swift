@@ -17,7 +17,18 @@ struct KategoriAkisKartiView: View {
     @State private var trendGoster = false
     
     var body: some View {
-        VStack(spacing: 0) {
+        // Metinleri burada oluştur
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        let islemSayisiMetni = String(
+            format: languageBundle.localizedString(forKey: "reports.transaction_count", value: "", table: nil),
+            kategoriAkis.islemSayisi
+        )
+        let ortalamaTutarMetni = String(
+            format: languageBundle.localizedString(forKey: "reports.average_with_amount", value: "", table: nil),
+            formatCurrency(amount: kategoriAkis.ortalamaIslemTutari, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
+        )
+
+        return VStack(spacing: 0) {
             // Ana bilgi satırı
             HStack(spacing: 12) {
                 // Kategori ikonu
@@ -35,7 +46,7 @@ struct KategoriAkisKartiView: View {
                         .fontWeight(.semibold)
                     
                     HStack(spacing: 8) {
-                        Text(String(format: NSLocalizedString("reports.transaction_count", comment: ""), kategoriAkis.islemSayisi))
+                        Text(islemSayisiMetni) // Düzeltildi
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         
@@ -43,7 +54,7 @@ struct KategoriAkisKartiView: View {
                             .font(.caption)
                             .foregroundStyle(.tertiary)
                         
-                        Text(String(format: NSLocalizedString("reports.average_with_amount", comment: ""), formatCurrency(amount: kategoriAkis.ortalamaIslemTutari, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)))
+                        Text(ortalamaTutarMetni) // Düzeltildi
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -62,11 +73,11 @@ struct KategoriAkisKartiView: View {
                     .foregroundColor(kategoriAkis.kategori.tur == .gelir ? .green : .red)
                     
                     if kategoriAkis.kategori.tur == .gelir {
-                        Label("Gelir", systemImage: "arrow.up")
+                        Label(LocalizedStringKey("common.income"), systemImage: "arrow.up") // Düzeltildi
                             .font(.caption2)
                             .foregroundColor(.green)
                     } else {
-                        Label("Gider", systemImage: "arrow.down")
+                        Label(LocalizedStringKey("common.expense"), systemImage: "arrow.down") // Düzeltildi
                             .font(.caption2)
                             .foregroundColor(.red)
                     }

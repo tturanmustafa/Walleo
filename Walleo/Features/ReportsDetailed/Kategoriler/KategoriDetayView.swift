@@ -21,11 +21,7 @@ struct KategoriDetayView: View {
                         Text("reports.category.days").tag(1)
                         Text("reports.category.hours").tag(2)
                         Text("reports.category.trend").tag(3)
-                        .padding()
-        .background(Color(.secondarySystemGroupedBackground))
-        .cornerRadius(12)
-        .padding(.horizontal)
-    }
+                    }
                     .pickerStyle(.segmented)
                     .padding(.horizontal)
                     
@@ -130,19 +126,40 @@ struct KategoriDetayView: View {
     
     @ViewBuilder
     private var isimlerDetayi: some View {
+        let dilKodu = appSettings.languageCode
+        let languageBundle: Bundle = {
+            if let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"), let bundle = Bundle(path: path) {
+                return bundle
+            }
+            return .main
+        }()
+
         VStack(alignment: .leading, spacing: 16) {
             Text("reports.category.most_frequent_names")
                 .font(.headline)
                 .padding(.horizontal)
             
             ForEach(rapor.enSikKullanilanIsimler) { isimFrekansi in
+                let kullanilmaSayisiMetni = String(
+                    format: languageBundle.localizedString(forKey: "reports.category.used_times", value: "", table: nil),
+                    isimFrekansi.frekans
+                )
+                let ortalamaMetni = String(
+                    format: languageBundle.localizedString(forKey: "reports.category.avg_short_format", value: "", table: nil),
+                    formatCurrency(
+                        amount: isimFrekansi.ortalamatutar,
+                        currencyCode: appSettings.currencyCode,
+                        localeIdentifier: appSettings.languageCode
+                    )
+                )
+
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(isimFrekansi.isim)
                             .font(.subheadline)
                             .fontWeight(.medium)
                         
-                        Text(String(format: NSLocalizedString("reports.category.used_times", comment: ""), isimFrekansi.frekans))
+                        Text(kullanilmaSayisiMetni) // <--- Düzeltilmiş metin
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -157,12 +174,7 @@ struct KategoriDetayView: View {
                         ))
                         .font(.subheadline.bold())
                         
-                        // İki nokta üst üste kullanımı düzeltildi
-                        Text(String(format: NSLocalizedString("reports.category.avg_short_format", comment: ""), formatCurrency(
-                            amount: isimFrekansi.ortalamatutar,
-                            currencyCode: appSettings.currencyCode,
-                            localeIdentifier: appSettings.languageCode
-                        )))
+                        Text(ortalamaMetni) // <--- Düzeltilmiş metin
                         .font(.caption)
                         .foregroundColor(.secondary)
                     }
@@ -177,6 +189,14 @@ struct KategoriDetayView: View {
     
     @ViewBuilder
     private var gunlerDetayi: some View {
+        let dilKodu = appSettings.languageCode
+        let languageBundle: Bundle = {
+            if let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"), let bundle = Bundle(path: path) {
+                return bundle
+            }
+            return .main
+        }()
+
         VStack(alignment: .leading, spacing: 16) {
             Text("reports.category.distribution_by_days")
                 .font(.headline)
@@ -194,6 +214,11 @@ struct KategoriDetayView: View {
             .padding(.horizontal)
             
             ForEach(rapor.gunlereGoreDagilim) { gun in
+                let islemSayisiMetni = String(
+                    format: languageBundle.localizedString(forKey: "reports.category.transaction_count", value: "", table: nil),
+                    gun.islemSayisi
+                )
+
                 HStack {
                     Text(gun.gunAdi)
                         .fontWeight(.medium)
@@ -208,7 +233,7 @@ struct KategoriDetayView: View {
                         ))
                         .fontWeight(.semibold)
                         
-                        Text(String(format: NSLocalizedString("reports.category.transaction_count", comment: ""), gun.islemSayisi))
+                        Text(islemSayisiMetni) // <--- Düzeltilmiş metin
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -229,20 +254,22 @@ struct KategoriDetayView: View {
                 .font(.headline)
                 .padding(.horizontal)
             
-            // Radyal saat grafiği
             RadyalSaatGrafigi(
                 saatlikDagilim: rapor.saatlereGoreDagilim.map { saatlik in
                     SaatlikDagilimVerisi(
                         saat: saatlik.saat,
                         toplamTutar: saatlik.tutar,
                         islemSayisi: saatlik.islemSayisi,
-                        yuzde: 0 // Yüzde hesaplanacak
+                        yuzde: 0
                     )
                 }
             )
             .environmentObject(appSettings)
-            .padding(.horizontal)
         }
+        .padding()
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(12)
+        .padding(.horizontal)
     }
     
     @ViewBuilder
