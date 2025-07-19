@@ -7,18 +7,16 @@ struct HesapAkisKartiView: View {
     @EnvironmentObject var appSettings: AppSettings
     @State private var detaylariGoster = false
     
+    // --- DÜZELTME 1: Çeviriyi AppSettings'e göre yap ---
     private var hesapTipiAciklamasi: String {
+        let key: String
         switch hesapAkis.hesap.detay {
-        case .cuzdan:
-            // Yeni eklenen lokalizasyon anahtarını kullan
-            return NSLocalizedString("account_type.wallet", comment: "")
-        case .krediKarti:
-            // Yeni eklenen lokalizasyon anahtarını kullan
-            return NSLocalizedString("account_type.credit_card", comment: "")
-        case .kredi:
-            // Yeni eklenen lokalizasyon anahtarını kullan
-            return NSLocalizedString("account_type.loan", comment: "")
+        case .cuzdan: key = "account_type.wallet"
+        case .krediKarti: key = "account_type.credit_card"
+        case .kredi: key = "account_type.loan"
         }
+        // Doğru dil paketinden çeviriyi al
+        return Bundle.getLanguageBundle(for: appSettings.languageCode).localizedString(forKey: key, value: "", table: nil)
     }
     
     private var netDegisimYuzdesi: Double? {
@@ -27,7 +25,7 @@ struct HesapAkisKartiView: View {
     }
     
     var body: some View {
-        // Dil değişimlerinde güncellenecek metni burada oluştur
+        // --- DÜZELTME 2: İşlem sayısı metnini de AppSettings'e göre oluştur ---
         let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
         let islemSayisiMetni = String(
             format: languageBundle.localizedString(forKey: "reports.transaction_count", value: "", table: nil),
@@ -35,36 +33,30 @@ struct HesapAkisKartiView: View {
         )
         
         return VStack(spacing: 0) {
-            // Ana bilgi satırı
             Button(action: { withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) { detaylariGoster.toggle() } }) {
                 HStack(spacing: 12) {
-                    // Hesap ikonu
-                    Image(systemName: hesapAkis.hesap.ikonAdi)
-                        .font(.title2)
-                        .foregroundColor(hesapAkis.hesap.renk)
-                        .frame(width: 44, height: 44)
-                        .background(hesapAkis.hesap.renk.opacity(0.15))
-                        .cornerRadius(10)
+                    Image(systemName: hesapAkis.hesap.ikonAdi).font(.title2).foregroundColor(hesapAkis.hesap.renk)
+                        .frame(width: 44, height: 44).background(hesapAkis.hesap.renk.opacity(0.15)).cornerRadius(10)
                     
-                    // Hesap bilgileri
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(hesapAkis.hesap.isim)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
+                        Text(hesapAkis.hesap.isim).font(.subheadline).fontWeight(.semibold)
                         
-                        HStack(spacing: 8) {
-                            Text(hesapTipiAciklamasi) // Düzeltildi
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                            
-                            if hesapAkis.islemSayisi > 0 {
-                                Text("•")
-                                    .font(.caption)
-                                    .foregroundStyle(.tertiary)
-                                
-                                Text(islemSayisiMetni) // Düzeltildi
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                        // --- DÜZELTME 3: Esnek Arayüz (ViewThatFits) ---
+                        ViewThatFits {
+                            // Geniş ekran için yatay
+                            HStack(spacing: 8) {
+                                Text(hesapTipiAciklamasi).font(.caption).foregroundStyle(.secondary)
+                                if hesapAkis.islemSayisi > 0 {
+                                    Text("•").font(.caption).foregroundStyle(.tertiary)
+                                    Text(islemSayisiMetni).font(.caption).foregroundStyle(.secondary)
+                                }
+                            }
+                            // Dar ekran için dikey
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(hesapTipiAciklamasi).font(.caption).foregroundStyle(.secondary)
+                                if hesapAkis.islemSayisi > 0 {
+                                    Text(islemSayisiMetni).font(.caption).foregroundStyle(.secondary)
+                                }
                             }
                         }
                     }

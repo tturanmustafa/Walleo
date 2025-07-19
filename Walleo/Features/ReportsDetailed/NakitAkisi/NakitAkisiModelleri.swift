@@ -22,7 +22,6 @@ struct NakitAkisiRaporu {
     let islemTipiDagilimi: IslemTipiDagilimi
     let kategoriAkislari: [KategoriNakitAkisi]
     let hesapAkislari: [HesapNakitAkisi]
-    let gelecekProjeksiyonu: GelecekProjeksiyonu
     let transferOzeti: TransferOzeti
 }
 
@@ -89,45 +88,6 @@ struct HesapNakitAkisi: Identifiable {
     let islemSayisi: Int
     let gunlukOrtalama: Double
 }
-
-// MARK: - Gelecek Projeksiyonu
-struct GelecekProjeksiyonu {
-    let projeksiyonSuresi: Int // Gün sayısı
-    let tahminiGelir: Double
-    let tahminiGider: Double
-    let tahminiNetAkis: Double
-    let gunlukProjeksiyon: [GunlukProjeksiyon]
-    let riskSeviyesi: RiskSeviyesi
-    
-    struct GunlukProjeksiyon: Identifiable {
-        let id = UUID()
-        let tarih: Date
-        let tahminiGelir: Double
-        let tahminiGider: Double
-        let tahminiKumulatifBakiye: Double
-    }
-    
-    enum RiskSeviyesi {
-        case dusuk, orta, yuksek
-        
-        var renk: Color {
-            switch self {
-            case .dusuk: return .green
-            case .orta: return .orange
-            case .yuksek: return .red
-            }
-        }
-        
-        var mesaj: String {
-            switch self {
-            case .dusuk: return "cashflow.risk.low"
-            case .orta: return "cashflow.risk.medium"
-            case .yuksek: return "cashflow.risk.high"
-            }
-        }
-    }
-}
-
 // MARK: - Transfer Özeti
 struct TransferOzeti {
     let toplamTransferSayisi: Int
@@ -162,6 +122,5 @@ struct NakitAkisiIcgoru: Identifiable {
         case tekrarliGelir
         case kategoriUyari
         case hesapUyari
-        case projeksiyonUyari
     }
 }

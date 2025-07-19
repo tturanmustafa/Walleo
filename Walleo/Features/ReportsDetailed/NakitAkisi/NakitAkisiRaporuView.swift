@@ -26,7 +26,6 @@ struct NakitAkisiRaporuView: View {
         case akis = "cashflow.view.flow"
         case kategoriler = "cashflow.view.categories"
         case hesaplar = "cashflow.view.accounts"
-        case projeksiyon = "cashflow.view.projection"
     }
     
     init(modelContext: ModelContext, baslangicTarihi: Date, bitisTarihi: Date) {
@@ -71,8 +70,6 @@ struct NakitAkisiRaporuView: View {
                         kategorilerGorunumu(rapor: rapor)
                     case .hesaplar:
                         hesaplarGorunumu(rapor: rapor)
-                    case .projeksiyon:
-                        projeksiyonGorunumu(rapor: rapor)
                     }
                 } else {
                     ContentUnavailableView(
@@ -160,22 +157,7 @@ struct NakitAkisiRaporuView: View {
     }
     
     // MARK: - Projeksiyon Görünümü
-    @ViewBuilder
-    private func projeksiyonGorunumu(rapor: NakitAkisiRaporu) -> some View {
-        VStack(spacing: 20) {
-            // Projeksiyon özeti
-            ProjeksiyonOzetiView(projeksiyon: rapor.gelecekProjeksiyonu)
-                .padding(.horizontal)
-            
-            // Projeksiyon grafiği
-            ProjeksiyonGrafigiView(projeksiyon: rapor.gelecekProjeksiyonu)
-                .padding(.horizontal)
-            
-            // Risk analizi
-            RiskAnaliziView(projeksiyon: rapor.gelecekProjeksiyonu)
-                .padding(.horizontal)
-        }
-    }
+
 }
 
 // MARK: - İçgörüler View
