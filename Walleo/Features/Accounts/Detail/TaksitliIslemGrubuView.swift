@@ -1,12 +1,4 @@
-//
-//  TaksitliIslemGrubuView.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 16.07.2025.
-//
-
-
-// YENİ DOSYA: TaksitliIslemGrubuView.swift
+// GÜNCELLENMİŞ DOSYA: TaksitliIslemGrubuView.swift
 
 import SwiftUI
 
@@ -25,14 +17,13 @@ struct TaksitliIslemGrubuView: View {
             Button(action: onToggle) {
                 HStack {
                     Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .frame(width: 20)
+                        .font(.caption).foregroundColor(.secondary).frame(width: 20)
                     
                     VStack(alignment: .leading, spacing: 2) {
                         Text(grup.anaIsim)
                             .fontWeight(.semibold)
-                        Text(grup.aciklamaMetni)
+                        // --- DÜZELTME 1: Artık 'aciklamaMetni' fonksiyonunu çağırıyoruz ---
+                        Text(grup.aciklamaMetni(using: appSettings))
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -40,8 +31,7 @@ struct TaksitliIslemGrubuView: View {
                     Spacer()
                     
                     Image(systemName: "creditcard.viewfinder")
-                        .font(.callout)
-                        .foregroundColor(.secondary)
+                        .font(.callout).foregroundColor(.secondary)
                 }
                 .padding(.vertical, 8)
                 .contentShape(Rectangle())
@@ -55,8 +45,7 @@ struct TaksitliIslemGrubuView: View {
                         taksitSatiri(taksit)
                         
                         if taksit.id != grup.taksitler.last?.id {
-                            Divider()
-                                .padding(.leading, 40)
+                            Divider().padding(.leading, 40)
                         }
                     }
                 }
@@ -69,45 +58,36 @@ struct TaksitliIslemGrubuView: View {
     private func taksitSatiri(_ taksit: Islem) -> some View {
         let gecmisTarihMi = taksit.tarih <= Date()
         
+        // --- DÜZELTME 2: Taksit başlığını da çeviri anahtarıyla oluşturuyoruz ---
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        let formatString = languageBundle.localizedString(forKey: "credit_card.installment_number_format", value: "", table: nil)
+        let taksitBasligi = String(format: formatString, taksit.mevcutTaksitNo)
+
         HStack {
-            // Taksit numarası ve tutar
             VStack(alignment: .leading, spacing: 2) {
-                Text("\(taksit.mevcutTaksitNo). Taksit")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
+                Text(taksitBasligi) // Artık çevrilmiş metni kullanıyor
+                    .font(.subheadline).fontWeight(.medium)
                     .strikethrough(gecmisTarihMi)
                     .foregroundColor(gecmisTarihMi ? .secondary : .primary)
                 
                 Text(formatDateForList(from: taksit.tarih, localeIdentifier: appSettings.languageCode))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                    .font(.caption).foregroundColor(.secondary)
             }
             
             Spacer()
             
-            Text(formatCurrency(
-                amount: taksit.tutar,
-                currencyCode: appSettings.currencyCode,
-                localeIdentifier: appSettings.languageCode
-            ))
-            .font(.callout.bold())
-            .strikethrough(gecmisTarihMi)
-            .foregroundColor(gecmisTarihMi ? .secondary : .primary)
+            Text(formatCurrency(amount: taksit.tutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
+                .font(.callout.bold())
+                .strikethrough(gecmisTarihMi)
+                .foregroundColor(gecmisTarihMi ? .secondary : .primary)
             
-            // Menu
             Menu {
-                Button(LocalizedStringKey("common.edit"), systemImage: "pencil") { 
-                    onEdit(taksit) 
-                }
-                Button(LocalizedStringKey("common.delete"), systemImage: "trash", role: .destructive) { 
-                    onDelete(taksit) 
-                }
+                Button(LocalizedStringKey("common.edit"), systemImage: "pencil") { onEdit(taksit) }
+                Button(LocalizedStringKey("common.delete"), systemImage: "trash", role: .destructive) { onDelete(taksit) }
             } label: {
                 Image(systemName: "ellipsis")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .frame(width: 30, height: 30)
-                    .contentShape(Rectangle())
+                    .font(.caption).foregroundColor(.secondary)
+                    .frame(width: 30, height: 30).contentShape(Rectangle())
             }
         }
         .padding(.vertical, 6)

@@ -65,7 +65,16 @@ struct IslemEkleView: View {
         let aylikTaksitStr = formatCurrency(amount: aylikTaksit, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
         let toplamTutarStr = formatCurrency(amount: tutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
         
-        return String(format: NSLocalizedString("transaction.installment.preview", comment: ""), taksitSayisi, aylikTaksitStr, toplamTutarStr)
+        // --- DÜZELTME BAŞLIYOR ---
+        // 1. AppSettings'ten doğru dil paketini (.lproj) alıyoruz.
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        
+        // 2. Metin kalıbını bu paketten güvenli bir şekilde çekiyoruz.
+        let formatString = languageBundle.localizedString(forKey: "transaction.installment.preview", value: "", table: nil)
+        
+        // 3. Metni verilerle formatlıyoruz.
+        return String(format: formatString, taksitSayisi, aylikTaksitStr, toplamTutarStr)
+        // --- DÜZELTME BİTİYOR ---
     }
     
     var filtrelenmisKategoriler: [Kategori] {
