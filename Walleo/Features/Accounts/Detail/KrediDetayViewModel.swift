@@ -88,8 +88,10 @@ class KrediDetayViewModel {
                     return
                 }
                 
+                // --- DÜZELTME BURADA ---
+                // İşlem adını sadece kredinin kendi adı olarak ayarlıyoruz.
                 let yeniIslem = Islem(
-                    isim: "\(hesap.isim) Taksit Ödemesi",
+                    isim: hesap.isim,
                     tutar: taksit.taksitTutari,
                     tarih: Date(),
                     tur: .gider,
@@ -121,7 +123,6 @@ class KrediDetayViewModel {
             Logger.log("Taksit ödeme hatası: \(error)", log: Logger.service, type: .error)
         }
     }
-    
     // 6. Adım (Yardımcı Fonksiyonlar)
     private func fetchOdemeHesaplari() {
         let descriptor = FetchDescriptor<Hesap>()
