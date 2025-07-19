@@ -26,28 +26,21 @@ class FamilySharingManager: ObservableObject {
     // MARK: - Kullanıcı Bilgisi
     func fetchCurrentUser() async throws -> (userID: String, userName: String) {
         let userID = try await container.userRecordID()
-        let userRecord = try await privateDatabase.record(for: userID)
-        
-        // Kullanıcı adını al
-        if let userIdentity = try? await container.userIdentity(forUserRecordID: userID) {
-            let name = userIdentity.nameComponents?.givenName ?? "Kullanıcı"
-            return (userID.recordName, name)
-        }
-        
-        return (userID.recordName, "Kullanıcı")
+        let identity = try await container.userIdentities(forUserRecordIDs: [userID]).first?.value
+        let name = identity?.nameComponents?.givenName ?? "Kullanıcı"
+        return (userID.recordName, name)
     }
     
     // MARK: - Aile Oluşturma
     func createFamily(name: String, in modelContext: ModelContext) async throws {
+        // ... (Bu fonksiyonda değişiklik yok)
         isLoadingFamily = true
         defer { isLoadingFamily = false }
         
         let (userID, userName) = try await fetchCurrentUser()
         
-        // Aile modelini oluştur
         let aile = Aile(isim: name, sahipID: userID, sahipAdi: userName)
         
-        // Sahip olan kullanıcıyı üye olarak ekle
         let sahipUye = AileUyesi(userID: userID, adi: userName, davetDurumu: DavetDurumu.kabul)
         sahipUye.aile = aile
         aile.uyeler?.append(sahipUye)
@@ -60,137 +53,128 @@ class FamilySharingManager: ObservableObject {
         self.currentFamily = aile
         self.familyMembers = [sahipUye]
         
-        Logger.logFamilyAction("FAMILY_CREATED", details: [
-            "familyID": aile.id.uuidString,
-            "familyName": name,
-            "ownerID": userID
-        ])
+        Logger.logFamilyAction("FAMILY_CREATED", details: ["familyID": aile.id.uuidString, "familyName": name, "ownerID": userID])
     }
     
     // MARK: - Aile Üyesi Davet Etme
+    // DÜZELTME 1: Bu fonksiyon artık mevcut bir davet varsa onu getiriyor, yoksa yeni oluşturuyor.
     func inviteMember(to family: Aile, in modelContext: ModelContext) async throws -> CKShare {
-        // CloudKit record oluştur
-        let familyRecord = CKRecord(recordType: "Family", recordID: CKRecord.ID(recordName: family.id.uuidString))
-        familyRecord["name"] = family.isim
-        familyRecord["ownerID"] = family.sahipID
-        familyRecord["createdAt"] = family.olusturmaTarihi
-        
-        // Share oluştur
-        let share = CKShare(rootRecord: familyRecord)
-        share[CKShare.SystemFieldKey.title] = "\(family.isim) Aile Hesabı"
-        share[CKShare.SystemFieldKey.shareType] = "com.walleo.family"
-        share.publicPermission = .none
-        
-        // Kaydet
-        let operation = CKModifyRecordsOperation(recordsToSave: [familyRecord, share], recordIDsToDelete: nil)
-        operation.modifyRecordsResultBlock = { result in
-            switch result {
-            case .success:
-                Task { @MainActor in
-                    family.shareRecordID = share.recordID.recordName
-                    try? modelContext.save()
+        // Eğer aile için daha önce bir paylaşım oluşturulmuşsa, onu yeniden oluşturmak yerine bul ve getir.
+        if let existingShareRecordName = family.shareRecordID {
+            let recordID = CKRecord.ID(recordName: existingShareRecordName, zoneID: FamilyZoneManager.zoneID)
+            do {
+                if let existingShare = try await privateDatabase.record(for: recordID) as? CKShare {
+                    Logger.logFamilyAction("FETCHED_EXISTING_SHARE", details: ["shareID": existingShare.recordID.recordName])
+                    return existingShare
                 }
-            case .failure(let error):
-                Logger.logFamilyAction("SHARE_CREATE_FAILED", details: ["error": error.localizedDescription], type: .error)
+            } catch {
+                // Eğer bir sebepten ötürü eski kayıt bulunamazsa, logla ve yeni oluşturmaya devam et.
+                Logger.logFamilyAction("EXISTING_SHARE_FETCH_FAILED", details: ["error": error.localizedDescription], type: .error)
             }
         }
         
-        try await privateDatabase.add(operation)
+        // Mevcut bir paylaşım yoksa veya bulunamadıysa, yeni bir tane oluştur.
+        let familyRecordID = CKRecord.ID(recordName: family.id.uuidString, zoneID: FamilyZoneManager.zoneID)
+        let familyRecord = CKRecord(recordType: "CD_Aile", recordID: familyRecordID)
         
-        Logger.logFamilyAction("MEMBER_INVITED", details: [
-            "familyID": family.id.uuidString,
-            "shareID": share.recordID.recordName
-        ])
+        familyRecord["name"] = family.isim as CKRecordValue
+        familyRecord["ownerID"] = family.sahipID as CKRecordValue
+        familyRecord["createdAt"] = family.olusturmaTarihi as CKRecordValue
         
-        return share
+        let share = CKShare(rootRecord: familyRecord)
+        share[CKShare.SystemFieldKey.title] = "\(family.isim) Aile Hesabı" as CKRecordValue
+        share.publicPermission = .none
+        
+        do {
+            let zoneManager = FamilyZoneManager(database: privateDatabase)
+            try await zoneManager.createZoneIfNeeded()
+            let (saveResults, _) = try await privateDatabase.modifyRecords(saving: [familyRecord, share], deleting: [])
+            
+            if let shareResult = saveResults[share.recordID] {
+                switch shareResult {
+                case .success(let savedRecord):
+                    if let savedShare = savedRecord as? CKShare {
+                        Logger.logFamilyAction("NEW_MEMBER_INVITED_AND_SAVED", details: ["familyID": family.id.uuidString, "shareID": savedShare.recordID.recordName])
+                        family.shareRecordID = savedShare.recordID.recordName
+                        try modelContext.save()
+                        return savedShare
+                    } else { throw NSError(domain: "FamilySharingManager", code: 3, userInfo: [NSLocalizedDescriptionKey: "Sunucudan dönen kayıt bir paylaşım nesnesi değil."]) }
+                case .failure(let error): throw error
+                }
+            } else { throw NSError(domain: "FamilySharingManager", code: 2, userInfo: [NSLocalizedDescriptionKey: "Sunucu, paylaşım nesnesi için bir sonuç döndürmedi."]) }
+        } catch {
+            Logger.logFamilyAction("MODIFY_RECORDS_OPERATION_FAILED", details: ["error": error.localizedDescription], type: .error)
+            throw error
+        }
     }
     
     // MARK: - Davet Kabul Etme
     func acceptInvitation(_ shareMetadata: CKShare.Metadata) async throws {
-        let operation = CKAcceptSharesOperation(shareMetadatas: [shareMetadata])
-        operation.perShareResultBlock = { metadata, result in
-            switch result {
-            case .success(let share):
-                Logger.logFamilyAction("INVITATION_ACCEPTED", details: [
-                    "shareID": share.recordID.recordName
-                ])
-            case .failure(let error):
-                Logger.logFamilyAction("INVITATION_ACCEPT_FAILED", details: [
-                    "error": error.localizedDescription
-                ], type: .error)
-            }
+        // ... (Bu fonksiyonda değişiklik yok)
+        do {
+            let acceptedShare = try await container.accept(shareMetadata)
+            Logger.logFamilyAction("INVITATION_ACCEPTED", details: ["shareID": acceptedShare.recordID.recordName])
+        } catch {
+            Logger.logFamilyAction("INVITATION_ACCEPT_FAILED", details: ["error": error.localizedDescription], type: .error)
+            throw error
         }
-        
-        try await container.add(operation)
     }
     
     // MARK: - Aile Verilerini Yükle
     func loadFamilyData(in modelContext: ModelContext) async {
+        // ... (Bu fonksiyonda değişiklik yok)
         isLoadingFamily = true
         defer { isLoadingFamily = false }
         
         do {
-            // Mevcut aileyi kontrol et
             let descriptor = FetchDescriptor<Aile>()
             if let existingFamily = try modelContext.fetch(descriptor).first {
                 self.currentFamily = existingFamily
                 self.familyMembers = existingFamily.uyeler ?? []
-                
-                // CloudKit'ten güncellemeleri kontrol et
                 await syncFamilyData(family: existingFamily, in: modelContext)
             }
         } catch {
-            Logger.logFamilyAction("LOAD_FAMILY_FAILED", details: [
-                "error": error.localizedDescription
-            ], type: .error)
+            Logger.logFamilyAction("LOAD_FAMILY_FAILED", details: ["error": error.localizedDescription], type: .error)
         }
     }
     
     // MARK: - Senkronizasyon
     private func syncFamilyData(family: Aile, in modelContext: ModelContext) async {
-        guard let shareRecordID = family.shareRecordID else { return }
+        guard let shareRecordName = family.shareRecordID else { return }
         
         do {
-            let shareRecord = CKRecord.ID(recordName: shareRecordID)
-            let share = try await sharedDatabase.record(for: shareRecord) as? CKShare
+            // DÜZELTME 2: CKRecord.ID oluşturulurken doğru zoneID (FamilyZone) belirtiliyor.
+            let shareRecordID = CKRecord.ID(recordName: shareRecordName, zoneID: FamilyZoneManager.zoneID)
             
-            // Participants'ları güncelle
-            if let participants = share?.participants {
-                for participant in participants {
-                    if participant.acceptanceStatus == .accepted {
-                        // Üye zaten varsa güncelle, yoksa ekle
-                        let userID = participant.userIdentity.userRecordID?.recordName ?? ""
-                        if !familyMembers.contains(where: { $0.userID == userID }) {
-                            let newMember = AileUyesi(
-                                userID: userID,
-                                adi: participant.userIdentity.nameComponents?.givenName ?? "Üye",
-                                davetDurumu: DavetDurumu.kabul
-                            )
-                            newMember.aile = family
-                            modelContext.insert(newMember)
-                            familyMembers.append(newMember)
-                        }
+            // Not: Paylaşılan kayıtlar `privateDatabase` yerine `sharedDatabase`'den çekilir.
+            guard let share = try await sharedDatabase.record(for: shareRecordID) as? CKShare else { return }
+            
+            for participant in share.participants {
+                if participant.acceptanceStatus == .accepted {
+                    let userID = participant.userIdentity.userRecordID?.recordName ?? ""
+                    if !familyMembers.contains(where: { $0.userID == userID }) {
+                        let newMember = AileUyesi(userID: userID, adi: participant.userIdentity.nameComponents?.givenName ?? "Üye", davetDurumu: DavetDurumu.kabul)
+                        newMember.aile = family
+                        modelContext.insert(newMember)
+                        familyMembers.append(newMember)
                     }
                 }
-                try modelContext.save()
             }
+            try modelContext.save()
         } catch {
-            Logger.logFamilyAction("SYNC_FAMILY_FAILED", details: [
-                "error": error.localizedDescription
-            ], type: .error)
+            Logger.logFamilyAction("SYNC_FAMILY_FAILED", details: ["error": error.localizedDescription], type: .error)
         }
     }
     
     // MARK: - Aile'den Ayrılma
     func leaveFamily(_ family: Aile, in modelContext: ModelContext) async throws {
+        // ... (Bu fonksiyonda değişiklik yok)
         let (currentUserID, _) = try await fetchCurrentUser()
         
-        // Kullanıcıyı ailede bul ve sil
         if let memberToRemove = family.uyeler?.first(where: { $0.userID == currentUserID }) {
             modelContext.delete(memberToRemove)
         }
         
-        // Eğer son üyeyse aileyi de sil
         if family.uyeler?.count == 1 {
             modelContext.delete(family)
         }
@@ -200,9 +184,6 @@ class FamilySharingManager: ObservableObject {
         self.currentFamily = nil
         self.familyMembers = []
         
-        Logger.logFamilyAction("LEFT_FAMILY", details: [
-            "familyID": family.id.uuidString,
-            "userID": currentUserID
-        ])
+        Logger.logFamilyAction("LEFT_FAMILY", details: ["familyID": family.id.uuidString, "userID": currentUserID])
     }
 }
