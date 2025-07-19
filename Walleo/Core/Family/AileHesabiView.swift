@@ -19,8 +19,10 @@ struct AileHesabiView: View {
     @State private var showCreateFamily = false
     @State private var showInviteSheet = false
     @State private var showLeaveConfirmation = false
-    @State private var showShareSheet = false
+    
+    // DÜZELTME 1: `showShareSheet` state'i kaldırıldı, `shareToPresent` yeterli.
     @State private var shareToPresent: ShareWrapper?
+    
     @State private var newFamilyName = ""
     @State private var showError = false
     @State private var errorMessage = ""
@@ -29,10 +31,8 @@ struct AileHesabiView: View {
     var body: some View {
         Form {
             if familyManager.currentFamily == nil {
-                // Aile hesabı yok
                 noFamilySection
             } else {
-                // Aile hesabı var
                 familyInfoSection
                 familyMembersSection
                 familyActionsSection
@@ -49,6 +49,11 @@ struct AileHesabiView: View {
         }
         .sheet(isPresented: $showInviteSheet) {
             inviteMemberSheet
+        }
+        // DÜZELTME 2: İkinci sheet'i burada, ana view'dan sunuyoruz.
+        // Bu, sheet içinden sheet açma sorununu ortadan kaldırır.
+        .sheet(item: $shareToPresent) { wrapper in
+            CloudSharingView(share: wrapper.share, container: CKContainer(identifier: "iCloud.com.mustafamt.walleo"))
         }
         .alert("common.error", isPresented: $showError) {
             Button("common.ok", role: .cancel) { }
@@ -258,9 +263,7 @@ struct AileHesabiView: View {
                 }
             }
         }
-        .sheet(item: $shareToPresent) { wrapper in
-            CloudSharingView(share: wrapper.share, container: CKContainer(identifier: "iCloud.com.mustafamt.walleo"))
-        }
+        // Bu sheet içindeki `.sheet(item: $shareToPresent)` kaldırıldı.
     }
     
     // MARK: - Helper Functions
@@ -297,8 +300,11 @@ struct AileHesabiView: View {
         
         do {
             let share = try await familyManager.inviteMember(to: family, in: modelContext)
+            
+            // DÜZELTME 3: Sadece ikinci sheet'i tetikleyip birinciyi kapatıyoruz.
             shareToPresent = ShareWrapper(share: share)
-            showInviteSheet = false
+            showInviteSheet = false // Bu satır artık sorun yaratmaz çünkü iki sheet de ana view'dan kontrol ediliyor.
+            
         } catch {
             errorMessage = error.localizedDescription
             showError = true
@@ -325,6 +331,8 @@ struct CloudSharingView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UICloudSharingController {
         let controller = UICloudSharingController(share: share, container: container)
         controller.availablePermissions = [.allowReadWrite, .allowPrivate]
+        // DÜZELTME 4 (Önemli): Controller'a bir delege atayarak kapatıldığını anlayabiliriz,
+        // ancak bu senaryoda yeni yapılandırma sayesinde artık gerekli değil.
         return controller
     }
     
