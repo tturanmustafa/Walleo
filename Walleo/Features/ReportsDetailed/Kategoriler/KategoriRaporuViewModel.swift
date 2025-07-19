@@ -207,34 +207,38 @@ class KategoriRaporuViewModel {
         var gunlikGruplar: [Int: (tutar: Double, sayi: Int)] = [:]
         
         for islem in islemler {
-            let gun = calendar.component(.weekday, from: islem.tarih)
+            let gun = calendar.component(.weekday, from: islem.tarih) // 1=Pazar, 2=Pzt...
             gunlikGruplar[gun, default: (0, 0)].tutar += islem.tutar
             gunlikGruplar[gun, default: (0, 0)].sayi += 1
         }
         
-        // Haftanın günlerini doğru sırayla oluştur
+        // Haftanın günlerini doğru sırayla oluştur (Lokalizasyon için düzeltildi)
         var gunler: [GunlukDagilim] = []
+        let firstWeekday = calendar.firstWeekday // Genellikle Pazar=1, bazı yerlerde Pzt=2
+        var gunSirasi: [Int] = []
         
-        // iOS'ta 1 = Pazar, 2 = Pazartesi, ..., 7 = Cumartesi
-        // Pazartesi'den başlayarak sıralama için özel bir düzen oluştur
-        let gunSirasi: [Int] = [2, 3, 4, 5, 6, 7, 1] // Pazartesi'den Pazar'a
-        
+        for i in 0..<7 {
+            var gunIndex = firstWeekday + i
+            if gunIndex > 7 {
+                gunIndex -= 7
+            }
+            gunSirasi.append(gunIndex)
+        }
+
         for gunIndex in gunSirasi {
-            if let veri = gunlikGruplar[gunIndex] {
-                // Bu günün tarihini oluştur
-                var components = DateComponents()
-                components.weekday = gunIndex
-                components.weekOfYear = 1
-                components.year = 2024 // Herhangi bir yıl, sadece gün adını almak için
-                
-                if let tarih = calendar.date(from: components) {
-                    let gunAdi = formatter.string(from: tarih)
-                    gunler.append(GunlukDagilim(
-                        gunAdi: gunAdi,
-                        tutar: veri.tutar,
-                        islemSayisi: veri.sayi
-                    ))
-                }
+            let veri = gunlikGruplar[gunIndex] ?? (tutar: 0, sayi: 0)
+            
+            // Bu günün adını almak için bir tarih oluştur
+            var components = DateComponents()
+            components.weekday = gunIndex
+            
+            if let tarih = calendar.nextDate(after: Date(), matching: components, matchingPolicy: .nextTime) {
+                let gunAdi = formatter.string(from: tarih)
+                gunler.append(GunlukDagilim(
+                    gunAdi: gunAdi,
+                    tutar: veri.tutar,
+                    islemSayisi: veri.sayi
+                ))
             }
         }
         

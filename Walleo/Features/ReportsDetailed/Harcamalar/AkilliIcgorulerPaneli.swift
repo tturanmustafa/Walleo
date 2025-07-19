@@ -104,22 +104,23 @@ struct IcgoruKarti: View {
         .cornerRadius(12)
     }
     
+    // Düzeltilmiş fonksiyon
     private func formatInsightMessage() -> String {
         let baseMessage = NSLocalizedString(icgoru.mesajKey, comment: "")
         
-        // Parametreleri yerine koy
-        var formattedMessage = baseMessage
-        for (key, value) in icgoru.parametreler {
-            let placeholder = "%@"
-            if let stringValue = value as? String {
-                formattedMessage = formattedMessage.replacingOccurrences(of: placeholder, with: stringValue)
-            } else if let intValue = value as? Int {
-                formattedMessage = formattedMessage.replacingOccurrences(of: placeholder, with: "\(intValue)")
-            } else if let doubleValue = value as? Double {
-                formattedMessage = formattedMessage.replacingOccurrences(of: placeholder, with: String(format: "%.1f", doubleValue))
+        // Parametreleri 'String(format:)' ile daha güvenli bir şekilde yerleştir
+        // Şu anki yapı tek parametre aldığı için basit tutulabilir,
+        // ancak birden fazla parametre için bu yapı daha güvenlidir.
+        if let parametre = icgoru.parametreler.first?.value {
+            if let stringValue = parametre as? String {
+                return String(format: baseMessage, stringValue)
+            } else if let intValue = parametre as? Int {
+                return String(format: baseMessage, intValue)
+            } else if let doubleValue = parametre as? Double {
+                return String(format: baseMessage, doubleValue)
             }
         }
         
-        return formattedMessage
+        return baseMessage
     }
 }

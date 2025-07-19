@@ -767,3 +767,30 @@
 "reports.category.day" = "Gün";
 "reports.category.amount" = "Tutar";
 "reports.category.month" = "Ay";
+
+"reports.heatmap.24_hours" = "24 Saat";
+"reports.transaction_count" = "%d işlem";
+"reports.average_with_amount" = "Ort: %@";
+"reports.heatmap.busiest_hours" = "En yoğun: %@";
+
+// MARK: - Ortak Kullanım Eklemeleri
+"common.low" = "Az";
+"common.high" = "Çok";
+"common.average" = "Ortalama";
+"common.highest" = "En Yüksek";
+
+// MARK: - Raporlar
+"reports.heatmap.try_different_date_range" = "Farklı bir tarih aralığı deneyin";
+"reports.heatmap.title.hourly" = "Saatlik Harcama Dağılımı";
+"reports.heatmap.title.daily" = "Günlük Harcama Dağılımı";
+"reports.heatmap.title.monthly" = "Aylık Harcama Dağılımı";
+"reports.heatmap.title.weekly" = "Haftalık Harcama Dağılımı";
+"reports.heatmap.title.monthly_summary" = "Aylık Harcama Özeti";
+"reports.heatmap.week_format" = "%d. Hafta";
+"reports.comparison.no_data_title" = "Karşılaştırma Verisi Yok";
+"reports.category.avg_short_format" = "Ort: %@";
+
+// MARK: - Nakit Akışı Raporu
+"reports.cashflow.no_data_title" = "Veri Bulunamadı";
+"reports.cashflow.no_data_desc" = "Seçilen tarih aralığında işlem bulunamadı.";
+"reports.category.daily_average_format" = "%@/gün";

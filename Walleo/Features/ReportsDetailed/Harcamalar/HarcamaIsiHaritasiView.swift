@@ -37,14 +37,14 @@ struct HarcamaIsiHaritasiView: View {
         ScrollView {
             VStack(spacing: 20) {
                 if viewModel.isLoading {
-                    ProgressView("Yükleniyor...")
+                    ProgressView(LocalizedStringKey("common.loading"))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(.top, 100)
                 } else if viewModel.isiHaritasiVerisi == nil {
                     ContentUnavailableView(
                         LocalizedStringKey("reports.heatmap.no_data"),
                         systemImage: "chart.xyaxis.line",
-                        description: Text("Farklı bir tarih aralığı deneyin")
+                        description: Text(LocalizedStringKey("reports.heatmap.try_different_date_range"))
                     )
                     .padding(.top, 100)
                 } else {

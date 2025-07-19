@@ -18,11 +18,11 @@ struct HesapAkisKartiView: View {
     private var hesapTipiAciklamasi: String {
         switch hesapAkis.hesap.detay {
         case .cuzdan:
-            return "Cüzdan"
+            return NSLocalizedString("account_type.wallet", comment: "")
         case .krediKarti:
-            return "Kredi Kartı"
+            return NSLocalizedString("account_type.credit_card", comment: "")
         case .kredi:
-            return "Kredi"
+            return NSLocalizedString("accounts.add.loan", comment: "")
         }
     }
     
@@ -60,10 +60,9 @@ struct HesapAkisKartiView: View {
                                     .font(.caption)
                                     .foregroundStyle(.tertiary)
                                 
-                                Text("\(hesapAkis.islemSayisi) işlem")
+                                Text(String(format: NSLocalizedString("reports.transaction_count", comment: ""), hesapAkis.islemSayisi))
                                     .font(.caption)
-                                    .foregroundStyle(.secondary)
-                            }
+                                    .foregroundStyle(.secondary)                            }
                         }
                     }
                     

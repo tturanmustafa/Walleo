@@ -1,5 +1,3 @@
-// >> TAM GÜNCELLENECEK DOSYA: RadyalSaatGrafigi.swift
-
 import SwiftUI
 import Charts
 
@@ -41,7 +39,7 @@ struct RadyalSaatGrafigi: View {
                         ))
                         .font(.subheadline.bold())
                         .foregroundColor(.accentColor)
-                        Text("\(veri.islemSayisi) işlem")
+                        Text(String(format: NSLocalizedString("reports.transaction_count", comment: ""), veri.islemSayisi))
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
@@ -85,7 +83,7 @@ struct RadyalSaatGrafigi: View {
                     Image(systemName: "clock.fill")
                         .font(.title2)
                         .foregroundStyle(.secondary)
-                    Text("24 Saat")
+                    Text(LocalizedStringKey("reports.heatmap.24_hours"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -106,7 +104,7 @@ struct RadyalSaatGrafigi: View {
                     Image(systemName: "flame.fill")
                         .font(.caption)
                         .foregroundColor(.orange)
-                    Text("En yoğun: \(enYogunSaatler.map { "\($0):00" }.joined(separator: ", "))")
+                    Text(String(format: NSLocalizedString("reports.heatmap.busiest_hours", comment: ""), enYogunSaatler.map { "\($0):00" }.joined(separator: ", ")))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

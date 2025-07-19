@@ -17,7 +17,6 @@ struct NakitAkisiRaporuView: View {
     @State private var viewModel: NakitAkisiViewModel
     
     @State private var secilenGorunum: GorunumTipi = .ozet
-    @State private var genisletilmisPaneller: Set<String> = []
     
     let baslangicTarihi: Date
     let bitisTarihi: Date
@@ -39,12 +38,11 @@ struct NakitAkisiRaporuView: View {
             bitisTarihi: bitisTarihi
         ))
     }
-    
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 if viewModel.isLoading {
-                    ProgressView("Yükleniyor...")
+                    ProgressView(LocalizedStringKey("common.loading"))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(.top, 100)
                 } else if let rapor = viewModel.nakitAkisiRaporu {
@@ -78,9 +76,9 @@ struct NakitAkisiRaporuView: View {
                     }
                 } else {
                     ContentUnavailableView(
-                        "Veri Bulunamadı",
+                        LocalizedStringKey("reports.cashflow.no_data_title"),
                         systemImage: "chart.line.uptrend.xyaxis",
-                        description: Text("Seçilen tarih aralığında işlem bulunamadı.")
+                        description: Text(LocalizedStringKey("reports.cashflow.no_data_desc"))
                     )
                     .padding(.top, 100)
                 }

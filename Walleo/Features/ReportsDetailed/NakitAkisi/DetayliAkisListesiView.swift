@@ -167,7 +167,7 @@ struct DetayliAkisListesiView: View {
                     VStack(spacing: 8) {
                         if gun.normalGelir > 0 || gun.normalGider > 0 {
                             islemTipiSatiri(
-                                baslik: "Normal",
+                                baslikKey: "cashflow.normal_transactions", // DÜZELTİLDİ
                                 gelir: gun.normalGelir,
                                 gider: gun.normalGider,
                                 ikon: "arrow.right.circle"
@@ -176,7 +176,7 @@ struct DetayliAkisListesiView: View {
                         
                         if gun.taksitliGelir > 0 || gun.taksitliGider > 0 {
                             islemTipiSatiri(
-                                baslik: "Taksitli",
+                                baslikKey: "cashflow.installment_transactions", // DÜZELTİLDİ
                                 gelir: gun.taksitliGelir,
                                 gider: gun.taksitliGider,
                                 ikon: "creditcard"
@@ -185,7 +185,7 @@ struct DetayliAkisListesiView: View {
                         
                         if gun.tekrarliGelir > 0 || gun.tekrarliGider > 0 {
                             islemTipiSatiri(
-                                baslik: "Tekrarlı",
+                                baslikKey: "cashflow.recurring_transactions", // DÜZELTİLDİ
                                 gelir: gun.tekrarliGelir,
                                 gider: gun.tekrarliGider,
                                 ikon: "arrow.clockwise"
@@ -223,14 +223,14 @@ struct DetayliAkisListesiView: View {
     }
     
     @ViewBuilder
-    private func islemTipiSatiri(baslik: String, gelir: Double, gider: Double, ikon: String) -> some View {
+    private func islemTipiSatiri(baslikKey: String, gelir: Double, gider: Double, ikon: String) -> some View {
         HStack {
             HStack(spacing: 6) {
                 Image(systemName: ikon)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 
-                Text(baslik)
+                Text(LocalizedStringKey(baslikKey)) // DÜZELTİLDİ
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
