@@ -154,10 +154,20 @@ struct DashboardView: View {
             } message: { islem in
                 Text("alert.delete_transaction.message")
             }
-            .onAppear { viewModel.fetchData() }
+            .onAppear {
+                viewModel.fetchData()
+            }
             // YENİ: onChange'i optimize et
             .onChange(of: viewModel.secilenTur) { _, _ in
                 // ViewModel zaten kendi içinde kontrol ediyor
+            }
+            // YENİ: Sheet kapandığında veriyi güncelle
+            .onChange(of: duzenlenecekIslem) { oldValue, newValue in
+                if oldValue != nil && newValue == nil {
+                    // Sheet kapandı, veriyi güncelle
+                    viewModel.invalidateCache()
+                    viewModel.fetchData()
+                }
             }
             
             // YENİ: Yükleme göstergesi
