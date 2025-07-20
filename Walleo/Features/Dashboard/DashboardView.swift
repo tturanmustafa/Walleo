@@ -52,13 +52,12 @@ struct DashboardView: View {
     @State private var isShowingNotifications = false
     @State private var silinecekTaksitliIslem: Islem?
 
-    
     @Namespace private var animation
 
     private var sheetColorScheme: ColorScheme {
         switch appSettings.colorSchemeValue {
-        case 1: return .light // 'return' eklendi
-        case 2: return .dark  // 'return' eklendi
+        case 1: return .light
+        case 2: return .dark
         default: return systemColorScheme
         }
     }
@@ -71,78 +70,48 @@ struct DashboardView: View {
         ZStack {
             NavigationStack {
                 VStack(spacing: 0) {
-                    MonthNavigatorView(currentDate: $viewModel.currentDate)
-                        .padding(.bottom, 10)
+                    // YENİ: Header bölümünü ayrı bir computed property yap
+                    headerSection
                     
-                    transactionTypePicker
-                        .padding(.bottom, 10)
-                    
-                    totalAmountView
-                        .transition(.opacity.animation(.easeInOut))
-                        .id("totalAmount_\(viewModel.secilenTur.rawValue)")
-                        .padding(.bottom, 12)
-                    
-                    dividerLine
-                    
+                    // YENİ: LazyVStack kullanarak performans artışı
                     ScrollView(.vertical, showsIndicators: false) {
-                        VStack(spacing: 12) {
-                            ChartPanelView(
-                                pieChartVerisi: viewModel.pieChartVerisi,
-                                kategoriDetaylari: viewModel.kategoriDetaylari,
-                                toplamTutar: viewModel.toplamTutar
-                            )
+                        LazyVStack(spacing: 12) {
+                            // YENİ: Chart'ı sadece veri varken göster
+                            if !viewModel.pieChartVerisi.isEmpty {
+                                ChartPanelView(
+                                    pieChartVerisi: viewModel.pieChartVerisi,
+                                    kategoriDetaylari: viewModel.kategoriDetaylari,
+                                    toplamTutar: viewModel.toplamTutar
+                                )
+                                // YENİ: id ile gereksiz re-render'ları önle
+                                .id("chart_\(viewModel.currentDate.timeIntervalSince1970)_\(viewModel.secilenTur.rawValue)")
+                            }
                             
-                            if !viewModel.pieChartVerisi.isEmpty && !viewModel.filtrelenmisIslemler.isEmpty { dividerLine }
+                            if !viewModel.pieChartVerisi.isEmpty && !viewModel.filtrelenmisIslemler.isEmpty {
+                                dividerLine
+                            }
                             
-                            // GÜNCELLEME: 'currentDate' parametresi eklendi.
-                            RecentTransactionsView(
-                                modelContext: viewModel.modelContext,
-                                islemler: viewModel.filtrelenmisIslemler,
-                                currentDate: viewModel.currentDate, // EKLENEN SATIR
-                                duzenlenecekIslem: $duzenlenecekIslem,
-                                onSilmeyiBaslat: { islem in
-                                    self.silmeyiBaslat(islem)
-                                }
-                            )
-                            .environmentObject(appSettings)
+                            // YENİ: Son işlemler bölümünü optimize et
+                            recentTransactionsSection
                         }
-                        .animation(.easeInOut(duration: 0.2), value: viewModel.filtrelenmisIslemler)
+                        // YENİ: Animasyonu sadece içerik değişiminde uygula
+                        .animation(.easeInOut(duration: 0.2), value: viewModel.filtrelenmisIslemler.count)
                         .padding(.vertical)
                     }
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
-                        Button(action: { isShowingNotifications = true }) {
-                            ZStack {
-                                Image(systemName: "bell.fill")
-                                    .font(.title3)
-                                    .foregroundColor(.secondary)
-                                
-                                if !unreadNotifications.isEmpty {
-                                    Text("\(unreadNotifications.count)")
-                                        .font(.caption2.bold())
-                                        .foregroundColor(.white)
-                                        .padding(5)
-                                        .background(Circle().fill(Color.red))
-                                        .offset(x: 12, y: -10)
-                                        .transition(.scale)
-                                }
-                            }
-                        }
+                        notificationButton
                     }
                     
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: { isShowingSettings = true }) {
-                            Image(systemName: "gearshape.fill")
-                                .font(.title3)
-                                .foregroundColor(.secondary)
-                        }
+                        settingsButton
                     }
                 }
                 .navigationTitle(LocalizedStringKey("tab.dashboard"))
                 .navigationBarTitleDisplayMode(.inline)
             }
-            .disabled(viewModel.isDeleting) // GÜNCELLENDİ: Silinirken arayüzü pasif yap
+            .disabled(viewModel.isDeleting)
             .sheet(isPresented: $isShowingSettings) {
                 NavigationStack {
                     AyarlarView()
@@ -186,7 +155,10 @@ struct DashboardView: View {
                 Text("alert.delete_transaction.message")
             }
             .onAppear { viewModel.fetchData() }
-            .onChange(of: viewModel.secilenTur) { viewModel.fetchData() }
+            // YENİ: onChange'i optimize et
+            .onChange(of: viewModel.secilenTur) { _, _ in
+                // ViewModel zaten kendi içinde kontrol ediyor
+            }
             
             // YENİ: Yükleme göstergesi
             if viewModel.isDeleting {
@@ -196,6 +168,75 @@ struct DashboardView: View {
                     .cornerRadius(10)
                     .shadow(radius: 5)
             }
+        }
+    }
+    
+    // YENİ: Header bölümünü ayır
+    @ViewBuilder
+    private var headerSection: some View {
+        VStack(spacing: 0) {
+            MonthNavigatorView(currentDate: $viewModel.currentDate)
+                .padding(.bottom, 10)
+            
+            transactionTypePicker
+                .padding(.bottom, 10)
+            
+            totalAmountView
+                .transition(.opacity.animation(.easeInOut))
+                .id("totalAmount_\(viewModel.secilenTur.rawValue)")
+                .padding(.bottom, 12)
+            
+            dividerLine
+        }
+    }
+    
+    // YENİ: Recent transactions'ı optimize et
+    @ViewBuilder
+    private var recentTransactionsSection: some View {
+        if !viewModel.filtrelenmisIslemler.isEmpty {
+            RecentTransactionsView(
+                modelContext: viewModel.modelContext,
+                islemler: Array(viewModel.filtrelenmisIslemler.prefix(5)), // Sadece ilk 5'i göster
+                currentDate: viewModel.currentDate,
+                duzenlenecekIslem: $duzenlenecekIslem,
+                onSilmeyiBaslat: { islem in
+                    self.silmeyiBaslat(islem)
+                }
+            )
+            .environmentObject(appSettings)
+            // YENİ: Sabit id ile gereksiz re-render'ları önle
+            .id("recent_transactions")
+        }
+    }
+    
+    // YENİ: Toolbar butonlarını ayır
+    @ViewBuilder
+    private var notificationButton: some View {
+        Button(action: { isShowingNotifications = true }) {
+            ZStack {
+                Image(systemName: "bell.fill")
+                    .font(.title3)
+                    .foregroundColor(.secondary)
+                
+                if !unreadNotifications.isEmpty {
+                    Text("\(unreadNotifications.count)")
+                        .font(.caption2.bold())
+                        .foregroundColor(.white)
+                        .padding(5)
+                        .background(Circle().fill(Color.red))
+                        .offset(x: 12, y: -10)
+                        .transition(.scale)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    private var settingsButton: some View {
+        Button(action: { isShowingSettings = true }) {
+            Image(systemName: "gearshape.fill")
+                .font(.title3)
+                .foregroundColor(.secondary)
         }
     }
     
