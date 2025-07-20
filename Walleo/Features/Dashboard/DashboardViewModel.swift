@@ -61,6 +61,9 @@ class DashboardViewModel {
     
     // YENİ: Akıllı güncelleme mekanizması
     @objc private func handleDataChange(_ notification: Notification) {
+        // İşlem değişikliği olduğunda cache'i temizle
+        invalidateCache()
+        
         // Payload'dan etkilenen hesapları ve kategorileri al
         if let payload = notification.userInfo?["payload"] as? TransactionChangePayload {
             // Sadece mevcut görünümdeki veriyi etkileyen değişikliklerde güncelle
@@ -85,14 +88,16 @@ class DashboardViewModel {
         return true // Şimdilik basit tutalım
     }
     
-    private func invalidateCache() {
+    func invalidateCache() {
         cachedMonthData.removeAll()
         isDataStale = true
     }
     
     @objc func fetchData() {
-        // YENİ: Cache kontrolü
-        if !isDataStale && Calendar.current.isDate(lastFetchDate ?? Date(), equalTo: currentDate, toGranularity: .month) {
+        // YENİ: Cache kontrolü - sadece veri stale değilse cache kullan
+        if !isDataStale &&
+           Calendar.current.isDate(lastFetchDate ?? Date(), equalTo: currentDate, toGranularity: .month) &&
+           cachedMonthData[secilenTur] != nil {
             // Cache'den kullan
             if let cached = cachedMonthData[secilenTur] {
                 self.filtrelenmisIslemler = cached
@@ -109,11 +114,9 @@ class DashboardViewModel {
             let bitisTarihi = monthInterval.end
             
             // YENİ: Tüm ay verisini bir kerede çek ve cache'le
-            if isDataStale || cachedMonthData.isEmpty {
-                fetchMonthData(start: baslangicTarihi, end: bitisTarihi)
-                isDataStale = false
-                lastFetchDate = currentDate
-            }
+            fetchMonthData(start: baslangicTarihi, end: bitisTarihi)
+            isDataStale = false
+            lastFetchDate = currentDate
             
             // Cache'den ilgili tür verisini al
             self.filtrelenmisIslemler = cachedMonthData[secilenTur] ?? []
@@ -214,11 +217,8 @@ class DashboardViewModel {
     func deleteIslem(_ islem: Islem) {
         TransactionService.shared.deleteTransaction(islem, in: modelContext)
         
-        // Cache'i güncelle
-        if var cached = cachedMonthData[islem.tur] {
-            cached.removeAll { $0.id == islem.id }
-            cachedMonthData[islem.tur] = cached
-        }
+        // Cache'i invalidate et
+        invalidateCache()
         
         fetchData()
     }
