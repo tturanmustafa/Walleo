@@ -72,6 +72,7 @@ struct WalleoApp: App {
                 OnboardingView()
                     .environmentObject(appSettings)
                     .environmentObject(entitlementManager)
+                    .modelContainer(modelContainer)  // Bu satırı ekleyin
             }
         }
         .modelContainer(modelContainer)

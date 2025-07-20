@@ -899,3 +899,28 @@
 "spending_report.budget_status.exceeded" = "Exceeded";
 "spending_report.busiest_hours" = "Busiest Hours";
 "common.transactions" = "Transactions";
+
+// Onboarding - New strings
+"onboarding.skip" = "Skip";
+"onboarding.continue" = "Continue";
+"onboarding.confirm_settings" = "Confirm Settings";
+"onboarding.privacy_notice" = "By continuing, you agree to our Privacy Policy and Terms of Service.";
+
+// Welcome page
+"onboarding.welcome.title" = "Welcome to Financial Freedom";
+"onboarding.welcome.subtitle" = "Track expenses, manage budgets, and achieve your financial goals";
+
+// Feature pages
+"onboarding.feature1.title" = "Smart Analytics";
+"onboarding.feature1.description" = "Categorize your expenses and visualize your financial status with detailed charts";
+
+"onboarding.feature2.title" = "Budget Management";
+"onboarding.feature2.description" = "Create monthly budgets, track your limits, and reach your savings goals";
+
+"onboarding.feature3.title" = "Smart Reminders";
+"onboarding.feature3.description" = "Get timely notifications for bill payments and budget overruns";
+
+// Personalization page
+"onboarding.personalize.title" = "Personalize Your Experience";
+"onboarding.select_language" = "Select Language";
+"onboarding.select_currency" = "Select Currency";
