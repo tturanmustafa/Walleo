@@ -36,7 +36,7 @@ struct DetayliRaporlarView: View {
                 // Rapor içeriğini gösteren switch (Bu kısım aynı)
                 switch secilenRaporTuru {
                 case .harcamalar:
-                    HarcamaIsiHaritasiView(
+                    HarcamaRaporuView(
                         modelContext: modelContext,
                         baslangicTarihi: viewModel.baslangicTarihi,
                         bitisTarihi: viewModel.bitisTarihi
