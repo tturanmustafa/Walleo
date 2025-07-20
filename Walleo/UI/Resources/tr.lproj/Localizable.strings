@@ -899,3 +899,28 @@
 "spending_report.budget_status.exceeded" = "Aşıldı";
 "spending_report.busiest_hours" = "En Yoğun Saatler";
 "common.transactions" = "İşlemler";
+
+// Onboarding - Yeni metinler
+"onboarding.skip" = "Atla";
+"onboarding.continue" = "Devam";
+"onboarding.confirm_settings" = "Ayarları Onayla";
+"onboarding.privacy_notice" = "Devam ederek Gizlilik Politikamızı ve Kullanım Koşullarımızı kabul etmiş olursunuz.";
+
+// Welcome sayfası
+"onboarding.welcome.title" = "Finansal Özgürlüğe Hoş Geldiniz";
+"onboarding.welcome.subtitle" = "Harcamalarınızı takip edin, bütçenizi yönetin ve finansal hedeflerinize ulaşın";
+
+// Özellik sayfaları
+"onboarding.feature1.title" = "Akıllı Analizler";
+"onboarding.feature1.description" = "Harcamalarınızı kategorilere ayırın ve detaylı grafiklerle finansal durumunuzu görün";
+
+"onboarding.feature2.title" = "Bütçe Yönetimi";
+"onboarding.feature2.description" = "Aylık bütçeler oluşturun, limitlerinizi takip edin ve tasarruf hedeflerinize ulaşın";
+
+"onboarding.feature3.title" = "Akıllı Hatırlatmalar";
+"onboarding.feature3.description" = "Fatura ödemeleri ve bütçe aşımları için zamanında bildirimler alın";
+
+// Kişiselleştirme sayfası
+"onboarding.personalize.title" = "Deneyiminizi Kişiselleştirin";
+"onboarding.select_language" = "Dil Seçin";
+"onboarding.select_currency" = "Para Birimi Seçin";
