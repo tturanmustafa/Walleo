@@ -848,3 +848,54 @@
 "reports.detailed.active_loan_count" = "%d Active Loans";
 "reports.detailed.paid_installments_count" = "%d Paid";
 "reports.detailed.unpaid_installments_count" = "%d Unpaid";
+
+// Spending Report
+"spending_report.view.summary" = "Summary";
+"spending_report.view.category" = "Categories";
+"spending_report.view.time" = "Time Analysis";
+"spending_report.view.comparison" = "Comparison";
+
+"spending_report.no_data" = "No Expenses Found";
+"spending_report.no_data_desc" = "No expenses found in the selected date range";
+
+"spending_report.total_spending" = "Total Spending";
+"spending_report.daily_avg" = "Daily Average";
+"spending_report.transaction_count" = "Transactions";
+"spending_report.avg_transaction" = "Avg per Transaction";
+"spending_report.highest_expense" = "Highest Expense";
+
+"spending_report.increase" = "Increase";
+"spending_report.decrease" = "Decrease";
+
+"spending_report.top_categories" = "Top Spending Categories";
+"spending_report.weekly_summary" = "Weekly Summary";
+"spending_report.insights" = "Smart Insights";
+
+"spending_report.insight.busiest_day" = "Your busiest day was %@ with %@ in expenses";
+"spending_report.insight.top_category" = "%@ accounts for %.1f%% of your total spending";
+"spending_report.insight.weekend_warning" = "Your weekend average spending is high compared to weekdays";
+
+// Category View
+"spending_report.category_distribution" = "Category Distribution";
+"spending_report.category_details" = "Category Details";
+"spending_report.largest_expense" = "Largest Expense";
+"spending_report.avg_per_transaction" = "Average per Transaction";
+
+// Time View
+"spending_report.daily_trend" = "Daily Spending Trend";
+"spending_report.weekday_weekend" = "Weekday vs Weekend";
+"spending_report.hourly_distribution" = "Hourly Distribution";
+"spending_report.weekday" = "Weekday";
+"spending_report.weekend" = "Weekend";
+
+// Comparison View
+"spending_report.period_comparison" = "Period Comparison";
+"spending_report.previous_period" = "Previous Period";
+"spending_report.current_period" = "Current Period";
+"spending_report.category_changes" = "Category Changes";
+"spending_report.budget_performance" = "Budget Performance";
+"spending_report.budget_status.normal" = "Normal";
+"spending_report.budget_status.critical" = "Critical";
+"spending_report.budget_status.exceeded" = "Exceeded";
+"spending_report.busiest_hours" = "Busiest Hours";
+"common.transactions" = "Transactions";

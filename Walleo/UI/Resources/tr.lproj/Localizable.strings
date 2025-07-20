@@ -848,3 +848,54 @@
 "reports.detailed.active_loan_count" = "%d Aktif Kredi";
 "reports.detailed.paid_installments_count" = "%d Ödendi";
 "reports.detailed.unpaid_installments_count" = "%d Ödenmedi";
+
+// Harcama Raporu
+"spending_report.view.summary" = "Özet";
+"spending_report.view.category" = "Kategoriler";
+"spending_report.view.time" = "Zaman Analizi";
+"spending_report.view.comparison" = "Karşılaştırma";
+
+"spending_report.no_data" = "Harcama Bulunamadı";
+"spending_report.no_data_desc" = "Seçilen tarih aralığında harcama bulunmuyor";
+
+"spending_report.total_spending" = "Toplam Harcama";
+"spending_report.daily_avg" = "Günlük Ortalama";
+"spending_report.transaction_count" = "İşlem Sayısı";
+"spending_report.avg_transaction" = "Ortalama İşlem";
+"spending_report.highest_expense" = "En Yüksek Harcama";
+
+"spending_report.increase" = "Artış";
+"spending_report.decrease" = "Azalış";
+
+"spending_report.top_categories" = "En Çok Harcanan Kategoriler";
+"spending_report.weekly_summary" = "Haftalık Özet";
+"spending_report.insights" = "Akıllı İçgörüler";
+
+"spending_report.insight.busiest_day" = "%@ tarihinde %@ harcama ile en yoğun gününüz";
+"spending_report.insight.top_category" = "%@ kategorisi toplam harcamanızın %%%.1f'ini oluşturuyor";
+"spending_report.insight.weekend_warning" = "Hafta sonu ortalama harcamalarınız hafta içine göre yüksek";
+
+// Kategori Görünümü
+"spending_report.category_distribution" = "Kategori Dağılımı";
+"spending_report.category_details" = "Kategori Detayları";
+"spending_report.largest_expense" = "En Büyük Harcama";
+"spending_report.avg_per_transaction" = "İşlem Başına Ortalama";
+
+// Zaman Görünümü
+"spending_report.daily_trend" = "Günlük Harcama Trendi";
+"spending_report.weekday_weekend" = "Hafta İçi vs Hafta Sonu";
+"spending_report.hourly_distribution" = "Saatlik Dağılım";
+"spending_report.weekday" = "Hafta İçi";
+"spending_report.weekend" = "Hafta Sonu";
+
+// Karşılaştırma Görünümü
+"spending_report.period_comparison" = "Dönem Karşılaştırması";
+"spending_report.previous_period" = "Önceki Dönem";
+"spending_report.current_period" = "Mevcut Dönem";
+"spending_report.category_changes" = "Kategori Değişimleri";
+"spending_report.budget_performance" = "Bütçe Performansı";
+"spending_report.budget_status.normal" = "Normal";
+"spending_report.budget_status.critical" = "Kritik";
+"spending_report.budget_status.exceeded" = "Aşıldı";
+"spending_report.busiest_hours" = "En Yoğun Saatler";
+"common.transactions" = "İşlemler";
