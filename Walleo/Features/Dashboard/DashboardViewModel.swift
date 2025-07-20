@@ -12,17 +12,32 @@ class DashboardViewModel {
     private let modelContainer: ModelContainer
     
     var currentDate = Date() {
-        didSet { fetchData() }
+        didSet {
+            // YENİ: Sadece ay değiştiğinde veriyi yenile
+            if !Calendar.current.isDate(oldValue, equalTo: currentDate, toGranularity: .month) {
+                invalidateCache()
+                fetchData()
+            }
+        }
     }
     
     var secilenTur: IslemTuru = .gider {
-        didSet { fetchData() }
+        didSet {
+            if oldValue != secilenTur {
+                fetchData()
+            }
+        }
     }
     
     var filtrelenmisIslemler: [Islem] = []
     var toplamTutar: Double = 0
     var pieChartVerisi: [KategoriHarcamasi] = []
     var kategoriDetaylari: [String: (renk: Color, ikon: String)] = [:]
+    
+    // YENİ: Cache mekanizması
+    private var cachedMonthData: [IslemTuru: [Islem]] = [:]
+    private var lastFetchDate: Date?
+    private var isDataStale = true
 
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
@@ -31,39 +46,77 @@ class DashboardViewModel {
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(fetchData),
+            selector: #selector(handleDataChange),
             name: .transactionsDidChange,
             object: nil
         )
         // DÜZELTME: Yeni sinyal dinleyicisi eklendi
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(fetchData),
-            name: .categoriesDidChange, // Yeni sinyali dinliyor
+            selector: #selector(handleCategoryChange),
+            name: .categoriesDidChange,
             object: nil
         )
     }
     
+    // YENİ: Akıllı güncelleme mekanizması
+    @objc private func handleDataChange(_ notification: Notification) {
+        // Payload'dan etkilenen hesapları ve kategorileri al
+        if let payload = notification.userInfo?["payload"] as? TransactionChangePayload {
+            // Sadece mevcut görünümdeki veriyi etkileyen değişikliklerde güncelle
+            if shouldRefreshView(for: payload) {
+                fetchData()
+            }
+        } else {
+            // Payload yoksa güvenli tarafta kalıp güncelle
+            fetchData()
+        }
+    }
+    
+    @objc private func handleCategoryChange() {
+        // Kategori değişikliği chart'ı etkileyeceği için cache'i temizle
+        invalidateCache()
+        fetchData()
+    }
+    
+    private func shouldRefreshView(for payload: TransactionChangePayload) -> Bool {
+        // Mevcut ay ve tür ile ilgili değişiklik mi kontrol et
+        // Bu daha detaylı implemente edilebilir
+        return true // Şimdilik basit tutalım
+    }
+    
+    private func invalidateCache() {
+        cachedMonthData.removeAll()
+        isDataStale = true
+    }
+    
     @objc func fetchData() {
+        // YENİ: Cache kontrolü
+        if !isDataStale && Calendar.current.isDate(lastFetchDate ?? Date(), equalTo: currentDate, toGranularity: .month) {
+            // Cache'den kullan
+            if let cached = cachedMonthData[secilenTur] {
+                self.filtrelenmisIslemler = cached
+                self.hesaplamalariGuncelle()
+                return
+            }
+        }
+        
         do {
             let calendar = Calendar.current
             guard let monthInterval = calendar.dateInterval(of: .month, for: currentDate) else { return }
             
             let baslangicTarihi = monthInterval.start
             let bitisTarihi = monthInterval.end
-            let turRawValue = self.secilenTur.rawValue
             
-            let descriptor = FetchDescriptor<Islem>(
-                predicate: #Predicate { islem in
-                    islem.turRawValue == turRawValue &&
-                    islem.tarih >= baslangicTarihi &&
-                    islem.tarih < bitisTarihi
-                },
-                sortBy: [SortDescriptor(\.tarih, order: .reverse)]
-            )
+            // YENİ: Tüm ay verisini bir kerede çek ve cache'le
+            if isDataStale || cachedMonthData.isEmpty {
+                fetchMonthData(start: baslangicTarihi, end: bitisTarihi)
+                isDataStale = false
+                lastFetchDate = currentDate
+            }
             
-            let islemler = try modelContext.fetch(descriptor)
-            self.filtrelenmisIslemler = islemler
+            // Cache'den ilgili tür verisini al
+            self.filtrelenmisIslemler = cachedMonthData[secilenTur] ?? []
             self.hesaplamalariGuncelle()
 
         } catch {
@@ -73,62 +126,114 @@ class DashboardViewModel {
         }
     }
     
+    // YENİ: Ay verisini türlere göre cache'le
+    private func fetchMonthData(start: Date, end: Date) {
+        do {
+            let descriptor = FetchDescriptor<Islem>(
+                predicate: #Predicate { islem in
+                    islem.tarih >= start && islem.tarih < end
+                },
+                sortBy: [SortDescriptor(\.tarih, order: .reverse)]
+            )
+            
+            let allTransactions = try modelContext.fetch(descriptor)
+            
+            // Türlere göre grupla ve cache'le
+            cachedMonthData[.gelir] = allTransactions.filter { $0.tur == .gelir }
+            cachedMonthData[.gider] = allTransactions.filter { $0.tur == .gider }
+            
+        } catch {
+            Logger.log("Ay verisi cache'leme hatası: \(error)", log: Logger.data, type: .error)
+        }
+    }
+    
+    // YENİ: Optimize edilmiş hesaplama
     private func hesaplamalariGuncelle() {
+        // Performans: Array yerine reduce kullan
         toplamTutar = filtrelenmisIslemler.reduce(0) { $0 + $1.tutar }
         
-        let detaylar = Dictionary(filtrelenmisIslemler.compactMap { islem -> (String, (renk: Color, ikon: String, key: String?))? in
-            guard let kategori = islem.kategori else { return nil }
-            return (kategori.isim, (kategori.renk, kategori.ikonAdi, kategori.localizationKey))
-        }, uniquingKeysWith: { (ilkBulunan, _) in ilkBulunan })
+        // Kategori detaylarını sadece bir kez hesapla
+        var tempKategoriDetaylari: [String: (renk: Color, ikon: String, key: String?)] = [:]
+        var kategoriTutarlari: [String: Double] = [:]
         
-        self.kategoriDetaylari = detaylar.mapValues { ($0.renk, $0.ikon) }
-        let gruplanmis = Dictionary(grouping: filtrelenmisIslemler, by: { $0.kategori?.isim ?? "Diğer" })
-        let toplamlar = gruplanmis.mapValues { $0.reduce(0) { $0 + $1.tutar } }
-        let siraliToplamlar = toplamlar.sorted { $0.value > $1.value }
+        for islem in filtrelenmisIslemler {
+            guard let kategori = islem.kategori else { continue }
+            
+            let kategoriAdi = kategori.isim
+            
+            // Kategori detaylarını sadece ilk karşılaşmada ekle
+            if tempKategoriDetaylari[kategoriAdi] == nil {
+                tempKategoriDetaylari[kategoriAdi] = (kategori.renk, kategori.ikonAdi, kategori.localizationKey)
+            }
+            
+            // Tutarları topla
+            kategoriTutarlari[kategoriAdi, default: 0] += islem.tutar
+        }
         
-        var yeniPieChartVerisi: [KategoriHarcamasi] = []
+        self.kategoriDetaylari = tempKategoriDetaylari.mapValues { ($0.renk, $0.ikon) }
+        
+        // Chart verisi oluştur
+        var chartData: [KategoriHarcamasi] = []
         var digerTutar: Double = 0.0
         
-        for (kategoriAdi, tutar) in siraliToplamlar {
+        // En yüksek 4 kategoriyi al
+        let sortedCategories = kategoriTutarlari.sorted { $0.value > $1.value }
+        
+        for (index, (kategoriAdi, tutar)) in sortedCategories.enumerated() {
             if kategoriAdi == "Diğer" {
                 digerTutar += tutar
                 continue
             }
             
-            if yeniPieChartVerisi.count < 4 {
-                let renk = detaylar[kategoriAdi]?.renk ?? .gray
-                let key = detaylar[kategoriAdi]?.key
-                yeniPieChartVerisi.append(KategoriHarcamasi(kategori: kategoriAdi, tutar: tutar, renk: renk, localizationKey: key))
+            if index < 4 {
+                let detay = tempKategoriDetaylari[kategoriAdi]
+                chartData.append(KategoriHarcamasi(
+                    kategori: kategoriAdi,
+                    tutar: tutar,
+                    renk: detay?.renk ?? .gray,
+                    localizationKey: detay?.key
+                ))
             } else {
                 digerTutar += tutar
             }
         }
         
         if digerTutar > 0 {
-            yeniPieChartVerisi.append(KategoriHarcamasi(kategori: "Diğer", tutar: digerTutar, renk: .gray, localizationKey: "category.other"))
+            chartData.append(KategoriHarcamasi(
+                kategori: "Diğer",
+                tutar: digerTutar,
+                renk: .gray,
+                localizationKey: "category.other"
+            ))
         }
         
-        self.pieChartVerisi = yeniPieChartVerisi
+        self.pieChartVerisi = chartData
     }
     
     // GÜNCELLENMİŞ FONKSİYON
     func deleteIslem(_ islem: Islem) {
-        // Artık `scope` parametresi olmayan doğru fonksiyonu çağırıyoruz.
         TransactionService.shared.deleteTransaction(islem, in: modelContext)
-        // Silme sonrası arayüzü yenilemek için veriyi tekrar çekiyoruz.
+        
+        // Cache'i güncelle
+        if var cached = cachedMonthData[islem.tur] {
+            cached.removeAll { $0.id == islem.id }
+            cachedMonthData[islem.tur] = cached
+        }
+        
         fetchData()
     }
-    
-    
     
     // GÜNCELLENMİŞ FONKSİYON
     func deleteSeri(for islem: Islem) {
         Task {
-            isDeleting = true // Silme işlemi başladı
-            // Yeni, arka planda çalışan servisi çağırıyoruz.
+            isDeleting = true
             await TransactionService.shared.deleteSeriesInBackground(tekrarID: islem.tekrarID, from: modelContainer)
-            fetchData() // İşlem bitince veriyi yenile
-            isDeleting = false // Silme işlemi bitti
+            
+            // Cache'i invalidate et çünkü birden fazla işlem silinmiş olabilir
+            invalidateCache()
+            fetchData()
+            
+            isDeleting = false
         }
     }
 }

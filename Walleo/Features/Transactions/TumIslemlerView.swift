@@ -12,13 +12,16 @@ struct TumIslemlerView: View {
     @State private var kategoriFiltreGosteriliyor = false
     @State private var tarihFiltreGosteriliyor = false
     @State private var turFiltreGosteriliyor = false
+    @State private var hesapFiltreGosteriliyor = false
     
     @State private var duzenlenecekIslem: Islem?
     @State private var silinecekTekrarliIslem: Islem?
     @State private var silinecekTekilIslem: Islem?
     @State private var silinecekTaksitliIslem: Islem?
-    @State private var hesapFiltreGosteriliyor = false // <-- BU SATIRI EKLEYİN
-
+    
+    // YENİ: Scroll performansı için
+    @State private var scrollViewProxy: ScrollViewProxy?
+    @State private var isScrolling = false
     
     init(modelContext: ModelContext, baslangicTarihi: Date? = nil) {
         _viewModel = State(initialValue: TumIslemlerViewModel(modelContext: modelContext, baslangicTarihi: baslangicTarihi))
@@ -27,12 +30,12 @@ struct TumIslemlerView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
-                filtrelemeBari.padding(.vertical, 8)
-                List {
-                    ForEach(viewModel.islemler) { islem in
-                        IslemSatirView(islem: islem, onEdit: { duzenlenecekIslem = islem }, onDelete: { silmeyiBaslat(islem) })
-                    }
-                }.listStyle(.plain)
+                // YENİ: Filtre barını optimize et
+                filtrelemeBari
+                    .padding(.vertical, 8)
+                
+                // YENİ: Liste performansını artır
+                optimizedListView
             }
             .disabled(viewModel.isDeleting)
             .navigationTitle("all_transactions.title")
@@ -40,36 +43,43 @@ struct TumIslemlerView: View {
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { dismiss() }) {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                            Text("common.back")
-                        }
-                    }
+                    backButton
                 }
             }
+            // Sheet'ler
             .sheet(isPresented: $kategoriFiltreGosteriliyor) {
-                KategoriSecimView(secilenKategoriler: $viewModel.filtreAyarlari.secilenKategoriler).environmentObject(appSettings)
+                KategoriSecimView(secilenKategoriler: $viewModel.filtreAyarlari.secilenKategoriler)
+                    .environmentObject(appSettings)
+                    .onDisappear {
+                        viewModel.onFilterChanged()
+                    }
             }
             .sheet(isPresented: $hesapFiltreGosteriliyor) {
                 HesapSecimFiltreView(secilenHesaplar: $viewModel.filtreAyarlari.secilenHesaplar)
+                    .onDisappear {
+                        viewModel.onFilterChanged()
+                    }
             }
             .sheet(isPresented: $tarihFiltreGosteriliyor) {
-                TarihAraligiSecimView(filtreAyarlari: $viewModel.filtreAyarlari).environmentObject(appSettings)
+                TarihAraligiSecimView(filtreAyarlari: $viewModel.filtreAyarlari)
+                    .environmentObject(appSettings)
+                    .onDisappear {
+                        viewModel.invalidateCacheAndFetch()
+                    }
             }
             .sheet(isPresented: $turFiltreGosteriliyor) {
                 IslemTuruSecimView(secilenTurler: $viewModel.filtreAyarlari.secilenTurler)
                     .presentationDetents([.height(200)])
                     .environmentObject(appSettings)
+                    .onDisappear {
+                        viewModel.invalidateCacheAndFetch()
+                    }
             }
             .sheet(item: $duzenlenecekIslem) { islem in
-                IslemEkleView(duzenlenecekIslem: islem).environmentObject(appSettings)
+                IslemEkleView(duzenlenecekIslem: islem)
+                    .environmentObject(appSettings)
             }
-            .overlay {
-                if viewModel.islemler.isEmpty && !viewModel.isDeleting {
-                    ContentUnavailableView("all_transactions.not_found", systemImage: "magnifyingglass", description: Text("all_transactions.not_found_desc"))
-                }
-            }
+            // Alert'ler
             .recurringTransactionAlert(
                 for: $silinecekTekrarliIslem,
                 onDeleteSingle: { islem in viewModel.deleteIslem(islem) },
@@ -81,8 +91,6 @@ struct TumIslemlerView: View {
                 presenting: silinecekTaksitliIslem
             ) { islem in
                 Button(role: .destructive) {
-                    // --- DEĞİŞİKLİK BURADA ---
-                    // Doğrudan servisi çağırmak yerine ViewModel'daki fonksiyonu çağırıyoruz.
                     viewModel.deleteTaksitliIslem(islem)
                 } label: {
                     Text("common.delete")
@@ -102,14 +110,108 @@ struct TumIslemlerView: View {
                 Text("alert.delete_transaction.message")
             }
             
+            // YENİ: Loading overlay
+            if viewModel.isLoading && viewModel.islemler.isEmpty {
+                loadingView
+            }
+            
+            // Delete overlay
             if viewModel.isDeleting {
-                ProgressView("Siliniyor...")
-                    .padding(25)
-                    .background(Material.thick)
-                    .cornerRadius(10)
-                    .shadow(radius: 5)
+                deleteProgressView
             }
         }
+        .onAppear {
+            // View göründüğünde veriyi yükle
+            if viewModel.islemler.isEmpty {
+                viewModel.fetchData()
+            }
+        }
+    }
+    
+    // YENİ: Optimize edilmiş liste view
+    @ViewBuilder
+    private var optimizedListView: some View {
+        if viewModel.islemler.isEmpty && !viewModel.isLoading {
+            emptyStateView
+        } else {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(spacing: 0, pinnedViews: []) {
+                        ForEach(Array(viewModel.islemler.enumerated()), id: \.element.id) { index, islem in
+                            VStack(spacing: 0) {
+                                // YENİ: Her satırı optimize et
+                                OptimizedTransactionRow(
+                                    islem: islem,
+                                    onEdit: { duzenlenecekIslem = islem },
+                                    onDelete: { silmeyiBaslat(islem) }
+                                )
+                                .id(islem.id)
+                                .transition(.opacity.combined(with: .move(edge: .top)))
+                                
+                                if index < viewModel.islemler.count - 1 {
+                                    Divider()
+                                        .padding(.leading, 60)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.vertical, 8)
+                }
+                .onAppear {
+                    scrollViewProxy = proxy
+                }
+                // YENİ: Scroll performansını artır
+                .scrollDismissesKeyboard(.immediately)
+                .scrollIndicators(.hidden)
+            }
+        }
+    }
+    
+    // YENİ: Back button
+    @ViewBuilder
+    private var backButton: some View {
+        Button(action: { dismiss() }) {
+            HStack(spacing: 4) {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 16, weight: .semibold))
+                Text("common.back")
+            }
+        }
+    }
+    
+    // YENİ: Empty state
+    @ViewBuilder
+    private var emptyStateView: some View {
+        ContentUnavailableView(
+            "all_transactions.not_found",
+            systemImage: "magnifyingglass",
+            description: Text("all_transactions.not_found_desc")
+        )
+    }
+    
+    // YENİ: Loading view
+    @ViewBuilder
+    private var loadingView: some View {
+        VStack {
+            ProgressView()
+                .scaleEffect(1.5)
+                .padding()
+            Text("Loading...")
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.black.opacity(0.3))
+    }
+    
+    // YENİ: Delete progress view
+    @ViewBuilder
+    private var deleteProgressView: some View {
+        ProgressView("Siliniyor...")
+            .padding(25)
+            .background(Material.thick)
+            .cornerRadius(10)
+            .shadow(radius: 5)
     }
     
     private func silmeyiBaslat(_ islem: Islem) {
@@ -122,68 +224,113 @@ struct TumIslemlerView: View {
         }
     }
     
+    // YENİ: Optimize edilmiş filtre barı
     private var filtrelemeBari: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                Menu {
-                    Picker(LocalizedStringKey("filter.sort_by"), selection: $viewModel.filtreAyarlari.sortOrder) {
-                        ForEach(SortOrder.allCases) { order in
-                            Text(LocalizedStringKey(order.rawValue)).tag(order)
-                        }
-                    }
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "arrow.up.arrow.down")
-                        Text("filter.sort_by")
-                    }
-                }
-                .buttonStyle(FiltreButonStyle())
-
-                Button(action: { kategoriFiltreGosteriliyor = true }) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                        Text("common.categories")
-                    }
-                }
-                .buttonStyle(FiltreButonStyle(aktif: !viewModel.filtreAyarlari.secilenKategoriler.isEmpty))
-                .overlay(alignment: .topTrailing) {
-                    if !viewModel.filtreAyarlari.secilenKategoriler.isEmpty {
-                        Text(String(viewModel.filtreAyarlari.secilenKategoriler.count))
-                            .font(.caption2.bold())
-                            .foregroundColor(.white)
-                            .padding(5)
-                            .background(Circle().fill(.red))
-                            .offset(x: 8, y: -8)
-                    }
-                }
+                // Sort menu
+                sortMenu
                 
-                Button(action: { hesapFiltreGosteriliyor = true }) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "wallet.pass.fill")
-                        Text("filter.accounts")
-                    }
-                }
-                .buttonStyle(FiltreButonStyle(aktif: !viewModel.filtreAyarlari.secilenHesaplar.isEmpty))
-                .overlay(alignment: .topTrailing) {
-                    if !viewModel.filtreAyarlari.secilenHesaplar.isEmpty {
-                        Text(String(viewModel.filtreAyarlari.secilenHesaplar.count))
-                            .font(.caption2.bold())
-                            .foregroundColor(.white)
-                            .padding(5)
-                            .background(Circle().fill(.red))
-                            .offset(x: 8, y: -8)
-                    }
-                }
+                // Category filter
+                filterButton(
+                    title: "common.categories",
+                    icon: "line.3.horizontal.decrease.circle",
+                    isActive: !viewModel.filtreAyarlari.secilenKategoriler.isEmpty,
+                    count: viewModel.filtreAyarlari.secilenKategoriler.count,
+                    action: { kategoriFiltreGosteriliyor = true }
+                )
                 
-                Button { tarihFiltreGosteriliyor = true } label: { Text("filter.date_range") }
-                    // GÜNCELLEME: Butonun aktif olma koşulu da en basit haline geri döndü.
-                    // Varsayılan olan ".buAy" dan farklı bir şey seçilirse aktif olacak.
-                    .buttonStyle(FiltreButonStyle(aktif: viewModel.filtreAyarlari.tarihAraligi != .buAy))
+                // Account filter
+                filterButton(
+                    title: "filter.accounts",
+                    icon: "wallet.pass.fill",
+                    isActive: !viewModel.filtreAyarlari.secilenHesaplar.isEmpty,
+                    count: viewModel.filtreAyarlari.secilenHesaplar.count,
+                    action: { hesapFiltreGosteriliyor = true }
+                )
                 
-                Button { turFiltreGosteriliyor = true } label: { Text("transaction.type") }
-                    .buttonStyle(FiltreButonStyle(aktif: viewModel.filtreAyarlari.secilenTurler.count == 1))
+                // Date range filter
+                Button { tarihFiltreGosteriliyor = true } label: {
+                    Text("filter.date_range")
+                }
+                .buttonStyle(FiltreButonStyle(aktif: viewModel.filtreAyarlari.tarihAraligi != .buAy))
+                
+                // Transaction type filter
+                Button { turFiltreGosteriliyor = true } label: {
+                    Text("transaction.type")
+                }
+                .buttonStyle(FiltreButonStyle(aktif: viewModel.filtreAyarlari.secilenTurler.count == 1))
             }
             .padding(.horizontal)
         }
+    }
+    
+    // YENİ: Sort menu
+    @ViewBuilder
+    private var sortMenu: some View {
+        Menu {
+            Picker(LocalizedStringKey("filter.sort_by"), selection: Binding(
+                get: { viewModel.filtreAyarlari.sortOrder },
+                set: { newValue in
+                    viewModel.filtreAyarlari.sortOrder = newValue
+                    viewModel.invalidateCacheAndFetch()
+                }
+            )) {
+                ForEach(SortOrder.allCases) { order in
+                    Text(LocalizedStringKey(order.rawValue)).tag(order)
+                }
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: "arrow.up.arrow.down")
+                Text("filter.sort_by")
+            }
+        }
+        .buttonStyle(FiltreButonStyle())
+    }
+    
+    // YENİ: Filter button helper
+    @ViewBuilder
+    private func filterButton(
+        title: LocalizedStringKey,
+        icon: String,
+        isActive: Bool,
+        count: Int,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            HStack(spacing: 4) {
+                Image(systemName: icon)
+                Text(title)
+            }
+        }
+        .buttonStyle(FiltreButonStyle(aktif: isActive))
+        .overlay(alignment: .topTrailing) {
+            if count > 0 {
+                Text(String(count))
+                    .font(.caption2.bold())
+                    .foregroundColor(.white)
+                    .padding(5)
+                    .background(Circle().fill(.red))
+                    .offset(x: 8, y: -8)
+            }
+        }
+    }
+}
+
+// YENİ: Optimize edilmiş işlem satırı
+struct OptimizedTransactionRow: View {
+    @EnvironmentObject var appSettings: AppSettings
+    let islem: Islem
+    let onEdit: () -> Void
+    let onDelete: () -> Void
+    
+    var body: some View {
+        IslemSatirView(
+            islem: islem,
+            onEdit: onEdit,
+            onDelete: onDelete
+        )
+        .padding(.horizontal)
     }
 }

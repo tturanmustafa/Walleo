@@ -1,19 +1,34 @@
 import SwiftUI
 
 struct FiltrePillView: View {
-    // DEĞİŞİKLİK: 'text: String' yerine 'titleKey: LocalizedStringKey' alıyoruz.
     let titleKey: LocalizedStringKey
     let isSelected: Bool
     let action: () -> Void
-
+    
     var body: some View {
         Button(action: action) {
-            // DEĞİŞİKLİK: Text artık anahtarı doğrudan kullanarak çeviriyi kendisi yapacak.
-            Text(titleKey)
-                .font(.footnote).fontWeight(.semibold)
-                .foregroundColor(isSelected ? .white : .primary)
-                .padding(.horizontal, 15).padding(.vertical, 8)
-                .background(Capsule().fill(isSelected ? .blue : Color(.systemGray5)))
+            HStack {
+                if isSelected {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.body)
+                        .transition(.scale.combined(with: .opacity))
+                }
+                
+                Text(titleKey)
+                    .fontWeight(.medium)
+            }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 12)
+            .frame(maxWidth: .infinity)
+            .background(
+                // YENİ: Arka plan animasyonunu optimize et
+                RoundedRectangle(cornerRadius: 25)
+                    .fill(isSelected ? Color.accentColor : Color(.systemGray5))
+            )
+            .foregroundColor(isSelected ? .white : .primary)
         }
+        .buttonStyle(PlainButtonStyle())
+        // YENİ: Animasyonu sadece değişiklik olduğunda uygula
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSelected)
     }
 }
