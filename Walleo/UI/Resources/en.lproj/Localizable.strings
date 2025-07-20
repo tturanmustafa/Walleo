@@ -777,3 +777,74 @@
 "transfer_transactions.confirm_button" = "Transfer & Delete";
 "alert.no_eligible_wallet.title" = "No Eligible Wallet Found";
 "alert.no_eligible_wallet.message" = "The account you want to delete contains income transactions. To transfer these transactions, you must first create another 'Wallet' type account.";
+// MARK: - Loan Report
+"loan_report.no_data" = "No loan data found";
+"loan_report.no_data_desc" = "No loan installments found in the selected date range.";
+
+// View types
+"loan_report.view.summary" = "Summary";
+"loan_report.view.detail" = "Details";
+"loan_report.view.calendar" = "Calendar";
+"loan_report.view.performance" = "Performance";
+
+// Sort options
+"loan_report.sort.by_date" = "Sort by Date";
+"loan_report.sort.by_amount" = "Sort by Amount";
+"loan_report.sort.by_progress" = "Sort by Progress";
+
+// Summary section
+"loan_report.overview" = "Total Debt Overview";
+"loan_report.completed" = "Completed";
+"loan_report.active_loans" = "Active Loans";
+"loan_report.monthly_payment" = "Monthly Payment";
+"loan_report.total_paid" = "Total Paid";
+"loan_report.remaining" = "Remaining Debt";
+"loan_report.estimated_completion" = "Estimated Completion Date";
+"loan_report.monthly_payment_load" = "Monthly Payment Load";
+"loan_report.no_future_payments" = "No future payments scheduled";
+"loan_report.distribution" = "Loan Distribution";
+"loan_report.no_active_loans" = "No active loans";
+
+// Detail section
+"loan_report.search_placeholder" = "Search loans...";
+"loan_report.active_only" = "Active Only";
+"loan_report.sort" = "Sort";
+"loan_report.principal_amount" = "Principal Amount";
+"loan_report.interest_rate" = "Interest Rate";
+"loan_report.total_to_pay" = "Total to Pay";
+"loan_report.total_interest" = "Total Interest";
+"loan_report.last_payment_date" = "Last Payment Date";
+"loan_report.payment_performance" = "Payment Performance";
+"loan_report.score" = "Score";
+"loan_report.next_payment" = "Next Payment";
+"loan_report.days_remaining" = "%d days remaining";
+"loan_report.due_today" = "Due Today!";
+"loan_report.overdue" = "Overdue!";
+"loan_report.installments_in_period" = "Installments in Period";
+"loan_report.more_installments" = "... and %d more";
+
+// Calendar section
+"loan_report.monthly_total" = "Monthly Total";
+
+// Performance section
+"loan_report.performance_score" = "Performance Score";
+"loan_report.performance_excellent" = "Excellent";
+"loan_report.performance_good" = "Good";
+"loan_report.performance_fair" = "Fair";
+"loan_report.performance_poor" = "Poor";
+"loan_report.total_interest_paid" = "Total Interest Paid";
+"loan_report.avg_monthly_payment" = "Average Monthly Payment";
+"loan_report.on_time" = "On Time";
+"loan_report.late" = "Late";
+"loan_report.missed" = "Missed";
+
+// Additional keys for existing components
+"reports.detailed.paid_and_expensed" = "Paid (Added as Expense)";
+"reports.detailed.paid_only" = "Paid (Not in Expenses)";
+"reports.detailed.overdue" = "Overdue";
+"reports.detailed.upcoming" = "Upcoming";
+"reports.detailed.installments_in_period" = "%d installments in period";
+"reports.detailed.overall_loan_summary" = "Overall Loan Summary";
+"reports.detailed.active_loan_count" = "%d Active Loans";
+"reports.detailed.paid_installments_count" = "%d Paid";
+"reports.detailed.unpaid_installments_count" = "%d Unpaid";

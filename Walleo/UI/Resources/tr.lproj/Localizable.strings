@@ -777,3 +777,74 @@
 "transfer_transactions.confirm_button" = "Aktar ve Sil";
 "alert.no_eligible_wallet.title" = "Uygun Cüzdan Bulunamadı";
 "alert.no_eligible_wallet.message" = "Silmek istediğiniz hesap gelir işlemleri içeriyor. Bu işlemleri aktarabilmek için önce başka bir 'Cüzdan' tipi hesap oluşturmalısınız.";
+// MARK: - Kredi Raporu
+"loan_report.no_data" = "Kredi verisi bulunamadı";
+"loan_report.no_data_desc" = "Seçilen tarih aralığında kredi taksiti bulunamadı.";
+
+// Görünüm türleri
+"loan_report.view.summary" = "Özet";
+"loan_report.view.detail" = "Detaylar";
+"loan_report.view.calendar" = "Takvim";
+"loan_report.view.performance" = "Performans";
+
+// Sıralama seçenekleri
+"loan_report.sort.by_date" = "Tarihe Göre";
+"loan_report.sort.by_amount" = "Tutara Göre";
+"loan_report.sort.by_progress" = "İlerlemeye Göre";
+
+// Özet bölümü
+"loan_report.overview" = "Toplam Borç Durumu";
+"loan_report.completed" = "Tamamlanan";
+"loan_report.active_loans" = "Aktif Krediler";
+"loan_report.monthly_payment" = "Aylık Ödeme";
+"loan_report.total_paid" = "Toplam Ödenen";
+"loan_report.remaining" = "Kalan Borç";
+"loan_report.estimated_completion" = "Tahmini Bitiş Tarihi";
+"loan_report.monthly_payment_load" = "Aylık Taksit Yükü";
+"loan_report.no_future_payments" = "Gelecek ödeme bulunmuyor";
+"loan_report.distribution" = "Kredi Dağılımı";
+"loan_report.no_active_loans" = "Aktif kredi bulunmuyor";
+
+// Detay bölümü
+"loan_report.search_placeholder" = "Kredi ara...";
+"loan_report.active_only" = "Sadece Aktifler";
+"loan_report.sort" = "Sırala";
+"loan_report.principal_amount" = "Ana Para";
+"loan_report.interest_rate" = "Faiz Oranı";
+"loan_report.total_to_pay" = "Toplam Ödenecek";
+"loan_report.total_interest" = "Toplam Faiz";
+"loan_report.last_payment_date" = "Son Ödeme Tarihi";
+"loan_report.payment_performance" = "Ödeme Performansı";
+"loan_report.score" = "Skor";
+"loan_report.next_payment" = "Sonraki Ödeme";
+"loan_report.days_remaining" = "%d gün kaldı";
+"loan_report.due_today" = "Bugün Ödenmeli!";
+"loan_report.overdue" = "Gecikmiş!";
+"loan_report.installments_in_period" = "Dönem Taksitleri";
+"loan_report.more_installments" = "... ve %d taksit daha";
+
+// Takvim bölümü
+"loan_report.monthly_total" = "Aylık Toplam";
+
+// Performans bölümü
+"loan_report.performance_score" = "Performans Skoru";
+"loan_report.performance_excellent" = "Mükemmel";
+"loan_report.performance_good" = "İyi";
+"loan_report.performance_fair" = "Orta";
+"loan_report.performance_poor" = "Kötü";
+"loan_report.total_interest_paid" = "Ödenen Toplam Faiz";
+"loan_report.avg_monthly_payment" = "Ortalama Aylık Ödeme";
+"loan_report.on_time" = "Zamanında";
+"loan_report.late" = "Geç";
+"loan_report.missed" = "Kaçırılan";
+
+// Mevcut bileşenler için ek anahtarlar
+"reports.detailed.paid_and_expensed" = "Ödendi (Gider Eklendi)";
+"reports.detailed.paid_only" = "Ödendi (Gider Eklenmedi)";
+"reports.detailed.overdue" = "Gecikmiş";
+"reports.detailed.upcoming" = "Yaklaşan";
+"reports.detailed.installments_in_period" = "Dönemde %d taksit";
+"reports.detailed.overall_loan_summary" = "Genel Kredi Özeti";
+"reports.detailed.active_loan_count" = "%d Aktif Kredi";
+"reports.detailed.paid_installments_count" = "%d Ödendi";
+"reports.detailed.unpaid_installments_count" = "%d Ödenmedi";
