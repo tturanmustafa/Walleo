@@ -9,7 +9,6 @@ struct WalleoApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var entitlementManager = EntitlementManager()
     @StateObject private var appSettings = AppSettings()
-    @StateObject private var sharingHandler = CloudKitSharingHandler.shared
 
     
     let modelContainer: ModelContainer
@@ -35,7 +34,6 @@ struct WalleoApp: App {
             modelContainer = try ModelContainer(
                 for: Hesap.self, Islem.self, Kategori.self, Butce.self,
                      Bildirim.self, TransactionMemory.self, AppMetadata.self, Transfer.self,
-                     Aile.self, AileUyesi.self, AileDavet.self,
                 configurations: config
             )
         } catch {
@@ -58,15 +56,6 @@ struct WalleoApp: App {
                     }
                     .onReceive(NotificationCenter.default.publisher(for: .appShouldDeleteAllData)) { _ in
                         deleteAllData()
-                    }
-                    .task {
-                        await requestCloudKitPermissions()
-                    }
-                    .onOpenURL { url in
-                        _ = sharingHandler.handleURL(url)
-                    }
-                    .sheet(item: $sharingHandler.presentingShareMetadata) { wrapper in
-                        AcceptShareView(metadata: wrapper.metadata)
                     }
             } else {
                 OnboardingView()
@@ -100,9 +89,6 @@ struct WalleoApp: App {
                     try context.delete(model: Bildirim.self)
                     try context.delete(model: TransactionMemory.self)
                     try context.delete(model: AppMetadata.self)
-                    try context.delete(model: AileUyesi.self)
-                    try context.delete(model: AileDavet.self)
-                    try context.delete(model: Aile.self)
                     try context.save()
                     viewID = UUID()
                 } catch {
@@ -111,15 +97,7 @@ struct WalleoApp: App {
             }
         }
     }
-    
-    private func requestCloudKitPermissions() async {
-        let container = CKContainer(identifier: "iCloud.com.mustafamt.walleo")
-        do {
-            let _ = try await container.accountStatus()
-        } catch {
-            Logger.log("CloudKit durumu kontrol edilemedi: \(error)", log: Logger.service, type: .error)
-        }
-    }
+
     private func registerBackgroundTask() {
         BGTaskScheduler.shared.register(forTaskWithIdentifier: budgetRenewalTaskID, using: nil) { task in
             Logger.log("Arka plan bütçe yenileme görevi BAŞLADI.", log: Logger.service, type: .info)
