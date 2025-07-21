@@ -16,8 +16,6 @@ struct AyarlarView: View {
     @State private var dilDegisikligiUyarisiGoster = false
     @State private var cloudKitDegisiklikUyarisiGoster = false
     @State private var showingDeleteConfirmationAlert = false
-    @State private var showFamilyCloudKitWarning = false
-    @State private var showFamilyDeleteWarning = false
 
     @State private var isExporting = false
     @State private var shareableURL: ShareableURL?
@@ -68,15 +66,10 @@ struct AyarlarView: View {
             }
         }
         .onChange(of: cloudKitToggleAcik) { _, _ in
-            Task {
-                let descriptor = FetchDescriptor<Aile>()
-                if let _ = try? modelContext.fetch(descriptor).first {
-                    // Aile hesabı varsa, CloudKit kapatılamaz
-                    cloudKitToggleAcik = true
-                    showFamilyCloudKitWarning = true
-                } else if cloudKitToggleAcik != appSettings.isCloudKitEnabled {
-                    cloudKitDegisiklikUyarisiGoster = true
-                }
+            // Aile kontrolü kaldırıldı.
+            // Sadece toggle'ın değeri, kayıtlı ayardan farklıysa uyarı göster.
+            if cloudKitToggleAcik != appSettings.isCloudKitEnabled {
+                cloudKitDegisiklikUyarisiGoster = true
             }
         }
         // ALERTS
@@ -104,29 +97,13 @@ struct AyarlarView: View {
         }
         .alert(LocalizedStringKey("alert.delete_all_data.title"), isPresented: $showingDeleteConfirmationAlert) {
             Button("common.confirm_delete", role: .destructive) {
-                Task {
-                    let descriptor = FetchDescriptor<Aile>()
-                    if let _ = try? modelContext.fetch(descriptor).first {
-                        showFamilyDeleteWarning = true
-                    } else {
-                        NotificationCenter.default.post(name: .appShouldDeleteAllData, object: nil)
-                        dismiss()
-                    }
-                }
+                // Aile kontrolü kaldırıldı, direkt silme işlemi tetikleniyor.
+                NotificationCenter.default.post(name: .appShouldDeleteAllData, object: nil)
+                dismiss()
             }
             Button("common.cancel", role: .cancel) {}
         } message: {
             Text(LocalizedStringKey("alert.delete_all_data.message"))
-        }
-        .alert("family.cloudkit_warning_title", isPresented: $showFamilyCloudKitWarning) {
-            Button("common.ok", role: .cancel) {}
-        } message: {
-            Text("family.cloudkit_warning_message")
-        }
-        .alert("family.delete_warning_title", isPresented: $showFamilyDeleteWarning) {
-            Button("common.ok", role: .cancel) {}
-        } message: {
-            Text("family.delete_warning_message")
         }
     }
 }
@@ -199,19 +176,6 @@ struct GenelAyarlarBolumu: View {
             NavigationLink(destination: BildirimAyarlariView()) {
                 AyarIkonu(iconName: "bell.badge.fill", color: .red)
                 Text(LocalizedStringKey("settings.notifications"))
-            }
-            .disabled(!entitlementManager.hasPremiumAccess)
-            .opacity(entitlementManager.hasPremiumAccess ? 1.0 : 0.4)
-            .onTapGesture {
-                guard !entitlementManager.hasPremiumAccess else { return }
-                showPaywall = true  // Ana view'daki state'i değiştir
-            }
-            .padding(.vertical, 4)
-            
-            // Aile Hesabı - YENİ PREMIUM ÖZELLİK
-            NavigationLink(destination: AileHesabiView()) {
-                AyarIkonu(iconName: "person.3.fill", color: .purple)
-                Text(LocalizedStringKey("settings.family_account"))
             }
             .disabled(!entitlementManager.hasPremiumAccess)
             .opacity(entitlementManager.hasPremiumAccess ? 1.0 : 0.4)
