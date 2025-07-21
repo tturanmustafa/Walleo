@@ -45,7 +45,8 @@ struct CuzdanDetayView: View {
                                 onEdit: { duzenlenecekIslem = islem },
                                 onDelete: { silmeyiBaslat(islem) }
                             )
-                            .id(islem.id) // YENİ: Stabil ID ile re-render'ı optimize et
+                            .environmentObject(appSettings)
+                            .id(islem.id)
                         }
                     }
                 }
@@ -67,12 +68,12 @@ struct CuzdanDetayView: View {
                                 hesapID: viewModel.hesap.id
                             )
                             .environmentObject(appSettings)
-                            .id(transfer.id) // YENİ: Stabil ID ile re-render'ı optimize et
+                            .id(transfer.id)
                         }
                     }
                 }
             }
-            .listStyle(.plain)
+            .listStyle(.insetGrouped) // Bu style section'ları ayırır
         }
         .navigationTitle(viewModel.hesap.isim)
         .navigationBarTitleDisplayMode(.inline)

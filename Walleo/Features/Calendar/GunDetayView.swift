@@ -80,6 +80,14 @@ struct GunDetayView: View {
     
     let secilenTarih: Date
     
+    // 🔴 YENİ EKLENDİ: Formatlanmış tarih metni için computed property
+    private var formattedDate: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        formatter.dateFormat = "d MMMM yyyy, EEEE" // Örn: "25 Ocak 2025, Cumartesi"
+        return formatter.string(from: secilenTarih)
+    }
+    
     private var toplamGelir: Double {
         islemler.filter { $0.tur == .gelir }.reduce(0) { $0 + $1.tutar }
     }
@@ -106,6 +114,16 @@ struct GunDetayView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) { // Bu spacing: 0 kalabilir, boşluğu padding ile kontrol edeceğiz
+                
+                // 🔴 YENİ EKLENDİ: Tarih bilgisi header'ı
+                Text(formattedDate)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(.secondary)
+                    .padding(.vertical, 20)
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.systemGray6))
+                
                 List {
                     ForEach(islemler) { islem in
                         IslemSatirView(
@@ -137,7 +155,7 @@ struct GunDetayView: View {
                 }
             }
             .disabled(isDeleting)
-            .navigationTitle(secilenTarih.formatted(date: .long, time: .omitted))
+            // 🔴 KALDIRILDI: .navigationTitle(secilenTarih.formatted(date: .long, time: .omitted))
             .sheet(item: $duzenlenecekIslem) { islem in
                 IslemEkleView(duzenlenecekIslem: islem)
                     .environmentObject(appSettings)

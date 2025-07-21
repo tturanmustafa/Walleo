@@ -2,24 +2,25 @@ import SwiftUI
 
 struct ButceKartView: View {
     let gosterilecekButce: GosterilecekButce
-    let isDuzenlenebilir: Bool // YENİ: Kartın düzenlenip düzenlenemeyeceğini dışarıdan alır.
+    let isDuzenlenebilir: Bool
     @EnvironmentObject var appSettings: AppSettings
     
-    // Düzenleme ve Silme eylemleri için closure'lar
     var onEdit: () -> Void
     var onDelete: () -> Void
 
-    // Hesaplanan değişkenler (Aynı kalıyor)
-    private var limit: Double { gosterilecekButce.butce.limitTutar }
+    // Hesaplanan değişkenler - DEVIR TUTARI EKLENDİ
+    private var anaLimit: Double { gosterilecekButce.butce.limitTutar }
+    private var devredenTutar: Double { gosterilecekButce.butce.devredenGelenTutar }
+    private var toplamLimit: Double { anaLimit + devredenTutar }
     private var harcanan: Double { gosterilecekButce.harcananTutar }
-    private var kalan: Double { limit - harcanan }
+    private var kalan: Double { toplamLimit - harcanan }
     private var yuzde: Double {
-        guard limit > 0, harcanan >= 0 else { return 0.0 }
-        return min(1.0, harcanan / limit)
+        guard toplamLimit > 0, harcanan >= 0 else { return 0.0 }
+        return min(1.0, harcanan / toplamLimit)
     }
 
     private var progressBarColor: Color {
-        let gercekYuzde = limit > 0 ? harcanan / limit : 0
+        let gercekYuzde = toplamLimit > 0 ? harcanan / toplamLimit : 0
         if gercekYuzde >= 1.0 { return .red }
         if gercekYuzde > 0.8 { return .orange }
         return .green
@@ -33,7 +34,6 @@ struct ButceKartView: View {
                     .fontWeight(.bold)
                 Spacer()
                 Menu {
-                    // --- DÜZELTME: Düzenle butonu artık koşullu ---
                     if isDuzenlenebilir {
                         Button(action: onEdit) {
                             Label("common.edit", systemImage: "pencil")
@@ -56,14 +56,41 @@ struct ButceKartView: View {
                 .padding(.bottom, 4)
 
             VStack(spacing: 8) {
+                // Ana limit
                 HStack {
                     Text(LocalizedStringKey("budgets.card.total_limit"))
                         .font(.callout)
                         .foregroundColor(.secondary)
                     Spacer()
-                    Text(formatCurrency(amount: limit, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
+                    Text(formatCurrency(amount: anaLimit, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
                         .font(.callout)
                         .fontWeight(.bold)
+                }
+                
+                // DEVIR TUTARI - YENİ
+                if devredenTutar > 0 {
+                    HStack {
+                        Text(LocalizedStringKey("budgets.card.rollover_amount"))
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Spacer()
+                        Text("+ \(formatCurrency(amount: devredenTutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))")
+                            .font(.caption)
+                            .foregroundColor(.green)
+                    }
+                    
+                    Divider()
+                    
+                    // Toplam limit (ana + devir)
+                    HStack {
+                        Text(LocalizedStringKey("budgets.card.total_with_rollover"))
+                            .font(.callout)
+                            .foregroundColor(.secondary)
+                        Spacer()
+                        Text(formatCurrency(amount: toplamLimit, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
+                            .font(.callout)
+                            .fontWeight(.semibold)
+                    }
                 }
                 
                 Divider()
