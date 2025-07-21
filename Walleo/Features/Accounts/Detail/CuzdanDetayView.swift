@@ -45,6 +45,7 @@ struct CuzdanDetayView: View {
                                 onEdit: { duzenlenecekIslem = islem },
                                 onDelete: { silmeyiBaslat(islem) }
                             )
+                            .id(islem.id) // YENİ: Stabil ID ile re-render'ı optimize et
                         }
                     }
                 }
@@ -66,6 +67,7 @@ struct CuzdanDetayView: View {
                                 hesapID: viewModel.hesap.id
                             )
                             .environmentObject(appSettings)
+                            .id(transfer.id) // YENİ: Stabil ID ile re-render'ı optimize et
                         }
                     }
                 }
@@ -75,7 +77,9 @@ struct CuzdanDetayView: View {
         .navigationTitle(viewModel.hesap.isim)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
-            viewModel.initialize(modelContext: self.modelContext)
+            if viewModel.modelContext == nil {
+                viewModel.initialize(modelContext: self.modelContext)
+            }
         }
         .sheet(item: $duzenlenecekIslem) { islem in
             IslemEkleView(duzenlenecekIslem: islem).environmentObject(appSettings)

@@ -18,7 +18,14 @@ class KrediKartiDetayViewModel {
     var taksitliIslemGruplari: [TaksitliIslemGrubu] = []
     
     var toplamHarcama: Double {
-        donemIslemleri.reduce(0) { $0 + $1.tutar }
+        // Normal harcamalar
+        let normalHarcamalar = donemIslemleri.reduce(0) { $0 + $1.tutar }
+        
+        // Taksitli işlemlerin bu döneme düşen tutarları
+        let taksitliHarcamalar = taksitliIslemGruplari.flatMap { $0.taksitler }
+            .reduce(0) { $0 + $1.tutar }
+        
+        return normalHarcamalar + taksitliHarcamalar
     }
     
     // YENİ: Taksitli işlem grubu yapısı
@@ -61,22 +68,34 @@ class KrediKartiDetayViewModel {
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(yenile),
+            selector: #selector(yenile(_:)),
             name: .transactionsDidChange,
             object: nil
         )
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(yenile),
+            selector: #selector(yenile(_:)),
             name: .accountDetailsDidChange,
             object: nil
         )
     }
     
-    @objc func yenile() {
-        self.islemleriGetir()
-        self.transferleriGetir()
+    @objc func yenile(_ notification: Notification) {
+        // Sadece bu hesabı etkileyen değişikliklerde güncelle
+        if let payload = notification.userInfo?["payload"] as? TransactionChangePayload {
+            let kartID = kartHesabi.id
+            
+            // Bu hesapla ilgili bir değişiklik var mı kontrol et
+            if payload.affectedAccountIDs.contains(kartID) {
+                self.islemleriGetir()
+                self.transferleriGetir()
+            }
+        } else {
+            // Payload yoksa varsayılan olarak güncelle
+            self.islemleriGetir()
+            self.transferleriGetir()
+        }
     }
     
     func transferleriGetir() {
@@ -86,23 +105,35 @@ class KrediKartiDetayViewModel {
         let baslangic = self.donemBaslangicTarihi
         let bitis = sorguBitisTarihi
         
-        // Predicate'e tarih kontrolü ekliyoruz.
-        let predicate = #Predicate<Transfer> { transfer in
-            transfer.hedefHesap?.id == kartID &&
-            transfer.tarih >= baslangic && // Sadece bu döneme ait transferleri al
-            transfer.tarih < bitis        // Sadece bu döneme ait transferleri al
-        }
-        
-        let descriptor = FetchDescriptor<Transfer>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.tarih, order: .reverse)]
-        )
-        
-        do {
-            let transferler = try modelContext.fetch(descriptor)
-            self.tumTransferler = transferler
-        } catch {
-            Logger.log("Kredi kartı transferleri çekilirken hata: \(error)", log: Logger.data, type: .error)
+        // YENİ: Önce hafızada olan transferleri kullan
+        if let gelenTransferler = kartHesabi.gelenTransferler {
+            // Hafızada filtreleme yap
+            let filtreliTransferler = gelenTransferler.filter { transfer in
+                transfer.tarih >= baslangic && transfer.tarih < bitis
+            }.sorted { $0.tarih > $1.tarih }
+            
+            self.tumTransferler = filtreliTransferler
+            
+        } else {
+            // Hafızada yoksa veritabanından çek
+            // Predicate'e tarih kontrolü ekliyoruz.
+            let predicate = #Predicate<Transfer> { transfer in
+                transfer.hedefHesap?.id == kartID &&
+                transfer.tarih >= baslangic && // Sadece bu döneme ait transferleri al
+                transfer.tarih < bitis        // Sadece bu döneme ait transferleri al
+            }
+            
+            let descriptor = FetchDescriptor<Transfer>(
+                predicate: predicate,
+                sortBy: [SortDescriptor(\.tarih, order: .reverse)]
+            )
+            
+            do {
+                let transferler = try modelContext.fetch(descriptor)
+                self.tumTransferler = transferler
+            } catch {
+                Logger.log("Kredi kartı transferleri çekilirken hata: \(error)", log: Logger.data, type: .error)
+            }
         }
     }
 
@@ -116,31 +147,50 @@ class KrediKartiDetayViewModel {
         let baslangic = self.donemBaslangicTarihi
         let bitis = sorguBitisTarihi
         
-        let basitPredicate = #Predicate<Islem> { islem in
-            islem.tarih >= baslangic &&
-            islem.tarih < bitis &&
-            islem.turRawValue == giderTuruRawValue
-        }
-        
-        let descriptor = FetchDescriptor<Islem>(
-            predicate: basitPredicate,
-            sortBy: [SortDescriptor(\.tarih, order: .reverse)]
-        )
-        
-        do {
-            let donemGiderleri = try modelContext.fetch(descriptor)
-            let kartaAitIslemler = donemGiderleri.filter { $0.hesap?.id == kartID }
+        // YENİ: Önce hafızada olan işlemleri kullan
+        if let hesapIslemleri = kartHesabi.islemler {
+            // Hafızada filtreleme yap
+            let filtreliIslemler = hesapIslemleri.filter { islem in
+                islem.tarih >= baslangic &&
+                islem.tarih < bitis &&
+                islem.turRawValue == giderTuruRawValue
+            }
             
             // Normal işlemler (taksitli olmayanlar)
-            self.donemIslemleri = kartaAitIslemler.filter { !$0.taksitliMi }
+            self.donemIslemleri = filtreliIslemler.filter { !$0.taksitliMi }
+                .sorted { $0.tarih > $1.tarih }
             
             // Taksitli işlemleri grupla
-            grupTaksitliIslemler(from: kartaAitIslemler.filter { $0.taksitliMi })
+            grupTaksitliIslemler(from: filtreliIslemler.filter { $0.taksitliMi })
             
-        } catch {
-            Logger.log("Kredi kartı detay işlemleri çekilirken hata: \(error.localizedDescription)", log: Logger.data, type: .error)
-            self.donemIslemleri = []
-            self.taksitliIslemGruplari = []
+        } else {
+            // Eğer hafızada yoksa veritabanından çek
+            let basitPredicate = #Predicate<Islem> { islem in
+                islem.tarih >= baslangic &&
+                islem.tarih < bitis &&
+                islem.turRawValue == giderTuruRawValue
+            }
+            
+            let descriptor = FetchDescriptor<Islem>(
+                predicate: basitPredicate,
+                sortBy: [SortDescriptor(\.tarih, order: .reverse)]
+            )
+            
+            do {
+                let donemGiderleri = try modelContext.fetch(descriptor)
+                let kartaAitIslemler = donemGiderleri.filter { $0.hesap?.id == kartID }
+                
+                // Normal işlemler (taksitli olmayanlar)
+                self.donemIslemleri = kartaAitIslemler.filter { !$0.taksitliMi }
+                
+                // Taksitli işlemleri grupla
+                grupTaksitliIslemler(from: kartaAitIslemler.filter { $0.taksitliMi })
+                
+            } catch {
+                Logger.log("Kredi kartı detay işlemleri çekilirken hata: \(error.localizedDescription)", log: Logger.data, type: .error)
+                self.donemIslemleri = []
+                self.taksitliIslemGruplari = []
+            }
         }
     }
     
@@ -211,5 +261,9 @@ class KrediKartiDetayViewModel {
         
         islemleriGetir()
         transferleriGetir()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }

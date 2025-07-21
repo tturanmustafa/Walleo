@@ -49,6 +49,7 @@ struct KrediKartiDetayView: View {
                                     onEdit: { duzenlenecekIslem = islem },
                                     onDelete: { silmeyiBaslat(islem) }
                                 )
+                                .id(islem.id) // YENİ: Stabil ID ile re-render'ı optimize et
                             }
                         }
                     }
@@ -65,6 +66,7 @@ struct KrediKartiDetayView: View {
                                     onDelete: { taksit in silmeyiBaslat(taksit) }
                                 )
                                 .environmentObject(appSettings)
+                                .id(grup.id) // YENİ: Stabil ID ile re-render'ı optimize et
                             }
                         }
                     }
@@ -78,6 +80,7 @@ struct KrediKartiDetayView: View {
                                     hesapID: viewModel.kartHesabi.id
                                 )
                                 .environmentObject(appSettings)
+                                .id(transfer.id) // YENİ: Stabil ID ile re-render'ı optimize et
                             }
                         }
                     }
@@ -109,7 +112,7 @@ struct KrediKartiDetayView: View {
         }
         .navigationTitle(viewModel.kartHesabi.isim)
         .navigationBarTitleDisplayMode(.inline)
-        .task {
+        .onAppear {
             viewModel.islemleriGetir()
             viewModel.transferleriGetir()
         }
