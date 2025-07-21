@@ -15,7 +15,6 @@ struct KrediKartiDetayView: View {
     @State private var silinecekTaksitliIslem: Islem?
     @State private var isDeletingSeries: Bool = false
     
-    // YENİ: Taksitli işlem grubunu açık/kapalı tutmak için
     @State private var expandedGroups: Set<UUID> = []
     
     init(kartHesabi: Hesap, modelContext: ModelContext) {
@@ -49,24 +48,29 @@ struct KrediKartiDetayView: View {
                                     onEdit: { duzenlenecekIslem = islem },
                                     onDelete: { silmeyiBaslat(islem) }
                                 )
-                                .id(islem.id) // YENİ: Stabil ID ile re-render'ı optimize et
+                                .environmentObject(appSettings)
+                                .id(islem.id)
                             }
                         }
                     }
                     
-                    // YENİ: Taksitli Harcamalar Bölümü
+                    // Taksitli Harcamalar Bölümü
                     if !viewModel.taksitliIslemGruplari.isEmpty {
                         Section(header: Text(LocalizedStringKey("credit_card.installment_purchases"))) {
                             ForEach(viewModel.taksitliIslemGruplari) { grup in
                                 TaksitliIslemGrubuView(
                                     grup: grup,
                                     isExpanded: expandedGroups.contains(grup.id),
-                                    onToggle: { toggleGroup(grup.id) },
+                                    onToggle: {
+                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                            toggleGroup(grup.id)
+                                        }
+                                    },
                                     onEdit: { taksit in duzenlenecekIslem = taksit },
                                     onDelete: { taksit in silmeyiBaslat(taksit) }
                                 )
                                 .environmentObject(appSettings)
-                                .id(grup.id) // YENİ: Stabil ID ile re-render'ı optimize et
+                                .id(grup.id)
                             }
                         }
                     }
@@ -80,7 +84,7 @@ struct KrediKartiDetayView: View {
                                     hesapID: viewModel.kartHesabi.id
                                 )
                                 .environmentObject(appSettings)
-                                .id(transfer.id) // YENİ: Stabil ID ile re-render'ı optimize et
+                                .id(transfer.id)
                             }
                         }
                     }
@@ -89,16 +93,18 @@ struct KrediKartiDetayView: View {
                     if viewModel.donemIslemleri.isEmpty &&
                        viewModel.taksitliIslemGruplari.isEmpty &&
                        viewModel.tumTransferler.isEmpty {
-                        HStack {
-                            Spacer()
-                            Text(LocalizedStringKey("credit_card_details.no_expenses_for_month"))
-                                .foregroundColor(.secondary)
-                                .padding()
-                            Spacer()
+                        Section {
+                            HStack {
+                                Spacer()
+                                Text(LocalizedStringKey("credit_card_details.no_expenses_for_month"))
+                                    .foregroundColor(.secondary)
+                                    .padding()
+                                Spacer()
+                            }
                         }
                     }
                 }
-                .listStyle(.plain)
+                .listStyle(.insetGrouped) // Bu style section'ları ayırır
             }
             .disabled(isDeletingSeries)
             
@@ -153,7 +159,6 @@ struct KrediKartiDetayView: View {
         } message: { islem in
             Text("alert.delete_transaction.message")
         }
-        // YENİ: Taksitli işlem silme alert'i
         .alert(
             LocalizedStringKey("alert.installment.delete_title"),
             isPresented: Binding(isPresented: $silinecekTaksitliIslem),
