@@ -11,6 +11,11 @@ struct TaksitliIslemGrubuView: View {
     let onEdit: (Islem) -> Void
     let onDelete: (Islem) -> Void
     
+    // YENİ: Açıklama metnini cache'le
+    private var aciklamaMetni: String {
+        grup.aciklamaMetni(using: appSettings)
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             // Ana satır (Başlık)
@@ -22,8 +27,8 @@ struct TaksitliIslemGrubuView: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(grup.anaIsim)
                             .fontWeight(.semibold)
-                        // --- DÜZELTME 1: Artık 'aciklamaMetni' fonksiyonunu çağırıyoruz ---
-                        Text(grup.aciklamaMetni(using: appSettings))
+                        // YENİ: Cached değeri kullan
+                        Text(aciklamaMetni)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -40,7 +45,7 @@ struct TaksitliIslemGrubuView: View {
             
             // Taksit detayları (Genişletildiğinde)
             if isExpanded {
-                VStack(spacing: 0) {
+                LazyVStack(spacing: 0) { // YENİ: LazyVStack kullan
                     ForEach(grup.taksitler) { taksit in
                         taksitSatiri(taksit)
                         
@@ -58,28 +63,31 @@ struct TaksitliIslemGrubuView: View {
     private func taksitSatiri(_ taksit: Islem) -> some View {
         let gecmisTarihMi = taksit.tarih <= Date()
         
-        // --- DÜZELTME 2: Taksit başlığını da çeviri anahtarıyla oluşturuyoruz ---
+        // YENİ: Formatlanmış değerleri cache'le
         let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
         let formatString = languageBundle.localizedString(forKey: "credit_card.installment_number_format", value: "", table: nil)
         let taksitBasligi = String(format: formatString, taksit.mevcutTaksitNo)
+        let tarihMetni = formatDateForList(from: taksit.tarih, localeIdentifier: appSettings.languageCode)
+        let tutarMetni = formatCurrency(amount: taksit.tutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode)
 
         HStack {
             VStack(alignment: .leading, spacing: 2) {
-                Text(taksitBasligi) // Artık çevrilmiş metni kullanıyor
+                Text(taksitBasligi)
                     .font(.subheadline).fontWeight(.medium)
                     .strikethrough(gecmisTarihMi)
                     .foregroundColor(gecmisTarihMi ? .secondary : .primary)
                 
-                Text(formatDateForList(from: taksit.tarih, localeIdentifier: appSettings.languageCode))
+                Text(tarihMetni)
                     .font(.caption).foregroundColor(.secondary)
             }
             
             Spacer()
             
-            Text(formatCurrency(amount: taksit.tutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
+            Text(tutarMetni)
                 .font(.callout.bold())
                 .strikethrough(gecmisTarihMi)
                 .foregroundColor(gecmisTarihMi ? .secondary : .primary)
+                .monospacedDigit() // YENİ: Sayıların hizalanması için
             
             Menu {
                 Button(LocalizedStringKey("common.edit"), systemImage: "pencil") { onEdit(taksit) }
@@ -89,6 +97,9 @@ struct TaksitliIslemGrubuView: View {
                     .font(.caption).foregroundColor(.secondary)
                     .frame(width: 30, height: 30).contentShape(Rectangle())
             }
+            // YENİ: Menu optimizasyonu
+            .menuStyle(.borderlessButton)
+            .menuIndicator(.hidden)
         }
         .padding(.vertical, 6)
         .opacity(gecmisTarihMi ? 0.7 : 1.0)

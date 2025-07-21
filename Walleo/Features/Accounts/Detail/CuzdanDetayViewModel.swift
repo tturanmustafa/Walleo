@@ -11,8 +11,17 @@ class CuzdanDetayViewModel {
     
     var currentDate = Date() {
         didSet {
-            islemleriGetir()
-            transferleriGetir()
+            // Sadece ay değiştiğinde verileri yenile
+            let calendar = Calendar.current
+            let oldMonth = calendar.component(.month, from: oldValue)
+            let oldYear = calendar.component(.year, from: oldValue)
+            let newMonth = calendar.component(.month, from: currentDate)
+            let newYear = calendar.component(.year, from: currentDate)
+            
+            if oldMonth != newMonth || oldYear != newYear {
+                islemleriGetir()
+                transferleriGetir()
+            }
         }
     }
     
@@ -32,17 +41,30 @@ class CuzdanDetayViewModel {
         islemleriGetir()
         transferleriGetir()
         
+        // YENİ: Notification observer'ları sadece bir kez ekle
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(verilerDegisti),
+            selector: #selector(verilerDegisti(_:)),
             name: .transactionsDidChange,
             object: nil
         )
     }
     
-    @objc private func verilerDegisti() {
-        islemleriGetir()
-        transferleriGetir()
+    @objc private func verilerDegisti(_ notification: Notification) {
+        // Sadece bu hesabı etkileyen değişikliklerde güncelle
+        if let payload = notification.userInfo?["payload"] as? TransactionChangePayload {
+            let hesapID = hesap.id
+            
+            // Bu hesapla ilgili bir değişiklik var mı kontrol et
+            if payload.affectedAccountIDs.contains(hesapID) {
+                islemleriGetir()
+                transferleriGetir()
+            }
+        } else {
+            // Payload yoksa varsayılan olarak güncelle
+            islemleriGetir()
+            transferleriGetir()
+        }
     }
     
     func transferleriGetir() {
@@ -59,22 +81,36 @@ class CuzdanDetayViewModel {
         
         let hesapID = hesap.id
         
-        // 2. Predicate'e tarih filtresi ekliyoruz.
-        let predicate = #Predicate<Transfer> { transfer in
-            (transfer.kaynakHesap?.id == hesapID || transfer.hedefHesap?.id == hesapID) &&
-            (transfer.tarih >= baslangic && transfer.tarih < bitis) // <-- EKLENEN SATIR
-        }
+        // YENİ: Önce hafızada olan transferleri kullan
+        let gelenTransferler = hesap.gelenTransferler ?? []
+        let gidenTransferler = hesap.gidenTransferler ?? []
         
-        let descriptor = FetchDescriptor<Transfer>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.tarih, order: .reverse)]
-        )
+        let tumHafizadakiTransferler = gelenTransferler + gidenTransferler
+        let filtreliTransferler = tumHafizadakiTransferler.filter { transfer in
+            transfer.tarih >= baslangic && transfer.tarih < bitis
+        }.sorted { $0.tarih > $1.tarih }
         
-        do {
-            let transferler = try modelContext.fetch(descriptor)
-            self.tumTransferler = transferler
-        } catch {
-            Logger.log("Transfer verileri çekilirken hata: \(error)", log: Logger.data, type: .error)
+        if !filtreliTransferler.isEmpty {
+            self.tumTransferler = filtreliTransferler
+        } else {
+            // Hafızada yoksa veya boşsa veritabanından çek
+            // 2. Predicate'e tarih filtresi ekliyoruz.
+            let predicate = #Predicate<Transfer> { transfer in
+                (transfer.kaynakHesap?.id == hesapID || transfer.hedefHesap?.id == hesapID) &&
+                (transfer.tarih >= baslangic && transfer.tarih < bitis) // <-- EKLENEN SATIR
+            }
+            
+            let descriptor = FetchDescriptor<Transfer>(
+                predicate: predicate,
+                sortBy: [SortDescriptor(\.tarih, order: .reverse)]
+            )
+            
+            do {
+                let transferler = try modelContext.fetch(descriptor)
+                self.tumTransferler = transferler
+            } catch {
+                Logger.log("Transfer verileri çekilirken hata: \(error)", log: Logger.data, type: .error)
+            }
         }
     }
     
@@ -86,26 +122,47 @@ class CuzdanDetayViewModel {
         
         let hesapID = hesap.id
         
-        let predicate = #Predicate<Islem> { islem in
-            islem.hesap?.id == hesapID &&
-            islem.tarih >= monthInterval.start &&
-            islem.tarih < monthInterval.end
-        }
-        
-        let descriptor = FetchDescriptor<Islem>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.tarih, order: .reverse)]
-        )
-        
-        do {
-            let islemler = try modelContext.fetch(descriptor)
-            self.donemIslemleri = islemler
+        // YENİ: Önce hafızada olan işlemleri kullan
+        if let hesapIslemleri = hesap.islemler {
+            // Hafızada filtreleme yap
+            let filtreliIslemler = hesapIslemleri.filter { islem in
+                islem.tarih >= monthInterval.start &&
+                islem.tarih < monthInterval.end
+            }.sorted { $0.tarih > $1.tarih }
             
-            self.toplamGelir = islemler.filter { $0.tur == .gelir }.reduce(0) { $0 + $1.tutar }
-            self.toplamGider = islemler.filter { $0.tur == .gider }.reduce(0) { $0 + $1.tutar }
+            self.donemIslemleri = filtreliIslemler
             
-        } catch {
-            Logger.log("Cüzdan detay işlemleri çekilirken hata: \(error.localizedDescription)", log: Logger.data, type: .error)
+            // Toplamları hesapla
+            self.toplamGelir = filtreliIslemler.filter { $0.tur == .gelir }.reduce(0) { $0 + $1.tutar }
+            self.toplamGider = filtreliIslemler.filter { $0.tur == .gider }.reduce(0) { $0 + $1.tutar }
+            
+        } else {
+            // Eğer hafızada yoksa veritabanından çek
+            let predicate = #Predicate<Islem> { islem in
+                islem.hesap?.id == hesapID &&
+                islem.tarih >= monthInterval.start &&
+                islem.tarih < monthInterval.end
+            }
+            
+            let descriptor = FetchDescriptor<Islem>(
+                predicate: predicate,
+                sortBy: [SortDescriptor(\.tarih, order: .reverse)]
+            )
+            
+            do {
+                let islemler = try modelContext.fetch(descriptor)
+                self.donemIslemleri = islemler
+                
+                self.toplamGelir = islemler.filter { $0.tur == .gelir }.reduce(0) { $0 + $1.tutar }
+                self.toplamGider = islemler.filter { $0.tur == .gider }.reduce(0) { $0 + $1.tutar }
+                
+            } catch {
+                Logger.log("Cüzdan detay işlemleri çekilirken hata: \(error.localizedDescription)", log: Logger.data, type: .error)
+            }
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
