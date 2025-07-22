@@ -90,19 +90,26 @@ struct KrediKartiRaporuView: View {
     private var detayliGorunum: some View {
         VStack(spacing: 16) {
             // Kart seçici
+            // Kart seçici
             if viewModel.kartDetayRaporlari.count > 1 {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
+                    HStack(spacing: 8) {
                         ForEach(Array(viewModel.kartDetayRaporlari.enumerated()), id: \.element.id) { index, rapor in
                             KartSeciciView(
                                 rapor: rapor,
                                 isSelected: secilenKartIndex == index,
-                                onTap: { secilenKartIndex = index }
+                                onTap: {
+                                    withAnimation(.spring(response: 0.3)) {
+                                        secilenKartIndex = index
+                                    }
+                                }
                             )
                         }
                     }
                     .padding(.horizontal)
+                    .padding(.vertical, 4)
                 }
+                .frame(height: 95) // Yükseklik azaltıldı
             }
             
             if let secilenRapor = viewModel.kartDetayRaporlari[safe: secilenKartIndex] {
@@ -135,6 +142,16 @@ struct KrediKartiRaporuView: View {
             KartlarArasiKarsilastirmaView(raporlar: viewModel.kartDetayRaporlari)
                 .padding(.horizontal)
             
+            // Kompakt kart listesi
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(viewModel.kartDetayRaporlari) { rapor in
+                        KompaktKartView(rapor: rapor)
+                    }
+                }
+                .padding(.horizontal)
+            }
+            
             // Detaylı karşılaştırma tablosu
             KarsilastirmaTablosuView(raporlar: viewModel.kartDetayRaporlari)
                 .padding(.horizontal)
@@ -145,6 +162,16 @@ struct KrediKartiRaporuView: View {
     @ViewBuilder
     private var ozetGorunum: some View {
         VStack(spacing: 20) {
+            // Kart listesi - yatay kaydırmalı
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(viewModel.kartDetayRaporlari) { rapor in
+                        KompaktKartView(rapor: rapor)
+                    }
+                }
+                .padding(.horizontal)
+            }
+            
             // Toplam harcama dağılımı
             ToplamHarcamaDagilimiView(raporlar: viewModel.kartDetayRaporlari)
                 .padding(.horizontal)
@@ -280,41 +307,68 @@ struct KartSeciciView: View {
     
     var body: some View {
         Button(action: onTap) {
-            VStack(spacing: 8) {
-                // Kart ikonu ve limit göstergesi
-                ZStack {
-                    Circle()
-                        .fill(rapor.hesap.renk.opacity(0.15))
-                        .frame(width: 60, height: 60)
-                    
-                    if let dolulukOrani = rapor.kartDolulukOrani {
-                        Circle()
-                            .trim(from: 0, to: dolulukOrani / 100)
-                            .stroke(rapor.hesap.renk, lineWidth: 4)
-                            .rotationEffect(.degrees(-90))
-                            .frame(width: 56, height: 56)
-                    }
-                    
+            VStack(spacing: 6) {
+                // Üst kısım - İkon ve hesap adı
+                HStack(spacing: 8) {
                     Image(systemName: rapor.hesap.ikonAdi)
-                        .font(.title2)
+                        .font(.title3)
                         .foregroundColor(rapor.hesap.renk)
+                        .frame(width: 32, height: 32)
+                        .background(rapor.hesap.renk.opacity(0.15))
+                        .cornerRadius(8)
+                    
+                    Text(rapor.hesap.isim)
+                        .font(.subheadline)
+                        .fontWeight(isSelected ? .semibold : .regular)
+                        .lineLimit(1)
+                    
+                    Spacer()
                 }
                 
-                Text(rapor.hesap.isim)
-                    .font(.caption)
-                    .fontWeight(isSelected ? .semibold : .regular)
+                // Harcama tutarı
+                HStack {
+                    Text(formatCurrency(
+                        amount: rapor.toplamHarcama,
+                        currencyCode: appSettings.currencyCode,
+                        localeIdentifier: appSettings.languageCode
+                    ))
+                    .font(.footnote.bold())
                     .lineLimit(1)
+                    .minimumScaleFactor(0.7)
+                    
+                    Spacer()
+                }
                 
-                Text(formatCurrency(
-                    amount: rapor.toplamHarcama,
-                    currencyCode: appSettings.currencyCode,
-                    localeIdentifier: appSettings.languageCode
-                ))
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+                // Kullanım yüzdesi ve progress bar
+                if let dolulukOrani = rapor.kartDolulukOrani {
+                    VStack(spacing: 4) {
+                        HStack {
+                            Text(String(format: "%.0f%%", dolulukOrani))
+                                .font(.caption2.bold())
+                                .foregroundColor(
+                                    dolulukOrani > 80 ? .red :
+                                    dolulukOrani > 60 ? .orange : .green
+                                )
+                            
+                            Spacer()
+                            
+                            Text("reports.creditcard.usage.short")
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                        }
+                        
+                        ProgressView(value: dolulukOrani, total: 100)
+                            .tint(
+                                dolulukOrani > 80 ? .red :
+                                dolulukOrani > 60 ? .orange : .green
+                            )
+                            .scaleEffect(x: 1, y: 0.5, anchor: .center)
+                    }
+                }
             }
-            .padding(.vertical, 12)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .frame(width: 160, height: 85)
             .background(
                 RoundedRectangle(cornerRadius: 12)
                     .fill(isSelected ? Color.accentColor.opacity(0.1) : Color(.tertiarySystemGroupedBackground))
@@ -323,8 +377,6 @@ struct KartSeciciView: View {
                             .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
                     )
             )
-            .scaleEffect(isSelected ? 1.05 : 1.0)
-            .animation(.spring(response: 0.3), value: isSelected)
         }
         .buttonStyle(.plain)
     }
@@ -339,11 +391,11 @@ struct GelismisKartDetayPaneli: View {
     var body: some View {
         VStack(spacing: 16) {
             // Kart başlığı ve limit bilgisi
-            HStack {
+            HStack(alignment: .top, spacing: 12) {
                 Image(systemName: rapor.hesap.ikonAdi)
-                    .font(.largeTitle)
+                    .font(.title2)
                     .foregroundColor(rapor.hesap.renk)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 50, height: 50)
                     .background(rapor.hesap.renk.opacity(0.15))
                     .cornerRadius(12)
                 
@@ -513,27 +565,28 @@ struct DetailMetrik: View {
     let renk: Color
     
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             Image(systemName: ikon)
                 .font(.callout)
                 .foregroundColor(renk)
-                .frame(width: 24)
+                .frame(width: 20)
             
             VStack(alignment: .leading, spacing: 2) {
                 Text(baslik)
                     .font(.caption2)
                     .foregroundStyle(.secondary)
+                    .lineLimit(1)
                 
                 Text(deger)
                     .font(.caption.bold())
                     .lineLimit(1)
-                    .minimumScaleFactor(0.8)
+                    .minimumScaleFactor(0.7)
             }
             
-            Spacer()
+            Spacer(minLength: 0)
         }
         .padding(.vertical, 8)
-        .padding(.horizontal, 12)
+        .padding(.horizontal, 10)
         .frame(maxWidth: .infinity)
         .background(Color(.quaternarySystemFill))
         .cornerRadius(8)
@@ -552,6 +605,7 @@ struct KategoriAnaliziView: View {
     let rapor: KartDetayRaporu
     @EnvironmentObject var appSettings: AppSettings
     @State private var secilenKategori: KategoriHarcamasi?
+    @State private var tumKategorileriGoster = false
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -559,49 +613,54 @@ struct KategoriAnaliziView: View {
                 .font(.headline)
                 .foregroundStyle(.secondary)
             
-            // Donut Chart ve detaylar yan yana
-            HStack(alignment: .top, spacing: 20) {
-                // Donut Chart
-                ZStack {
-                    DonutChartView(data: rapor.kategoriDagilimi)
-                        .frame(width: 180, height: 180)
-                    
-                    // Ortada seçili kategori bilgisi
-                    if let kategori = secilenKategori {
-                        VStack(spacing: 4) {
-                            Image(systemName: kategori.ikonAdi)
-                                .font(.title2)
-                                .foregroundColor(kategori.renk)
-                            
-                            Text(LocalizedStringKey(kategori.localizationKey ?? kategori.kategori))
-                                .font(.caption)
-                                .lineLimit(1)
-                            
-                            Text(formatCurrency(
-                                amount: kategori.tutar,
-                                currencyCode: appSettings.currencyCode,
-                                localeIdentifier: appSettings.languageCode
-                            ))
-                            .font(.caption.bold())
-                        }
-                    }
-                }
+            // Donut Chart - Tam genişlik
+            VStack(spacing: 16) {
+                DonutChartView(data: rapor.kategoriDagilimi)
+                    .frame(height: 220)
                 
-                // Kategori listesi
-                VStack(spacing: 8) {
-                    ForEach(rapor.kategoriDagilimi.prefix(5)) { kategori in
-                        KategoriSatiriView(
+                // Kategori listesi - Grid yapısında
+                LazyVGrid(columns: [
+                    GridItem(.flexible(), spacing: 12),
+                    GridItem(.flexible(), spacing: 12)
+                ], spacing: 12) {
+                    ForEach(tumKategorileriGoster ? rapor.kategoriDagilimi : Array(rapor.kategoriDagilimi.prefix(4))) { kategori in
+                        KategoriKartView(
                             kategori: kategori,
                             toplamTutar: rapor.toplamHarcama,
                             isSelected: secilenKategori?.id == kategori.id,
-                            onTap: { secilenKategori = kategori }
+                            onTap: {
+                                withAnimation(.spring(response: 0.3)) {
+                                    secilenKategori = kategori
+                                }
+                            }
                         )
                     }
-                    
-                    if rapor.kategoriDagilimi.count > 5 {
-                        Text(String(format: NSLocalizedString("reports.creditcard.more_categories", comment: ""), rapor.kategoriDagilimi.count - 5))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                }
+                
+                // Daha fazla/Az göster butonu
+                if rapor.kategoriDagilimi.count > 4 {
+                    Button(action: {
+                        withAnimation(.spring(response: 0.3)) {
+                            tumKategorileriGoster.toggle()
+                        }
+                    }) {
+                        HStack {
+                            // Bundle extension'ınızı kullanarak
+                            let bundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+                            
+                            if tumKategorileriGoster {
+                                Text(bundle.localizedString(forKey: "reports.creditcard.show_less", value: nil, table: nil))
+                            } else {
+                                let format = bundle.localizedString(forKey: "reports.creditcard.more_categories", value: nil, table: nil)
+                                Text(String(format: format, rapor.kategoriDagilimi.count - 4))
+                            }
+                            
+                            Image(systemName: tumKategorileriGoster ? "chevron.up" : "chevron.down")
+                                .font(.caption)
+                        }
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundColor(.accentColor)
                     }
                 }
             }
@@ -615,7 +674,7 @@ struct KategoriAnaliziView: View {
     }
 }
 
-struct KategoriSatiriView: View {
+struct KategoriKartView: View {
     let kategori: KategoriHarcamasi
     let toplamTutar: Double
     let isSelected: Bool
@@ -628,19 +687,39 @@ struct KategoriSatiriView: View {
     
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: 12) {
-                Image(systemName: kategori.ikonAdi)
-                    .font(.callout)
-                    .foregroundColor(kategori.renk)
-                    .frame(width: 28, height: 28)
-                    .background(kategori.renk.opacity(0.15))
-                    .cornerRadius(6)
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 8) {
+                    Image(systemName: kategori.ikonAdi)
+                        .font(.title3)
+                        .foregroundColor(kategori.renk)
+                        .frame(width: 28, height: 28)
+                        .background(kategori.renk.opacity(0.15))
+                        .cornerRadius(6)
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(LocalizedStringKey(kategori.localizationKey ?? kategori.kategori))
+                            .font(.caption)
+                            .fontWeight(isSelected ? .semibold : .regular)
+                            .lineLimit(1)
+                            .foregroundColor(.primary)
+                        
+                        Text(String(format: "%.1f%%", yuzde))
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                    
+                    Spacer()
+                }
                 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(LocalizedStringKey(kategori.localizationKey ?? kategori.kategori))
-                        .font(.caption)
-                        .fontWeight(isSelected ? .semibold : .regular)
-                        .lineLimit(1)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(formatCurrency(
+                        amount: kategori.tutar,
+                        currencyCode: appSettings.currencyCode,
+                        localeIdentifier: appSettings.languageCode
+                    ))
+                    .font(.subheadline.bold())
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
                     
                     // Yüzde çubuğu
                     GeometryReader { geometry in
@@ -656,28 +735,18 @@ struct KategoriSatiriView: View {
                     }
                     .frame(height: 4)
                 }
-                
-                Spacer()
-                
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text(formatCurrency(
-                        amount: kategori.tutar,
-                        currencyCode: appSettings.currencyCode,
-                        localeIdentifier: appSettings.languageCode
-                    ))
-                    .font(.caption.bold())
-                    
-                    Text(String(format: "%.1f%%", yuzde))
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                }
             }
-            .padding(.vertical, 6)
-            .padding(.horizontal, 8)
+            .padding(12)
+            .frame(maxWidth: .infinity)
             .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? Color.accentColor.opacity(0.1) : Color.clear)
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(isSelected ? kategori.renk.opacity(0.1) : Color(.tertiarySystemGroupedBackground))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(isSelected ? kategori.renk : Color.clear, lineWidth: 2)
+                    )
             )
+            .scaleEffect(isSelected ? 0.98 : 1.0)
         }
         .buttonStyle(.plain)
     }
@@ -693,7 +762,7 @@ struct GelismisHarcamaTrendiView: View {
     enum GrafikTipi: String, CaseIterable {
         case gunluk = "reports.creditcard.daily"
         case haftalik = "reports.creditcard.weekly"
-        case kategori = "reports.creditcard.by_category"
+        // kategori case'i kaldırıldı
     }
     
     private var haftalikVeriler: [HaftalikHarcama] {
@@ -727,7 +796,7 @@ struct GelismisHarcamaTrendiView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .frame(width: 200)
+                .frame(width: 150) // Genişlik azaltıldı
             }
             
             // Seçilen tarih detayı
@@ -775,8 +844,7 @@ struct GelismisHarcamaTrendiView: View {
                 gunlukGrafik
             case .haftalik:
                 haftalikGrafik
-            case .kategori:
-                kategoriZamanliGrafik
+            // kategori case kaldırıldı
             }
         }
         .padding()
@@ -822,23 +890,7 @@ struct GelismisHarcamaTrendiView: View {
         .frame(height: 200)
     }
     
-    @ViewBuilder
-    private var kategoriZamanliGrafik: some View {
-        if let kategoriZamanliVeriler = rapor.kategoriZamanliDagilim {
-            Chart {
-                ForEach(kategoriZamanliVeriler) { veri in
-                    LineMark(
-                        x: .value("Tarih", veri.tarih, unit: .day),
-                        y: .value("Tutar", veri.tutar)
-                    )
-                    .foregroundStyle(by: .value("Kategori", veri.kategoriAdi))
-                    .interpolationMethod(.catmullRom)
-                }
-            }
-            .frame(height: 200)
-            .chartLegend(position: .bottom)
-        }
-    }
+    // kategoriZamanliGrafik fonksiyonu kaldırıldı
     
     private func formatCompactCurrency(amount: Double) -> String {
         if amount >= 1000 {
@@ -1427,7 +1479,88 @@ struct HaftalikHarcama: Identifiable {
         gunSayisi > 0 ? toplamTutar / Double(gunSayisi) : 0
     }
 }
-
+// Kompakt kart görünümü
+struct KompaktKartView: View {
+    let rapor: KartDetayRaporu
+    @EnvironmentObject var appSettings: AppSettings
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            // Kart başlığı ve limit göstergesi
+            HStack(spacing: 8) {
+                Image(systemName: rapor.hesap.ikonAdi)
+                    .font(.headline)
+                    .foregroundColor(rapor.hesap.renk)
+                    .frame(width: 30, height: 30)
+                    .background(rapor.hesap.renk.opacity(0.15))
+                    .cornerRadius(8)
+                
+                Text(rapor.hesap.isim)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .lineLimit(1)
+                
+                Spacer()
+            }
+            
+            // Harcama bilgisi
+            VStack(alignment: .leading, spacing: 4) {
+                Text(formatCurrency(
+                    amount: rapor.toplamHarcama,
+                    currencyCode: appSettings.currencyCode,
+                    localeIdentifier: appSettings.languageCode
+                ))
+                .font(.headline.bold())
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                
+                if let limit = rapor.kartLimiti {
+                    Text("Limit: " + formatCurrency(
+                        amount: limit,
+                        currencyCode: appSettings.currencyCode,
+                        localeIdentifier: appSettings.languageCode
+                    ))
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                }
+            }
+            
+            // Kullanım oranı
+            if let dolulukOrani = rapor.kartDolulukOrani {
+                VStack(spacing: 4) {
+                    ProgressView(value: dolulukOrani, total: 100)
+                        .tint(
+                            dolulukOrani > 80 ? .red :
+                            dolulukOrani > 60 ? .orange : .green
+                        )
+                        .scaleEffect(x: 1, y: 0.8, anchor: .center)
+                    
+                    HStack {
+                        Text(String(format: "%.0f%%", dolulukOrani))
+                            .font(.caption.bold())
+                            .foregroundColor(
+                                dolulukOrani > 80 ? .red :
+                                dolulukOrani > 60 ? .orange : .green
+                            )
+                        
+                        Spacer()
+                        
+                        Text("reports.creditcard.usage")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
+        .padding()
+        .frame(width: 160)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(12)
+        .shadow(color: .black.opacity(0.05), radius: 5, y: 2)
+    }
+}
 // KategoriLegendiView tanımı
 struct KategoriLegendiView: View {
     let kategoriler: [KategoriHarcamasi]

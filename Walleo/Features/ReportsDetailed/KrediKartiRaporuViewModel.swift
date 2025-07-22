@@ -17,7 +17,7 @@ class KrediKartiRaporuViewModel {
     
     // Önceki dönem verileri (karşılaştırma için)
     private var oncekiDonemToplam: Double = 0
-
+    
     init(modelContext: ModelContext, baslangicTarihi: Date, bitisTarihi: Date) {
         self.modelContext = modelContext
         self.baslangicTarihi = baslangicTarihi
@@ -35,7 +35,7 @@ class KrediKartiRaporuViewModel {
     @objc private func triggerFetchData() {
         Task { await fetchData() }
     }
-
+    
     func fetchData() async {
         isLoading = true
         Logger.log("KrediKarti Raporu: Veri çekme başladı. Tarih aralığı: \(baslangicTarihi) - \(bitisTarihi)", log: Logger.service)
@@ -224,7 +224,7 @@ class KrediKartiRaporuViewModel {
             
             kartRaporu.guncelBorc = baslangicBorc + donemHarcamalari - donemOdemeleri
             let guncelBorc = kartRaporu.guncelBorc ?? 0.0
-
+            
             kartRaporu.kullanilabilirLimit = max(0, limit - guncelBorc)
             // Limitin 0'dan büyük olduğunu kontrol ederek sıfıra bölme hatasını da önleyelim.
             if limit > 0 {
@@ -246,12 +246,12 @@ class KrediKartiRaporuViewModel {
     private func calculateCategoryDistribution(islemler: [Islem]) -> [KategoriHarcamasi] {
         // Gruplamayı güvenli bir şekilde yapalım. Anahtar tipi 'Kategori?' olacaktır.
         let kategoriGruplari = Dictionary(grouping: islemler, by: { $0.kategori })
-
+        
         return kategoriGruplari.compactMap { (kategori, islemler) -> KategoriHarcamasi? in
             // 'kategori' artık opsiyonel olduğu için bu kontrol doğru ve gereklidir.
             // Kategorisi olmayan işlemleri (key'i nil olanları) atlar.
             guard let kategori = kategori else { return nil }
-
+            
             let toplam = islemler.reduce(0) { $0 + $1.tutar }
             return KategoriHarcamasi(
                 kategori: kategori.isim,
@@ -308,7 +308,7 @@ class KrediKartiRaporuViewModel {
             let odenenTaksitSayisi = ilkTaksit.mevcutTaksitNo
             let toplamTaksitSayisi = ilkTaksit.toplamTaksitSayisi
             let kalanTutar = Double(toplamTaksitSayisi - odenenTaksitSayisi) * ilkTaksit.tutar
-
+            
             return TaksitliIslemOzeti(
                 id: anaID,
                 isim: anaIsim,
@@ -325,6 +325,14 @@ class KrediKartiRaporuViewModel {
         var dagilimlar: [KategoriZamanliDagilim] = []
         let calendar = Calendar.current
         
+        // Önce tarih aralığındaki tüm günleri oluştur
+        var gunler: [Date] = []
+        var currentDate = baslangicTarihi
+        while currentDate <= bitisTarihi {
+            gunler.append(calendar.startOfDay(for: currentDate))
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+        
         // Her kategori için günlük toplamları hesapla
         let kategoriGruplari = Dictionary(grouping: islemler) { $0.kategori }
         
@@ -335,13 +343,15 @@ class KrediKartiRaporuViewModel {
                 calendar.startOfDay(for: islem.tarih)
             }
             
-            for (gun, gunIslemleri) in gunlukGruplar {
-                let toplam = gunIslemleri.reduce(0) { $0 + $1.tutar }
+            // Her gün için veri ekle (0 da olsa)
+            for gun in gunler {
+                let gunlukToplam = gunlukGruplar[gun]?.reduce(0) { $0 + $1.tutar } ?? 0
                 
+                // Kategori adını doğrudan kullan, NSLocalizedString kullanma
                 dagilimlar.append(KategoriZamanliDagilim(
                     tarih: gun,
-                    kategoriAdi: NSLocalizedString(kategori.localizationKey ?? kategori.isim, comment: ""),
-                    tutar: toplam
+                    kategoriAdi: kategori.isim, // Sadece isim kullan
+                    tutar: gunlukToplam
                 ))
             }
         }
