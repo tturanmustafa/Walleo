@@ -929,3 +929,15 @@
 "reports.creditcard.more_categories" = "+%d kategori daha";
 "reports.creditcard.usage.short" = "Kullanım";
 "reports.creditcard.no_category_data" = "Kategori verisi bulunmuyor";
+"loan_report.legend.paid" = "Ödendi";
+"loan_report.legend.pending" = "Ödenmedi";
+"loan_report.legend.overdue" = "Gecikti";
+"loan_report.this_month_summary" = "Bu Ay";
+"loan_report.total_installments" = "Bu aya ait toplam taksit tutarı:";
+"loan_report.paid_installments" = "Ödenen taksit tutarı toplamı:";
+"loan_report.no_installments_for_day" = "Bu gün için kredi taksidi yok";
+"loan_report.installment_no" = "Taksit:";
+"loan_report.status.paid" = "Ödendi";
+"loan_report.status.pending" = "Ödenmedi";
+"loan_report.status.overdue" = "Gecikti";
+"loan_report.total_for_day" = "Gün Toplamı";

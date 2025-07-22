@@ -25,6 +25,7 @@ struct KrediDetayRaporu: Identifiable {
     let hesap: Hesap
     var krediDetaylari: KrediDetaylari?
     var donemdekiTaksitler: [KrediTaksitDetayi] = []
+    var tumTaksitler: [KrediTaksitDetayi] = [] // DOĞRU YER - odemePerformansi'den ÖNCE
     var odemePerformansi: OdemePerformansi = OdemePerformansi()
     var sonrakiTaksit: KrediTaksitDetayi?
     var ilerlemeYuzdesi: Double = 0.0
