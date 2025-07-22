@@ -180,6 +180,7 @@ class KrediRaporuViewModel {
             hesap: hesap,
             krediDetaylari: krediDetaylari,
             donemdekiTaksitler: donemTaksitleri,
+            tumTaksitler: taksitler, // YENİ SATIR
             odemePerformansi: performans,
             sonrakiTaksit: sonrakiTaksit,
             ilerlemeYuzdesi: ilerlemeYuzdesi
@@ -390,15 +391,20 @@ class KrediRaporuViewModel {
         var takvimVerisi: [Date: [OdemeTakvimi.TaksitOzeti]] = [:]
         
         for rapor in krediDetayRaporlari {
-            let aylikTaksitler = rapor.donemdekiTaksitler.filter { taksit in
+            let aylikTaksitler = rapor.tumTaksitler.filter { taksit in
                 taksit.odemeTarihi >= ayBaslangici && taksit.odemeTarihi < ayBitisi
             }
             
-            for (index, taksit) in aylikTaksitler.enumerated() {
+            for taksit in aylikTaksitler {
                 let gun = calendar.startOfDay(for: taksit.odemeTarihi)
+                
+                let taksitNo = rapor.tumTaksitler
+                    .sorted { $0.odemeTarihi < $1.odemeTarihi }
+                    .firstIndex(where: { $0.id == taksit.id }) ?? 0
+                
                 let ozet = OdemeTakvimi.TaksitOzeti(
                     krediAdi: rapor.hesap.isim,
-                    taksitNo: "\(index + 1)/\(rapor.krediDetaylari?.toplamTaksitSayisi ?? 0)",
+                    taksitNo: "\(taksitNo + 1)/\(rapor.krediDetaylari?.toplamTaksitSayisi ?? 0)",
                     tutar: taksit.taksitTutari,
                     odemeTarihi: taksit.odemeTarihi,
                     odendiMi: taksit.odendiMi

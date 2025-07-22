@@ -929,3 +929,15 @@
 "reports.creditcard.more_categories" = "+%d more categories";
 "reports.creditcard.usage.short" = "Usage";
 "reports.creditcard.no_category_data" = "No category data available";
+"loan_report.legend.paid" = "Paid";
+"loan_report.legend.pending" = "Pending";
+"loan_report.legend.overdue" = "Overdue";
+"loan_report.this_month_summary" = "This Month";
+"loan_report.total_installments" = "Total installment amount:";
+"loan_report.paid_installments" = "Paid installment amount:";
+"loan_report.no_installments_for_day" = "No loan installments for this day";
+"loan_report.installment_no" = "Installment:";
+"loan_report.status.paid" = "Paid";
+"loan_report.status.pending" = "Pending";
+"loan_report.status.overdue" = "Overdue";
+"loan_report.total_for_day" = "Total for Day";

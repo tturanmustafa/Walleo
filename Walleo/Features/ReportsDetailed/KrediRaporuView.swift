@@ -661,6 +661,9 @@ struct OdemeTakvimiView: View {
     let takvimVerileri: [OdemeTakvimi]
     let secilenAy: Date
     @EnvironmentObject var appSettings: AppSettings
+    @State private var secilenGun: Date?
+    @State private var secilenGunTaksitleri: [OdemeTakvimi.TaksitOzeti] = []
+    @State private var taksitDetayGoster = false
     
     private var takvimGunleri: [Date] {
         let calendar = Calendar.current
@@ -695,6 +698,17 @@ struct OdemeTakvimiView: View {
         return days
     }
     
+    // Aylık özet hesaplamaları
+    private var aylikToplamTutar: Double {
+        takvimVerileri.reduce(0) { $0 + $1.toplamTutar }
+    }
+    
+    private var aylikOdenenTutar: Double {
+        takvimVerileri.flatMap { $0.taksitler }
+            .filter { $0.odendiMi }
+            .reduce(0) { $0 + $1.tutar }
+    }
+    
     var body: some View {
         VStack(spacing: 16) {
             // Hafta günleri başlıkları
@@ -714,33 +728,99 @@ struct OdemeTakvimiView: View {
                     TakvimGunView(
                         gun: gun,
                         secilenAy: secilenAy,
-                        taksitler: takvimVerileri.first { Calendar.current.isDate($0.ay, inSameDayAs: gun) }?.taksitler ?? []
+                        taksitler: takvimVerileri.first { Calendar.current.isDate($0.ay, inSameDayAs: gun) }?.taksitler ?? [],
+                        onTap: {
+                            secilenGun = gun
+                        }
                     )
                 }
             }
             
-            // Özet
-            if !takvimVerileri.isEmpty {
+            // Legend
+            HStack(spacing: 20) {
+                LegendItem(color: .green, text: "loan_report.legend.paid")
+                LegendItem(color: .orange, text: "loan_report.legend.pending")
+                LegendItem(color: .red, text: "loan_report.legend.overdue")
+            }
+            .padding(.vertical, 12)
+            .padding(.horizontal)
+            .background(Color(.tertiarySystemGroupedBackground))
+            .cornerRadius(10)
+            
+            Divider()
+            
+            // Aylık özet
+            VStack(spacing: 12) {
+                Text("loan_report.this_month_summary")
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
                 HStack {
-                    Text("loan_report.monthly_total")
-                        .font(.caption)
+                    Text("loan_report.total_installments")
+                        .font(.subheadline)
                         .foregroundStyle(.secondary)
                     
                     Spacer()
                     
                     Text(formatCurrency(
-                        amount: takvimVerileri.reduce(0) { $0 + $1.toplamTutar },
+                        amount: aylikToplamTutar,
                         currencyCode: appSettings.currencyCode,
                         localeIdentifier: appSettings.languageCode
                     ))
-                    .font(.headline.bold())
+                    .font(.subheadline.bold())
                 }
-                .padding(.top)
+                
+                HStack {
+                    Text("loan_report.paid_installments")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    
+                    Spacer()
+                    
+                    Text(formatCurrency(
+                        amount: aylikOdenenTutar,
+                        currencyCode: appSettings.currencyCode,
+                        localeIdentifier: appSettings.languageCode
+                    ))
+                    .font(.subheadline.bold())
+                    .foregroundColor(.green)
+                }
             }
+            .padding()
+            .background(Color(.tertiarySystemGroupedBackground))
+            .cornerRadius(12)
         }
         .padding()
         .background(Color(.secondarySystemGroupedBackground))
         .cornerRadius(16)
+        .sheet(item: $secilenGun) { gun in
+            TaksitDetaySheet(
+                gun: gun,
+                takvimVerileri: takvimVerileri // taksitler yerine takvimVerileri gönderiyoruz
+            )
+            .environmentObject(appSettings)
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
+        }
+    }
+}
+
+struct LegendItem: View {
+    let color: Color
+    let text: LocalizedStringKey
+    
+    var body: some View {
+        HStack(spacing: 6) {
+            Rectangle()
+                .fill(color)
+                .frame(width: 20, height: 3)
+                .cornerRadius(1.5)
+            
+            Text(text)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
     }
 }
 
@@ -748,6 +828,7 @@ struct TakvimGunView: View {
     let gun: Date
     let secilenAy: Date
     let taksitler: [OdemeTakvimi.TaksitOzeti]
+    let onTap: () -> Void // YENİ
     @EnvironmentObject var appSettings: AppSettings
     
     private var isCurrentMonth: Bool {
@@ -758,30 +839,59 @@ struct TakvimGunView: View {
         Calendar.current.isDateInToday(gun)
     }
     
+    private func taksitRengi(taksit: OdemeTakvimi.TaksitOzeti) -> Color {
+        if taksit.odendiMi {
+            return .green
+        } else if taksit.odemeTarihi < Date() {
+            return .red // Gecikmiş
+        } else {
+            return .orange // Henüz ödenmemiş
+        }
+    }
+    
+    private var toplamTutar: Double {
+        taksitler.reduce(0) { $0 + $1.tutar }
+    }
+    
     var body: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 2) {
+            // Gün numarası
             Text("\(Calendar.current.component(.day, from: gun))")
                 .font(.caption)
                 .fontWeight(isToday ? .bold : .regular)
                 .foregroundColor(isCurrentMonth ? .primary : .secondary)
             
             if !taksitler.isEmpty {
-                VStack(spacing: 2) {
-                    ForEach(taksitler.prefix(2)) { taksit in
-                        RoundedRectangle(cornerRadius: 2)
-                            .fill(taksit.odendiMi ? Color.green : Color.orange)
-                            .frame(height: 4)
+                // Toplam tutar
+                Text(formatCurrency(
+                    amount: toplamTutar,
+                    currencyCode: appSettings.currencyCode,
+                    localeIdentifier: appSettings.languageCode
+                ))
+                .font(.system(size: 9, weight: .semibold))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .foregroundColor(.primary)
+                
+                // Renk kodlu çizgiler
+                HStack(spacing: 1) {
+                    ForEach(taksitler.prefix(3)) { taksit in
+                        Rectangle()
+                            .fill(taksitRengi(taksit: taksit))
+                            .frame(height: 3)
                     }
-                    
-                    if taksitler.count > 2 {
-                        Text("+\(taksitler.count - 2)")
-                            .font(.system(size: 8))
-                            .foregroundStyle(.secondary)
-                    }
+                }
+                .cornerRadius(1.5)
+                
+                // Fazla taksit göstergesi
+                if taksitler.count > 3 {
+                    Text("+\(taksitler.count - 3)")
+                        .font(.system(size: 7))
+                        .foregroundStyle(.secondary)
                 }
             }
         }
-        .frame(height: 50)
+        .frame(height: 65)
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 8)
@@ -791,6 +901,144 @@ struct TakvimGunView: View {
                         .stroke(isToday ? Color.accentColor : Color.clear, lineWidth: 2)
                 )
         )
+        .onTapGesture { // YENİ
+            onTap()
+        }
+    }
+}
+
+struct TaksitDetaySheet: View {
+    let gun: Date
+    let takvimVerileri: [OdemeTakvimi]
+    @EnvironmentObject var appSettings: AppSettings
+    @Environment(\.dismiss) private var dismiss
+    
+    // Taksitleri gun'e göre hesapla
+    private var taksitler: [OdemeTakvimi.TaksitOzeti] {
+        takvimVerileri.first { Calendar.current.isDate($0.ay, inSameDayAs: gun) }?.taksitler ?? []
+    }
+    
+    private var gunFormatli: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        formatter.dateFormat = "d MMMM yyyy EEEE"
+        return formatter.string(from: gun)
+    }
+    
+    private func taksitRengi(_ taksit: OdemeTakvimi.TaksitOzeti) -> Color {
+        if taksit.odendiMi {
+            return .green
+        } else if taksit.odemeTarihi < Date() {
+            return .red
+        } else {
+            return .orange
+        }
+    }
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 0) {
+                if taksitler.isEmpty {
+                    // Taksit yoksa
+                    VStack(spacing: 20) {
+                        Image(systemName: "calendar.badge.exclamationmark")
+                            .font(.system(size: 60))
+                            .foregroundColor(.secondary)
+                        
+                        Text("loan_report.no_installments_for_day")
+                            .font(.headline)
+                            .foregroundStyle(.secondary)
+                        
+                        Text(gunFormatli)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    // Taksit listesi
+                    ScrollView {
+                        VStack(spacing: 12) {
+                            ForEach(taksitler) { taksit in
+                                HStack(spacing: 12) {
+                                    // Durum çubuğu
+                                    RoundedRectangle(cornerRadius: 2)
+                                        .fill(taksitRengi(taksit))
+                                        .frame(width: 4, height: 50)
+                                    
+                                    // Taksit bilgileri
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(taksit.krediAdi)
+                                            .font(.headline)
+                                        
+                                        HStack {
+                                            Text("loan_report.installment_no")
+                                                .font(.caption)
+                                                .foregroundStyle(.secondary)
+                                            
+                                            Text(taksit.taksitNo)
+                                                .font(.caption)
+                                                .fontWeight(.medium)
+                                        }
+                                    }
+                                    
+                                    Spacer()
+                                    
+                                    // Tutar ve durum
+                                    VStack(alignment: .trailing, spacing: 4) {
+                                        Text(formatCurrency(
+                                            amount: taksit.tutar,
+                                            currencyCode: appSettings.currencyCode,
+                                            localeIdentifier: appSettings.languageCode
+                                        ))
+                                        .font(.headline.bold())
+                                        
+                                        Text(taksit.odendiMi ?
+                                            LocalizedStringKey("loan_report.status.paid") :
+                                            taksit.odemeTarihi < Date() ?
+                                            LocalizedStringKey("loan_report.status.overdue") :
+                                            LocalizedStringKey("loan_report.status.pending")
+                                        )
+                                        .font(.caption)
+                                        .foregroundColor(taksitRengi(taksit))
+                                    }
+                                }
+                                .padding()
+                                .background(Color(.secondarySystemGroupedBackground))
+                                .cornerRadius(12)
+                            }
+                        }
+                        .padding()
+                    }
+                    
+                    // Toplam bilgi
+                    HStack {
+                        Text("loan_report.total_for_day")
+                            .font(.headline)
+                            .foregroundStyle(.secondary)
+                        
+                        Spacer()
+                        
+                        Text(formatCurrency(
+                            amount: taksitler.reduce(0) { $0 + $1.tutar },
+                            currencyCode: appSettings.currencyCode,
+                            localeIdentifier: appSettings.languageCode
+                        ))
+                        .font(.headline.bold())
+                    }
+                    .padding()
+                    .background(Color(.tertiarySystemGroupedBackground))
+                }
+            }
+            .navigationTitle(gunFormatli)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("common.close") {
+                        dismiss()
+                    }
+                }
+            }
+        }
     }
 }
 
