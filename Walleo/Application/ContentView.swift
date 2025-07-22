@@ -123,19 +123,22 @@ struct ContentView: View {
                     Group {
                         switch seciliSekme {
                         case .butceler:
-                            ButcelerView()
+                            NavigationStack {
+                                ButcelerView()
+                            }
                         case .raporlar:
-                            RaporlarView()
+                            NavigationStack {
+                                RaporlarView()
+                            }
                         case .detayliRaporlar:
-                            DetayliRaporlarView()
+                            NavigationStack {
+                                DetayliRaporlarView()
+                            }
                         default:
                             EmptyView()
                         }
                     }
-                    // Alttaki özel Tab Bar'ın içeriği örtmesini engellemek için
-                    // yaklaşık olarak Tab Bar yüksekliği kadar bir boşluk ekliyoruz.
                     .padding(.bottom, 80)
-                    // --- 🔥 DEĞİŞİKLİK SONU 🔥 ---
                 }
             }
             
