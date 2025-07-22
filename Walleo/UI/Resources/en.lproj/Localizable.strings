@@ -924,3 +924,8 @@
 "onboarding.personalize.title" = "Personalize Your Experience";
 "onboarding.select_language" = "Select Language";
 "onboarding.select_currency" = "Select Currency";
+
+"reports.creditcard.show_less" = "Show Less";
+"reports.creditcard.more_categories" = "+%d more categories";
+"reports.creditcard.usage.short" = "Usage";
+"reports.creditcard.no_category_data" = "No category data available";

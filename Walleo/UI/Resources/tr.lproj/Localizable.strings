@@ -924,3 +924,8 @@
 "onboarding.personalize.title" = "Deneyiminizi Kişiselleştirin";
 "onboarding.select_language" = "Dil Seçin";
 "onboarding.select_currency" = "Para Birimi Seçin";
+
+"reports.creditcard.show_less" = "Daha Az Göster";
+"reports.creditcard.more_categories" = "+%d kategori daha";
+"reports.creditcard.usage.short" = "Kullanım";
+"reports.creditcard.no_category_data" = "Kategori verisi bulunmuyor";
