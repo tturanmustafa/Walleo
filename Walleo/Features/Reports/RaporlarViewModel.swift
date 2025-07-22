@@ -37,19 +37,23 @@ class RaporlarViewModel: RaporViewModelProtocol {
     }
     
     func fetchData() async {
-        self.isLoading = true
-        
-        let servis = RaporHesaplamaServisi(modelContext: self.modelContext)
-        let sonuc = await servis.hesapla(periyot: .aylik, tarih: self.currentDate)
-        
-        // Servisten gelen sonuçları özelliklerimize atıyoruz.
-        self.ozetVerisi = sonuc.ozetVerisi
-        self.karsilastirmaVerisi = sonuc.karsilastirmaVerisi
-        self.topGiderKategorileri = sonuc.topGiderKategorileri
-        self.topGelirKategorileri = sonuc.topGelirKategorileri
-        self.giderDagilimVerisi = sonuc.giderDagilimVerisi
-        self.gelirDagilimVerisi = sonuc.gelirDagilimVerisi
-        
-        self.isLoading = false
+        await MainActor.run {
+            self.isLoading = true
+            
+            let servis = RaporHesaplamaServisi(modelContext: self.modelContext)
+            Task { @MainActor in
+                let sonuc = await servis.hesapla(periyot: .aylik, tarih: self.currentDate)
+                
+                // Servisten gelen sonuçları özelliklerimize atıyoruz.
+                self.ozetVerisi = sonuc.ozetVerisi
+                self.karsilastirmaVerisi = sonuc.karsilastirmaVerisi
+                self.topGiderKategorileri = sonuc.topGiderKategorileri
+                self.topGelirKategorileri = sonuc.topGelirKategorileri
+                self.giderDagilimVerisi = sonuc.giderDagilimVerisi
+                self.gelirDagilimVerisi = sonuc.gelirDagilimVerisi
+                
+                self.isLoading = false
+            }
+        }
     }
 }
