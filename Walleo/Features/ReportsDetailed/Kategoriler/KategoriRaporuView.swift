@@ -9,6 +9,7 @@ struct KategoriRaporuView: View {
     
     @State private var secilenKategori: Kategori?
     @State private var gosterimTipi: GosterimTipi = .liste
+    @State private var karsilastirmaTuru: IslemTuru = .gider // Karşılaştırma için ayrı seçim
     
     let baslangicTarihi: Date
     let bitisTarihi: Date
@@ -72,7 +73,11 @@ struct KategoriRaporuView: View {
         }
         .onAppear {
             viewModel.appSettings = appSettings
-            Task { await viewModel.fetchData() }
+            Task {
+                await viewModel.fetchData()
+                // İlk yüklemede karşılaştırma verilerini de güncelle
+                await viewModel.updateComparisons(for: karsilastirmaTuru)
+            }
         }
         .onChange(of: baslangicTarihi) {
             viewModel.baslangicTarihi = baslangicTarihi
@@ -251,8 +256,24 @@ struct KategoriRaporuView: View {
     @ViewBuilder
     private var karsilastirmaGorunumu: some View {
         VStack(spacing: 20) {
-            if !viewModel.kategoriKarsilastirmalari.isEmpty {
-                ForEach(viewModel.kategoriKarsilastirmalari) { karsilastirma in
+            // Karşılaştırma için kendi tür seçici
+            Picker("reports.category.transaction_type", selection: $karsilastirmaTuru) {
+                Text("common.expenses").tag(IslemTuru.gider)
+                Text("common.incomes").tag(IslemTuru.gelir)
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal)
+            .onChange(of: karsilastirmaTuru) {
+                // Karşılaştırma türü değiştiğinde veriyi yeniden filtrele
+                Task { await viewModel.updateComparisons(for: karsilastirmaTuru) }
+            }
+            
+            let filtreliKarsilastirmalar = viewModel.kategoriKarsilastirmalari.filter { karsilastirma in
+                karsilastirma.kategori.tur == karsilastirmaTuru
+            }
+            
+            if !filtreliKarsilastirmalar.isEmpty {
+                ForEach(filtreliKarsilastirmalar) { karsilastirma in
                     KategoriKarsilastirmaKarti(karsilastirma: karsilastirma)
                         .padding(.horizontal)
                 }
@@ -301,18 +322,58 @@ struct KategoriOzetKarti: View {
                 Spacer()
             }
             
+            // En çok harcama yapılan kategori (tutar olarak)
             if let enCokHarcanan = ozet.enCokHarcananKategori {
                 HStack {
-                    Image(systemName: "trophy.fill")
+                    Image(systemName: "dollarsign.circle.fill")
                         .foregroundColor(.orange)
-                    Text("reports.category.most_spent")
+                    Text("reports.category.highest_spending")
                         .font(.subheadline)
                     Spacer()
-                    HStack {
-                        Image(systemName: enCokHarcanan.ikonAdi)
-                            .foregroundColor(enCokHarcanan.renk)
-                        Text(LocalizedStringKey(enCokHarcanan.localizationKey ?? enCokHarcanan.isim))
-                            .fontWeight(.medium)
+                    VStack(alignment: .trailing, spacing: 2) {
+                        HStack(spacing: 4) {
+                            Image(systemName: enCokHarcanan.ikonAdi)
+                                .font(.caption)
+                                .foregroundColor(enCokHarcanan.renk)
+                            Text(LocalizedStringKey(enCokHarcanan.localizationKey ?? enCokHarcanan.isim))
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                        }
+                        Text(formatCurrency(
+                            amount: ozet.enCokHarcananKategoriTutar,
+                            currencyCode: appSettings.currencyCode,
+                            localeIdentifier: appSettings.languageCode
+                        ))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            
+            // En çok işlem yapılan kategori
+            if let enCokIslemYapilan = ozet.enCokIslemYapilanKategori {
+                HStack {
+                    Image(systemName: "number.circle.fill")
+                        .foregroundColor(.blue)
+                    Text("reports.category.most_transactions")
+                        .font(.subheadline)
+                    Spacer()
+                    VStack(alignment: .trailing, spacing: 2) {
+                        HStack(spacing: 4) {
+                            Image(systemName: enCokIslemYapilan.ikonAdi)
+                                .font(.caption)
+                                .foregroundColor(enCokIslemYapilan.renk)
+                            Text(LocalizedStringKey(enCokIslemYapilan.localizationKey ?? enCokIslemYapilan.isim))
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                        }
+                        Text(String(
+                            format: Bundle.getLanguageBundle(for: appSettings.languageCode)
+                                .localizedString(forKey: "reports.category.transaction_count", value: "", table: nil),
+                            ozet.enCokIslemYapilanKategoriSayi
+                        ))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                     }
                 }
             }

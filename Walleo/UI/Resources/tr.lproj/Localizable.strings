@@ -943,3 +943,5 @@
 "loan_report.total_for_day" = "Gün Toplamı";
 "dashboard.show_less" = "Daha az göster";
 "dashboard.more_categories" = "kategori daha";
+"reports.category.highest_spending" = "En Çok Harcanan Kategori";
+"reports.category.most_transactions" = "En Çok İşlem Yapılan";

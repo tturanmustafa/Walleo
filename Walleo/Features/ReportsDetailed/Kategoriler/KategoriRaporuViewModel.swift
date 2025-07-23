@@ -1,11 +1,3 @@
-//
-//  KategoriRaporuViewModel.swift
-//  Walleo
-//
-//  Created by Mustafa Turan on 17.07.2025.
-//
-
-
 import SwiftUI
 import SwiftData
 
@@ -24,6 +16,9 @@ class KategoriRaporuViewModel {
         toplamHarcama: 0,
         toplamGelir: 0,
         enCokHarcananKategori: nil,
+        enCokHarcananKategoriTutar: 0,
+        enCokIslemYapilanKategori: nil,
+        enCokIslemYapilanKategoriSayi: 0,
         enCokGelirGetiren: nil
     )
     var giderKategorileri: [KategoriRaporVerisi] = []
@@ -111,6 +106,23 @@ class KategoriRaporuViewModel {
         }
         
         isLoading = false
+    }
+    
+    func updateComparisons(for tur: IslemTuru) async {
+        do {
+            let islemler = await fetchTransactions()
+            let oncekiDonemIslemleri = await fetchPreviousPeriodTransactions()
+            let kategoriler = try modelContext.fetch(FetchDescriptor<Kategori>())
+            
+            self.kategoriKarsilastirmalari = createComparisons(
+                mevcutIslemler: islemler,
+                oncekiIslemler: oncekiDonemIslemleri,
+                kategoriler: kategoriler,
+                turFiltresi: tur
+            )
+        } catch {
+            Logger.log("Karşılaştırma güncellenirken hata: \(error)", log: Logger.service, type: .error)
+        }
     }
     
     private func fetchTransactions() async -> [Islem] {
@@ -264,13 +276,17 @@ class KategoriRaporuViewModel {
     private func createComparisons(
         mevcutIslemler: [Islem],
         oncekiIslemler: [Islem],
-        kategoriler: [Kategori]
+        kategoriler: [Kategori],
+        turFiltresi: IslemTuru? = nil
     ) -> [KategoriKarsilastirma] {
         var karsilastirmalar: [KategoriKarsilastirma] = []
         
+        // Eğer tür filtresi verilmişse onu kullan, yoksa viewModel'deki secilenTur'u kullan
+        let filtrelenenTur = turFiltresi ?? self.secilenTur
+        
         // Mevcut dönem kategori sıralaması
         let mevcutSiralama = Dictionary(
-            grouping: mevcutIslemler.filter { $0.tur == secilenTur },
+            grouping: mevcutIslemler.filter { $0.tur == filtrelenenTur },
             by: { $0.kategori }
         ).compactMapValues { islemler in
             islemler.reduce(0) { $0 + $1.tutar }
@@ -278,7 +294,7 @@ class KategoriRaporuViewModel {
         
         // Önceki dönem kategori sıralaması
         let oncekiSiralama = Dictionary(
-            grouping: oncekiIslemler.filter { $0.tur == secilenTur },
+            grouping: oncekiIslemler.filter { $0.tur == filtrelenenTur },
             by: { $0.kategori }
         ).compactMapValues { islemler in
             islemler.reduce(0) { $0 + $1.tutar }
@@ -313,12 +329,25 @@ class KategoriRaporuViewModel {
         let toplamHarcama = giderAnalizleri.reduce(0) { $0 + $1.toplamTutar }
         let toplamGelir = gelirAnalizleri.reduce(0) { $0 + $1.toplamTutar }
         
+        // En çok harcanan kategori (tutar olarak)
+        let enCokHarcananRapor = giderAnalizleri.max { $0.toplamTutar < $1.toplamTutar }
+        let enCokHarcananKategori = enCokHarcananRapor?.kategori
+        let enCokHarcananTutar = enCokHarcananRapor?.toplamTutar ?? 0
+        
+        // En çok işlem yapılan kategori
+        let enCokIslemYapilanRapor = giderAnalizleri.max { $0.islemSayisi < $1.islemSayisi }
+        let enCokIslemYapilanKategori = enCokIslemYapilanRapor?.kategori
+        let enCokIslemYapilanSayi = enCokIslemYapilanRapor?.islemSayisi ?? 0
+        
         return KategoriRaporOzet(
             toplamKategoriSayisi: kategoriler.count,
             aktifKategoriSayisi: giderAnalizleri.count + gelirAnalizleri.count,
             toplamHarcama: toplamHarcama,
             toplamGelir: toplamGelir,
-            enCokHarcananKategori: giderAnalizleri.first?.kategori,
+            enCokHarcananKategori: enCokHarcananKategori,
+            enCokHarcananKategoriTutar: enCokHarcananTutar,
+            enCokIslemYapilanKategori: enCokIslemYapilanKategori,
+            enCokIslemYapilanKategoriSayi: enCokIslemYapilanSayi,
             enCokGelirGetiren: gelirAnalizleri.first?.kategori
         )
     }

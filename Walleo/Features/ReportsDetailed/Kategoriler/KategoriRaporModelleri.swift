@@ -63,6 +63,9 @@ struct KategoriRaporOzet {
     let aktifKategoriSayisi: Int // İşlem yapılmış kategoriler
     let toplamHarcama: Double
     let toplamGelir: Double
-    let enCokHarcananKategori: Kategori?
+    let enCokHarcananKategori: Kategori? // Tutar olarak en çok harcanan
+    let enCokHarcananKategoriTutar: Double // Bu kategorideki toplam tutar
+    let enCokIslemYapilanKategori: Kategori? // İşlem sayısı olarak en çok olan
+    let enCokIslemYapilanKategoriSayi: Int // Bu kategorideki işlem sayısı
     let enCokGelirGetiren: Kategori?
 }
