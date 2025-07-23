@@ -941,3 +941,5 @@
 "loan_report.status.pending" = "Ödenmedi";
 "loan_report.status.overdue" = "Gecikti";
 "loan_report.total_for_day" = "Gün Toplamı";
+"dashboard.show_less" = "Daha az göster";
+"dashboard.more_categories" = "kategori daha";

@@ -2,12 +2,14 @@ import SwiftUI
 import SwiftData
 import Combine
 
+// KrediEkleView.swift dosyasında yapılacak değişiklikler:
+
 struct KrediEkleView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var appSettings: AppSettings
 
-    // State değişkenleri aynı kalıyor
+    // State değişkenleri
     @State private var isim: String = ""
     @State private var cekilenTutarString: String = ""
     @State private var faizOraniString: String = ""
@@ -15,13 +17,16 @@ struct KrediEkleView: View {
     @State private var taksitSayisi: Int = 12
     @State private var ilkTaksitTarihi = Date()
     
+    // YENİ: Renk seçimi için state
+    @State private var secilenRenk: Color = .purple
+    
     var duzenlenecekHesap: Hesap?
 
-    // body ve diğer fonksiyonların çoğu aynı kalıyor
     var body: some View {
-         NavigationStack {
+        NavigationStack {
             Form {
                 Section(header: Text("loan.form.details_header")) {
+                    // Mevcut form alanları aynı kalacak
                     LabeledTextField(
                         label: "form.label.loan_name",
                         placeholder: "account.name_placeholder_loan",
@@ -71,7 +76,12 @@ struct KrediEkleView: View {
                 }
                 
                 Section(header: Text("loan.form.first_payment_header")) {
-                     DatePicker("loan.form.first_installment_date", selection: $ilkTaksitTarihi, displayedComponents: .date)
+                    DatePicker("loan.form.first_installment_date", selection: $ilkTaksitTarihi, displayedComponents: .date)
+                }
+                
+                // YENİ: Renk seçimi bölümü
+                Section(header: Text(LocalizedStringKey("categories.color"))) {
+                    ColorPicker(LocalizedStringKey("accounts.add.account_color"), selection: $secilenRenk, supportsOpacity: false)
                 }
             }
             .navigationTitle(duzenlenecekHesap == nil ? "accounts.add.new_loan" : "common.edit")
@@ -91,11 +101,12 @@ struct KrediEkleView: View {
         guard let hesap = duzenlenecekHesap, case .kredi(let tutar, let tip, let oran, let sayi, let tarih, _) = hesap.detay else { return }
         isim = hesap.isim
         cekilenTutarString = formatAmountForEditing(amount: tutar, localeIdentifier: appSettings.languageCode)
-        // faizOraniString ondalık ayıracına duyarlı olmalı
         faizOraniString = String(oran).replacingOccurrences(of: ".", with: Locale(identifier: appSettings.languageCode).decimalSeparator ?? ".")
         faizTipi = tip
         taksitSayisi = sayi
         ilkTaksitTarihi = tarih
+        // YENİ: Mevcut rengi yükle
+        secilenRenk = hesap.renk
     }
     
     private func kaydet() {
@@ -103,8 +114,9 @@ struct KrediEkleView: View {
         let cekilenTutar = stringToDouble(cekilenTutarString, locale: locale)
         let faizOrani = stringToDouble(faizOraniString, locale: locale)
         
-        // --- GÜNCELLEME BURADA ---
-        // `taksitleriHesapla` fonksiyonuna artık faiz tipi de gönderiliyor.
+        // YENİ: Seçilen rengi hex'e çevir
+        let renkHex = secilenRenk.toHex() ?? "#5E5CE6"
+        
         let taksitler = taksitleriHesapla(
             anapara: cekilenTutar,
             faizOrani: faizOrani,
@@ -118,47 +130,43 @@ struct KrediEkleView: View {
         if let hesap = duzenlenecekHesap {
             hesap.isim = isim
             hesap.baslangicBakiyesi = -cekilenTutar
+            // YENİ: Rengi güncelle
+            hesap.renkHex = renkHex
             hesap.detay = krediDetayi
         } else {
-            let yeniHesap = Hesap(isim: isim, ikonAdi: "banknote.fill", renkHex: "#5E5CE6", baslangicBakiyesi: -cekilenTutar, detay: krediDetayi)
+            // YENİ: Yeni hesap oluştururken seçilen rengi kullan
+            let yeniHesap = Hesap(isim: isim, ikonAdi: "banknote.fill", renkHex: renkHex, baslangicBakiyesi: -cekilenTutar, detay: krediDetayi)
             modelContext.insert(yeniHesap)
         }
         
         NotificationCenter.default.post(name: .accountDetailsDidChange, object: nil)
-
         dismiss()
     }
     
-    // --- TAMAMEN YENİLENEN FONKSİYON ---
+    // taksitleriHesapla fonksiyonu aynı kalacak
     private func taksitleriHesapla(anapara P: Double, faizOrani: Double, faizTipi: FaizTipi, taksitSayisi n: Int, ilkOdemeTarihi: Date) -> [KrediTaksitDetayi] {
+        // Mevcut implementasyon aynı kalacak
         guard n > 0, P > 0 else { return [] }
         
-        // 1. Adım: Aylık faiz oranını (r) doğru şekilde hesapla
         let aylikFaizOrani_r: Double
         
         if faizTipi == .aylik {
-            // Kullanıcı doğrudan aylık faiz girdiyse, 100'e böl.
             aylikFaizOrani_r = faizOrani / 100.0
         } else {
-            // Kullanıcı yıllık faiz girdiyse, efektif aylık faizi hesapla.
             let yillikDecimal = faizOrani / 100.0
             aylikFaizOrani_r = pow(1.0 + yillikDecimal, 1.0 / 12.0) - 1.0
         }
         
-        // 2. Adım: Annüite formülünü kullanarak taksiti hesapla
         let aylikTaksit: Double
         if aylikFaizOrani_r == 0 {
-            // Faiz yoksa, anaparayı ay sayısına böl.
             aylikTaksit = P / Double(n)
         } else {
             let ustelIfade = pow(1 + aylikFaizOrani_r, Double(n))
             aylikTaksit = P * (aylikFaizOrani_r * ustelIfade) / (ustelIfade - 1)
         }
         
-        // 3. Adım: Hesaplanan taksiti 2 ondalık basamağa yuvarla
         let yuvarlanmisTaksit = (aylikTaksit * 100).rounded() / 100.0
         
-        // 4. Adım: Taksit listesini oluştur
         var taksitListesi: [KrediTaksitDetayi] = []
         let takvim = Calendar.current
         for i in 0..<n {
