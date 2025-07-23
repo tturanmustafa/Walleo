@@ -76,19 +76,12 @@ struct FormattedAmountField: UIViewRepresentable {
             self._isInvalid = isInvalid
             
             self.numberFormatter = NumberFormatter()
-            self.numberFormatter.locale = locale
+            self.numberFormatter.locale = locale // Bu satır en önemlisi
             self.numberFormatter.numberStyle = .decimal
             self.numberFormatter.usesGroupingSeparator = true
             self.numberFormatter.maximumFractionDigits = 2
             
-            // Bu kısım aynı kalabilir, çünkü locale'den doğru ayraçları alıyor.
-            if locale.identifier.starts(with: "tr") {
-                self.numberFormatter.groupingSeparator = "."
-                self.numberFormatter.decimalSeparator = ","
-            } else {
-                self.numberFormatter.groupingSeparator = ","
-                self.numberFormatter.decimalSeparator = "."
-            }
+            // YANLIŞ OLAN IF/ELSE BLOĞU BURADAN TAMAMEN SİLİNDİ.
             
             super.init()
         }

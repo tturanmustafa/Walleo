@@ -1,0 +1,903 @@
+/* Localizable.strings (Malay) */
+
+// MARK: - Genel / Ortak Kullanım
+"common.save" = "Simpan";
+"common.cancel" = "Batal";
+"common.edit" = "Ubah";
+"common.delete" = "Padam";
+"common.done" = "Selesai";
+"common.reset" = "Tetap Semula";
+"common.apply" = "Guna";
+"common.all" = "Semua";
+"common.income" = "Pendapatan";
+"common.expense" = "Perbelanjaan";
+"common.category" = "Kategori";
+"common.categories" = "Kategori";
+"common.amount" = "Jumlah";
+"common.date" = "Tarikh";
+"common.type" = "Jenis";
+"common.account" = "Akaun";
+"common.select_account" = "Pilih Akaun";
+"common.back" = "Kembali";
+"common.total" = "Jumlah";
+"common.net" = "Bersih";
+"common.total_amount" = "Jumlah Keseluruhan";
+
+// MARK: - Ana Sekmeler
+"tab.dashboard" = "Gambaran Keseluruhan";
+"tab.calendar" = "Kalendar";
+"tab.reports" = "Laporan";
+"tab.settings" = "Tetapan";
+"tab.budgets" = "Bajet";
+"tab.more" = "Lagi";
+
+// MARK: - Panel / Dashboard Ekranı
+"dashboard.category_distribution" = "Agihan Kategori";
+"dashboard.recent_transactions" = "Urus Niaga Terkini";
+"dashboard.see_all" = "Lihat Semua";
+"dashboard.no_records_for_month" = "Tiada rekod untuk bulan ini";
+
+// MARK: - Ayarlar Ekranı
+"settings.title" = "Tetapan";
+"settings.section_general" = "UMUM";
+"settings.theme" = "Tema";
+"settings.theme_system" = "Sistem";
+"settings.theme_light" = "Cerah";
+"settings.theme_dark" = "Gelap";
+"settings.language" = "Bahasa";
+"settings.manage_categories" = "Urus Kategori";
+"settings.section_info" = "MAKLUMAT";
+"settings.version" = "Versi";
+"settings.currency" = "Mata Wang";
+
+// MARK: - Bildirim Ayarları
+"settings.notifications" = "Tetapan Pemberitahuan";
+"settings.notifications.title" = "Tetapan Pemberitahuan";
+"settings.notifications.master_section" = "KAWALAN UTAMA";
+"settings.notifications.master_toggle" = "Semua Pemberitahuan";
+"settings.notifications.budget_section" = "AMARAN BAJET";
+"settings.notifications.budget_toggle" = "Tunjukkan Pemberitahuan Bajet";
+"settings.notifications.threshold_picker" = "Ambang Amaran";
+"settings.notifications.threshold.option_80" = "Apabila mencapai 80%";
+"settings.notifications.threshold.option_85" = "Apabila mencapai 85%";
+"settings.notifications.threshold.option_90" = "Apabila mencapai 90%";
+"settings.notifications.threshold.option_95" = "Apabila mencapai 95%";
+"settings.notifications.loan_section" = "PERINGATAN BAYARAN";
+"settings.notifications.loan_toggle" = "Ingatkan Ansuran Pinjaman";
+"settings.notifications.loan_stepper" = "%d hari sebelum tarikh akhir";
+"settings.notifications.credit_card_section" = "PERINGATAN KAD KREDIT";
+"settings.notifications.credit_card_toggle" = "Ingatkan Tarikh Akhir Bayaran";
+
+// MARK: - Bildirim İçerikleri
+"notification.budget.over_limit.title" = "Melebihi Bajet";
+"notification.budget.over_limit.body_line1_format" = "Anda telah melebihi jumlah sasaran untuk bajet '%@' anda.";
+"notification.budget.over_limit.body_line2" = "Sasaran Bajet: %@";
+"notification.budget.over_limit.body_line3" = "Jumlah Melebihi: %@";
+"notification.budget.approaching_limit.title" = "Had Bajet Hampir Tercapai";
+"notification.budget.approaching_limit.body_line1_format" = "Anda telah mencapai %%%2$.0f daripada sasaran untuk bajet '%1$@' anda.";
+"notification.budget.approaching_limit.body_line2" = "Sasaran Bajet: %@";
+"notification.budget.approaching_limit.body_line3" = "Jumlah Baki: %@";
+"notification.credit_card.due_date.title" = "Bayaran Kad Kredit Hampir Tiba";
+"notification.credit_card.due_date.body_format" = "Tarikh akhir bayaran untuk kad %@ anda ialah %@.";
+
+// MARK: - Kategori Yönetimi
+"categories.title" = "Kategori";
+"categories.income_categories" = "Kategori Pendapatan";
+"categories.expense_categories" = "Kategori Perbelanjaan";
+"categories.new" = "Kategori Baru";
+"categories.edit" = "Ubah Kategori";
+"categories.name" = "Nama Kategori";
+"categories.color" = "Warna Kategori";
+"categories.select_icon" = "Pilih Ikon";
+
+// MARK: - İşlem Ekleme / Düzenleme
+"transaction.new" = "Urus Niaga Baru";
+"transaction.edit" = "Ubah Urus Niaga";
+"transaction.type" = "Jenis Urus Niaga";
+"transaction.section_details" = "Butiran";
+"transaction.name_placeholder" = "Nama urus niaga (cth: Makan Malam)";
+"transaction.select_category" = "Pilih Kategori";
+"transaction.recurrence" = "Berulang";
+"transaction.loan_payment_name_format" = "Bayaran Ansuran untuk %@";
+
+// MARK: - Hesaplar
+"accounts.title" = "Akaun";
+"accounts.empty.title" = "Belum Ada Akaun";
+"accounts.empty.description" = "Ketik ikon '+' untuk menambah akaun baru dan mula.";
+"accounts.add.wallet" = "Dompet (Tunai)";
+"accounts.add.credit_card" = "Kad Kredit";
+"accounts.add.loan" = "Pinjaman";
+"accounts.add.new_credit_card" = "Tambah Kad Kredit Baru";
+"accounts.add.new_loan" = "Tambah Pinjaman Baru";
+"accounts.add.account_color" = "Warna Akaun";
+"accounts.add.interest_rate" = "Kadar Faedah (%)";
+"accounts.add.installments" = "Bilangan Ansuran";
+"accounts.add.installments_stepper" = "%d bulan";
+"accounts.add.create_installments_button" = "Simpan dan Cipta Ansuran";
+
+"credit_card.form.statement_date_header" = "Tarikh Penyata";
+"credit_card.form.statement_date" = "Tarikh Penyata";
+"credit_card.form.payment_due_date_header" = "Tetapan Tarikh Akhir Bayaran";
+"credit_card.form.payment_due_date_stepper" = "%d hari selepas tarikh penyata";
+"loan.form.details_header" = "Maklumat Pinjaman";
+"loan.form.first_payment_header" = "Hari Bayaran Ansuran Pertama";
+"loan.form.interest_type" = "Jenis Faedah";
+"loan.form.first_installment_date" = "Tarikh Ansuran Pertama";
+"loan_details.summary_header" = "Ringkasan Pinjaman";
+"loan_details.installment_plan_header" = "Pelan Ansuran";
+
+"installment.edit.title" = "Ubah Ansuran";
+"installment.edit.details_header" = "Butiran Ansuran";
+"installment.paid.label" = "Tanda sebagai Sudah Bayar";
+"accounts.card.current_debt" = "Hutang Semasa";
+"accounts.card.available_limit" = "Had Tersedia";
+"accounts.card.paid_installments" = "Ansuran Dibayar";
+"accounts.card.remaining_debt" = "Baki Hutang";
+"credit_card_details.recent_expenses" = "Perbelanjaan Tempoh Ini";
+"credit_card_details.no_transactions" = "Tiada urus niaga dalam tempoh ini";
+
+"account_details.generic_title" = "Butiran %@";
+"enum.interest_type.yearly" = "Tahunan";
+"enum.interest_type.monthly" = "Bulanan";
+"transaction.amount_placeholder" = "Jumlah (cth: 125.50)";
+"account.name_placeholder_wallet" = "Nama dompet (cth: Tunai)";
+"account.name_placeholder_creditcard" = "Nama kad (cth: Kad Bonus)";
+"account.name_placeholder_loan" = "Nama pinjaman (cth: Pinjaman Kereta)";
+"account.initial_balance_placeholder" = "Baki permulaan (cth: 500)";
+"credit_card.limit_placeholder" = "Had kad (cth: 15000)";
+"credit_card.current_debt_placeholder" = "Hutang semasa (Pilihan)";
+"loan.principal_amount_placeholder" = "Jumlah pinjaman (cth: 250000)";
+"loan.interest_rate_placeholder" = "Kadar faedah (cth: 1.89)";
+
+"budget.name_placeholder" = "Nama bajet (cth: Perbelanjaan Dapur)";
+"budget.limit_placeholder" = "Had bulanan (cth: 2500)";
+"accounts.add.loan_amount" = "Jumlah Pinjaman";
+"accounts.card.initial_balance" = "Baki Permulaan";
+"accounts.card.current_balance" = "Baki Semasa";
+"accounts.card.total_limit" = "Jumlah Had";
+"accounts.card.statement_date" = "Tarikh Penyata";
+
+"accounts.group.wallets" = "Dompet";
+"accounts.group.credit_cards" = "Kad Kredit";
+"accounts.group.loans" = "Pinjaman";
+
+// MARK: - Diğer Ekranlar ve Uyarılar
+"all_transactions.title" = "Semua Urus Niaga";
+"all_transactions.not_found" = "Tiada urus niaga ditemui";
+"all_transactions.not_found_desc" = "Cuba tukar kriteria penapis anda.";
+"filter.date_range" = "Julat Tarikh";
+"filter.sort_by" = "Isih Ikut";
+"filter.accounts" = "Akaun";
+"alert.recurring_transaction" = "Ini adalah urus niaga berulang.";
+"alert.update_this_only" = "Kemas kini urus niaga ini sahaja";
+"alert.update_future" = "Kemas kini urus niaga ini dan yang akan datang";
+"alert.delete_this_only" = "Padam urus niaga ini sahaja";
+"alert.delete_series" = "Padam keseluruhan siri";
+"alert.add_as_expense.title" = "Tambah sebagai Perbelanjaan";
+"alert.add_as_expense.button_yes" = "Ya, tambah sebagai perbelanjaan";
+"alert.add_as_expense.button_no" = "Tidak, hanya tanda";
+"alert.add_as_expense.message_format" = "Adakah anda ingin menambah bayaran ansuran sebanyak %@ sebagai perbelanjaan?";
+"month_picker.title" = "Pilih Tarikh";
+"month_picker.month" = "Bulan";
+"month_picker.year" = "Tahun";
+"calendar.no_transactions_on_date" = "Tiada urus niaga pada tarikh ini";
+"calendar.monthly_summary" = "Ringkasan Bulanan";
+"notifications.title" = "Pemberitahuan";
+"notifications.no_notifications_title" = "Belum ada pemberitahuan";
+"notifications.no_notifications_desc" = "Pemberitahuan penting dalam aplikasi akan muncul di sini.";
+"validation.error.invalid_amount_format" = "Format tidak sah. Maksimum 9 digit integer dan 2 tempat perpuluhan.";
+
+// MARK: - Raporlar
+"reports.type.summary" = "Ringkasan";
+"reports.type.distribution" = "Agihan";
+"reports.summary.card.main_metrics" = "Metrik Utama";
+"reports.summary.card.comparison" = "Analisis Perbandingan";
+"reports.summary.top_expenses" = "Perbelanjaan Teratas";
+"reports.summary.statistics" = "Statistik";
+"reports.summary.net_flow" = "Aliran Bersih";
+"reports.comparison.no_data" = "Tiada data dari tempoh sebelumnya untuk perbandingan.";
+"reports.comparison.prefix_net_flow_positive" = "Berbanding tempoh sebelumnya, anda telah berjimat ";
+"reports.comparison.suffix_net_flow_positive" = " lebih banyak.";
+"reports.comparison.prefix_net_flow_negative" = "Berbanding tempoh sebelumnya, anda telah berbelanja ";
+"reports.comparison.suffix_net_flow_negative" = " lebih banyak.";
+"reports.comparison.prefix_expenses_increased" = "Perbelanjaan anda telah meningkat sebanyak ";
+"reports.comparison.suffix_expenses_increased" = " berbanding tempoh sebelumnya.";
+"reports.comparison.prefix_expenses_decreased" = "Perbelanjaan anda telah berkurang sebanyak ";
+"reports.comparison.suffix_expenses_decreased" = " berbanding tempoh sebelumnya.";
+"reports.distribution.no_data" = "Tiada data untuk dipaparkan bagi tempoh ini.";
+"reports.statistics.daily_avg_expense" = "Purata Perbelanjaan Harian";
+"reports.statistics.daily_avg_income" = "Purata Pendapatan Harian";
+"reports.statistics.highest_expense" = "Perbelanjaan Tunggal Tertinggi";
+"reports.statistics.highest_income" = "Pendapatan Tunggal Tertinggi";
+
+// MARK: - Bütçeler
+"budgets.title" = "Bajet";
+"budgets.empty.title" = "Belum Ada Bajet";
+"budgets.empty.description" = "Cipta bajet baru dengan mengetik ikon '+' untuk mengawal perbelanjaan anda.";
+"budgets.add.title" = "Bajet Baru";
+"budgets.edit.title" = "Ubah Bajet";
+"budgets.form.name_placeholder" = "cth: Perbelanjaan Dapur";
+"budgets.form.limit_amount" = "Had Bulanan";
+"budgets.form.select_categories" = "Pilih Kategori";
+"budgets.card.total_limit" = "Jumlah Had";
+"budgets.card.amount_spent" = "Jumlah Dibelanjakan";
+"budgets.card.amount_remaining" = "Jumlah Baki";
+"alert.delete_budget.message_format" = "Adakah anda pasti ingin memadam bajet '%@' secara kekal?";
+
+// MARK: - Enum Değerleri ve Kategoriler
+"enum.recurrence.once" = "Sekali";
+"enum.recurrence.monthly" = "Setiap Bulan";
+"enum.recurrence.quarterly" = "Setiap 3 Bulan";
+"enum.recurrence.semi_annually" = "Setiap 6 Bulan";
+"enum.recurrence.annually" = "Setiap Tahun";
+"enum.sort.date_desc" = "Mengikut Tarikh (Terbaru ke Terlama)";
+"enum.sort.date_asc" = "Mengikut Tarikh (Terlama ke Terbaru)";
+"enum.sort.amount_desc" = "Mengikut Jumlah (Tertinggi ke Terendah)";
+"enum.sort.amount_asc" = "Mengikut Jumlah (Terendah ke Tertinggi)";
+"enum.date_range.all" = "Semua Masa";
+"enum.date_range.this_week" = "Minggu Ini";
+"enum.date_range.ytd" = "Tahun Ini";
+"enum.date_range.this_month" = "Bulan Ini";
+"enum.date_range.last_3_months" = "3 Bulan Lalu";
+"enum.date_range.last_6_months" = "6 Bulan Lalu";
+"enum.date_range.last_year" = "12 Bulan Lalu";
+"enum.budget_period.monthly" = "Bulanan";
+
+"category.salary" = "Gaji";
+"category.extra_income" = "Pendapatan Tambahan";
+"category.investment" = "Pelaburan";
+"category.groceries" = "Barangan Runcit";
+"category.restaurant" = "Restoran";
+"category.transport" = "Pengangkutan";
+"category.bills" = "Bil";
+"category.entertainment" = "Hiburan";
+"category.health" = "Kesihatan";
+"category.clothing" = "Pakaian";
+"category.home" = "Rumah";
+"category.gift" = "Hadiah";
+"category.loan_payment" = "Bayaran Pinjaman";
+"category.other" = "Lain-lain";
+
+// MARK: - Filtreleme Ekranı
+"filter.custom_range_header" = "Julat Tersuai";
+"filter.start_date" = "Tarikh Mula";
+"filter.end_date" = "Tarikh Tamat";
+"filter.presets_header" = "Julat Pratetap";
+"enum.date_range.custom" = "Tersuai";
+
+// MARK: - Para Birimleri
+"currency.name.TRY" = "Lira Turki";
+"currency.name.USD" = "Dolar AS";
+"currency.name.EUR" = "Euro";
+"currency.name.GBP" = "Paun British";
+"currency.name.JPY" = "Yen Jepun";
+"currency.name.CAD" = "Dolar Kanada";
+"currency.name.AUD" = "Dolar Australia";
+"currency.name.CHF" = "Franc Switzerland";
+"currency.name.CNY" = "Yuan China";
+"currency.name.SEK" = "Krona Sweden";
+"currency.name.NOK" = "Krone Norway";
+"currency.name.RUB" = "Rubel Rusia";
+"currency.name.INR" = "Rupee India";
+"currency.name.BRL" = "Real Brazil";
+"currency.name.ZAR" = "Rand Afrika Selatan";
+"currency.name.AED" = "Dirham UAE";
+"currency.name.SAR" = "Riyal Arab Saudi";
+"currency.name.KRW" = "Won Korea Selatan";
+"currency.name.SGD" = "Dolar Singapura";
+"currency.name.IDR" = "Rupiah Indonesia";
+"currency.name.VND" = "Dong Vietnam";
+"currency.name.THB" = "Baht Thai";
+"currency.name.MYR" = "Ringgit Malaysia";
+
+"settings.section.data_management" = "Pengurusan Data";
+"settings.data.export" = "Eksport Data (.csv)";
+"settings.data.exporting" = "Mengeksport...";
+
+"settings.language_change.title" = "Tukar Bahasa";
+"settings.language_change.message" = "Menukar tetapan bahasa memerlukan aplikasi dimulakan semula. Teruskan?";
+"settings.language_change.restart_button" = "Mula Semula";
+
+"alert.delete_confirmation.title" = "Sahkan Pemadaman";
+"alert.delete_wallet.message_format" = "Adakah anda pasti ingin memadam dompet/akaun '%@' secara kekal? Urus niaga yang berkaitan dengan akaun ini tidak akan dipadam, hanya pautan akaun akan dialih keluar.";
+"alert.delete_credit_card.message_format" = "Adakah anda pasti ingin memadam kad kredit '%@' secara kekal? Urus niaga yang berkaitan dengan akaun ini tidak akan dipadam, hanya pautan akaun akan dialih keluar.";
+"alert.delete_loan.message_format" = "Adakah anda pasti ingin memadam pinjaman '%@' dan pelan ansurannya secara kekal? Tindakan ini tidak boleh dibatalkan.";
+"alert.delete_category.message_format" = "Adakah anda pasti ingin memadam kategori '%@'? Kategori ini akan dialih keluar daripada semua urus niaga yang berkaitan.";
+"alert.delete_transaction.message" = "Adakah anda pasti ingin memadam urus niaga ini secara kekal?";
+"alert.delete_all_notifications.title" = "Padam Semua";
+"alert.delete_all_notifications.message" = "Adakah anda pasti ingin memadam semua pemberitahuan secara kekal?";
+
+"button.add_account" = "Tambah Akaun";
+"button.add_budget" = "Tambah Bajet";
+"button.add_category" = "Tambah Kategori";
+
+"budget_details.no_transactions" = "Tiada urus niaga untuk bajet ini";
+
+"alert.no_accounts.title" = "Akaun Diperlukan";
+"alert.no_accounts.message" = "Untuk menambah urus niaga, anda mesti membuat akaun Dompet atau Kad Kredit terlebih dahulu.";
+"alert.no_accounts.add_account_button" = "Cipta Akaun";
+
+// MARK: - Veri Dışa Aktarma Başlıkları
+"export.header.date" = "Tarikh";
+"export.header.name" = "Nama Urus Niaga";
+"export.header.amount" = "Jumlah";
+"export.header.type" = "Jenis";
+"export.header.category" = "Kategori";
+"export.header.account" = "Akaun";
+
+"credit_card_details.no_expenses_for_month" = "Tiada perbelanjaan bulan ini";
+"credit_card_details.total_expenses_for_period" = "Jumlah perbelanjaan tempoh ini";
+"notifications.delete_all" = "Padam Semua";
+"notifications.mark_all_as_read" = "Tanda semua sebagai sudah dibaca";
+
+// MARK: - Form Labels & Placeholders
+"form.label.transaction_name" = "Nama Urus Niaga";
+"form.label.amount" = "Jumlah";
+"form.label.wallet_name" = "Nama Dompet";
+"form.label.card_name" = "Nama Kad";
+"form.label.loan_name" = "Nama Pinjaman";
+"form.label.initial_balance" = "Baki Permulaan";
+"form.label.card_limit" = "Had Kad";
+"form.label.current_debt" = "Hutang Semasa";
+"form.label.principal_amount" = "Jumlah Pokok";
+"form.label.interest_rate" = "Kadar Faedah";
+"form.label.budget_name" = "Nama Bajet";
+"form.label.budget_limit" = "Had Bulanan";
+
+// MARK: - Time
+"time.today" = "Hari ini";
+"time.yesterday" = "Semalam";
+
+"reports.period.weekly" = "Mingguan";
+"reports.period.monthly" = "Bulanan";
+"week_picker.select_date_label" = "Pilih Tarikh";
+"week_picker.title" = "Pilih Minggu";
+
+"form.label.set_end_date" = "Tetapkan Tarikh Tamat";
+"form.label.end_date" = "Tarikh Tamat";
+
+"notification.daily.title" = "Masa untuk mengakhiri hari ini!";
+"notification.daily.body" = "Sudahkah anda menambah pendapatan dan perbelanjaan hari ini ke Walleo? Masa terbaik untuk menjejaki kesihatan kewangan anda.";
+"notification.weekly.title" = "Laporan mingguan anda sudah sedia!";
+"notification.weekly.body" = "Terokai ringkasan kewangan minggu lepas sekarang. Maklumat terperinci tentang perbelanjaan dan pendapatan anda menanti di skrin Laporan.";
+
+"settings.data.delete_all" = "Padam Semua Data";
+"alert.delete_all_data.title" = "Padam semua data?";
+"alert.delete_all_data.message" = "Tindakan ini tidak boleh dibatalkan. Semua akaun, urus niaga, dan bajet anda pada peranti dan di iCloud akan dipadam secara kekal.";
+"common.confirm_delete" = "Ya, padam semua";
+
+"settings.data.icloud_backup" = "Sandaran iCloud";
+"alert.icloud_toggle.title" = "Menukar Tetapan Sandaran";
+"alert.icloud_toggle.message" = "Menukar tetapan ini memerlukan aplikasi dimulakan semula. Teruskan?";
+"alert.language_change.confirm_button" = "Sahkan";
+"alert.no_payment_account.title" = "Tiada Akaun yang Sesuai Ditemui";
+"alert.no_payment_account.message" = "Untuk menambah bayaran ini sebagai perbelanjaan, anda mesti membuat akaun Dompet atau Kad Kredit terlebih dahulu.";
+"account_selection.title" = "Pilih Akaun Bayaran";
+
+"account_type.wallet" = "Dompet";
+"account_type.credit_card" = "Kad Kredit";
+"account_type.loan" = "Pinjaman";
+
+// MARK: - Onboarding
+"onboarding.page1.title" = "Dunia Kewangan Anda, dalam Satu Sentuhan";
+"onboarding.page1.subtitle" = "Ambil alih kawalan penuh ke atas situasi kewangan anda dengan menguruskan wang tunai, kad kredit, dan pinjaman di satu tempat.";
+"onboarding.page2.title" = "Anda Mengurus Bajet, Bukan Sebaliknya";
+"onboarding.page2.subtitle" = "Cipta bajet khusus kategori dan bentuk perbelanjaan anda dengan mudah mengikut matlamat dengan penjejakan kemajuan visual.";
+"onboarding.page3.title" = "Biar Data Anda Berbicara, Lihat Masa Depan Anda";
+"onboarding.page3.subtitle" = "Buat keputusan kewangan yang lebih bijak dengan mengubah perbelanjaan masa lalu anda kepada laporan yang bermakna dan analisis perbandingan.";
+"onboarding.page4.title" = "Pembantu Kewangan Anda yang Memikirkan Anda";
+"onboarding.page4.subtitle" = "Bertenang dengan pemberitahuan pintar yang secara proaktif mengingatkan anda tentang setiap butiran penting, dari tarikh bil hingga pelanggaran bajet.";
+"onboarding.page5.title" = "Sepenuhnya Milik Anda, Sepenuhnya Disesuaikan";
+"onboarding.page5.subtitle" = "Sesuaikan aplikasi dengan sempurna mengikut gaya hidup dan pilihan anda dengan tema, bahasa, mata wang, dan kategori tersuai.";
+"onboarding.page6.title" = "Data Anda Adalah Kubu Anda";
+"onboarding.page6.subtitle" = "Dari penyegerakan iCloud yang selamat hingga eksport data dan pilihan pemadaman kekal, kawalan data anda sepenuhnya di tangan anda.";
+"onboarding.signin.apple" = "Daftar Masuk dengan Apple";
+"onboarding.privacy_policy" = "Dengan meneruskan, anda bersetuju dengan Dasar Privasi dan Syarat Penggunaan kami.";
+
+"settings.section_ai_assistant" = "PEMBANTU AI";
+"settings.ai_assistant_title" = "Berbual dengan Pembantu AI";
+
+// Aile Hesabı
+"settings.family_account" = "Akaun Keluarga";
+"family.no_family_title" = "Tiada Akaun Keluarga";
+"family.no_family_description" = "Cipta akaun keluarga untuk berkongsi data kewangan anda dengan ahli keluarga";
+"family.create_family" = "Cipta Akaun Keluarga";
+"family.info_section" = "Maklumat Keluarga";
+"family.name" = "Nama Keluarga";
+"family.owner" = "Pemilik";
+"family.you" = "Anda";
+"family.member_count" = "Bilangan Ahli";
+"family.created_date" = "Tarikh Dicipta";
+"family.members_section" = "Ahli Keluarga";
+"family.pending" = "Menunggu";
+"family.invite_member" = "Jemput Ahli";
+"family.leave_family" = "Tinggalkan Keluarga";
+"family.owner_cannot_leave" = "Sebagai pemilik, anda tidak boleh meninggalkan keluarga. Pindahkan pemilikan terlebih dahulu.";
+"family.create_new" = "Akaun Keluarga Baru";
+"family.name_placeholder" = "Masukkan nama keluarga";
+"family.create_description" = "Semua data kewangan anda akan dikongsi dengan ahli keluarga";
+"family.create_title" = "Cipta Keluarga";
+"family.invite_instructions" = "Jana pautan jemputan untuk dikongsi dengan ahli keluarga anda";
+"family.generate_invite_link" = "Jana Pautan Jemputan";
+"family.leave_confirmation_title" = "Adakah Anda Pasti Ingin Meninggalkan Keluarga?";
+"family.leave_confirmation_message" = "Anda tidak akan lagi mempunyai akses kepada data keluarga yang dikongsi. Tindakan ini tidak boleh dibatalkan.";
+"family.leave_confirm" = "Tinggalkan Keluarga";
+"family.cloudkit_warning_title" = "iCloud Diperlukan untuk Akaun Keluarga";
+"family.cloudkit_warning_message" = "Anda tidak boleh mematikan sandaran iCloud semasa menggunakan akaun keluarga. Sila tinggalkan akaun keluarga terlebih dahulu.";
+"family.delete_warning_title" = "Data Tidak Boleh Dipadam";
+"family.delete_warning_message" = "Anda tidak boleh memadam semua data semasa menjadi sebahagian daripada akaun keluarga. Sila tinggalkan akaun keluarga terlebih dahulu.";
+"family.invitation_title" = "Jemputan Akaun Keluarga";
+"family.invitation_description" = "Anda telah dijemput untuk menyertai akaun keluarga. Semua data kewangan akan dikongsi antara ahli keluarga.";
+"family.accepting_invitation" = "Menerima jemputan...";
+"family.invitation_accepted" = "Jemputan Diterima!";
+"family.accept_invitation" = "Terima Jemputan";
+"family.join_family" = "Sertai Keluarga";
+
+// MARK: - Bütçe Ek
+"budget.automation_settings" = "Tetapan Automasi";
+"budget.form.auto_renew" = "Perbaharui secara automatik setiap bulan";
+"budget.form.rollover_balance" = "Bawa baki dari bulan sebelumnya";
+"budget.list.period_ended" = "Tempoh Berakhir";
+"budget.detail.period_info" = "Info Tempoh";
+"budget.detail.budget_period" = "Tempoh Bajet";
+"budget.detail.rollover_from_last_month" = "Bawaan dari Bulan Lalu";
+"budget.detail.transactions_for_period" = "Urus Niaga untuk Tempoh Ini";
+"notification.budget.pre_renewal.title" = "Bajet anda akan diperbaharui";
+"notification.budget.pre_renewal.body" = "Bajet '%@' anda akan diperbaharui untuk bulan berikutnya dengan bawaan sebanyak %@.";
+"notification.budget.renewal_summary.title" = "Bajet anda telah diperbaharui!";
+"notification.budget.renewal_summary.body" = "Selamat datang %@! ☕️ %d bajet anda untuk bulan ini telah diperbaharui secara automatik.";
+
+// MARK: - Detaylı Raporlar
+"reports.detailed.title" = "Laporan";
+"reports.detailed.credit_card_report" = "Laporan Kad Kredit";
+"reports.detailed.loan_report" = "Laporan Pinjaman";
+"reports.detailed.start_date" = "Tarikh Mula";
+"reports.detailed.end_date" = "Tarikh Tamat";
+
+"reports.detailed.no_cc_data_title" = "Tiada Data Ditemui";
+"reports.detailed.no_cc_data_desc" = "Tiada perbelanjaan kad kredit dalam julat tarikh yang dipilih.";
+"reports.detailed.no_loan_data_title" = "Tiada Data Ditemui";
+"reports.detailed.no_loan_data_desc" = "Tiada ansuran pinjaman yang perlu dibayar dalam julat tarikh yang dipilih.";
+
+"reports.detailed.overall_summary" = "Ringkasan Keseluruhan";
+"reports.detailed.total_spending" = "Jumlah Perbelanjaan";
+"reports.detailed.transaction_count" = "Bilangan Urus Niaga";
+"reports.detailed.most_used_card" = "Kad Paling Kerap Digunakan";
+"reports.detailed.card_details_header" = "Butiran Kad";
+"reports.detailed.category_distribution" = "Agihan Kategori";
+"reports.detailed.daily_spending_trend" = "Aliran Perbelanjaan Harian";
+
+"reports.detailed.overall_loan_summary" = "Ringkasan Pinjaman Keseluruhan";
+"reports.detailed.active_loan_count" = "%d Pinjaman Aktif";
+"reports.detailed.paid_installments_count" = "Telah Dibayar: %d";
+"reports.detailed.unpaid_installments_count" = "Belum Dibayar: %d";
+"reports.detailed.loan_details_header" = "Butiran Pinjaman";
+"reports.detailed.installments_in_period" = "Ansuran dalam Tempoh: %d";
+"reports.detailed.paid_and_expensed" = "Telah Dibayar & Direkod sebagai Perbelanjaan";
+"reports.detailed.paid_only" = "Hanya Ditanda Telah Dibayar";
+"reports.detailed.overdue" = "Ansuran Tertunggak";
+"reports.detailed.upcoming" = "Ansuran Akan Datang";
+
+/* Harcama Isı Haritası */
+"reports.detailed.spending_heatmap" = "Peta Haba Perbelanjaan";
+"reports.heatmap.no_data" = "Tiada perbelanjaan ditemui dalam julat tarikh yang dipilih";
+"reports.heatmap.hourly_distribution" = "Agihan Setiap Jam";
+"reports.heatmap.comparison" = "Perbandingan";
+"reports.heatmap.insights" = "Wawasan Pintar";
+
+/* Zaman Dilimleri */
+"reports.heatmap.morning" = "Pagi";
+"reports.heatmap.noon" = "Tengah hari";
+"reports.heatmap.evening" = "Petang";
+"reports.heatmap.night" = "Malam";
+"reports.heatmap.weekday" = "Hari Bekerja";
+"reports.heatmap.weekend" = "Hujung Minggu";
+
+/* İçgörüler */
+"reports.heatmap.insight.busiest_day" = "Hari paling sibuk: %@";
+"reports.heatmap.insight.busiest_hour" = "Jam paling aktif: %@";
+"reports.heatmap.insight.weekend_comparison" = "%% %@ lebih perbelanjaan pada hujung minggu";
+"reports.heatmap.insight.no_spending_days" = "Tiada perbelanjaan selama %@ hari";
+
+// MARK: - Transfer
+"transfer.title" = "Pindahan Antara Akaun";
+"transfer.source_account" = "Dompet Sumber";
+"transfer.target_account" = "Dompet atau Kad Kredit Destinasi";
+"transfer.amount_label" = "Jumlah Pindahan";
+"transfer.amount_placeholder" = "Masukkan jumlah untuk dipindahkan";
+"transfer.button" = "Pindah";
+"transfer.select_wallet" = "Pilih Dompet";
+"transfer.select_account" = "Pilih Akaun";
+"transfer.source_details" = "Butiran Akaun Sumber";
+"transfer.target_details" = "Butiran Akaun Destinasi";
+"transfer.name" = "Nama:";
+"transfer.initial_balance" = "Baki permulaan:";
+"transfer.current_balance" = "Baki semasa:";
+"transfer.total_limit" = "Had keseluruhan:";
+"transfer.available_limit" = "Had tersedia:";
+"transfer.current_debt" = "Hutang semasa:";
+"transfer.statement_date" = "Tarikh penyata:";
+"transfer.type.wallet" = "Dompet";
+"transfer.type.credit_card" = "Kad Kredit";
+"transfer.incoming" = "Pindahan Masuk";
+"transfer.outgoing" = "Pindahan Keluar";
+"transfer.unknown_account" = "Akaun Tidak Dikenali";
+"transfer.section.transactions" = "Urus Niaga";
+"transfer.section.transfers" = "Pindahan";
+"transfer.no_transactions" = "Tiada urus niaga dalam tempoh ini";
+"transfer.no_transfers" = "Tiada pindahan ditemui";
+"transfer.section.expenses" = "Perbelanjaan";
+"transfer.section.payments" = "Bayaran";
+"transfer.no_payments" = "Tiada bayaran ditemui";
+
+"credit_card.installment_summary_format" = "%@ - %d/%d ansuran";
+"credit_card.installment_number_format" = "Ansuran ke-%d";
+
+// Taksitli işlem
+"transaction.installment.toggle" = "Urus Niaga Ansuran";
+"transaction.installment.count" = "Bilangan Ansuran";
+"transaction.installment.preview" = "%d ansuran x %@ = %@";
+"transaction.installment.edit_warning_title" = "Ubah Urus Niaga Ansuran";
+"transaction.installment.edit_warning" = "Perubahan ini akan mencipta semula semua ansuran. Adakah anda ingin teruskan?";
+"transaction.installment.delete_warning" = "Keseluruhan urus niaga ansuran ini (%d ansuran) akan dipadam. Adakah anda mengesahkan?";
+"transaction.edit_installment" = "Ubah Urus Niaga Ansuran";
+"credit_card.installment_purchases" = "Pembelian Ansuran";
+"installment.completed" = "Selesai";
+"alert.installment.delete_title" = "Padam Urus Niaga Ansuran";
+"credit_card_details.period_total" = "Jumlah Tempoh";
+"alert.no_wallet.message" = "Untuk menambah urus niaga, anda **mesti** **mencipta** akaun **Dompet** **terlebih dahulu**.";
+
+// MARK: - Cash Flow Report
+"reports.detailed.categories_report" = "Laporan Kategori";
+"reports.category.summary" = "Ringkasan Kategori";
+"reports.category.total_categories" = "Jumlah Kategori";
+"reports.category.active_categories" = "Kategori Aktif";
+"reports.category.most_spent" = "Perbelanjaan Terbanyak";
+"reports.category.view_list" = "Paparan Senarai";
+"reports.category.view_chart" = "Paparan Carta";
+"reports.category.view_comparison" = "Perbandingan";
+"reports.category.distribution" = "Agihan Kategori";
+"reports.detailed.cash_flow" = "Aliran Tunai";
+"cashflow.title" = "Laporan Aliran Tunai";
+"cashflow.view.summary" = "Ringkasan";
+"cashflow.view.flow" = "Aliran";
+"cashflow.view.categories" = "Kategori";
+"cashflow.view.accounts" = "Akaun";
+"cashflow.view.projection" = "Unjuran";
+
+"cashflow.insights" = "Wawasan";
+"cashflow.net_flow" = "Aliran Bersih";
+"cashflow.of_income" = "%% daripada Pendapatan";
+"cashflow.daily_avg" = "Purata Harian";
+
+"cashflow.normal_transactions" = "Urus Niaga Biasa";
+"cashflow.installment_transactions" = "Urus Niaga Ansuran";
+"cashflow.recurring_transactions" = "Urus Niaga Berulang";
+
+"cashflow.opening_balance" = "Baki Permulaan";
+"cashflow.closing_balance" = "Baki Penutup";
+"cashflow.inflows" = "Aliran Masuk";
+"cashflow.outflows" = "Aliran Keluar";
+"cashflow.daily_average" = "Purata Harian";
+
+"cashflow.daily_details" = "Butiran Harian";
+"cashflow.cumulative_balance" = "Baki Terkumpul";
+
+"cashflow.flow_chart" = "Carta Aliran";
+"cashflow.income_expense" = "Pendapatan/Perbelanjaan";
+"cashflow.detailed" = "Terperinci";
+"cashflow.cumulative" = "Terkumpul";
+"cashflow.transaction_type_distribution" = "Agihan Jenis Urus Niaga";
+"cashflow.category_flow" = "Aliran Kategori";
+"cashflow.show_trend" = "Tunjuk Aliran";
+"cashflow.hide_trend" = "Sembunyi Aliran";
+"cashflow.largest_transaction" = "Urus Niaga Terbesar";
+
+"cashflow.transfers" = "Pindahan";
+"cashflow.most_frequent_transfer" = "Pindahan Paling Kerap";
+"cashflow.show_details" = "Tunjuk Butiran";
+"cashflow.hide_details" = "Sembunyi Butiran";
+
+// Projeksiyon
+"cashflow.projection.title" = "Unjuran Masa Depan";
+"cashflow.projection.days" = "Unjuran %d hari";
+"cashflow.projection.income" = "Anggaran Pendapatan";
+"cashflow.projection.expense" = "Anggaran Perbelanjaan";
+"cashflow.projection.net" = "Anggaran Bersih";
+"cashflow.projection.chart" = "Carta Unjuran";
+
+// Risk
+"cashflow.risk.analysis" = "Analisis Risiko";
+"cashflow.risk.low" = "Risiko Rendah";
+"cashflow.risk.medium" = "Risiko Sederhana";
+"cashflow.risk.high" = "Risiko Tinggi";
+"cashflow.risk.low_message" = "Aliran tunai anda kelihatan sihat. Anda boleh mencapai matlamat kewangan anda dengan tabiat perbelanjaan semasa.";
+"cashflow.risk.medium_message" = "Terdapat beberapa ketidakseimbangan dalam aliran tunai anda. Adalah disyorkan untuk menyemak semula perbelanjaan anda.";
+"cashflow.risk.high_message" = "Awas! Aliran tunai anda negatif. Anda perlu mengambil tindakan segera.";
+
+"cashflow.suggestions" = "Cadangan";
+"cashflow.suggestion.low_1" = "Anda boleh melaburkan wang lebihan anda";
+"cashflow.suggestion.low_2" = "Pertimbangkan untuk mewujudkan dana kecemasan";
+"cashflow.suggestion.medium_1" = "Kurangkan perbelanjaan yang tidak perlu";
+"cashflow.suggestion.medium_2" = "Wujudkan sumber pendapatan tambahan";
+"cashflow.suggestion.medium_3" = "Semak semula had bajet anda";
+"cashflow.suggestion.high_1" = "Hentikan perbelanjaan yang tidak mustahak";
+"cashflow.suggestion.high_2" = "Hadkan penggunaan kad kredit";
+"cashflow.suggestion.high_3" = "Dapatkan nasihat kewangan profesional";
+
+// İçgörüler
+"cashflow.insight.positive_flow" = "Aliran Tunai Positif";
+"cashflow.insight.positive_flow_message" = "Anda mempunyai aliran tunai positif sebanyak %@. Anda boleh meningkatkan simpanan anda.";
+"cashflow.insight.negative_flow" = "Aliran Tunai Negatif";
+"cashflow.insight.negative_flow_message" = "Anda mempunyai aliran tunai negatif sebanyak %@. Anda harus mengawal perbelanjaan anda.";
+"cashflow.insight.high_installment" = "Perbelanjaan Ansuran Tinggi";
+"cashflow.insight.high_installment_message" = "%% %@ daripada perbelanjaan anda adalah ansuran. Nisbah ini kelihatan tinggi.";
+"cashflow.insight.projection_warning" = "Amaran Unjuran";
+"cashflow.insight.projection_warning_message" = "Dengan tabiat perbelanjaan semasa anda, anda mungkin menghadapi kesukaran tunai dalam tempoh akan datang.";
+
+// Genel
+"common.loading" = "Memuatkan...";
+"common.close" = "Tutup";
+"common.expenses" = "Perbelanjaan";
+"common.incomes" = "Pendapatan";
+"time.day_short" = "hari";
+
+// Kategori Raporları
+"reports.category.view_list" = "Paparan Senarai";
+"reports.category.view_chart" = "Paparan Carta";
+"reports.category.view_comparison" = "Perbandingan";
+"reports.category.display_type" = "Jenis Paparan";
+"reports.category.transaction_type" = "Jenis Urus Niaga";
+"reports.category.no_comparison_data" = "Tiada Data Perbandingan";
+"reports.category.no_previous_period" = "Tiada data tempoh sebelumnya ditemui";
+
+// Kategori Özet Kartı
+"reports.category.summary" = "Ringkasan";
+"reports.category.total_categories" = "Jumlah Kategori";
+"reports.category.active_categories" = "Kategori Aktif";
+"reports.category.most_spent" = "Perbelanjaan Terbanyak";
+
+// Kategori Detay
+"reports.category.detail_type" = "Jenis Butiran";
+"reports.category.names" = "Nama";
+"reports.category.days" = "Hari";
+"reports.category.hours" = "Jam";
+"reports.category.trend" = "Aliran";
+"reports.category.total_spending" = "Jumlah Perbelanjaan";
+"reports.category.transaction" = "Urus Niaga";
+"reports.category.average" = "Purata";
+"reports.category.daily" = "Harian";
+"reports.category.most_frequent_names" = "Nama Urus Niaga Paling Kerap";
+"reports.category.used_times" = "digunakan %d kali";
+"reports.category.avg_short" = "Purata";
+"reports.category.distribution_by_days" = "Agihan mengikut Hari";
+"reports.category.distribution_by_hours" = "Agihan mengikut Jam";
+"reports.category.monthly_trend" = "Aliran Bulanan";
+"reports.category.transaction_count" = "%d urus niaga";
+"reports.category.previous" = "Sebelumnya";
+"reports.category.day" = "Hari";
+"reports.category.amount" = "Jumlah";
+"reports.category.month" = "Bulan";
+
+"reports.heatmap.24_hours" = "24 Jam";
+"reports.transaction_count" = "%d urus niaga";
+"reports.average_with_amount" = "Purata: %@";
+"reports.heatmap.busiest_hours" = "Paling sibuk: %@";
+
+// MARK: - Ortak Kullanım Eklemeleri
+"common.low" = "Rendah";
+"common.high" = "Tinggi";
+"common.average" = "Purata";
+"common.highest" = "Tertinggi";
+
+// MARK: - Raporlar
+"reports.heatmap.try_different_date_range" = "Cuba julat tarikh yang berbeza";
+"reports.heatmap.title.hourly" = "Agihan Perbelanjaan Setiap Jam";
+"reports.heatmap.title.daily" = "Agihan Perbelanjaan Harian";
+"reports.heatmap.title.monthly" = "Agihan Perbelanjaan Bulanan";
+"reports.heatmap.title.weekly" = "Agihan Perbelanjaan Mingguan";
+"reports.heatmap.title.monthly_summary" = "Ringkasan Perbelanjaan Bulanan";
+"reports.heatmap.week_format" = "Minggu ke-%d";
+"reports.comparison.no_data_title" = "Tiada Data Perbandingan";
+"reports.category.avg_short_format" = "Purata: %@";
+
+// MARK: - Nakit Akışı Raporu
+"reports.cashflow.no_data_title" = "Tiada Data Ditemui";
+"reports.cashflow.no_data_desc" = "Tiada urus niaga ditemui dalam julat tarikh yang dipilih.";
+"reports.category.daily_average_format" = "%@/hari";
+
+"cashflow.transfer_count" = "%d pindahan";
+"common.times_suffix" = "%d kali";
+
+// Kredi Kartı Raporları - Yeni Anahtarlar
+"reports.creditcard.detail_view" = "Paparan Terperinci";
+"reports.creditcard.comparison_view" = "Perbandingan";
+"reports.creditcard.summary_view" = "Ringkasan";
+"reports.creditcard.no_data" = "Tiada Data Ditemui";
+"reports.creditcard.no_data_desc" = "Tiada perbelanjaan kad kredit ditemui dalam julat tarikh yang dipilih.";
+"reports.creditcard.total_spending" = "Jumlah Perbelanjaan";
+"reports.creditcard.active_cards" = "Kad Aktif";
+"reports.creditcard.transactions" = "Urus Niaga";
+"reports.creditcard.daily_avg" = "Purata Harian";
+"reports.creditcard.most_used" = "Paling Kerap Digunakan";
+"reports.creditcard.limit" = "Had:";
+"reports.creditcard.usage" = "Penggunaan";
+"reports.creditcard.hide_metrics" = "Sembunyi Metrik";
+"reports.creditcard.show_metrics" = "Tunjuk Metrik";
+"reports.creditcard.current_debt" = "Hutang Semasa";
+"reports.creditcard.available" = "Tersedia";
+"reports.creditcard.highest_day" = "Hari Tertinggi";
+"reports.creditcard.avg_transaction" = "Purata Urus Niaga";
+"reports.creditcard.category_analysis" = "Analisis Kategori";
+"reports.creditcard.more_categories" = "+%d kategori lagi";
+"reports.creditcard.spending_trend" = "Aliran Perbelanjaan";
+"reports.creditcard.daily" = "Harian";
+"reports.creditcard.weekly" = "Mingguan";
+"reports.creditcard.by_category" = "Mengikut Kategori";
+"reports.creditcard.installments" = "Pembelian Ansuran";
+"reports.creditcard.installment_count" = "%d pembelian ansuran";
+"reports.creditcard.monthly_total" = "Jumlah Bulanan";
+"reports.creditcard.monthly" = "bulanan";
+"reports.creditcard.progress" = "Kemajuan";
+"reports.creditcard.total_amount" = "Jumlah Keseluruhan";
+"reports.creditcard.remaining" = "Baki";
+"reports.creditcard.card_comparison" = "Perbandingan Kad";
+"reports.creditcard.detailed_comparison" = "Perbandingan Terperinci";
+"reports.creditcard.card" = "Kad";
+"reports.creditcard.spending" = "Perbelanjaan";
+"reports.creditcard.total_distribution" = "Agihan Keseluruhan";
+"reports.creditcard.category_summary" = "Ringkasan Kategori";
+"reports.creditcard.no_categories" = "Tiada data kategori ditemui";
+"reports.creditcard.daily_averages" = "Purata Harian";
+
+// MARK: - Hesap Silme ve İşlem Aktarımı
+"alert.no_eligible_account.title" = "Tiada Akaun yang Layak";
+"alert.no_eligible_account.message" = "Untuk memadam akaun ini, anda mesti terlebih dahulu mencipta akaun Dompet atau Kad Kredit lain untuk memindahkan urus niaganya.";
+"transfer_transactions.title" = "Pindah Urus Niaga & Padam";
+"transfer_transactions.message_format" = "Anda akan memadam akaun '%@'. Akaun ini mempunyai %d urus niaga. Sila pilih akaun baru untuk memindahkan urus niaga ini.";
+"transfer_transactions.confirm_button" = "Pindah & Padam";
+"alert.no_eligible_wallet.title" = "Tiada Dompet yang Layak Ditemui";
+"alert.no_eligible_wallet.message" = "Akaun yang ingin anda padam mengandungi urus niaga pendapatan. Untuk memindahkan urus niaga ini, anda mesti terlebih dahulu mencipta akaun jenis 'Dompet' yang lain.";
+
+// MARK: - Kredi Raporu
+"loan_report.no_data" = "Tiada data pinjaman ditemui";
+"loan_report.no_data_desc" = "Tiada ansuran pinjaman ditemui dalam julat tarikh yang dipilih.";
+"loan_report.view.summary" = "Ringkasan";
+"loan_report.view.detail" = "Butiran";
+"loan_report.view.calendar" = "Kalendar";
+"loan_report.view.performance" = "Prestasi";
+
+"loan_report.sort.by_date" = "Mengikut Tarikh";
+"loan_report.sort.by_amount" = "Mengikut Jumlah";
+"loan_report.sort.by_progress" = "Mengikut Kemajuan";
+
+"loan_report.overview" = "Status Hutang Keseluruhan";
+"loan_report.completed" = "Selesai";
+"loan_report.active_loans" = "Pinjaman Aktif";
+"loan_report.monthly_payment" = "Bayaran Bulanan";
+"loan_report.total_paid" = "Jumlah Dibayar";
+"loan_report.remaining" = "Baki Hutang";
+"loan_report.estimated_completion" = "Anggaran Tarikh Selesai";
+"loan_report.monthly_payment_load" = "Beban Ansuran Bulanan";
+"loan_report.no_future_payments" = "Tiada bayaran masa depan";
+"loan_report.distribution" = "Agihan Pinjaman";
+"loan_report.no_active_loans" = "Tiada pinjaman aktif";
+
+"loan_report.search_placeholder" = "Cari pinjaman...";
+"loan_report.active_only" = "Aktif Sahaja";
+"loan_report.sort" = "Isih";
+"loan_report.principal_amount" = "Pokok";
+"loan_report.interest_rate" = "Kadar Faedah";
+"loan_report.total_to_pay" = "Jumlah Perlu Dibayar";
+"loan_report.total_interest" = "Jumlah Faedah";
+"loan_report.last_payment_date" = "Tarikh Bayaran Terakhir";
+"loan_report.payment_performance" = "Prestasi Bayaran";
+"loan_report.score" = "Skor";
+"loan_report.next_payment" = "Bayaran Seterusnya";
+"loan_report.days_remaining" = "baki %d hari";
+"loan_report.due_today" = "Tamat Tempoh Hari Ini!";
+"loan_report.overdue" = "Tertunggak!";
+"loan_report.installments_in_period" = "Ansuran dalam Tempoh";
+"loan_report.more_installments" = "... dan %d ansuran lagi";
+
+"loan_report.monthly_total" = "Jumlah Bulanan";
+
+"loan_report.performance_score" = "Skor Prestasi";
+"loan_report.performance_excellent" = "Cemerlang";
+"loan_report.performance_good" = "Baik";
+"loan_report.performance_fair" = "Sederhana";
+"loan_report.performance_poor" = "Lemah";
+"loan_report.total_interest_paid" = "Jumlah Faedah Dibayar";
+"loan_report.avg_monthly_payment" = "Purata Bayaran Bulanan";
+"loan_report.on_time" = "Tepat Masa";
+"loan_report.late" = "Lewat";
+"loan_report.missed" = "Terlepas";
+
+// MARK: - Harcama Raporu
+"spending_report.view.summary" = "Ringkasan";
+"spending_report.view.category" = "Kategori";
+"spending_report.view.time" = "Analisis Masa";
+"spending_report.view.comparison" = "Perbandingan";
+
+"spending_report.no_data" = "Tiada Perbelanjaan Ditemui";
+"spending_report.no_data_desc" = "Tiada perbelanjaan dalam julat tarikh yang dipilih";
+
+"spending_report.total_spending" = "Jumlah Perbelanjaan";
+"spending_report.daily_avg" = "Purata Harian";
+"spending_report.transaction_count" = "Bilangan Urus Niaga";
+"spending_report.avg_transaction" = "Purata Urus Niaga";
+"spending_report.highest_expense" = "Perbelanjaan Tertinggi";
+
+"spending_report.increase" = "Kenaikan";
+"spending_report.decrease" = "Penurunan";
+
+"spending_report.top_categories" = "Kategori Perbelanjaan Teratas";
+"spending_report.weekly_summary" = "Ringkasan Mingguan";
+"spending_report.insights" = "Wawasan Pintar";
+"spending_report.insight.busiest_day" = "Hari paling sibuk anda ialah %@ dengan perbelanjaan %@";
+"spending_report.insight.top_category" = "Kategori %@ merangkumi %%%.1f daripada jumlah perbelanjaan anda";
+"spending_report.insight.weekend_warning" = "Purata perbelanjaan hujung minggu anda lebih tinggi daripada hari bekerja";
+
+"spending_report.category_distribution" = "Agihan Kategori";
+"spending_report.category_details" = "Butiran Kategori";
+"spending_report.largest_expense" = "Perbelanjaan Terbesar";
+"spending_report.avg_per_transaction" = "Purata setiap Urus Niaga";
+
+"spending_report.daily_trend" = "Aliran Perbelanjaan Harian";
+"spending_report.weekday_weekend" = "Hari Bekerja lwn Hujung Minggu";
+"spending_report.hourly_distribution" = "Agihan Setiap Jam";
+"spending_report.weekday" = "Hari Bekerja";
+"spending_report.weekend" = "Hujung Minggu";
+
+"spending_report.period_comparison" = "Perbandingan Tempoh";
+"spending_report.previous_period" = "Tempoh Sebelumnya";
+"spending_report.current_period" = "Tempoh Semasa";
+"spending_report.category_changes" = "Perubahan Kategori";
+"spending_report.budget_performance" = "Prestasi Bajet";
+"spending_report.budget_status.normal" = "Biasa";
+"spending_report.budget_status.critical" = "Kritikal";
+"spending_report.budget_status.exceeded" = "Melebihi";
+"spending_report.busiest_hours" = "Jam Paling Sibuk";
+"common.transactions" = "Urus Niaga";
+
+// MARK: - Onboarding
+"onboarding.skip" = "Langkau";
+"onboarding.continue" = "Teruskan";
+"onboarding.confirm_settings" = "Sahkan Tetapan";
+"onboarding.privacy_notice" = "Dengan meneruskan, anda bersetuju dengan Dasar Privasi dan Syarat Perkhidmatan kami.";
+
+"onboarding.welcome.title" = "Selamat Datang ke Kebebasan Kewangan";
+"onboarding.welcome.subtitle" = "Jejaki perbelanjaan anda, urus bajet anda, dan capai matlamat kewangan anda";
+
+"onboarding.feature1.title" = "Analisis Pintar";
+"onboarding.feature1.description" = "Kategorikan perbelanjaan anda dan gambarkan situasi kewangan anda dengan carta terperinci";
+
+"onboarding.feature2.title" = "Pengurusan Bajet";
+"onboarding.feature2.description" = "Cipta bajet bulanan, jejaki had anda, dan capai matlamat simpanan anda";
+
+"onboarding.feature3.title" = "Peringatan Pintar";
+"onboarding.feature3.description" = "Dapatkan pemberitahuan tepat pada masanya untuk bayaran bil dan pelanggaran bajet";
+
+"onboarding.personalize.title" = "Peribadikan Pengalaman Anda";
+"onboarding.select_language" = "Pilih Bahasa";
+"onboarding.select_currency" = "Pilih Mata Wang";
+
+"reports.creditcard.show_less" = "Tunjuk Kurang";
+"reports.creditcard.usage.short" = "Penggunaan";
+"reports.creditcard.no_category_data" = "Tiada data kategori ditemui";
+"loan_report.legend.paid" = "Telah Dibayar";
+"loan_report.legend.pending" = "Menunggu";
+"loan_report.legend.overdue" = "Tertunggak";
+"loan_report.this_month_summary" = "Bulan Ini";
+"loan_report.total_installments" = "Jumlah ansuran bulan ini:";
+"loan_report.paid_installments" = "Jumlah ansuran yang telah dibayar:";
+"loan_report.no_installments_for_day" = "Tiada ansuran pinjaman untuk hari ini";
+"loan_report.installment_no" = "Ansuran:";
+"loan_report.status.paid" = "Telah Dibayar";
+"loan_report.status.pending" = "Menunggu";
+"loan_report.status.overdue" = "Tertunggak";
+"loan_report.total_for_day" = "Jumlah untuk Hari Ini";
+"dashboard.show_less" = "Tunjuk kurang";
+"dashboard.more_categories" = "kategori lagi";
+"reports.category.highest_spending" = "Kategori Perbelanjaan Tertinggi";
+"reports.category.most_transactions" = "Urus Niaga Terbanyak";

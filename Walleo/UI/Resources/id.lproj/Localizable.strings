@@ -1,0 +1,903 @@
+/* Localizable.strings (Indonesian) */
+
+// MARK: - Genel / Ortak Kullanım
+"common.save" = "Simpan";
+"common.cancel" = "Batal";
+"common.edit" = "Ubah";
+"common.delete" = "Hapus";
+"common.done" = "Selesai";
+"common.reset" = "Atur Ulang";
+"common.apply" = "Terapkan";
+"common.all" = "Semua";
+"common.income" = "Pemasukan";
+"common.expense" = "Pengeluaran";
+"common.category" = "Kategori";
+"common.categories" = "Kategori";
+"common.amount" = "Jumlah";
+"common.date" = "Tanggal";
+"common.type" = "Jenis";
+"common.account" = "Akun";
+"common.select_account" = "Pilih Akun";
+"common.back" = "Kembali";
+"common.total" = "Total";
+"common.net" = "Bersih";
+"common.total_amount" = "Total Jumlah";
+
+// MARK: - Ana Sekmeler
+"tab.dashboard" = "Ringkasan";
+"tab.calendar" = "Kalender";
+"tab.reports" = "Laporan";
+"tab.settings" = "Pengaturan";
+"tab.budgets" = "Anggaran";
+"tab.more" = "Lainnya";
+
+// MARK: - Panel / Dashboard Ekranı
+"dashboard.category_distribution" = "Distribusi Kategori";
+"dashboard.recent_transactions" = "Transaksi Terkini";
+"dashboard.see_all" = "Lihat Semua";
+"dashboard.no_records_for_month" = "Tidak ada catatan untuk bulan ini";
+
+// MARK: - Ayarlar Ekranı
+"settings.title" = "Pengaturan";
+"settings.section_general" = "UMUM";
+"settings.theme" = "Tema";
+"settings.theme_system" = "Sistem";
+"settings.theme_light" = "Terang";
+"settings.theme_dark" = "Gelap";
+"settings.language" = "Bahasa";
+"settings.manage_categories" = "Kelola Kategori";
+"settings.section_info" = "INFORMASI";
+"settings.version" = "Versi";
+"settings.currency" = "Mata Uang";
+
+// MARK: - Bildirim Ayarları
+"settings.notifications" = "Pengaturan Notifikasi";
+"settings.notifications.title" = "Pengaturan Notifikasi";
+"settings.notifications.master_section" = "KONTROL UTAMA";
+"settings.notifications.master_toggle" = "Semua Notifikasi";
+"settings.notifications.budget_section" = "PERINGATAN ANGGARAN";
+"settings.notifications.budget_toggle" = "Tampilkan Notifikasi Anggaran";
+"settings.notifications.threshold_picker" = "Ambang Batas Peringatan";
+"settings.notifications.threshold.option_80" = "Saat mencapai 80%";
+"settings.notifications.threshold.option_85" = "Saat mencapai 85%";
+"settings.notifications.threshold.option_90" = "Saat mencapai 90%";
+"settings.notifications.threshold.option_95" = "Saat mencapai 95%";
+"settings.notifications.loan_section" = "PENGINGAT PEMBAYARAN";
+"settings.notifications.loan_toggle" = "Ingatkan Cicilan Pinjaman";
+"settings.notifications.loan_stepper" = "%d hari sebelum jatuh tempo";
+"settings.notifications.credit_card_section" = "PENGINGAT KARTU KREDIT";
+"settings.notifications.credit_card_toggle" = "Ingatkan Tanggal Jatuh Tempo";
+
+// MARK: - Bildirim İçerikleri
+"notification.budget.over_limit.title" = "Anggaran Terlampaui";
+"notification.budget.over_limit.body_line1_format" = "Anda telah melampaui jumlah target untuk anggaran '%@' Anda.";
+"notification.budget.over_limit.body_line2" = "Target Anggaran: %@";
+"notification.budget.over_limit.body_line3" = "Jumlah Terlampaui: %@";
+"notification.budget.approaching_limit.title" = "Batas Anggaran Mendekat";
+"notification.budget.approaching_limit.body_line1_format" = "Anda telah mencapai %%%2$.0f dari target anggaran '%1$@' Anda.";
+"notification.budget.approaching_limit.body_line2" = "Target Anggaran: %@";
+"notification.budget.approaching_limit.body_line3" = "Jumlah Tersisa: %@";
+"notification.credit_card.due_date.title" = "Pembayaran Kartu Kredit Mendekat";
+"notification.credit_card.due_date.body_format" = "Tanggal jatuh tempo untuk kartu %@ Anda adalah %@.";
+
+// MARK: - Kategori Yönetimi
+"categories.title" = "Kategori";
+"categories.income_categories" = "Kategori Pemasukan";
+"categories.expense_categories" = "Kategori Pengeluaran";
+"categories.new" = "Kategori Baru";
+"categories.edit" = "Ubah Kategori";
+"categories.name" = "Nama Kategori";
+"categories.color" = "Warna Kategori";
+"categories.select_icon" = "Pilih Ikon";
+
+// MARK: - İşlem Ekleme / Düzenleme
+"transaction.new" = "Transaksi Baru";
+"transaction.edit" = "Ubah Transaksi";
+"transaction.type" = "Jenis Transaksi";
+"transaction.section_details" = "Detail";
+"transaction.name_placeholder" = "Nama transaksi (mis: Makan Malam)";
+"transaction.select_category" = "Pilih Kategori";
+"transaction.recurrence" = "Perulangan";
+"transaction.loan_payment_name_format" = "Pembayaran Cicilan untuk %@";
+
+// MARK: - Hesaplar
+"accounts.title" = "Akun";
+"accounts.empty.title" = "Belum Ada Akun";
+"accounts.empty.description" = "Ketuk ikon '+' untuk menambahkan akun baru dan memulai.";
+"accounts.add.wallet" = "Dompet (Tunai)";
+"accounts.add.credit_card" = "Kartu Kredit";
+"accounts.add.loan" = "Pinjaman";
+"accounts.add.new_credit_card" = "Tambah Kartu Kredit Baru";
+"accounts.add.new_loan" = "Tambah Pinjaman Baru";
+"accounts.add.account_color" = "Warna Akun";
+"accounts.add.interest_rate" = "Suku Bunga (%)";
+"accounts.add.installments" = "Jumlah Cicilan";
+"accounts.add.installments_stepper" = "%d bulan";
+"accounts.add.create_installments_button" = "Simpan dan Buat Cicilan";
+
+"credit_card.form.statement_date_header" = "Tanggal Tagihan";
+"credit_card.form.statement_date" = "Tanggal Tagihan";
+"credit_card.form.payment_due_date_header" = "Pengaturan Tanggal Jatuh Tempo";
+"credit_card.form.payment_due_date_stepper" = "%d hari setelah tanggal tagihan";
+"loan.form.details_header" = "Informasi Pinjaman";
+"loan.form.first_payment_header" = "Hari Pembayaran Cicilan Pertama";
+"loan.form.interest_type" = "Jenis Bunga";
+"loan.form.first_installment_date" = "Tanggal Cicilan Pertama";
+"loan_details.summary_header" = "Ringkasan Pinjaman";
+"loan_details.installment_plan_header" = "Rencana Cicilan";
+
+"installment.edit.title" = "Ubah Cicilan";
+"installment.edit.details_header" = "Detail Cicilan";
+"installment.paid.label" = "Tandai sebagai Lunas";
+"accounts.card.current_debt" = "Utang Saat Ini";
+"accounts.card.available_limit" = "Limit Tersedia";
+"accounts.card.paid_installments" = "Cicilan Dibayar";
+"accounts.card.remaining_debt" = "Sisa Utang";
+"credit_card_details.recent_expenses" = "Pengeluaran Periode Ini";
+"credit_card_details.no_transactions" = "Tidak ada transaksi pada periode ini";
+
+"account_details.generic_title" = "Detail %@";
+"enum.interest_type.yearly" = "Tahunan";
+"enum.interest_type.monthly" = "Bulanan";
+"transaction.amount_placeholder" = "Jumlah (mis: 125.50)";
+"account.name_placeholder_wallet" = "Nama dompet (mis: Tunai)";
+"account.name_placeholder_creditcard" = "Nama kartu (mis: Kartu Bonus)";
+"account.name_placeholder_loan" = "Nama pinjaman (mis: Kredit Mobil)";
+"account.initial_balance_placeholder" = "Saldo awal (mis: 500)";
+"credit_card.limit_placeholder" = "Limit kartu (mis: 15000)";
+"credit_card.current_debt_placeholder" = "Utang saat ini (Opsional)";
+"loan.principal_amount_placeholder" = "Jumlah pinjaman (mis: 250000)";
+"loan.interest_rate_placeholder" = "Suku bunga (mis: 1,89)";
+
+"budget.name_placeholder" = "Nama anggaran (mis: Belanja Bulanan)";
+"budget.limit_placeholder" = "Batas bulanan (mis: 2500)";
+"accounts.add.loan_amount" = "Jumlah Pinjaman";
+"accounts.card.initial_balance" = "Saldo Awal";
+"accounts.card.current_balance" = "Saldo Saat Ini";
+"accounts.card.total_limit" = "Total Limit";
+"accounts.card.statement_date" = "Tanggal Tagihan";
+
+"accounts.group.wallets" = "Dompet";
+"accounts.group.credit_cards" = "Kartu Kredit";
+"accounts.group.loans" = "Pinjaman";
+
+// MARK: - Diğer Ekranlar ve Uyarılar
+"all_transactions.title" = "Semua Transaksi";
+"all_transactions.not_found" = "Transaksi tidak ditemukan";
+"all_transactions.not_found_desc" = "Coba ubah kriteria filter Anda.";
+"filter.date_range" = "Rentang Tanggal";
+"filter.sort_by" = "Urutkan Berdasarkan";
+"filter.accounts" = "Akun";
+"alert.recurring_transaction" = "Ini adalah transaksi berulang.";
+"alert.update_this_only" = "Hanya perbarui transaksi ini";
+"alert.update_future" = "Perbarui transaksi ini dan yang akan datang";
+"alert.delete_this_only" = "Hanya hapus transaksi ini";
+"alert.delete_series" = "Hapus seluruh seri";
+"alert.add_as_expense.title" = "Tambahkan sebagai Pengeluaran";
+"alert.add_as_expense.button_yes" = "Ya, tambahkan sebagai pengeluaran";
+"alert.add_as_expense.button_no" = "Tidak, tandai saja";
+"alert.add_as_expense.message_format" = "Apakah Anda ingin menambahkan pembayaran cicilan sebesar %@ sebagai pengeluaran?";
+"month_picker.title" = "Pilih Tanggal";
+"month_picker.month" = "Bulan";
+"month_picker.year" = "Tahun";
+"calendar.no_transactions_on_date" = "Tidak ada transaksi pada tanggal ini";
+"calendar.monthly_summary" = "Ringkasan Bulanan";
+"notifications.title" = "Notifikasi";
+"notifications.no_notifications_title" = "Belum ada notifikasi";
+"notifications.no_notifications_desc" = "Notifikasi penting dalam aplikasi akan muncul di sini.";
+"validation.error.invalid_amount_format" = "Format tidak valid. Maksimal 9 digit angka bulat dan 2 desimal.";
+
+// MARK: - Raporlar
+"reports.type.summary" = "Ringkasan";
+"reports.type.distribution" = "Distribusi";
+"reports.summary.card.main_metrics" = "Metrik Utama";
+"reports.summary.card.comparison" = "Analisis Perbandingan";
+"reports.summary.top_expenses" = "Pengeluaran Teratas";
+"reports.summary.statistics" = "Statistik";
+"reports.summary.net_flow" = "Arus Bersih";
+"reports.comparison.no_data" = "Tidak ada data dari periode sebelumnya untuk perbandingan.";
+"reports.comparison.prefix_net_flow_positive" = "Dibandingkan periode sebelumnya, Anda berhemat ";
+"reports.comparison.suffix_net_flow_positive" = " lebih banyak.";
+"reports.comparison.prefix_net_flow_negative" = "Dibandingkan periode sebelumnya, Anda menghabiskan ";
+"reports.comparison.suffix_net_flow_negative" = " lebih banyak.";
+"reports.comparison.prefix_expenses_increased" = "Pengeluaran Anda meningkat sebesar ";
+"reports.comparison.suffix_expenses_increased" = " dibandingkan periode sebelumnya.";
+"reports.comparison.prefix_expenses_decreased" = "Pengeluaran Anda menurun sebesar ";
+"reports.comparison.suffix_expenses_decreased" = " dibandingkan periode sebelumnya.";
+"reports.distribution.no_data" = "Tidak ada data untuk ditampilkan pada periode ini.";
+"reports.statistics.daily_avg_expense" = "Rata-rata Pengeluaran Harian";
+"reports.statistics.daily_avg_income" = "Rata-rata Pemasukan Harian";
+"reports.statistics.highest_expense" = "Pengeluaran Tunggal Tertinggi";
+"reports.statistics.highest_income" = "Pemasukan Tunggal Tertinggi";
+
+// MARK: - Bütçeler
+"budgets.title" = "Anggaran";
+"budgets.empty.title" = "Belum Ada Anggaran";
+"budgets.empty.description" = "Buat anggaran baru dengan mengetuk ikon '+' untuk mengontrol pengeluaran Anda.";
+"budgets.add.title" = "Anggaran Baru";
+"budgets.edit.title" = "Ubah Anggaran";
+"budgets.form.name_placeholder" = "mis: Belanja Bulanan";
+"budgets.form.limit_amount" = "Batas Bulanan";
+"budgets.form.select_categories" = "Pilih Kategori";
+"budgets.card.total_limit" = "Total Batas";
+"budgets.card.amount_spent" = "Jumlah Dibelanjakan";
+"budgets.card.amount_remaining" = "Jumlah Tersisa";
+"alert.delete_budget.message_format" = "Apakah Anda yakin ingin menghapus anggaran '%@' secara permanen?";
+
+// MARK: - Enum Değerleri ve Kategoriler
+"enum.recurrence.once" = "Sekali";
+"enum.recurrence.monthly" = "Setiap Bulan";
+"enum.recurrence.quarterly" = "Setiap 3 Bulan";
+"enum.recurrence.semi_annually" = "Setiap 6 Bulan";
+"enum.recurrence.annually" = "Setiap Tahun";
+"enum.sort.date_desc" = "Berdasarkan Tanggal (Terbaru ke Terlama)";
+"enum.sort.date_asc" = "Berdasarkan Tanggal (Terlama ke Terbaru)";
+"enum.sort.amount_desc" = "Berdasarkan Jumlah (Tertinggi ke Terendah)";
+"enum.sort.amount_asc" = "Berdasarkan Jumlah (Terendah ke Tertinggi)";
+"enum.date_range.all" = "Semua Waktu";
+"enum.date_range.this_week" = "Minggu Ini";
+"enum.date_range.ytd" = "Tahun Ini";
+"enum.date_range.this_month" = "Bulan Ini";
+"enum.date_range.last_3_months" = "3 Bulan Terakhir";
+"enum.date_range.last_6_months" = "6 Bulan Terakhir";
+"enum.date_range.last_year" = "12 Bulan Terakhir";
+"enum.budget_period.monthly" = "Bulanan";
+
+"category.salary" = "Gaji";
+"category.extra_income" = "Pendapatan Tambahan";
+"category.investment" = "Investasi";
+"category.groceries" = "Belanja";
+"category.restaurant" = "Restoran";
+"category.transport" = "Transportasi";
+"category.bills" = "Tagihan";
+"category.entertainment" = "Hiburan";
+"category.health" = "Kesehatan";
+"category.clothing" = "Pakaian";
+"category.home" = "Rumah Tangga";
+"category.gift" = "Hadiah";
+"category.loan_payment" = "Pembayaran Pinjaman";
+"category.other" = "Lainnya";
+
+// MARK: - Filtreleme Ekranı
+"filter.custom_range_header" = "Rentang Kustom";
+"filter.start_date" = "Tanggal Mulai";
+"filter.end_date" = "Tanggal Akhir";
+"filter.presets_header" = "Rentang Preset";
+"enum.date_range.custom" = "Kustom";
+
+// MARK: - Para Birimleri
+"currency.name.TRY" = "Lira Turki";
+"currency.name.USD" = "Dolar Amerika Serikat";
+"currency.name.EUR" = "Euro";
+"currency.name.GBP" = "Poundsterling Inggris";
+"currency.name.JPY" = "Yen Jepang";
+"currency.name.CAD" = "Dolar Kanada";
+"currency.name.AUD" = "Dolar Australia";
+"currency.name.CHF" = "Franc Swiss";
+"currency.name.CNY" = "Yuan Tiongkok";
+"currency.name.SEK" = "Krona Swedia";
+"currency.name.NOK" = "Krone Norwegia";
+"currency.name.RUB" = "Rubel Rusia";
+"currency.name.INR" = "Rupee India";
+"currency.name.BRL" = "Real Brasil";
+"currency.name.ZAR" = "Rand Afrika Selatan";
+"currency.name.AED" = "Dirham UEA";
+"currency.name.SAR" = "Riyal Arab Saudi";
+"currency.name.KRW" = "Won Korea Selatan";
+"currency.name.SGD" = "Dolar Singapura";
+"currency.name.IDR" = "Rupiah Indonesia";
+"currency.name.VND" = "Dong Vietnam";
+"currency.name.THB" = "Baht Thailand";
+"currency.name.MYR" = "Ringgit Malaysia";
+
+"settings.section.data_management" = "Manajemen Data";
+"settings.data.export" = "Ekspor Data (.csv)";
+"settings.data.exporting" = "Mengekspor...";
+
+"settings.language_change.title" = "Ubah Bahasa";
+"settings.language_change.message" = "Mengubah pengaturan bahasa memerlukan mulai ulang aplikasi. Lanjutkan?";
+"settings.language_change.restart_button" = "Mulai Ulang";
+
+"alert.delete_confirmation.title" = "Konfirmasi Penghapusan";
+"alert.delete_wallet.message_format" = "Apakah Anda yakin ingin menghapus dompet/akun '%@' secara permanen? Transaksi yang terkait dengan akun ini tidak akan dihapus, hanya tautan akunnya yang akan dihapus.";
+"alert.delete_credit_card.message_format" = "Apakah Anda yakin ingin menghapus kartu kredit '%@' secara permanen? Transaksi yang terkait dengan akun ini tidak akan dihapus, hanya tautan akunnya yang akan dihapus.";
+"alert.delete_loan.message_format" = "Apakah Anda yakin ingin menghapus pinjaman '%@' dan rencana cicilannya secara permanen? Tindakan ini tidak dapat dibatalkan.";
+"alert.delete_category.message_format" = "Apakah Anda yakin ingin menghapus kategori '%@'? Kategori ini akan dihapus dari semua transaksi terkait.";
+"alert.delete_transaction.message" = "Apakah Anda yakin ingin menghapus transaksi ini secara permanen?";
+"alert.delete_all_notifications.title" = "Hapus Semua";
+"alert.delete_all_notifications.message" = "Apakah Anda yakin ingin menghapus semua notifikasi secara permanen?";
+
+"button.add_account" = "Tambah Akun";
+"button.add_budget" = "Tambah Anggaran";
+"button.add_category" = "Tambah Kategori";
+
+"budget_details.no_transactions" = "Tidak ada transaksi untuk anggaran ini";
+
+"alert.no_accounts.title" = "Diperlukan Akun";
+"alert.no_accounts.message" = "Untuk menambahkan transaksi, Anda harus membuat akun Dompet atau Kartu Kredit terlebih dahulu.";
+"alert.no_accounts.add_account_button" = "Buat Akun";
+
+// MARK: - Veri Dışa Aktarma Başlıkları
+"export.header.date" = "Tanggal";
+"export.header.name" = "Nama Transaksi";
+"export.header.amount" = "Jumlah";
+"export.header.type" = "Jenis";
+"export.header.category" = "Kategori";
+"export.header.account" = "Akun";
+
+"credit_card_details.no_expenses_for_month" = "Tidak ada pengeluaran bulan ini";
+"credit_card_details.total_expenses_for_period" = "Total pengeluaran periode ini";
+"notifications.delete_all" = "Hapus Semua";
+"notifications.mark_all_as_read" = "Tandai semua sebagai telah dibaca";
+
+// MARK: - Form Labels & Placeholders
+"form.label.transaction_name" = "Nama Transaksi";
+"form.label.amount" = "Jumlah";
+"form.label.wallet_name" = "Nama Dompet";
+"form.label.card_name" = "Nama Kartu";
+"form.label.loan_name" = "Nama Pinjaman";
+"form.label.initial_balance" = "Saldo Awal";
+"form.label.card_limit" = "Limit Kartu";
+"form.label.current_debt" = "Utang Saat Ini";
+"form.label.principal_amount" = "Jumlah Pokok";
+"form.label.interest_rate" = "Suku Bunga";
+"form.label.budget_name" = "Nama Anggaran";
+"form.label.budget_limit" = "Batas Bulanan";
+
+// MARK: - Time
+"time.today" = "Hari ini";
+"time.yesterday" = "Kemarin";
+
+"reports.period.weekly" = "Mingguan";
+"reports.period.monthly" = "Bulanan";
+"week_picker.select_date_label" = "Pilih Tanggal";
+"week_picker.title" = "Pilih Minggu";
+
+"form.label.set_end_date" = "Atur Tanggal Akhir";
+"form.label.end_date" = "Tanggal Akhir";
+
+"notification.daily.title" = "Waktunya menyelesaikan hari ini!";
+"notification.daily.body" = "Sudahkah Anda menambahkan pemasukan dan pengeluaran hari ini ke Walleo? Waktu terbaik untuk melacak kesehatan finansial Anda.";
+"notification.weekly.title" = "Laporan mingguan Anda sudah siap!";
+"notification.weekly.body" = "Jelajahi ringkasan keuangan minggu lalu sekarang. Informasi terperinci tentang pengeluaran dan pemasukan Anda menanti di layar Laporan.";
+
+"settings.data.delete_all" = "Hapus Semua Data";
+"alert.delete_all_data.title" = "Hapus semua data?";
+"alert.delete_all_data.message" = "Tindakan ini tidak dapat dibatalkan. Semua akun, transaksi, dan anggaran Anda di perangkat dan di iCloud akan dihapus secara permanen.";
+"common.confirm_delete" = "Ya, hapus semua";
+
+"settings.data.icloud_backup" = "Cadangan iCloud";
+"alert.icloud_toggle.title" = "Mengubah Pengaturan Cadangan";
+"alert.icloud_toggle.message" = "Mengubah pengaturan ini memerlukan mulai ulang aplikasi. Lanjutkan?";
+"alert.language_change.confirm_button" = "Konfirmasi";
+"alert.no_payment_account.title" = "Akun yang Sesuai Tidak Ditemukan";
+"alert.no_payment_account.message" = "Untuk menambahkan pembayaran ini sebagai pengeluaran, Anda harus membuat akun Dompet atau Kartu Kredit terlebih dahulu.";
+"account_selection.title" = "Pilih Akun Pembayaran";
+
+"account_type.wallet" = "Dompet";
+"account_type.credit_card" = "Kartu Kredit";
+"account_type.loan" = "Pinjaman";
+
+// MARK: - Onboarding
+"onboarding.page1.title" = "Dunia Keuangan Anda, dalam Satu Sentuhan";
+"onboarding.page1.subtitle" = "Ambil kendali penuh atas situasi keuangan Anda dengan mengelola uang tunai, kartu kredit, dan pinjaman di satu tempat.";
+"onboarding.page2.title" = "Anda yang Mengelola Anggaran, Bukan Sebaliknya";
+"onboarding.page2.subtitle" = "Buat anggaran khusus kategori dan bentuk pengeluaran Anda dengan mudah sesuai tujuan dengan pelacakan kemajuan visual.";
+"onboarding.page3.title" = "Biarkan Data Anda Berbicara, Lihat Masa Depan Anda";
+"onboarding.page3.subtitle" = "Buat keputusan keuangan yang lebih cerdas dengan mengubah pengeluaran masa lalu Anda menjadi laporan yang bermakna dan analisis perbandingan.";
+"onboarding.page4.title" = "Asisten Keuangan Anda yang Memikirkan Anda";
+"onboarding.page4.subtitle" = "Tenang dengan notifikasi cerdas yang secara proaktif mengingatkan Anda tentang setiap detail penting, mulai dari tanggal tagihan hingga pelanggaran anggaran.";
+"onboarding.page5.title" = "Sepenuhnya Milik Anda, Sepenuhnya Disesuaikan";
+"onboarding.page5.subtitle" = "Sesuaikan aplikasi dengan sempurna dengan gaya hidup dan preferensi Anda dengan tema, bahasa, mata uang, dan kategori kustom.";
+"onboarding.page6.title" = "Data Anda Adalah Benteng Anda";
+"onboarding.page6.subtitle" = "Dari sinkronisasi iCloud yang aman hingga ekspor data dan opsi penghapusan permanen, kendali data Anda sepenuhnya ada di tangan Anda.";
+"onboarding.signin.apple" = "Masuk dengan Apple";
+"onboarding.privacy_policy" = "Dengan melanjutkan, Anda menyetujui Kebijakan Privasi dan Ketentuan Penggunaan kami.";
+
+"settings.section_ai_assistant" = "ASISTEN AI";
+"settings.ai_assistant_title" = "Mengobrol dengan Asisten AI";
+
+// Aile Hesabı
+"settings.family_account" = "Akun Keluarga";
+"family.no_family_title" = "Tidak Ada Akun Keluarga";
+"family.no_family_description" = "Buat akun keluarga untuk berbagi data keuangan Anda dengan anggota keluarga";
+"family.create_family" = "Buat Akun Keluarga";
+"family.info_section" = "Informasi Keluarga";
+"family.name" = "Nama Keluarga";
+"family.owner" = "Pemilik";
+"family.you" = "Anda";
+"family.member_count" = "Jumlah Anggota";
+"family.created_date" = "Tanggal Dibuat";
+"family.members_section" = "Anggota Keluarga";
+"family.pending" = "Tertunda";
+"family.invite_member" = "Undang Anggota";
+"family.leave_family" = "Tinggalkan Keluarga";
+"family.owner_cannot_leave" = "Sebagai pemilik, Anda tidak dapat meninggalkan keluarga. Alihkan kepemilikan terlebih dahulu.";
+"family.create_new" = "Akun Keluarga Baru";
+"family.name_placeholder" = "Masukkan nama keluarga";
+"family.create_description" = "Semua data keuangan Anda akan dibagikan dengan anggota keluarga";
+"family.create_title" = "Buat Keluarga";
+"family.invite_instructions" = "Buat tautan undangan untuk dibagikan dengan anggota keluarga Anda";
+"family.generate_invite_link" = "Buat Tautan Undangan";
+"family.leave_confirmation_title" = "Apakah Anda Yakin Ingin Meninggalkan Keluarga?";
+"family.leave_confirmation_message" = "Anda tidak akan lagi memiliki akses ke data keluarga yang dibagikan. Tindakan ini tidak dapat dibatalkan.";
+"family.leave_confirm" = "Tinggalkan Keluarga";
+"family.cloudkit_warning_title" = "iCloud Diperlukan untuk Akun Keluarga";
+"family.cloudkit_warning_message" = "Anda tidak dapat mematikan cadangan iCloud saat menggunakan akun keluarga. Silakan tinggalkan akun keluarga terlebih dahulu.";
+"family.delete_warning_title" = "Data Tidak Dapat Dihapus";
+"family.delete_warning_message" = "Anda tidak dapat menghapus semua data saat menjadi bagian dari akun keluarga. Silakan tinggalkan akun keluarga terlebih dahulu.";
+"family.invitation_title" = "Undangan Akun Keluarga";
+"family.invitation_description" = "Anda telah diundang untuk bergabung dengan akun keluarga. Semua data keuangan akan dibagikan di antara anggota keluarga.";
+"family.accepting_invitation" = "Menerima undangan...";
+"family.invitation_accepted" = "Undangan Diterima!";
+"family.accept_invitation" = "Terima Undangan";
+"family.join_family" = "Gabung Keluarga";
+
+// MARK: - Bütçe Ek
+"budget.automation_settings" = "Pengaturan Otomatisasi";
+"budget.form.auto_renew" = "Perbarui otomatis setiap bulan";
+"budget.form.rollover_balance" = "Lanjutkan sisa saldo dari bulan sebelumnya";
+"budget.list.period_ended" = "Periode Berakhir";
+"budget.detail.period_info" = "Info Periode";
+"budget.detail.budget_period" = "Periode Anggaran";
+"budget.detail.rollover_from_last_month" = "Lanjutan dari Bulan Lalu";
+"budget.detail.transactions_for_period" = "Transaksi untuk Periode Ini";
+"notification.budget.pre_renewal.title" = "Anggaran Anda akan diperbarui";
+"notification.budget.pre_renewal.body" = "Anggaran '%@' Anda akan diperbarui untuk bulan berikutnya dengan sisa %@.";
+"notification.budget.renewal_summary.title" = "Anggaran Anda telah diperbarui!";
+"notification.budget.renewal_summary.body" = "Selamat datang %@! ☕️ %d anggaran Anda untuk bulan ini telah diperbarui secara otomatis.";
+
+// MARK: - Detaylı Raporlar
+"reports.detailed.title" = "Laporan";
+"reports.detailed.credit_card_report" = "Laporan Kartu Kredit";
+"reports.detailed.loan_report" = "Laporan Pinjaman";
+"reports.detailed.start_date" = "Tanggal Mulai";
+"reports.detailed.end_date" = "Tanggal Akhir";
+
+"reports.detailed.no_cc_data_title" = "Data Tidak Ditemukan";
+"reports.detailed.no_cc_data_desc" = "Tidak ada pengeluaran kartu kredit dalam rentang tanggal yang dipilih.";
+"reports.detailed.no_loan_data_title" = "Data Tidak Ditemukan";
+"reports.detailed.no_loan_data_desc" = "Tidak ada cicilan pinjaman yang jatuh tempo dalam rentang tanggal yang dipilih.";
+
+"reports.detailed.overall_summary" = "Ringkasan Keseluruhan";
+"reports.detailed.total_spending" = "Total Pengeluaran";
+"reports.detailed.transaction_count" = "Jumlah Transaksi";
+"reports.detailed.most_used_card" = "Kartu Paling Sering Digunakan";
+"reports.detailed.card_details_header" = "Detail Kartu";
+"reports.detailed.category_distribution" = "Distribusi Kategori";
+"reports.detailed.daily_spending_trend" = "Tren Pengeluaran Harian";
+
+"reports.detailed.overall_loan_summary" = "Ringkasan Pinjaman Keseluruhan";
+"reports.detailed.active_loan_count" = "%d Pinjaman Aktif";
+"reports.detailed.paid_installments_count" = "Dibayar: %d";
+"reports.detailed.unpaid_installments_count" = "Belum Dibayar: %d";
+"reports.detailed.loan_details_header" = "Detail Pinjaman";
+"reports.detailed.installments_in_period" = "Cicilan dalam Periode: %d";
+"reports.detailed.paid_and_expensed" = "Dibayar & Dicatat sebagai Pengeluaran";
+"reports.detailed.paid_only" = "Hanya Ditandai Dibayar";
+"reports.detailed.overdue" = "Cicilan Jatuh Tempo";
+"reports.detailed.upcoming" = "Cicilan Mendatang";
+
+/* Harcama Isı Haritası */
+"reports.detailed.spending_heatmap" = "Peta Panas Pengeluaran";
+"reports.heatmap.no_data" = "Tidak ditemukan pengeluaran dalam rentang tanggal yang dipilih";
+"reports.heatmap.hourly_distribution" = "Distribusi Per Jam";
+"reports.heatmap.comparison" = "Perbandingan";
+"reports.heatmap.insights" = "Wawasan Cerdas";
+
+/* Zaman Dilimleri */
+"reports.heatmap.morning" = "Pagi";
+"reports.heatmap.noon" = "Siang";
+"reports.heatmap.evening" = "Sore";
+"reports.heatmap.night" = "Malam";
+"reports.heatmap.weekday" = "Hari Kerja";
+"reports.heatmap.weekend" = "Akhir Pekan";
+
+/* İçgörüler */
+"reports.heatmap.insight.busiest_day" = "Hari tersibuk: %@";
+"reports.heatmap.insight.busiest_hour" = "Jam paling aktif: %@";
+"reports.heatmap.insight.weekend_comparison" = "%% %@ lebih banyak pengeluaran di akhir pekan";
+"reports.heatmap.insight.no_spending_days" = "Tidak ada pengeluaran selama %@ hari";
+
+// MARK: - Transfer
+"transfer.title" = "Transfer Antar Akun";
+"transfer.source_account" = "Dompet Sumber";
+"transfer.target_account" = "Dompet atau Kartu Kredit Tujuan";
+"transfer.amount_label" = "Jumlah Transfer";
+"transfer.amount_placeholder" = "Masukkan jumlah yang akan ditransfer";
+"transfer.button" = "Transfer";
+"transfer.select_wallet" = "Pilih Dompet";
+"transfer.select_account" = "Pilih Akun";
+"transfer.source_details" = "Detail Akun Sumber";
+"transfer.target_details" = "Detail Akun Tujuan";
+"transfer.name" = "Nama:";
+"transfer.initial_balance" = "Saldo awal:";
+"transfer.current_balance" = "Saldo saat ini:";
+"transfer.total_limit" = "Total limit:";
+"transfer.available_limit" = "Limit tersedia:";
+"transfer.current_debt" = "Utang saat ini:";
+"transfer.statement_date" = "Tanggal tagihan:";
+"transfer.type.wallet" = "Dompet";
+"transfer.type.credit_card" = "Kartu Kredit";
+"transfer.incoming" = "Transfer Masuk";
+"transfer.outgoing" = "Transfer Keluar";
+"transfer.unknown_account" = "Akun Tidak Dikenal";
+"transfer.section.transactions" = "Transaksi";
+"transfer.section.transfers" = "Transfer";
+"transfer.no_transactions" = "Tidak ada transaksi pada periode ini";
+"transfer.no_transfers" = "Tidak ditemukan transfer";
+"transfer.section.expenses" = "Pengeluaran";
+"transfer.section.payments" = "Pembayaran";
+"transfer.no_payments" = "Tidak ditemukan pembayaran";
+
+"credit_card.installment_summary_format" = "%@ - %d/%d cicilan";
+"credit_card.installment_number_format" = "Cicilan ke-%d";
+
+// Taksitli işlem
+"transaction.installment.toggle" = "Transaksi Cicilan";
+"transaction.installment.count" = "Jumlah Cicilan";
+"transaction.installment.preview" = "%d cicilan x %@ = %@";
+"transaction.installment.edit_warning_title" = "Ubah Transaksi Cicilan";
+"transaction.installment.edit_warning" = "Perubahan ini akan membuat ulang semua cicilan. Apakah Anda ingin melanjutkan?";
+"transaction.installment.delete_warning" = "Seluruh transaksi cicilan ini (%d cicilan) akan dihapus. Apakah Anda mengonfirmasi?";
+"transaction.edit_installment" = "Ubah Transaksi Cicilan";
+"credit_card.installment_purchases" = "Pembelian Cicilan";
+"installment.completed" = "Selesai";
+"alert.installment.delete_title" = "Hapus Transaksi Cicilan";
+"credit_card_details.period_total" = "Total Periode";
+"alert.no_wallet.message" = "Untuk menambahkan transaksi, Anda **harus** **membuat** akun **Dompet** **terlebih dahulu**.";
+
+// MARK: - Cash Flow Report
+"reports.detailed.categories_report" = "Laporan Kategori";
+"reports.category.summary" = "Ringkasan Kategori";
+"reports.category.total_categories" = "Total Kategori";
+"reports.category.active_categories" = "Kategori Aktif";
+"reports.category.most_spent" = "Pengeluaran Terbanyak";
+"reports.category.view_list" = "Tampilan Daftar";
+"reports.category.view_chart" = "Tampilan Grafik";
+"reports.category.view_comparison" = "Tampilan Perbandingan";
+"reports.category.distribution" = "Distribusi Kategori";
+"reports.detailed.cash_flow" = "Arus Kas";
+"cashflow.title" = "Laporan Arus Kas";
+"cashflow.view.summary" = "Ringkasan";
+"cashflow.view.flow" = "Aliran";
+"cashflow.view.categories" = "Kategori";
+"cashflow.view.accounts" = "Akun";
+"cashflow.view.projection" = "Proyeksi";
+
+"cashflow.insights" = "Wawasan";
+"cashflow.net_flow" = "Arus Bersih";
+"cashflow.of_income" = "% dari Pemasukan";
+"cashflow.daily_avg" = "Rata-rata Harian";
+
+"cashflow.normal_transactions" = "Transaksi Normal";
+"cashflow.installment_transactions" = "Transaksi Cicilan";
+"cashflow.recurring_transactions" = "Transaksi Berulang";
+
+"cashflow.opening_balance" = "Saldo Awal";
+"cashflow.closing_balance" = "Saldo Akhir";
+"cashflow.inflows" = "Pemasukan";
+"cashflow.outflows" = "Pengeluaran";
+"cashflow.daily_average" = "Rata-rata Harian";
+
+"cashflow.daily_details" = "Detail Harian";
+"cashflow.cumulative_balance" = "Saldo Kumulatif";
+
+"cashflow.flow_chart" = "Grafik Aliran";
+"cashflow.income_expense" = "Pemasukan/Pengeluaran";
+"cashflow.detailed" = "Terperinci";
+"cashflow.cumulative" = "Kumulatif";
+"cashflow.transaction_type_distribution" = "Distribusi Jenis Transaksi";
+"cashflow.category_flow" = "Aliran Kategori";
+"cashflow.show_trend" = "Tampilkan Tren";
+"cashflow.hide_trend" = "Sembunyikan Tren";
+"cashflow.largest_transaction" = "Transaksi Terbesar";
+
+"cashflow.transfers" = "Transfer";
+"cashflow.most_frequent_transfer" = "Transfer Paling Sering";
+"cashflow.show_details" = "Tampilkan Detail";
+"cashflow.hide_details" = "Sembunyikan Detail";
+
+// Projeksiyon
+"cashflow.projection.title" = "Proyeksi Masa Depan";
+"cashflow.projection.days" = "Proyeksi %d hari";
+"cashflow.projection.income" = "Estimasi Pemasukan";
+"cashflow.projection.expense" = "Estimasi Pengeluaran";
+"cashflow.projection.net" = "Estimasi Bersih";
+"cashflow.projection.chart" = "Grafik Proyeksi";
+
+// Risk
+"cashflow.risk.analysis" = "Analisis Risiko";
+"cashflow.risk.low" = "Risiko Rendah";
+"cashflow.risk.medium" = "Risiko Sedang";
+"cashflow.risk.high" = "Risiko Tinggi";
+"cashflow.risk.low_message" = "Arus kas Anda terlihat sehat. Anda dapat mencapai tujuan keuangan Anda dengan kebiasaan belanja saat ini.";
+"cashflow.risk.medium_message" = "Ada beberapa ketidakseimbangan dalam arus kas Anda. Disarankan untuk meninjau pengeluaran Anda.";
+"cashflow.risk.high_message" = "Perhatian! Arus kas Anda negatif. Anda perlu mengambil tindakan segera.";
+
+"cashflow.suggestions" = "Saran";
+"cashflow.suggestion.low_1" = "Anda dapat menginvestasikan uang lebih Anda";
+"cashflow.suggestion.low_2" = "Pertimbangkan untuk membuat dana darurat";
+"cashflow.suggestion.medium_1" = "Kurangi pengeluaran yang tidak perlu";
+"cashflow.suggestion.medium_2" = "Ciptakan sumber pendapatan tambahan";
+"cashflow.suggestion.medium_3" = "Tinjau batas anggaran Anda";
+"cashflow.suggestion.high_1" = "Hentikan pengeluaran yang tidak mendesak";
+"cashflow.suggestion.high_2" = "Batasi penggunaan kartu kredit";
+"cashflow.suggestion.high_3" = "Cari nasihat keuangan profesional";
+
+// İçgörüler
+"cashflow.insight.positive_flow" = "Arus Kas Positif";
+"cashflow.insight.positive_flow_message" = "Anda memiliki arus kas positif sebesar %@. Anda dapat meningkatkan tabungan Anda.";
+"cashflow.insight.negative_flow" = "Arus Kas Negatif";
+"cashflow.insight.negative_flow_message" = "Anda memiliki arus kas negatif sebesar %@. Anda harus mengendalikan pengeluaran Anda.";
+"cashflow.insight.high_installment" = "Pengeluaran Cicilan Tinggi";
+"cashflow.insight.high_installment_message" = "%% %@ dari pengeluaran Anda adalah cicilan. Rasio ini tampaknya tinggi.";
+"cashflow.insight.projection_warning" = "Peringatan Proyeksi";
+"cashflow.insight.projection_warning_message" = "Dengan kebiasaan belanja Anda saat ini, Anda mungkin menghadapi kesulitan kas pada periode mendatang.";
+
+// Genel
+"common.loading" = "Memuat...";
+"common.close" = "Tutup";
+"common.expenses" = "Pengeluaran";
+"common.incomes" = "Pemasukan";
+"time.day_short" = "hari";
+
+// Kategori Raporları
+"reports.category.view_list" = "Tampilan Daftar";
+"reports.category.view_chart" = "Tampilan Grafik";
+"reports.category.view_comparison" = "Perbandingan";
+"reports.category.display_type" = "Jenis Tampilan";
+"reports.category.transaction_type" = "Jenis Transaksi";
+"reports.category.no_comparison_data" = "Tidak Ada Data Perbandingan";
+"reports.category.no_previous_period" = "Data periode sebelumnya tidak ditemukan";
+
+// Kategori Özet Kartı
+"reports.category.summary" = "Ringkasan";
+"reports.category.total_categories" = "Total Kategori";
+"reports.category.active_categories" = "Kategori Aktif";
+"reports.category.most_spent" = "Pengeluaran Terbanyak";
+
+// Kategori Detay
+"reports.category.detail_type" = "Jenis Detail";
+"reports.category.names" = "Nama";
+"reports.category.days" = "Hari";
+"reports.category.hours" = "Jam";
+"reports.category.trend" = "Tren";
+"reports.category.total_spending" = "Total Pengeluaran";
+"reports.category.transaction" = "Transaksi";
+"reports.category.average" = "Rata-rata";
+"reports.category.daily" = "Harian";
+"reports.category.most_frequent_names" = "Nama Transaksi Paling Sering";
+"reports.category.used_times" = "digunakan %d kali";
+"reports.category.avg_short" = "Rata2";
+"reports.category.distribution_by_days" = "Distribusi Berdasarkan Hari";
+"reports.category.distribution_by_hours" = "Distribusi Berdasarkan Jam";
+"reports.category.monthly_trend" = "Tren Bulanan";
+"reports.category.transaction_count" = "%d transaksi";
+"reports.category.previous" = "Sebelumnya";
+"reports.category.day" = "Hari";
+"reports.category.amount" = "Jumlah";
+"reports.category.month" = "Bulan";
+
+"reports.heatmap.24_hours" = "24 Jam";
+"reports.transaction_count" = "%d transaksi";
+"reports.average_with_amount" = "Rata2: %@";
+"reports.heatmap.busiest_hours" = "Tersibuk: %@";
+
+// MARK: - Ortak Kullanım Eklemeleri
+"common.low" = "Rendah";
+"common.high" = "Tinggi";
+"common.average" = "Rata-rata";
+"common.highest" = "Tertinggi";
+
+// MARK: - Raporlar
+"reports.heatmap.try_different_date_range" = "Coba rentang tanggal yang berbeda";
+"reports.heatmap.title.hourly" = "Distribusi Pengeluaran Per Jam";
+"reports.heatmap.title.daily" = "Distribusi Pengeluaran Harian";
+"reports.heatmap.title.monthly" = "Distribusi Pengeluaran Bulanan";
+"reports.heatmap.title.weekly" = "Distribusi Pengeluaran Mingguan";
+"reports.heatmap.title.monthly_summary" = "Ringkasan Pengeluaran Bulanan";
+"reports.heatmap.week_format" = "Minggu ke-%d";
+"reports.comparison.no_data_title" = "Tidak Ada Data Perbandingan";
+"reports.category.avg_short_format" = "Rata2: %@";
+
+// MARK: - Nakit Akışı Raporu
+"reports.cashflow.no_data_title" = "Data Tidak Ditemukan";
+"reports.cashflow.no_data_desc" = "Tidak ditemukan transaksi dalam rentang tanggal yang dipilih.";
+"reports.category.daily_average_format" = "%@/hari";
+
+"cashflow.transfer_count" = "%d transfer";
+"common.times_suffix" = "%dx";
+
+// Kredi Kartı Raporları - Yeni Anahtarlar
+"reports.creditcard.detail_view" = "Tampilan Detail";
+"reports.creditcard.comparison_view" = "Perbandingan";
+"reports.creditcard.summary_view" = "Ringkasan";
+"reports.creditcard.no_data" = "Data Tidak Ditemukan";
+"reports.creditcard.no_data_desc" = "Tidak ditemukan pengeluaran kartu kredit dalam rentang tanggal yang dipilih.";
+"reports.creditcard.total_spending" = "Total Pengeluaran";
+"reports.creditcard.active_cards" = "Kartu Aktif";
+"reports.creditcard.transactions" = "Transaksi";
+"reports.creditcard.daily_avg" = "Rata-rata Harian";
+"reports.creditcard.most_used" = "Paling Sering Digunakan";
+"reports.creditcard.limit" = "Limit:";
+"reports.creditcard.usage" = "Penggunaan";
+"reports.creditcard.hide_metrics" = "Sembunyikan Metrik";
+"reports.creditcard.show_metrics" = "Tampilkan Metrik";
+"reports.creditcard.current_debt" = "Utang Saat Ini";
+"reports.creditcard.available" = "Tersedia";
+"reports.creditcard.highest_day" = "Hari Tertinggi";
+"reports.creditcard.avg_transaction" = "Rata-rata Transaksi";
+"reports.creditcard.category_analysis" = "Analisis Kategori";
+"reports.creditcard.more_categories" = "+%d kategori lainnya";
+"reports.creditcard.spending_trend" = "Tren Pengeluaran";
+"reports.creditcard.daily" = "Harian";
+"reports.creditcard.weekly" = "Mingguan";
+"reports.creditcard.by_category" = "Berdasarkan Kategori";
+"reports.creditcard.installments" = "Pembelian Cicilan";
+"reports.creditcard.installment_count" = "%d pembelian cicilan";
+"reports.creditcard.monthly_total" = "Total Bulanan";
+"reports.creditcard.monthly" = "bulanan";
+"reports.creditcard.progress" = "Kemajuan";
+"reports.creditcard.total_amount" = "Total Jumlah";
+"reports.creditcard.remaining" = "Tersisa";
+"reports.creditcard.card_comparison" = "Perbandingan Kartu";
+"reports.creditcard.detailed_comparison" = "Perbandingan Detail";
+"reports.creditcard.card" = "Kartu";
+"reports.creditcard.spending" = "Pengeluaran";
+"reports.creditcard.total_distribution" = "Distribusi Total";
+"reports.creditcard.category_summary" = "Ringkasan Kategori";
+"reports.creditcard.no_categories" = "Data kategori tidak ditemukan";
+"reports.creditcard.daily_averages" = "Rata-rata Harian";
+
+// MARK: - Hesap Silme ve İşlem Aktarımı
+"alert.no_eligible_account.title" = "Tidak Ada Akun yang Memenuhi Syarat";
+"alert.no_eligible_account.message" = "Untuk menghapus akun ini, Anda harus terlebih dahulu membuat akun Dompet atau Kartu Kredit lain untuk mentransfer transaksinya.";
+"transfer_transactions.title" = "Transfer Transaksi & Hapus";
+"transfer_transactions.message_format" = "Anda akan menghapus akun '%@'. Akun ini memiliki %d transaksi. Silakan pilih akun baru untuk mentransfer transaksi ini.";
+"transfer_transactions.confirm_button" = "Transfer & Hapus";
+"alert.no_eligible_wallet.title" = "Dompet yang Memenuhi Syarat Tidak Ditemukan";
+"alert.no_eligible_wallet.message" = "Akun yang ingin Anda hapus berisi transaksi pemasukan. Untuk mentransfer transaksi ini, Anda harus terlebih dahulu membuat akun tipe 'Dompet' lain.";
+
+// MARK: - Kredi Raporu
+"loan_report.no_data" = "Data pinjaman tidak ditemukan";
+"loan_report.no_data_desc" = "Tidak ditemukan cicilan pinjaman dalam rentang tanggal yang dipilih.";
+"loan_report.view.summary" = "Ringkasan";
+"loan_report.view.detail" = "Detail";
+"loan_report.view.calendar" = "Kalender";
+"loan_report.view.performance" = "Kinerja";
+
+"loan_report.sort.by_date" = "Berdasarkan Tanggal";
+"loan_report.sort.by_amount" = "Berdasarkan Jumlah";
+"loan_report.sort.by_progress" = "Berdasarkan Kemajuan";
+
+"loan_report.overview" = "Status Utang Keseluruhan";
+"loan_report.completed" = "Selesai";
+"loan_report.active_loans" = "Pinjaman Aktif";
+"loan_report.monthly_payment" = "Pembayaran Bulanan";
+"loan_report.total_paid" = "Total Dibayar";
+"loan_report.remaining" = "Sisa Utang";
+"loan_report.estimated_completion" = "Estimasi Tanggal Selesai";
+"loan_report.monthly_payment_load" = "Beban Cicilan Bulanan";
+"loan_report.no_future_payments" = "Tidak ada pembayaran di masa depan";
+"loan_report.distribution" = "Distribusi Pinjaman";
+"loan_report.no_active_loans" = "Tidak ada pinjaman aktif";
+
+"loan_report.search_placeholder" = "Cari pinjaman...";
+"loan_report.active_only" = "Hanya yang Aktif";
+"loan_report.sort" = "Urutkan";
+"loan_report.principal_amount" = "Pokok";
+"loan_report.interest_rate" = "Suku Bunga";
+"loan_report.total_to_pay" = "Total yang Harus Dibayar";
+"loan_report.total_interest" = "Total Bunga";
+"loan_report.last_payment_date" = "Tanggal Pembayaran Terakhir";
+"loan_report.payment_performance" = "Kinerja Pembayaran";
+"loan_report.score" = "Skor";
+"loan_report.next_payment" = "Pembayaran Berikutnya";
+"loan_report.days_remaining" = "%d hari lagi";
+"loan_report.due_today" = "Jatuh Tempo Hari Ini!";
+"loan_report.overdue" = "Jatuh Tempo!";
+"loan_report.installments_in_period" = "Cicilan dalam Periode";
+"loan_report.more_installments" = "... dan %d cicilan lagi";
+
+"loan_report.monthly_total" = "Total Bulanan";
+
+"loan_report.performance_score" = "Skor Kinerja";
+"loan_report.performance_excellent" = "Sangat Baik";
+"loan_report.performance_good" = "Baik";
+"loan_report.performance_fair" = "Cukup";
+"loan_report.performance_poor" = "Buruk";
+"loan_report.total_interest_paid" = "Total Bunga Dibayar";
+"loan_report.avg_monthly_payment" = "Rata-rata Pembayaran Bulanan";
+"loan_report.on_time" = "Tepat Waktu";
+"loan_report.late" = "Terlambat";
+"loan_report.missed" = "Terlewat";
+
+// MARK: - Harcama Raporu
+"spending_report.view.summary" = "Ringkasan";
+"spending_report.view.category" = "Kategori";
+"spending_report.view.time" = "Analisis Waktu";
+"spending_report.view.comparison" = "Perbandingan";
+
+"spending_report.no_data" = "Pengeluaran Tidak Ditemukan";
+"spending_report.no_data_desc" = "Tidak ada pengeluaran dalam rentang tanggal yang dipilih";
+
+"spending_report.total_spending" = "Total Pengeluaran";
+"spending_report.daily_avg" = "Rata-rata Harian";
+"spending_report.transaction_count" = "Jumlah Transaksi";
+"spending_report.avg_transaction" = "Rata-rata Transaksi";
+"spending_report.highest_expense" = "Pengeluaran Tertinggi";
+
+"spending_report.increase" = "Kenaikan";
+"spending_report.decrease" = "Penurunan";
+
+"spending_report.top_categories" = "Kategori Pengeluaran Teratas";
+"spending_report.weekly_summary" = "Ringkasan Mingguan";
+"spending_report.insights" = "Wawasan Cerdas";
+"spending_report.insight.busiest_day" = "Hari tersibuk Anda adalah %@ dengan pengeluaran %@";
+"spending_report.insight.top_category" = "Kategori %@ merupakan %%%.1f dari total pengeluaran Anda";
+"spending_report.insight.weekend_warning" = "Rata-rata pengeluaran akhir pekan Anda lebih tinggi dari hari kerja";
+
+"spending_report.category_distribution" = "Distribusi Kategori";
+"spending_report.category_details" = "Detail Kategori";
+"spending_report.largest_expense" = "Pengeluaran Terbesar";
+"spending_report.avg_per_transaction" = "Rata-rata per Transaksi";
+
+"spending_report.daily_trend" = "Tren Pengeluaran Harian";
+"spending_report.weekday_weekend" = "Hari Kerja vs. Akhir Pekan";
+"spending_report.hourly_distribution" = "Distribusi Per Jam";
+"spending_report.weekday" = "Hari Kerja";
+"spending_report.weekend" = "Akhir Pekan";
+
+"spending_report.period_comparison" = "Perbandingan Periode";
+"spending_report.previous_period" = "Periode Sebelumnya";
+"spending_report.current_period" = "Periode Saat Ini";
+"spending_report.category_changes" = "Perubahan Kategori";
+"spending_report.budget_performance" = "Kinerja Anggaran";
+"spending_report.budget_status.normal" = "Normal";
+"spending_report.budget_status.critical" = "Kritis";
+"spending_report.budget_status.exceeded" = "Terlampaui";
+"spending_report.busiest_hours" = "Jam Tersibuk";
+"common.transactions" = "Transaksi";
+
+// MARK: - Onboarding
+"onboarding.skip" = "Lewati";
+"onboarding.continue" = "Lanjutkan";
+"onboarding.confirm_settings" = "Konfirmasi Pengaturan";
+"onboarding.privacy_notice" = "Dengan melanjutkan, Anda menyetujui Kebijakan Privasi dan Ketentuan Layanan kami.";
+
+"onboarding.welcome.title" = "Selamat Datang di Kebebasan Finansial";
+"onboarding.welcome.subtitle" = "Lacak pengeluaran Anda, kelola anggaran Anda, dan capai tujuan keuangan Anda";
+
+"onboarding.feature1.title" = "Analisis Cerdas";
+"onboarding.feature1.description" = "Kategorikan pengeluaran Anda dan visualisasikan situasi keuangan Anda dengan grafik terperinci";
+
+"onboarding.feature2.title" = "Manajemen Anggaran";
+"onboarding.feature2.description" = "Buat anggaran bulanan, lacak batas Anda, dan capai tujuan tabungan Anda";
+
+"onboarding.feature3.title" = "Pengingat Cerdas";
+"onboarding.feature3.description" = "Dapatkan pemberitahuan tepat waktu untuk pembayaran tagihan dan pelanggaran anggaran";
+
+"onboarding.personalize.title" = "Personalisasi Pengalaman Anda";
+"onboarding.select_language" = "Pilih Bahasa";
+"onboarding.select_currency" = "Pilih Mata Uang";
+
+"reports.creditcard.show_less" = "Tampilkan Lebih Sedikit";
+"reports.creditcard.usage.short" = "Penggunaan";
+"reports.creditcard.no_category_data" = "Data kategori tidak ditemukan";
+"loan_report.legend.paid" = "Lunas";
+"loan_report.legend.pending" = "Tertunda";
+"loan_report.legend.overdue" = "Jatuh Tempo";
+"loan_report.this_month_summary" = "Bulan Ini";
+"loan_report.total_installments" = "Total jumlah cicilan bulan ini:";
+"loan_report.paid_installments" = "Total jumlah cicilan yang dibayar:";
+"loan_report.no_installments_for_day" = "Tidak ada cicilan pinjaman untuk hari ini";
+"loan_report.installment_no" = "Cicilan:";
+"loan_report.status.paid" = "Lunas";
+"loan_report.status.pending" = "Tertunda";
+"loan_report.status.overdue" = "Jatuh Tempo";
+"loan_report.total_for_day" = "Total Hari Ini";
+"dashboard.show_less" = "Tampilkan lebih sedikit";
+"dashboard.more_categories" = "kategori lainnya";
+"reports.category.highest_spending" = "Kategori Pengeluaran Tertinggi";
+"reports.category.most_transactions" = "Transaksi Terbanyak";

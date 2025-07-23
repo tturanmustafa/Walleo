@@ -143,6 +143,17 @@ struct GenelAyarlarBolumu: View {
                 Picker("Dil", selection: $seciliDilKodu) {
                     Text("Türkçe").tag("tr")
                     Text("English").tag("en")
+                    Text("Deutsch").tag("de")
+                    Text("Français").tag("fr")
+                    Text("Español").tag("es")
+                    Text("Italiano").tag("it")
+                    Text("日本語").tag("ja")
+                    Text("中文").tag("zh")
+                    Text("Bahasa Indonesia").tag("id")
+                    Text("हिन्दी").tag("hi")
+                    Text("Tiếng Việt").tag("vi")
+                    Text("ไทย").tag("th")
+                    Text("Bahasa Melayu").tag("ms")
                 }
                 .pickerStyle(.menu)
                 .labelsHidden()

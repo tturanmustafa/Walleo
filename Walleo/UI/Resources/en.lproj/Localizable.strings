@@ -281,6 +281,10 @@
 "currency.name.SAR" = "Saudi Riyal";
 "currency.name.KRW" = "South Korean Won";
 "currency.name.SGD" = "Singapore Dollar";
+"currency.name.IDR" = "Indonesian Rupiah";
+"currency.name.VND" = "Vietnamese Dong";
+"currency.name.THB" = "Thai Baht";
+"currency.name.MYR" = "Malaysian Ringgit";
 
 "settings.section.data_management" = "Data Management";
 "settings.data.export" = "Export Data (.csv)";
@@ -945,3 +949,4 @@
 "dashboard.more_categories" = "more categories";
 "reports.category.highest_spending" = "Highest Spending Category";
 "reports.category.most_transactions" = "Most Transaction Count";
+

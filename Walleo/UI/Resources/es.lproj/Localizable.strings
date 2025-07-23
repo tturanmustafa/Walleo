@@ -1,0 +1,905 @@
+/* Localizable.strings (Spanish) */
+
+// MARK: - Genel / Ortak Kullanım
+"common.save" = "Guardar";
+"common.cancel" = "Cancelar";
+"common.edit" = "Editar";
+"common.delete" = "Eliminar";
+"common.done" = "Hecho";
+"common.reset" = "Restablecer";
+"common.apply" = "Aplicar";
+"common.all" = "Todo";
+"common.income" = "Ingreso";
+"common.expense" = "Gasto";
+"common.category" = "Categoría";
+"common.categories" = "Categorías";
+"common.amount" = "Importe";
+"common.date" = "Fecha";
+"common.type" = "Tipo";
+"common.account" = "Cuenta";
+"common.select_account" = "Seleccionar cuenta";
+"common.back" = "Atrás";
+"common.total" = "Total";
+"common.net" = "Neto";
+"common.total_amount" = "Importe Total";
+
+// MARK: - Ana Sekmeler
+"tab.dashboard" = "Resumen";
+"tab.calendar" = "Calendario";
+"tab.reports" = "Informes";
+"tab.settings" = "Ajustes";
+"tab.budgets" = "Presupuestos";
+"tab.more" = "Más";
+
+// MARK: - Panel / Dashboard Ekranı
+"dashboard.category_distribution" = "Distribución por Categoría";
+"dashboard.recent_transactions" = "Transacciones Recientes";
+"dashboard.see_all" = "Ver todo";
+"dashboard.no_records_for_month" = "No hay registros para este mes";
+
+// MARK: - Ayarlar Ekranı
+"settings.title" = "Ajustes";
+"settings.section_general" = "GENERAL";
+"settings.theme" = "Tema";
+"settings.theme_system" = "Sistema";
+"settings.theme_light" = "Claro";
+"settings.theme_dark" = "Oscuro";
+"settings.language" = "Idioma";
+"settings.manage_categories" = "Gestionar Categorías";
+"settings.section_info" = "INFORMACIÓN";
+"settings.version" = "Versión";
+"settings.currency" = "Moneda";
+
+// MARK: - Bildirim Ayarları
+"settings.notifications" = "Ajustes de Notificaciones";
+"settings.notifications.title" = "Ajustes de Notificaciones";
+"settings.notifications.master_section" = "CONTROL PRINCIPAL";
+"settings.notifications.master_toggle" = "Todas las notificaciones";
+"settings.notifications.budget_section" = "ALERTAS DE PRESUPUESTO";
+"settings.notifications.budget_toggle" = "Mostrar notificaciones de presupuesto";
+"settings.notifications.threshold_picker" = "Umbral de alerta";
+"settings.notifications.threshold.option_80" = "Al alcanzar el 80%";
+"settings.notifications.threshold.option_85" = "Al alcanzar el 85%";
+"settings.notifications.threshold.option_90" = "Al alcanzar el 90%";
+"settings.notifications.threshold.option_95" = "Al alcanzar el 95%";
+"settings.notifications.loan_section" = "RECORDATORIOS DE PAGO";
+"settings.notifications.loan_toggle" = "Recordar cuotas del préstamo";
+"settings.notifications.loan_stepper" = "%d días antes del vencimiento";
+"settings.notifications.credit_card_section" = "RECORDATORIOS DE TARJETA DE CRÉDITO";
+"settings.notifications.credit_card_toggle" = "Recordar fecha de vencimiento";
+
+// MARK: - Bildirim İçerikleri
+"notification.budget.over_limit.title" = "Presupuesto excedido";
+"notification.budget.over_limit.body_line1_format" = "Has superado el importe objetivo de tu presupuesto '%@'.";
+"notification.budget.over_limit.body_line2" = "Objetivo del presupuesto: %@";
+"notification.budget.over_limit.body_line3" = "Importe excedido: %@";
+"notification.budget.approaching_limit.title" = "Límite del presupuesto cercano";
+"notification.budget.approaching_limit.body_line1_format" = "Has alcanzado el %%%2$.0f de tu objetivo para el presupuesto '%1$@'.";
+"notification.budget.approaching_limit.body_line2" = "Objetivo del presupuesto: %@";
+"notification.budget.approaching_limit.body_line3" = "Importe restante: %@";
+"notification.credit_card.due_date.title" = "Pago de tarjeta de crédito próximo";
+"notification.credit_card.due_date.body_format" = "La fecha de vencimiento de tu tarjeta %@ es el %@.";
+
+// MARK: - Kategori Yönetimi
+"categories.title" = "Categorías";
+"categories.income_categories" = "Categorías de Ingresos";
+"categories.expense_categories" = "Categorías de Gastos";
+"categories.new" = "Nueva Categoría";
+"categories.edit" = "Editar Categoría";
+"categories.name" = "Nombre de la Categoría";
+"categories.color" = "Color de la Categoría";
+"categories.select_icon" = "Seleccionar Icono";
+
+// MARK: - İşlem Ekleme / Düzenleme
+"transaction.new" = "Nueva Transacción";
+"transaction.edit" = "Editar Transacción";
+"transaction.type" = "Tipo de Transacción";
+"transaction.section_details" = "Detalles";
+"transaction.name_placeholder" = "Nombre de la transacción (ej: Cena)";
+"transaction.select_category" = "Seleccionar Categoría";
+"transaction.recurrence" = "Recurrencia";
+"transaction.loan_payment_name_format" = "Pago de cuota de %@";
+
+// MARK: - Hesaplar
+"accounts.title" = "Cuentas";
+"accounts.empty.title" = "Aún no hay cuentas";
+"accounts.empty.description" = "Toca el icono '+' para añadir una nueva cuenta y empezar.";
+"accounts.add.wallet" = "Cartera (Efectivo)";
+"accounts.add.credit_card" = "Tarjeta de Crédito";
+"accounts.add.loan" = "Préstamo";
+"accounts.add.new_credit_card" = "Añadir Tarjeta de Crédito";
+"accounts.add.new_loan" = "Añadir Préstamo";
+"accounts.add.account_color" = "Color de la Cuenta";
+"accounts.add.interest_rate" = "Tasa de interés (%)";
+"accounts.add.installments" = "Número de cuotas";
+"accounts.add.installments_stepper" = "%d meses";
+"accounts.add.create_installments_button" = "Guardar y Crear Cuotas";
+
+"credit_card.form.statement_date_header" = "Fecha de Cierre";
+"credit_card.form.statement_date" = "Fecha de Cierre";
+"credit_card.form.payment_due_date_header" = "Ajuste de Fecha de Vencimiento";
+"credit_card.form.payment_due_date_stepper" = "%d días después de la fecha de cierre";
+"loan.form.details_header" = "Información del Préstamo";
+"loan.form.first_payment_header" = "Día de Pago de la Primera Cuota";
+"loan.form.interest_type" = "Tipo de Interés";
+"loan.form.first_installment_date" = "Fecha de la Primera Cuota";
+"loan_details.summary_header" = "Resumen del Préstamo";
+"loan_details.installment_plan_header" = "Plan de Cuotas";
+
+"installment.edit.title" = "Editar Cuota";
+"installment.edit.details_header" = "Detalles de la Cuota";
+"installment.paid.label" = "Marcar como pagada";
+"accounts.card.current_debt" = "Deuda Actual";
+"accounts.card.available_limit" = "Límite Disponible";
+"accounts.card.paid_installments" = "Cuotas Pagadas";
+"accounts.card.remaining_debt" = "Deuda Restante";
+"credit_card_details.recent_expenses" = "Gastos del Período";
+"credit_card_details.no_transactions" = "No hay transacciones en este período";
+
+"account_details.generic_title" = "Detalles de %@";
+"enum.interest_type.yearly" = "Anual";
+"enum.interest_type.monthly" = "Mensual";
+"transaction.amount_placeholder" = "Importe (ej: 125,50)";
+"account.name_placeholder_wallet" = "Nombre de la cartera (ej: Efectivo)";
+"account.name_placeholder_creditcard" = "Nombre de la tarjeta (ej: Tarjeta Bonus)";
+"account.name_placeholder_loan" = "Nombre del préstamo (ej: Préstamo Coche)";
+"account.initial_balance_placeholder" = "Saldo inicial (ej: 500)";
+"credit_card.limit_placeholder" = "Límite de la tarjeta (ej: 15000)";
+"credit_card.current_debt_placeholder" = "Deuda actual (Opcional)";
+"loan.principal_amount_placeholder" = "Importe del préstamo (ej: 250000)";
+"loan.interest_rate_placeholder" = "Tasa de interés (ej: 1,89)";
+
+"budget.name_placeholder" = "Nombre del presupuesto (ej: Compras)";
+"budget.limit_placeholder" = "Límite mensual (ej: 2500)";
+"accounts.add.loan_amount" = "Importe del Préstamo";
+"accounts.card.initial_balance" = "Saldo Inicial";
+"accounts.card.current_balance" = "Saldo Actual";
+"accounts.card.total_limit" = "Límite Total";
+"accounts.card.statement_date" = "Fecha de Cierre";
+
+"accounts.group.wallets" = "Carteras";
+"accounts.group.credit_cards" = "Tarjetas de Crédito";
+"accounts.group.loans" = "Préstamos";
+
+// MARK: - Diğer Ekranlar ve Uyarılar
+"all_transactions.title" = "Todas las Transacciones";
+"all_transactions.not_found" = "No se encontraron transacciones";
+"all_transactions.not_found_desc" = "Intenta cambiar los criterios de filtro.";
+"filter.date_range" = "Rango de Fechas";
+"filter.sort_by" = "Ordenar por";
+"filter.accounts" = "Cuentas";
+"alert.recurring_transaction" = "Esta es una transacción recurrente.";
+"alert.update_this_only" = "Actualizar solo esta transacción";
+"alert.update_future" = "Actualizar esta y futuras transacciones";
+"alert.delete_this_only" = "Eliminar solo esta transacción";
+"alert.delete_series" = "Eliminar toda la serie";
+"alert.add_as_expense.title" = "Añadir como Gasto";
+"alert.add_as_expense.button_yes" = "Sí, añadir como gasto";
+"alert.add_as_expense.button_no" = "No, solo marcar";
+"alert.add_as_expense.message_format" = "¿Quieres añadir el pago de la cuota de %@ como un gasto?";
+"month_picker.title" = "Seleccionar Fecha";
+"month_picker.month" = "Mes";
+"month_picker.year" = "Año";
+"calendar.no_transactions_on_date" = "No hay transacciones en esta fecha";
+"calendar.monthly_summary" = "Resumen Mensual";
+"notifications.title" = "Notificaciones";
+"notifications.no_notifications_title" = "Aún no hay notificaciones";
+"notifications.no_notifications_desc" = "Las notificaciones importantes de la app aparecerán aquí.";
+"validation.error.invalid_amount_format" = "Formato no válido. Máximo 9 dígitos enteros y 2 decimales.";
+
+// MARK: - Raporlar
+"reports.type.summary" = "Resumen";
+"reports.type.distribution" = "Distribución";
+"reports.summary.card.main_metrics" = "Métricas Principales";
+"reports.summary.card.comparison" = "Análisis Comparativo";
+"reports.summary.top_expenses" = "Principales Gastos";
+"reports.summary.statistics" = "Estadísticas";
+"reports.summary.net_flow" = "Flujo Neto";
+"reports.comparison.no_data" = "No hay datos del período anterior para comparar.";
+"reports.comparison.prefix_net_flow_positive" = "En comparación con el período anterior, has ahorrado ";
+"reports.comparison.suffix_net_flow_positive" = " más.";
+"reports.comparison.prefix_net_flow_negative" = "En comparación con el período anterior, has gastado ";
+"reports.comparison.suffix_net_flow_negative" = " más.";
+"reports.comparison.prefix_expenses_increased" = "Tus gastos han aumentado un ";
+"reports.comparison.suffix_expenses_increased" = " en comparación con el período anterior.";
+"reports.comparison.prefix_expenses_decreased" = "Tus gastos han disminuido un ";
+"reports.comparison.suffix_expenses_decreased" = " en comparación con el período anterior.";
+"reports.distribution.no_data" = "No hay datos que mostrar para este período.";
+"reports.statistics.daily_avg_expense" = "Gasto Promedio Diario";
+"reports.statistics.daily_avg_income" = "Ingreso Promedio Diario";
+"reports.statistics.highest_expense" = "Gasto Único Más Alto";
+"reports.statistics.highest_income" = "Ingreso Único Más Alto";
+
+// MARK: - Bütçeler
+"budgets.title" = "Presupuestos";
+"budgets.empty.title" = "Aún no hay presupuestos";
+"budgets.empty.description" = "Crea un nuevo presupuesto tocando el icono '+' para controlar tus gastos.";
+"budgets.add.title" = "Nuevo Presupuesto";
+"budgets.edit.title" = "Editar Presupuesto";
+"budgets.form.name_placeholder" = "ej: Compras";
+"budgets.form.limit_amount" = "Límite Mensual";
+"budgets.form.select_categories" = "Seleccionar Categorías";
+"budgets.card.total_limit" = "Límite Total";
+"budgets.card.amount_spent" = "Importe Gastado";
+"budgets.card.amount_remaining" = "Importe Restante";
+"alert.delete_budget.message_format" = "¿Estás seguro de que quieres eliminar permanentemente el presupuesto '%@'?";
+
+// MARK: - Enum Değerleri ve Kategoriler
+"enum.recurrence.once" = "Una sola vez";
+"enum.recurrence.monthly" = "Cada mes";
+"enum.recurrence.quarterly" = "Cada 3 meses";
+"enum.recurrence.semi_annually" = "Cada 6 meses";
+"enum.recurrence.annually" = "Cada año";
+"enum.sort.date_desc" = "Por fecha (más reciente primero)";
+"enum.sort.date_asc" = "Por fecha (más antiguo primero)";
+"enum.sort.amount_desc" = "Por importe (de mayor a menor)";
+"enum.sort.amount_asc" = "Por importe (de menor a mayor)";
+"enum.date_range.all" = "Desde siempre";
+"enum.date_range.this_week" = "Esta semana";
+"enum.date_range.ytd" = "Este año";
+"enum.date_range.this_month" = "Este mes";
+"enum.date_range.last_3_months" = "Últimos 3 meses";
+"enum.date_range.last_6_months" = "Últimos 6 meses";
+"enum.date_range.last_year" = "Últimos 12 meses";
+"enum.budget_period.monthly" = "Mensual";
+
+"category.salary" = "Salario";
+"category.extra_income" = "Ingresos Extra";
+"category.investment" = "Inversión";
+"category.groceries" = "Supermercado";
+"category.restaurant" = "Restaurante";
+"category.transport" = "Transporte";
+"category.bills" = "Facturas";
+"category.entertainment" = "Ocio";
+"category.health" = "Salud";
+"category.clothing" = "Ropa";
+"category.home" = "Hogar";
+"category.gift" = "Regalo";
+"category.loan_payment" = "Pago de Préstamo";
+"category.other" = "Otro";
+
+// MARK: - Filtreleme Ekranı
+"filter.custom_range_header" = "Rango Personalizado";
+"filter.start_date" = "Fecha de Inicio";
+"filter.end_date" = "Fecha de Fin";
+"filter.presets_header" = "Rangos Predefinidos";
+"enum.date_range.custom" = "Personalizado";
+
+// MARK: - Para Birimleri
+"currency.name.TRY" = "Lira turca";
+"currency.name.USD" = "Dólar estadounidense";
+"currency.name.EUR" = "Euro";
+"currency.name.GBP" = "Libra esterlina";
+"currency.name.JPY" = "Yen japonés";
+"currency.name.CAD" = "Dólar canadiense";
+"currency.name.AUD" = "Dólar australiano";
+"currency.name.CHF" = "Franco suizo";
+"currency.name.CNY" = "Yuan chino";
+"currency.name.SEK" = "Corona sueca";
+"currency.name.NOK" = "Corona noruega";
+"currency.name.RUB" = "Rublo ruso";
+"currency.name.INR" = "Rupia india";
+"currency.name.BRL" = "Real brasileño";
+"currency.name.ZAR" = "Rand sudafricano";
+"currency.name.AED" = "Dírham de los EAU";
+"currency.name.SAR" = "Riyal saudí";
+"currency.name.KRW" = "Won surcoreano";
+"currency.name.SGD" = "Dólar de Singapur";
+"currency.name.IDR" = "Rupia indonesia";
+"currency.name.VND" = "Dong vietnamita";
+"currency.name.THB" = "Baht tailandés";
+"currency.name.MYR" = "Ringgit malayo";
+
+"settings.section.data_management" = "Gestión de Datos";
+"settings.data.export" = "Exportar Datos (.csv)";
+"settings.data.exporting" = "Exportando...";
+
+"settings.language_change.title" = "Cambiar Idioma";
+"settings.language_change.message" = "Para cambiar el idioma, la aplicación debe reiniciarse. ¿Continuar?";
+"settings.language_change.restart_button" = "Reiniciar";
+
+"alert.delete_confirmation.title" = "Confirmar Eliminación";
+"alert.delete_wallet.message_format" = "¿Estás seguro de que quieres eliminar permanentemente la cartera/cuenta '%@'? Las transacciones asociadas no se eliminarán, solo se desvincularán de la cuenta.";
+"alert.delete_credit_card.message_format" = "¿Estás seguro de que quieres eliminar permanentemente la tarjeta de crédito '%@'? Las transacciones asociadas no se eliminarán, solo se desvincularán de la cuenta.";
+"alert.delete_loan.message_format" = "¿Estás seguro de que quieres eliminar permanentemente el préstamo '%@' y su plan de cuotas? Esta acción es irreversible.";
+"alert.delete_category.message_format" = "¿Estás seguro de que quieres eliminar la categoría '%@'? La categoría se eliminará de todas las transacciones asociadas.";
+"alert.delete_transaction.message" = "¿Estás seguro de que quieres eliminar permanentemente esta transacción?";
+"alert.delete_all_notifications.title" = "Eliminar Todo";
+"alert.delete_all_notifications.message" = "¿Estás seguro de que quieres eliminar permanentemente todas las notificaciones?";
+
+"button.add_account" = "Añadir Cuenta";
+"button.add_budget" = "Añadir Presupuesto";
+"button.add_category" = "Añadir Categoría";
+
+"budget_details.no_transactions" = "No hay transacciones para este presupuesto";
+
+"alert.no_accounts.title" = "Se necesita una cuenta";
+"alert.no_accounts.message" = "Para añadir una transacción, primero debes crear una cuenta de Cartera o Tarjeta de Crédito.";
+"alert.no_accounts.add_account_button" = "Crear Cuenta";
+
+// MARK: - Veri Dışa Aktarma Başlıkları
+"export.header.date" = "Fecha";
+"export.header.name" = "Nombre Transacción";
+"export.header.amount" = "Importe";
+"export.header.type" = "Tipo";
+"export.header.category" = "Categoría";
+"export.header.account" = "Cuenta";
+
+"credit_card_details.no_expenses_for_month" = "No hay gastos este mes";
+"credit_card_details.total_expenses_for_period" = "Gastos totales del período";
+"notifications.delete_all" = "Eliminar Todo";
+"notifications.mark_all_as_read" = "Marcar todo como leído";
+
+// MARK: - Form Labels & Placeholders
+"form.label.transaction_name" = "Nombre de la Transacción";
+"form.label.amount" = "Importe";
+"form.label.wallet_name" = "Nombre de la Cartera";
+"form.label.card_name" = "Nombre de la Tarjeta";
+"form.label.loan_name" = "Nombre del Préstamo";
+"form.label.initial_balance" = "Saldo Inicial";
+"form.label.card_limit" = "Límite de la Tarjeta";
+"form.label.current_debt" = "Deuda Actual";
+"form.label.principal_amount" = "Importe del Principal";
+"form.label.interest_rate" = "Tasa de Interés";
+"form.label.budget_name" = "Nombre del Presupuesto";
+"form.label.budget_limit" = "Límite Mensual";
+
+// MARK: - Time
+"time.today" = "Hoy";
+"time.yesterday" = "Ayer";
+
+"reports.period.weekly" = "Semanal";
+"reports.period.monthly" = "Mensual";
+"week_picker.select_date_label" = "Seleccionar Fecha";
+"week_picker.title" = "Seleccionar Semana";
+
+"form.label.set_end_date" = "Establecer Fecha de Fin";
+"form.label.end_date" = "Fecha de Fin";
+
+"notification.daily.title" = "¡Es hora de cerrar el día!";
+"notification.daily.body" = "¿Has añadido tus ingresos y gastos de hoy a Walleo? El mejor momento para seguir tu salud financiera.";
+"notification.weekly.title" = "¡Tu informe semanal está listo!";
+"notification.weekly.body" = "Descubre ahora tu resumen financiero de la última semana. Te esperan detalles sobre tus gastos e ingresos en la pantalla de Informes.";
+
+"settings.data.delete_all" = "Eliminar Todos los Datos";
+"alert.delete_all_data.title" = "¿Eliminar todos los datos?";
+"alert.delete_all_data.message" = "Esta acción es irreversible. Todas tus cuentas, transacciones y presupuestos en el dispositivo y en iCloud se eliminarán permanentemente.";
+"common.confirm_delete" = "Sí, eliminar todo";
+
+"settings.data.icloud_backup" = "Copia de seguridad en iCloud";
+"alert.icloud_toggle.title" = "Cambiando ajuste de copia de seguridad";
+"alert.icloud_toggle.message" = "Cambiar este ajuste requiere reiniciar la app. ¿Continuar?";
+"alert.language_change.confirm_button" = "Confirmar";
+"alert.no_payment_account.title" = "No se encontró una cuenta de pago";
+"alert.no_payment_account.message" = "Para añadir este pago como un gasto, primero debes crear una cuenta de Cartera o Tarjeta de Crédito.";
+"account_selection.title" = "Seleccionar Cuenta de Pago";
+
+"account_type.wallet" = "Cartera";
+"account_type.credit_card" = "Tarjeta de Crédito";
+
+// MARK: - Onboarding
+"onboarding.page1.title" = "Tu universo financiero, al alcance de tu mano";
+"onboarding.page1.subtitle" = "Toma el control total de tu situación financiera gestionando tu efectivo, tarjetas de crédito y préstamos en un solo lugar.";
+"onboarding.page2.title" = "Tú gestionas tu presupuesto, no al revés";
+"onboarding.page2.subtitle" = "Crea presupuestos por categoría y ajusta fácilmente tus gastos a tus objetivos con un seguimiento visual del progreso.";
+"onboarding.page3.title" = "Deja que tus datos hablen, visualiza tu futuro";
+"onboarding.page3.subtitle" = "Toma decisiones financieras más inteligentes convirtiendo tus gastos pasados en informes significativos y análisis comparativos.";
+"onboarding.page4.title" = "Tu asistente financiero que piensa en ti";
+"onboarding.page4.subtitle" = "Relájate con notificaciones inteligentes que te recuerdan proactivamente cada detalle importante, desde fechas de facturas hasta excesos de presupuesto.";
+"onboarding.page5.title" = "Totalmente tuyo, totalmente a tu medida";
+"onboarding.page5.subtitle" = "Adapta la app perfectamente a tu estilo de vida y preferencias con temas, idiomas, monedas y categorías personalizadas.";
+"onboarding.page6.title" = "Tus datos son tu fortaleza";
+"onboarding.page6.subtitle" = "Desde la sincronización segura con iCloud hasta la exportación de datos y la opción de eliminación permanente, el control de tus datos está totalmente en tus manos.";
+"onboarding.signin.apple" = "Iniciar sesión con Apple";
+"onboarding.privacy_policy" = "Al continuar, aceptas nuestra Política de Privacidad y Términos de Uso.";
+
+"settings.section_ai_assistant" = "ASISTENTE DE IA";
+"settings.ai_assistant_title" = "Chatear con el Asistente de IA";
+
+// Aile Hesabı
+"settings.family_account" = "Cuenta Familiar";
+"family.no_family_title" = "Sin Cuenta Familiar";
+"family.no_family_description" = "Crea una cuenta familiar para compartir tus datos financieros con los miembros de tu familia";
+"family.create_family" = "Crear Cuenta Familiar";
+"family.info_section" = "Información de la Familia";
+"family.name" = "Nombre de la Familia";
+"family.owner" = "Propietario";
+"family.you" = "Tú";
+"family.member_count" = "Número de Miembros";
+"family.created_date" = "Fecha de Creación";
+"family.members_section" = "Miembros de la Familia";
+"family.pending" = "Pendiente";
+"family.invite_member" = "Invitar Miembro";
+"family.leave_family" = "Abandonar Familia";
+"family.owner_cannot_leave" = "Como propietario, no puedes abandonar la familia. Primero transfiere la propiedad.";
+"family.create_new" = "Nueva Cuenta Familiar";
+"family.name_placeholder" = "Introduce el nombre de la familia";
+"family.create_description" = "Todos tus datos financieros se compartirán con los miembros de la familia";
+"family.create_title" = "Crear Familia";
+"family.invite_instructions" = "Genera un enlace de invitación para compartir con un miembro de tu familia";
+"family.generate_invite_link" = "Generar Enlace de Invitación";
+"family.leave_confirmation_title" = "¿Seguro que quieres abandonar la familia?";
+"family.leave_confirmation_message" = "Ya no tendrás acceso a los datos familiares compartidos. Esta acción es irreversible.";
+"family.leave_confirm" = "Abandonar Familia";
+"family.cloudkit_warning_title" = "iCloud es necesario para la Cuenta Familiar";
+"family.cloudkit_warning_message" = "No puedes desactivar la copia de seguridad de iCloud mientras usas una cuenta familiar. Por favor, abandona primero la cuenta familiar.";
+"family.delete_warning_title" = "No se pueden eliminar los datos";
+"family.delete_warning_message" = "No puedes eliminar todos los datos mientras formas parte de una cuenta familiar. Por favor, abandona primero la cuenta familiar.";
+"family.invitation_title" = "Invitación a Cuenta Familiar";
+"family.invitation_description" = "Has sido invitado a unirte a una cuenta familiar. Todos los datos financieros se compartirán entre los miembros de la familia.";
+"family.accepting_invitation" = "Aceptando invitación...";
+"family.invitation_accepted" = "¡Invitación Aceptada!";
+"family.accept_invitation" = "Aceptar Invitación";
+"family.join_family" = "Unirse a la Familia";
+
+// MARK: - Bütçe Ek
+"budget.automation_settings" = "Ajustes de Automatización";
+"budget.form.auto_renew" = "Renovar automáticamente cada mes";
+"budget.form.rollover_balance" = "Transferir el saldo restante del mes anterior";
+"budget.list.period_ended" = "Período Finalizado";
+"budget.detail.period_info" = "Info. del Período";
+"budget.detail.budget_period" = "Período del Presupuesto";
+"budget.detail.rollover_from_last_month" = "Transferido del Mes Anterior";
+"budget.detail.transactions_for_period" = "Transacciones de Este Período";
+"notification.budget.pre_renewal.title" = "Tu presupuesto está a punto de renovarse";
+"notification.budget.pre_renewal.body" = "Tu presupuesto '%@' se renovará para el próximo mes con una transferencia de %@.";
+"notification.budget.renewal_summary.title" = "¡Tus presupuestos han sido renovados!";
+"notification.budget.renewal_summary.body" = "¡Bienvenido, %@! ☕️ Tus %d presupuestos para este mes se han renovado automáticamente.";
+
+// MARK: - Detaylı Raporlar
+"reports.detailed.title" = "Informes";
+"reports.detailed.credit_card_report" = "Informe de Tarjeta de Crédito";
+"reports.detailed.loan_report" = "Informe de Préstamos";
+"reports.detailed.start_date" = "Fecha de Inicio";
+"reports.detailed.end_date" = "Fecha de Fin";
+
+// Boş Ekran Metinleri
+"reports.detailed.no_cc_data_title" = "No se encontraron datos";
+"reports.detailed.no_cc_data_desc" = "No se encontraron gastos de tarjeta de crédito en el rango de fechas seleccionado.";
+"reports.detailed.no_loan_data_title" = "No se encontraron datos";
+"reports.detailed.no_loan_data_desc" = "No se encontraron cuotas de préstamo con vencimiento en el rango de fechas seleccionado.";
+
+// Kredi Kartı Raporu
+"reports.detailed.overall_summary" = "Resumen General";
+"reports.detailed.total_spending" = "Gasto Total";
+"reports.detailed.transaction_count" = "Número de Transacciones";
+"reports.detailed.most_used_card" = "Tarjeta Más Usada";
+"reports.detailed.card_details_header" = "Detalles de la Tarjeta";
+"reports.detailed.category_distribution" = "Distribución por Categoría";
+"reports.detailed.daily_spending_trend" = "Tendencia de Gasto Diario";
+
+// Kredi Raporu
+"reports.detailed.overall_loan_summary" = "Resumen General de Préstamos";
+"reports.detailed.active_loan_count" = "%d Préstamos Activos";
+"reports.detailed.paid_installments_count" = "Pagadas: %d";
+"reports.detailed.unpaid_installments_count" = "No pagadas: %d";
+"reports.detailed.loan_details_header" = "Detalles del Préstamo";
+"reports.detailed.installments_in_period" = "Cuotas en el período: %d";
+"reports.detailed.paid_and_expensed" = "Pagada y registrada como gasto";
+"reports.detailed.paid_only" = "Solo marcada como pagada";
+"reports.detailed.overdue" = "Cuotas Vencidas";
+"reports.detailed.upcoming" = "Próximas Cuotas";
+
+/* Harcama Isı Haritası */
+"reports.detailed.spending_heatmap" = "Gastos";
+"reports.heatmap.no_data" = "No se encontraron gastos en el período seleccionado";
+"reports.heatmap.hourly_distribution" = "Distribución Horaria";
+"reports.heatmap.comparison" = "Comparación";
+"reports.heatmap.insights" = "Perspectivas Inteligentes";
+
+/* Zaman Dilimleri */
+"reports.heatmap.morning" = "Mañana";
+"reports.heatmap.noon" = "Mediodía";
+"reports.heatmap.evening" = "Tarde";
+"reports.heatmap.night" = "Noche";
+"reports.heatmap.weekday" = "Entre semana";
+"reports.heatmap.weekend" = "Fin de semana";
+
+/* İçgörüler */
+"reports.heatmap.insight.busiest_day" = "Día más activo: %@";
+"reports.heatmap.insight.busiest_hour" = "Hora más activa: %@";
+"reports.heatmap.insight.weekend_comparison" = "%% %@ más de gasto los fines de semana";
+"reports.heatmap.insight.no_spending_days" = "Sin gastos durante %@ días";
+
+// MARK: - Transfer
+"transfer.title" = "Transferencia entre Cuentas";
+"transfer.source_account" = "Cartera de Origen";
+"transfer.target_account" = "Cartera o Tarjeta de Crédito de Destino";
+"transfer.amount_label" = "Importe a Transferir";
+"transfer.amount_placeholder" = "Introduce el importe a transferir";
+"transfer.button" = "Transferir";
+"transfer.select_wallet" = "Seleccionar Cartera";
+"transfer.select_account" = "Seleccionar Cuenta";
+"transfer.source_details" = "Detalles de la Cuenta de Origen";
+"transfer.target_details" = "Detalles de la Cuenta de Destino";
+"transfer.name" = "Nombre:";
+"transfer.initial_balance" = "Saldo inicial:";
+"transfer.current_balance" = "Saldo actual:";
+"transfer.total_limit" = "Límite total:";
+"transfer.available_limit" = "Límite disponible:";
+"transfer.current_debt" = "Deuda actual:";
+"transfer.statement_date" = "Fecha de cierre:";
+"transfer.type.wallet" = "Cartera";
+"transfer.type.credit_card" = "Tarjeta de Crédito";
+"transfer.incoming" = "Transferencia Entrante";
+"transfer.outgoing" = "Transferencia Saliente";
+"transfer.unknown_account" = "Cuenta Desconocida";
+"transfer.section.transactions" = "Transacciones";
+"transfer.section.transfers" = "Transferencias";
+"transfer.no_transactions" = "No hay transacciones en este período";
+"transfer.no_transfers" = "No se encontraron transferencias";
+"transfer.section.expenses" = "Gastos";
+"transfer.section.payments" = "Pagos";
+"transfer.no_payments" = "No se encontraron pagos";
+
+"credit_card.installment_summary_format" = "%@ - %d/%d cuotas";
+"credit_card.installment_number_format" = "Cuota %d";
+
+// Taksitli işlem
+"transaction.installment.toggle" = "Compra a Plazos";
+"transaction.installment.count" = "Número de Cuotas";
+"transaction.installment.preview" = "%d cuotas x %@ = %@";
+"transaction.installment.edit_warning_title" = "Editar Compra a Plazos";
+"transaction.installment.edit_warning" = "Este cambio recreará todas las cuotas. ¿Quieres continuar?";
+"transaction.installment.delete_warning" = "Se eliminará toda la compra a plazos (%d cuotas). ¿Confirmas?";
+"transaction.edit_installment" = "Editar Compra a Plazos";
+"credit_card.installment_purchases" = "Compras a Plazos";
+"installment.completed" = "Completada";
+"alert.installment.delete_title" = "Eliminar Compra a Plazos";
+"credit_card_details.period_total" = "Total del Período";
+"alert.no_wallet.message" = "Para añadir una transacción, **primero** debes **crear** una cuenta de **Cartera**.";
+
+// MARK: - Cash Flow Report
+"reports.detailed.categories_report" = "Categorías";
+"reports.category.summary" = "Resumen de Categoría";
+"reports.category.total_categories" = "Categorías Totales";
+"reports.category.active_categories" = "Categorías Activas";
+"reports.category.most_spent" = "Mayor Gasto";
+"reports.category.view_list" = "Lista";
+"reports.category.view_chart" = "Gráfico";
+"reports.category.view_comparison" = "Comparación";
+"reports.category.distribution" = "Distribución por Categoría";
+"reports.detailed.cash_flow" = "Flujo de Caja";
+"cashflow.title" = "Informe de Flujo de Caja";
+"cashflow.view.summary" = "Resumen";
+"cashflow.view.flow" = "Flujo";
+"cashflow.view.categories" = "Categorías";
+"cashflow.view.accounts" = "Cuentas";
+"cashflow.view.projection" = "Proyección";
+
+"cashflow.insights" = "Perspectivas";
+"cashflow.net_flow" = "Flujo Neto";
+"cashflow.of_income" = "% de Ingresos";
+"cashflow.daily_avg" = "Prom. Diario";
+
+"cashflow.normal_transactions" = "Transacciones Normales";
+"cashflow.installment_transactions" = "Transacciones a Plazos";
+"cashflow.recurring_transactions" = "Transacciones Recurrentes";
+
+"cashflow.opening_balance" = "Saldo de Apertura";
+"cashflow.closing_balance" = "Saldo de Cierre";
+"cashflow.inflows" = "Entradas";
+"cashflow.outflows" = "Salidas";
+"cashflow.daily_average" = "Promedio Diario";
+
+"cashflow.daily_details" = "Detalles Diarios";
+"cashflow.cumulative_balance" = "Saldo Acumulado";
+
+"cashflow.flow_chart" = "Gráfico de Flujo";
+"cashflow.income_expense" = "Ingresos/Gastos";
+"cashflow.detailed" = "Detallado";
+"cashflow.cumulative" = "Acumulado";
+"cashflow.transaction_type_distribution" = "Distribución por Tipo de Transacción";
+"cashflow.category_flow" = "Flujo por Categoría";
+"cashflow.show_trend" = "Mostrar Tendencia";
+"cashflow.hide_trend" = "Ocultar Tendencia";
+"cashflow.largest_transaction" = "Transacción Más Grande";
+
+"cashflow.transfers" = "Transferencias";
+"cashflow.most_frequent_transfer" = "Transferencia Más Frecuente";
+"cashflow.show_details" = "Mostrar Detalles";
+"cashflow.hide_details" = "Ocultar Detalles";
+
+// Projeksiyon
+"cashflow.projection.title" = "Proyección Futura";
+"cashflow.projection.days" = "Proyección a %d días";
+"cashflow.projection.income" = "Ingresos Estimados";
+"cashflow.projection.expense" = "Gastos Estimados";
+"cashflow.projection.net" = "Neto Estimado";
+"cashflow.projection.chart" = "Gráfico de Proyección";
+
+// Risk
+"cashflow.risk.analysis" = "Análisis de Riesgo";
+"cashflow.risk.low" = "Bajo Riesgo";
+"cashflow.risk.medium" = "Riesgo Medio";
+"cashflow.risk.high" = "Alto Riesgo";
+"cashflow.risk.low_message" = "Tu flujo de caja parece saludable. Puedes alcanzar tus objetivos financieros con tus hábitos de gasto actuales.";
+"cashflow.risk.medium_message" = "Hay algunos desequilibrios en tu flujo de caja. Se recomienda revisar tus gastos.";
+"cashflow.risk.high_message" = "¡Atención! Tu flujo de caja es negativo. Es necesario tomar medidas urgentes.";
+
+"cashflow.suggestions" = "Sugerencias";
+"cashflow.suggestion.low_1" = "Podrías invertir tu dinero extra";
+"cashflow.suggestion.low_2" = "Considera crear un fondo de emergencia";
+"cashflow.suggestion.medium_1" = "Reduce los gastos innecesarios";
+"cashflow.suggestion.medium_2" = "Crea fuentes de ingresos adicionales";
+"cashflow.suggestion.medium_3" = "Revisa los límites de tu presupuesto";
+"cashflow.suggestion.high_1" = "Detén los gastos no esenciales";
+"cashflow.suggestion.high_2" = "Limita el uso de la tarjeta de crédito";
+"cashflow.suggestion.high_3" = "Busca asesoramiento financiero profesional";
+
+// İçgörüler
+"cashflow.insight.positive_flow" = "Flujo de Caja Positivo";
+"cashflow.insight.positive_flow_message" = "Tienes un flujo de caja positivo de %@. Puedes aumentar tus ahorros.";
+"cashflow.insight.negative_flow" = "Flujo de Caja Negativo";
+"cashflow.insight.negative_flow_message" = "Tienes un flujo de caja negativo de %@. Deberías controlar tus gastos.";
+"cashflow.insight.high_installment" = "Gasto a Plazos Elevado";
+"cashflow.insight.high_installment_message" = "El %%%@ de tus gastos son a plazos. Este porcentaje parece alto.";
+"cashflow.insight.projection_warning" = "Advertencia de Proyección";
+"cashflow.insight.projection_warning_message" = "Con tus hábitos de gasto actuales, podrías tener problemas de liquidez en el próximo período.";
+
+// Genel
+"common.loading" = "Cargando...";
+"common.close" = "Cerrar";
+"common.expenses" = "Gastos";
+"common.incomes" = "Ingresos";
+"time.day_short" = "día";
+
+// Kategori Raporları
+"reports.category.view_list" = "Vista de Lista";
+"reports.category.view_chart" = "Vista de Gráfico";
+"reports.category.view_comparison" = "Comparación";
+"reports.category.display_type" = "Tipo de Vista";
+"reports.category.transaction_type" = "Tipo de Transacción";
+"reports.category.no_comparison_data" = "No hay Datos de Comparación";
+"reports.category.no_previous_period" = "No se encontraron datos del período anterior";
+
+// Kategori Özet Kartı
+"reports.category.summary" = "Resumen";
+"reports.category.total_categories" = "Categorías Totales";
+"reports.category.active_categories" = "Categorías Activas";
+"reports.category.most_spent" = "Mayor Gasto";
+
+// Kategori Detay
+"reports.category.detail_type" = "Tipo de Detalle";
+"reports.category.names" = "Nombres";
+"reports.category.days" = "Días";
+"reports.category.hours" = "Horas";
+"reports.category.trend" = "Tendencia";
+"reports.category.total_spending" = "Gasto Total";
+"reports.category.transaction" = "Transacción";
+"reports.category.average" = "Promedio";
+"reports.category.daily" = "Diario";
+"reports.category.most_frequent_names" = "Nombres de Transacción Más Frecuentes";
+"reports.category.used_times" = "usado %d veces";
+"reports.category.avg_short" = "Prom.";
+"reports.category.distribution_by_days" = "Distribución por Días";
+"reports.category.distribution_by_hours" = "Distribución por Horas";
+"reports.category.monthly_trend" = "Tendencia Mensual";
+"reports.category.transaction_count" = "%d transacciones";
+"reports.category.previous" = "Anterior";
+"reports.category.day" = "Día";
+"reports.category.month" = "Mes";
+
+"reports.heatmap.24_hours" = "24 Horas";
+"reports.transaction_count" = "%d transacciones";
+"reports.average_with_amount" = "Prom: %@";
+"reports.heatmap.busiest_hours" = "Más activo: %@";
+
+// MARK: - Ortak Kullanım Eklemeleri
+"common.low" = "Bajo";
+"common.high" = "Alto";
+"common.average" = "Promedio";
+"common.highest" = "El más alto";
+
+// MARK: - Raporlar
+"reports.heatmap.try_different_date_range" = "Prueba un rango de fechas diferente";
+"reports.heatmap.title.hourly" = "Distribución Horaria de Gastos";
+"reports.heatmap.title.daily" = "Distribución Diaria de Gastos";
+"reports.heatmap.title.monthly" = "Distribución Mensual de Gastos";
+"reports.heatmap.title.weekly" = "Distribución Semanal de Gastos";
+"reports.heatmap.title.monthly_summary" = "Resumen Mensual de Gastos";
+"reports.heatmap.week_format" = "Semana %d";
+"reports.comparison.no_data_title" = "No hay Datos de Comparación";
+"reports.category.avg_short_format" = "Prom: %@";
+
+// MARK: - Nakit Akışı Raporu
+"reports.cashflow.no_data_title" = "No se encontraron datos";
+"reports.cashflow.no_data_desc" = "No se encontraron transacciones en el rango de fechas seleccionado.";
+"reports.category.daily_average_format" = "%@/día";
+
+"cashflow.transfer_count" = "%d transferencias";
+"common.times_suffix" = "%dx";
+"account_type.loan" = "Préstamo";
+
+// Kredi Kartı Raporları - Yeni Anahtarlar
+"reports.creditcard.detail_view" = "Vista Detallada";
+"reports.creditcard.comparison_view" = "Comparación";
+"reports.creditcard.summary_view" = "Resumen";
+"reports.creditcard.no_data" = "No se encontraron datos";
+"reports.creditcard.no_data_desc" = "No se encontraron gastos de tarjeta de crédito en el rango de fechas seleccionado.";
+"reports.creditcard.total_spending" = "Gasto Total";
+"reports.creditcard.active_cards" = "Tarjetas Activas";
+"reports.creditcard.transactions" = "Transacciones";
+"reports.creditcard.daily_avg" = "Promedio Diario";
+"reports.creditcard.most_used" = "Más Usada";
+"reports.creditcard.limit" = "Límite:";
+"reports.creditcard.usage" = "Uso";
+"reports.creditcard.hide_metrics" = "Ocultar Métricas";
+"reports.creditcard.show_metrics" = "Mostrar Métricas";
+"reports.creditcard.current_debt" = "Deuda Actual";
+"reports.creditcard.available" = "Disponible";
+"reports.creditcard.highest_day" = "Día de Mayor Gasto";
+"reports.creditcard.avg_transaction" = "Trans. Promedio";
+"reports.creditcard.category_analysis" = "Análisis por Categoría";
+"reports.creditcard.more_categories" = "+%d categorías más";
+"reports.creditcard.spending_trend" = "Tendencia de Gasto";
+"reports.creditcard.daily" = "Diario";
+"reports.creditcard.weekly" = "Semanal";
+"reports.creditcard.by_category" = "Por Categoría";
+"reports.creditcard.installments" = "Compras a Plazos";
+"reports.creditcard.installment_count" = "%d compras a plazos";
+"reports.creditcard.monthly_total" = "Total Mensual";
+"reports.creditcard.monthly" = "mensual";
+"reports.creditcard.progress" = "Progreso";
+"reports.creditcard.total_amount" = "Importe Total";
+"reports.creditcard.remaining" = "Restante";
+"reports.creditcard.card_comparison" = "Comparación de Tarjetas";
+"reports.creditcard.detailed_comparison" = "Comparación Detallada";
+"reports.creditcard.card" = "Tarjeta";
+"reports.creditcard.spending" = "Gasto";
+"reports.creditcard.total_distribution" = "Distribución Total";
+"reports.creditcard.category_summary" = "Resumen de Categorías";
+"reports.creditcard.no_categories" = "No se encontraron datos de categorías";
+"reports.creditcard.daily_averages" = "Promedios Diarios";
+
+// MARK: - Hesap Silme ve İşlem Aktarımı
+"alert.no_eligible_account.title" = "No hay Cuenta Elegible";
+"alert.no_eligible_account.message" = "Para eliminar esta cuenta, primero debes crear otra cuenta de Cartera o Tarjeta de Crédito a la que transferir sus transacciones.";
+"transfer_transactions.title" = "Transferir Transacciones y Eliminar";
+"transfer_transactions.message_format" = "Estás a punto de eliminar la cuenta '%@'. Esta cuenta tiene %d transacciones. Por favor, selecciona una nueva cuenta a la que transferir estas transacciones.";
+"transfer_transactions.confirm_button" = "Transferir y Eliminar";
+"alert.no_eligible_wallet.title" = "No se encontró Cartera Elegible";
+"alert.no_eligible_wallet.message" = "La cuenta que quieres eliminar contiene transacciones de ingresos. Para transferir estas transacciones, primero debes crear otra cuenta de tipo 'Cartera'.";
+
+// MARK: - Kredi Raporu
+"loan_report.no_data" = "No se encontraron datos de préstamos";
+"loan_report.no_data_desc" = "No se encontraron cuotas de préstamo en el rango de fechas seleccionado.";
+"loan_report.view.summary" = "Resumen";
+"loan_report.view.detail" = "Detalles";
+"loan_report.view.calendar" = "Calendario";
+"loan_report.view.performance" = "Rendimiento";
+
+"loan_report.sort.by_date" = "Por Fecha";
+"loan_report.sort.by_amount" = "Por Importe";
+"loan_report.sort.by_progress" = "Por Progreso";
+
+"loan_report.overview" = "Estado General de la Deuda";
+"loan_report.completed" = "Completados";
+"loan_report.active_loans" = "Préstamos Activos";
+"loan_report.monthly_payment" = "Pago Mensual";
+"loan_report.total_paid" = "Total Pagado";
+"loan_report.remaining" = "Deuda Restante";
+"loan_report.estimated_completion" = "Fecha de Finalización Estimada";
+"loan_report.monthly_payment_load" = "Carga de Cuotas Mensuales";
+"loan_report.no_future_payments" = "No hay pagos futuros";
+"loan_report.distribution" = "Distribución de Préstamos";
+"loan_report.no_active_loans" = "No hay préstamos activos";
+
+"loan_report.search_placeholder" = "Buscar préstamo...";
+"loan_report.active_only" = "Solo Activos";
+"loan_report.sort" = "Ordenar";
+"loan_report.principal_amount" = "Principal";
+"loan_report.interest_rate" = "Tasa de Interés";
+"loan_report.total_to_pay" = "Total a Pagar";
+"loan_report.total_interest" = "Intereses Totales";
+"loan_report.last_payment_date" = "Fecha del Último Pago";
+"loan_report.payment_performance" = "Rendimiento de Pago";
+"loan_report.score" = "Puntuación";
+"loan_report.next_payment" = "Próximo Pago";
+"loan_report.days_remaining" = "quedan %d días";
+"loan_report.due_today" = "¡Vence Hoy!";
+"loan_report.overdue" = "¡Vencido!";
+"loan_report.installments_in_period" = "Cuotas en el Período";
+"loan_report.more_installments" = "... y %d cuotas más";
+
+"loan_report.monthly_total" = "Total Mensual";
+
+"loan_report.performance_score" = "Puntuación de Rendimiento";
+"loan_report.performance_excellent" = "Excelente";
+"loan_report.performance_good" = "Bueno";
+"loan_report.performance_fair" = "Regular";
+"loan_report.performance_poor" = "Malo";
+"loan_report.total_interest_paid" = "Intereses Totales Pagados";
+"loan_report.avg_monthly_payment" = "Pago Mensual Promedio";
+"loan_report.on_time" = "A tiempo";
+"loan_report.late" = "Con retraso";
+"loan_report.missed" = "Omitido";
+
+// MARK: - Harcama Raporu
+"spending_report.view.summary" = "Resumen";
+"spending_report.view.category" = "Categorías";
+"spending_report.view.time" = "Análisis Temporal";
+"spending_report.view.comparison" = "Comparación";
+
+"spending_report.no_data" = "No se encontraron Gastos";
+"spending_report.no_data_desc" = "No hay gastos en el rango de fechas seleccionado";
+
+"spending_report.total_spending" = "Gasto Total";
+"spending_report.daily_avg" = "Promedio Diario";
+"spending_report.transaction_count" = "Número de Transacciones";
+"spending_report.avg_transaction" = "Transacción Promedio";
+"spending_report.highest_expense" = "Gasto Más Alto";
+
+"spending_report.increase" = "Aumento";
+"spending_report.decrease" = "Disminución";
+
+"spending_report.top_categories" = "Principales Categorías de Gasto";
+"spending_report.weekly_summary" = "Resumen Semanal";
+"spending_report.insights" = "Perspectivas Inteligentes";
+"spending_report.insight.busiest_day" = "Tu día más activo fue el %@ con %@ de gasto";
+"spending_report.insight.top_category" = "La categoría %@ representa el %%%.1f de tu gasto total";
+"spending_report.insight.weekend_warning" = "Tu gasto promedio de fin de semana es mayor que el de entre semana";
+
+"spending_report.category_distribution" = "Distribución por Categoría";
+"spending_report.category_details" = "Detalles de la Categoría";
+"spending_report.largest_expense" = "Gasto Más Grande";
+"spending_report.avg_per_transaction" = "Promedio por Transacción";
+
+"spending_report.daily_trend" = "Tendencia de Gasto Diario";
+"spending_report.weekday_weekend" = "Entre semana vs. Fin de semana";
+"spending_report.hourly_distribution" = "Distribución Horaria";
+"spending_report.weekday" = "Entre semana";
+"spending_report.weekend" = "Fin de semana";
+
+"spending_report.period_comparison" = "Comparación de Períodos";
+"spending_report.previous_period" = "Período Anterior";
+"spending_report.current_period" = "Período Actual";
+"spending_report.category_changes" = "Cambios en Categorías";
+"spending_report.budget_performance" = "Rendimiento del Presupuesto";
+"spending_report.budget_status.normal" = "Normal";
+"spending_report.budget_status.critical" = "Crítico";
+"spending_report.budget_status.exceeded" = "Excedido";
+"spending_report.busiest_hours" = "Horas de Mayor Actividad";
+"common.transactions" = "Transacciones";
+
+// MARK: - Onboarding
+"onboarding.skip" = "Saltar";
+"onboarding.continue" = "Continuar";
+"onboarding.confirm_settings" = "Confirmar Ajustes";
+"onboarding.privacy_notice" = "Al continuar, aceptas nuestra Política de Privacidad y Términos de Servicio.";
+
+"onboarding.welcome.title" = "Bienvenido a la Libertad Financiera";
+"onboarding.welcome.subtitle" = "Sigue tus gastos, gestiona tu presupuesto y alcanza tus metas financieras";
+
+"onboarding.feature1.title" = "Análisis Inteligentes";
+"onboarding.feature1.description" = "Categoriza tus gastos y visualiza tu situación financiera con gráficos detallados";
+
+"onboarding.feature2.title" = "Gestión de Presupuestos";
+"onboarding.feature2.description" = "Crea presupuestos mensuales, sigue tus límites y alcanza tus metas de ahorro";
+
+"onboarding.feature3.title" = "Recordatorios Inteligentes";
+"onboarding.feature3.description" = "Recibe notificaciones a tiempo para pagos de facturas y excesos de presupuesto";
+
+"onboarding.personalize.title" = "Personaliza Tu Experiencia";
+"onboarding.select_language" = "Seleccionar Idioma";
+"onboarding.select_currency" = "Seleccionar Moneda";
+
+"reports.creditcard.show_less" = "Mostrar Menos";
+"reports.creditcard.usage.short" = "Uso";
+"reports.creditcard.no_category_data" = "No se encontraron datos de categorías";
+"loan_report.legend.paid" = "Pagado";
+"loan_report.legend.pending" = "Pendiente";
+"loan_report.legend.overdue" = "Vencido";
+"loan_report.this_month_summary" = "Este Mes";
+"loan_report.total_installments" = "Importe total de las cuotas de este mes:";
+"loan_report.paid_installments" = "Suma de las cuotas pagadas:";
+"loan_report.no_installments_for_day" = "No hay cuotas de préstamo para hoy";
+"loan_report.installment_no" = "Cuota:";
+"loan_report.status.paid" = "Pagado";
+"loan_report.status.pending" = "Pendiente";
+"loan_report.status.overdue" = "Vencido";
+"loan_report.total_for_day" = "Total del Día";
+"dashboard.show_less" = "Mostrar menos";
+"dashboard.more_categories" = "más categorías";
+"reports.category.highest_spending" = "Categoría con Mayor Gasto";
+"reports.category.most_transactions" = "Mayor Número de Transacciones";
