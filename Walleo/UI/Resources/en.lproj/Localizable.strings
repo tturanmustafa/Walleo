@@ -1009,3 +1009,20 @@
 "export.filename.installments" = "Installment_Transactions";
 "export.filename.recurring" = "Recurring_Transactions";
 "export.filename.transfers" = "Transfers";
+
+// İngilizce (en)
+"onboarding.allinone.title" = "All Your Finances in One Place";
+"onboarding.allinone.description" = "Manage wallets, credit cards, and loans from a single hub. Transfers, installments, and payments made simple.";
+
+"onboarding.budget.title" = "Smart Budget Management";
+"onboarding.budget.description" = "Auto-renewing budgets with rollover system. Unused amounts carry forward to next month automatically.";
+"onboarding.budget.used" = "Used";
+
+"onboarding.reports.title" = "Insightful Reports & Analytics";
+"onboarding.reports.description" = "Spending heatmaps, category breakdowns, and trend analysis give you complete financial clarity.";
+
+"onboarding.ai.title" = "Limitless Categorization";
+"onboarding.ai.description" = "Create an unlimited number of categories with icons, colors and names completely customizable to you.";
+
+"onboarding.backup.title" = "Secure Backup";
+"onboarding.backup.description" = "Your data is safe with iCloud. Access from all your devices, never lose anything.";
