@@ -179,11 +179,11 @@ struct KategoriAkisGrafigiView: View {
     @EnvironmentObject var appSettings: AppSettings
     
     private var gelirKategorileri: [KategoriNakitAkisi] {
-        kategoriler.filter { $0.kategori.tur == .gelir }.prefix(5).map { $0 }
+        kategoriler.filter { $0.kategori.tur == .gelir }
     }
-    
+
     private var giderKategorileri: [KategoriNakitAkisi] {
-        kategoriler.filter { $0.kategori.tur == .gider }.prefix(5).map { $0 }
+        kategoriler.filter { $0.kategori.tur == .gider }
     }
     
     var body: some View {
@@ -192,50 +192,51 @@ struct KategoriAkisGrafigiView: View {
                 .font(.headline)
                 .foregroundStyle(.secondary)
             
-            HStack(alignment: .top, spacing: 20) {
-                // Gelir kategorileri
-                if !gelirKategorileri.isEmpty {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("common.income")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.green)
-                        
-                        ForEach(gelirKategorileri) { kategori in
-                            kategoriSatiri(kategori: kategori)
+            ScrollView {
+                VStack(spacing: 16) {
+                    // Gelir kategorileri
+                    if !gelirKategorileri.isEmpty {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("common.income")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.green)
+                            
+                            ForEach(gelirKategorileri) { kategori in
+                                kategoriSatiri(kategori: kategori)
+                            }
                         }
                     }
-                    .frame(maxWidth: .infinity)
-                }
-                
-                if !gelirKategorileri.isEmpty && !giderKategorileri.isEmpty {
-                    Divider()
-                }
-                
-                // Gider kategorileri
-                if !giderKategorileri.isEmpty {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("common.expense")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.red)
-                        
-                        ForEach(giderKategorileri) { kategori in
-                            kategoriSatiri(kategori: kategori)
+                    
+                    if !gelirKategorileri.isEmpty && !giderKategorileri.isEmpty {
+                        Divider()
+                    }
+                    
+                    // Gider kategorileri
+                    if !giderKategorileri.isEmpty {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text("common.expense")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.red)
+                            
+                            ForEach(giderKategorileri) { kategori in
+                                kategoriSatiri(kategori: kategori)
+                            }
                         }
                     }
-                    .frame(maxWidth: .infinity)
                 }
             }
+            .frame(maxHeight: 400) // Maksimum yükseklik sınırı
         }
         .padding()
         .background(Color(.secondarySystemGroupedBackground))
         .cornerRadius(16)
     }
-    
     @ViewBuilder
     private func kategoriSatiri(kategori: KategoriNakitAkisi) -> some View {
         HStack(spacing: 8) {
+            // İkon
             Image(systemName: kategori.kategori.ikonAdi)
                 .font(.caption)
                 .foregroundColor(kategori.kategori.renk)
@@ -243,18 +244,23 @@ struct KategoriAkisGrafigiView: View {
                 .background(kategori.kategori.renk.opacity(0.15))
                 .cornerRadius(6)
             
+            // Kategori adı - Esnek genişlik
             Text(LocalizedStringKey(kategori.kategori.localizationKey ?? kategori.kategori.isim))
                 .font(.caption)
                 .lineLimit(1)
+                .truncationMode(.tail)
+                .frame(minWidth: 60, maxWidth: .infinity, alignment: .leading)
             
-            Spacer()
-            
+            // Tutar - Sabit genişlik ve küçültme
             Text(formatCurrency(
                 amount: abs(kategori.toplamTutar),
                 currencyCode: appSettings.currencyCode,
                 localeIdentifier: appSettings.languageCode
             ))
             .font(.caption.bold())
+            .lineLimit(1)
+            .minimumScaleFactor(0.7)
+            .frame(minWidth: 80, alignment: .trailing)
         }
     }
 }
