@@ -1011,3 +1011,20 @@
 "export.filename.transfers" = "Transferler";
 "export.filename.loans" = "Krediler";
 "export.filename.loan_installments" = "Kredi_Taksitleri";
+
+// Türkçe (tr)
+"onboarding.allinone.title" = "Tüm Finansınız Tek Yerde";
+"onboarding.allinone.description" = "Cüzdan, kredi kartı ve kredi hesaplarınızı tek bir yerden yönetin. Transferler, taksitler ve ödemeler artık çok daha kolay.";
+
+"onboarding.budget.title" = "Akıllı Bütçe Yönetimi";
+"onboarding.budget.description" = "Otomatik yenilenen bütçeler ve devreden bakiye sistemi ile paranızı daha verimli kullanın. Artan tutarlar sonraki aya aktarılır.";
+"onboarding.budget.used" = "Kullanılan";
+
+"onboarding.reports.title" = "Detaylı Raporlar & Analizler";
+"onboarding.reports.description" = "Harcama ısı haritaları, kategori dağılımları ve trend analizleri ile finansal durumunuzu net bir şekilde görün.";
+
+"onboarding.ai.title" = "Sizlerin Kategorisi";
+"onboarding.ai.description" = "İkonu, rengi, ismi tamamen size özel sınırsız sayıda kategoriler oluşturun.";
+
+"onboarding.backup.title" = "Güvenli Yedekleme";
+"onboarding.backup.description" = "Verileriniz iCloud ile güvende. Tüm cihazlarınızdan erişin, asla kaybetmeyin.";
