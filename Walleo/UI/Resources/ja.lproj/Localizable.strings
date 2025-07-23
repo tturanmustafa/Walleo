@@ -901,3 +901,65 @@
 "dashboard.more_categories" = "の他カテゴリー";
 "reports.category.highest_spending" = "最多支出カテゴリー";
 "reports.category.most_transactions" = "最多取引数";
+
+// Export Headers - Installment Transactions
+"export.installment.sheet_name" = "分割払いの取引";
+"export.installment.header.transaction_name" = "取引名";
+"export.installment.header.total_amount" = "総額";
+"export.installment.header.installment_count" = "分割回数";
+"export.installment.header.current_installment" = "現在の分割回";
+"export.installment.header.installment_amount" = "分割払額";
+"export.installment.header.date" = "日付";
+"export.installment.header.category" = "カテゴリー";
+"export.installment.header.account" = "口座";
+
+// Export Headers - Recurring Transactions
+"export.recurring.sheet_name" = "定期的な取引";
+"export.recurring.header.transaction_name" = "取引名";
+"export.recurring.header.amount" = "金額";
+"export.recurring.header.start_date" = "開始日";
+"export.recurring.header.end_date" = "終了日";
+"export.recurring.header.frequency" = "頻度";
+"export.recurring.header.type" = "種類";
+"export.recurring.header.category" = "カテゴリー";
+"export.recurring.header.account" = "口座";
+
+// Export Headers - Transfers
+"export.transfer.sheet_name" = "振替";
+"export.transfer.header.date" = "日付";
+"export.transfer.header.amount" = "金額";
+"export.transfer.header.from_account" = "出金元口座";
+"export.transfer.header.to_account" = "入金先口座";
+
+// Export Headers - Loans
+"export.loan.sheet_name" = "ローン";
+"export.loan.header.account_name" = "ローン名";
+"export.loan.header.loan_amount" = "ローン金額";
+"export.loan.header.interest_type" = "金利タイプ";
+"export.loan.header.interest_rate" = "利率 (%)";
+"export.loan.header.installment_count" = "分割回数";
+"export.loan.header.installment_amount" = "月々の返済額";
+"export.loan.header.first_payment_date" = "初回返済日";
+"export.loan.header.remaining_installments" = "残りの返済回数";
+"export.loan.header.remaining_amount" = "残高";
+
+// Export Headers - Loan Installments
+"export.loan_installments.sheet_name" = "ローン返済";
+"export.loan_installments.header.loan_name" = "ローン名";
+"export.loan_installments.header.installment_no" = "返済回数";
+"export.loan_installments.header.amount" = "金額";
+"export.loan_installments.header.due_date" = "期日";
+"export.loan_installments.header.status" = "ステータス";
+
+// Export
+"export.all_transactions.sheet_name" = "すべての取引";
+"export.status.paid" = "支払い済み";
+"export.status.pending" = "保留中";
+
+// Export File Names
+"export.filename.all_transactions" = "全ての取引";
+"export.filename.installments" = "分割払いの取引";
+"export.filename.recurring" = "定期的な取引";
+"export.filename.transfers" = "振替";
+"export.filename.loans" = "ローン";
+"export.filename.loan_installments" = "ローン返済";

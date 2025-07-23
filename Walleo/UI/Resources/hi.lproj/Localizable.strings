@@ -901,3 +901,65 @@
 "dashboard.more_categories" = " और श्रेणियाँ";
 "reports.category.highest_spending" = "उच्चतम खर्च श्रेणी";
 "reports.category.most_transactions" = "सबसे अधिक लेन-देन";
+
+// Export Headers - Installment Transactions
+"export.installment.sheet_name" = "किस्त लेन-देन";
+"export.installment.header.transaction_name" = "लेन-देन का नाम";
+"export.installment.header.total_amount" = "कुल राशि";
+"export.installment.header.installment_count" = "किस्तों की संख्या";
+"export.installment.header.current_installment" = "वर्तमान किस्त";
+"export.installment.header.installment_amount" = "किस्त की राशि";
+"export.installment.header.date" = "तारीख";
+"export.installment.header.category" = "श्रेणी";
+"export.installment.header.account" = "खाता";
+
+// Export Headers - Recurring Transactions
+"export.recurring.sheet_name" = "आवर्ती लेन-देन";
+"export.recurring.header.transaction_name" = "लेन-देन का नाम";
+"export.recurring.header.amount" = "राशि";
+"export.recurring.header.start_date" = "आरंभ तिथि";
+"export.recurring.header.end_date" = "अंतिम तिथि";
+"export.recurring.header.frequency" = "आवृत्ति";
+"export.recurring.header.type" = "प्रकार";
+"export.recurring.header.category" = "श्रेणी";
+"export.recurring.header.account" = "खाता";
+
+// Export Headers - Transfers
+"export.transfer.sheet_name" = "स्थानांतरण";
+"export.transfer.header.date" = "तारीख";
+"export.transfer.header.amount" = "राशि";
+"export.transfer.header.from_account" = "किस खाते से";
+"export.transfer.header.to_account" = "किस खाते में";
+
+// Export Headers - Loans
+"export.loan.sheet_name" = "ऋण";
+"export.loan.header.account_name" = "ऋण का नाम";
+"export.loan.header.loan_amount" = "ऋण राशि";
+"export.loan.header.interest_type" = "ब्याज का प्रकार";
+"export.loan.header.interest_rate" = "ब्याज दर (%)";
+"export.loan.header.installment_count" = "किस्तों की संख्या";
+"export.loan.header.installment_amount" = "मासिक भुगतान";
+"export.loan.header.first_payment_date" = "पहली भुगतान तिथि";
+"export.loan.header.remaining_installments" = "शेष किस्तें";
+"export.loan.header.remaining_amount" = "शेष राशि";
+
+// Export Headers - Loan Installments
+"export.loan_installments.sheet_name" = "ऋण किस्तें";
+"export.loan_installments.header.loan_name" = "ऋण का नाम";
+"export.loan_installments.header.installment_no" = "किस्त संख्या";
+"export.loan_installments.header.amount" = "राशि";
+"export.loan_installments.header.due_date" = "नियत तारीख";
+"export.loan_installments.header.status" = "स्थिति";
+
+// Export
+"export.all_transactions.sheet_name" = "सभी लेन-देन";
+"export.status.paid" = "भुगतान किया गया";
+"export.status.pending" = "लंबित";
+
+// Export File Names
+"export.filename.all_transactions" = "Sabhi_Lenden";
+"export.filename.installments" = "Kist_Lenden";
+"export.filename.recurring" = "Avarti_Lenden";
+"export.filename.transfers" = "Sthanantaran";
+"export.filename.loans" = "Rin";
+"export.filename.loan_installments" = "Rin_Kisten";

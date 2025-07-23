@@ -901,3 +901,65 @@
 "dashboard.more_categories" = "หมวดหมู่อื่นๆ";
 "reports.category.highest_spending" = "หมวดหมู่ที่ใช้จ่ายสูงสุด";
 "reports.category.most_transactions" = "รายการมากที่สุด";
+
+// Export Headers - Installment Transactions
+"export.installment.sheet_name" = "รายการผ่อนชำระ";
+"export.installment.header.transaction_name" = "ชื่อรายการ";
+"export.installment.header.total_amount" = "ยอดรวมทั้งหมด";
+"export.installment.header.installment_count" = "จำนวนงวด";
+"export.installment.header.current_installment" = "งวดปัจจุบัน";
+"export.installment.header.installment_amount" = "จำนวนเงินผ่อน";
+"export.installment.header.date" = "วันที่";
+"export.installment.header.category" = "หมวดหมู่";
+"export.installment.header.account" = "บัญชี";
+
+// Export Headers - Recurring Transactions
+"export.recurring.sheet_name" = "รายการที่เกิดซ้ำ";
+"export.recurring.header.transaction_name" = "ชื่อรายการ";
+"export.recurring.header.amount" = "จำนวนเงิน";
+"export.recurring.header.start_date" = "วันที่เริ่มต้น";
+"export.recurring.header.end_date" = "วันที่สิ้นสุด";
+"export.recurring.header.frequency" = "ความถี่";
+"export.recurring.header.type" = "ประเภท";
+"export.recurring.header.category" = "หมวดหมู่";
+"export.recurring.header.account" = "บัญชี";
+
+// Export Headers - Transfers
+"export.transfer.sheet_name" = "การโอนเงิน";
+"export.transfer.header.date" = "วันที่";
+"export.transfer.header.amount" = "จำนวนเงิน";
+"export.transfer.header.from_account" = "จากบัญชี";
+"export.transfer.header.to_account" = "ไปยังบัญชี";
+
+// Export Headers - Loans
+"export.loan.sheet_name" = "เงินกู้";
+"export.loan.header.account_name" = "ชื่อเงินกู้";
+"export.loan.header.loan_amount" = "จำนวนเงินกู้";
+"export.loan.header.interest_type" = "ประเภทดอกเบี้ย";
+"export.loan.header.interest_rate" = "อัตราดอกเบี้ย (%)";
+"export.loan.header.installment_count" = "จำนวนงวด";
+"export.loan.header.installment_amount" = "การชำระเงินรายเดือน";
+"export.loan.header.first_payment_date" = "วันที่ชำระเงินครั้งแรก";
+"export.loan.header.remaining_installments" = "งวดที่เหลือ";
+"export.loan.header.remaining_amount" = "ยอดคงค้าง";
+
+// Export Headers - Loan Installments
+"export.loan_installments.sheet_name" = "งวดเงินกู้";
+"export.loan_installments.header.loan_name" = "ชื่อเงินกู้";
+"export.loan_installments.header.installment_no" = "งวดที่";
+"export.loan_installments.header.amount" = "จำนวนเงิน";
+"export.loan_installments.header.due_date" = "วันครบกำหนด";
+"export.loan_installments.header.status" = "สถานะ";
+
+// Export
+"export.all_transactions.sheet_name" = "รายการทั้งหมด";
+"export.status.paid" = "ชำระแล้ว";
+"export.status.pending" = "รอดำเนินการ";
+
+// Export File Names
+"export.filename.all_transactions" = "รายการทั้งหมด";
+"export.filename.installments" = "รายการผ่อนชำระ";
+"export.filename.recurring" = "รายการที่เกิดซ้ำ";
+"export.filename.transfers" = "การโอนเงิน";
+"export.filename.loans" = "เงินกู้";
+"export.filename.loan_installments" = "งวดเงินกู้";

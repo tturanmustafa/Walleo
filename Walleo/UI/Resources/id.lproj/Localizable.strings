@@ -901,3 +901,65 @@
 "dashboard.more_categories" = "kategori lainnya";
 "reports.category.highest_spending" = "Kategori Pengeluaran Tertinggi";
 "reports.category.most_transactions" = "Transaksi Terbanyak";
+
+// Export Headers - Installment Transactions
+"export.installment.sheet_name" = "Transaksi Cicilan";
+"export.installment.header.transaction_name" = "Nama Transaksi";
+"export.installment.header.total_amount" = "Total Jumlah";
+"export.installment.header.installment_count" = "Jumlah Cicilan";
+"export.installment.header.current_installment" = "Cicilan Saat Ini";
+"export.installment.header.installment_amount" = "Jumlah Cicilan";
+"export.installment.header.date" = "Tanggal";
+"export.installment.header.category" = "Kategori";
+"export.installment.header.account" = "Akun";
+
+// Export Headers - Recurring Transactions
+"export.recurring.sheet_name" = "Transaksi Berulang";
+"export.recurring.header.transaction_name" = "Nama Transaksi";
+"export.recurring.header.amount" = "Jumlah";
+"export.recurring.header.start_date" = "Tanggal Mulai";
+"export.recurring.header.end_date" = "Tanggal Akhir";
+"export.recurring.header.frequency" = "Frekuensi";
+"export.recurring.header.type" = "Jenis";
+"export.recurring.header.category" = "Kategori";
+"export.recurring.header.account" = "Akun";
+
+// Export Headers - Transfers
+"export.transfer.sheet_name" = "Transfer";
+"export.transfer.header.date" = "Tanggal";
+"export.transfer.header.amount" = "Jumlah";
+"export.transfer.header.from_account" = "Dari Akun";
+"export.transfer.header.to_account" = "Ke Akun";
+
+// Export Headers - Loans
+"export.loan.sheet_name" = "Pinjaman";
+"export.loan.header.account_name" = "Nama Pinjaman";
+"export.loan.header.loan_amount" = "Jumlah Pinjaman";
+"export.loan.header.interest_type" = "Jenis Bunga";
+"export.loan.header.interest_rate" = "Suku Bunga (%)";
+"export.loan.header.installment_count" = "Jumlah Cicilan";
+"export.loan.header.installment_amount" = "Pembayaran Bulanan";
+"export.loan.header.first_payment_date" = "Tanggal Pembayaran Pertama";
+"export.loan.header.remaining_installments" = "Sisa Cicilan";
+"export.loan.header.remaining_amount" = "Sisa Saldo";
+
+// Export Headers - Loan Installments
+"export.loan_installments.sheet_name" = "Cicilan Pinjaman";
+"export.loan_installments.header.loan_name" = "Nama Pinjaman";
+"export.loan_installments.header.installment_no" = "No. Cicilan";
+"export.loan_installments.header.amount" = "Jumlah";
+"export.loan_installments.header.due_date" = "Tanggal Jatuh Tempo";
+"export.loan_installments.header.status" = "Status";
+
+// Export
+"export.all_transactions.sheet_name" = "Semua Transaksi";
+"export.status.paid" = "Lunas";
+"export.status.pending" = "Tertunda";
+
+// Export File Names
+"export.filename.all_transactions" = "Semua_Transaksi";
+"export.filename.installments" = "Transaksi_Cicilan";
+"export.filename.recurring" = "Transaksi_Berulang";
+"export.filename.transfers" = "Transfer";
+"export.filename.loans" = "Pinjaman";
+"export.filename.loan_installments" = "Cicilan_Pinjaman";
