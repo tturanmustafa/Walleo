@@ -963,3 +963,19 @@
 "export.filename.transfers" = "Transfer";
 "export.filename.loans" = "Pinjaman";
 "export.filename.loan_installments" = "Cicilan_Pinjaman";
+
+"onboarding.allinone.title" = "Semua Keuangan Anda di Satu Tempat";
+"onboarding.allinone.description" = "Kelola dompet, kartu kredit, dan pinjaman dari satu pusat. Transfer, cicilan, dan pembayaran menjadi mudah.";
+
+"onboarding.budget.title" = "Manajemen Anggaran Cerdas";
+"onboarding.budget.description" = "Anggaran yang diperbarui secara otomatis dengan sistem rollover. Jumlah yang tidak terpakai akan terbawa ke bulan berikutnya secara otomatis.";
+"onboarding.budget.used" = "Terpakai";
+
+"onboarding.reports.title" = "Laporan & Analitik Berwawasan";
+"onboarding.reports.description" = "Peta panas pengeluaran, rincian kategori, dan analisis tren memberi Anda kejelasan finansial yang lengkap.";
+
+"onboarding.ai.title" = "Kategorisasi Tanpa Batas";
+"onboarding.ai.description" = "Buat kategori dalam jumlah tak terbatas dengan ikon, warna, dan nama yang sepenuhnya dapat disesuaikan untuk Anda.";
+
+"onboarding.backup.title" = "Cadangan Aman";
+"onboarding.backup.description" = "Data Anda aman dengan iCloud. Akses dari semua perangkat Anda, jangan pernah kehilangan apa pun.";

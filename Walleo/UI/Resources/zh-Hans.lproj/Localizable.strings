@@ -963,3 +963,19 @@
 "export.filename.transfers" = "转账";
 "export.filename.loans" = "贷款";
 "export.filename.loan_installments" = "贷款分期";
+
+"onboarding.allinone.title" = "您的所有财务，尽在一处";
+"onboarding.allinone.description" = "从单一中心管理钱包、信用卡和贷款。转账、分期和付款变得简单。";
+
+"onboarding.budget.title" = "智能预算管理";
+"onboarding.budget.description" = "带结转系统的自动续订预算。未使用金额将自动结转至下个月。";
+"onboarding.budget.used" = "已用";
+
+"onboarding.reports.title" = "富有洞察力的报告与分析";
+"onboarding.reports.description" = "支出热力图、类别明细和趋势分析为您提供完全清晰的财务状况。";
+
+"onboarding.ai.title" = "无限分类";
+"onboarding.ai.description" = "创建无限数量的类别，其图标、颜色和名称完全可为您定制。";
+
+"onboarding.backup.title" = "安全备份";
+"onboarding.backup.description" = "您的数据在iCloud上是安全的。从您的所有设备访问，永不丢失。";

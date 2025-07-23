@@ -963,3 +963,19 @@
 "export.filename.transfers" = "Sthanantaran";
 "export.filename.loans" = "Rin";
 "export.filename.loan_installments" = "Rin_Kisten";
+
+"onboarding.allinone.title" = "आपके सभी वित्त एक ही स्थान पर";
+"onboarding.allinone.description" = "एक ही केंद्र से बटुए, क्रेडिट कार्ड और ऋण प्रबंधित करें। स्थानांतरण, किस्तें और भुगतान सरल बनाए गए।";
+
+"onboarding.budget.title" = "स्मार्ट बजट प्रबंधन";
+"onboarding.budget.description" = "रोलओवर प्रणाली के साथ स्वचालित रूप से नवीनीकृत होने वाले बजट। उपयोग न की गई राशि स्वचालित रूप से अगले महीने आगे बढ़ जाती है।";
+"onboarding.budget.used" = "उपयोग किया गया";
+
+"onboarding.reports.title" = "ज्ञानवर्धक रिपोर्ट और विश्लेषण";
+"onboarding.reports.description" = "खर्च हीटमैप, श्रेणी के अनुसार विश्लेषण और प्रवृत्ति विश्लेषण आपको पूरी वित्तीय स्पष्टता देते हैं।";
+
+"onboarding.ai.title" = "असीमित वर्गीकरण";
+"onboarding.ai.description" = "आइकन, रंग और नामों के साथ असीमित संख्या में श्रेणियां बनाएं जो आपके लिए पूरी तरह से अनुकूलन योग्य हों।";
+
+"onboarding.backup.title" = "सुरक्षित बैकअप";
+"onboarding.backup.description" = "आपका डेटा iCloud के साथ सुरक्षित है। अपने सभी उपकरणों से पहुंचें, कभी कुछ न खोएं।";

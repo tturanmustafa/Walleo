@@ -963,3 +963,19 @@
 "export.filename.transfers" = "振替";
 "export.filename.loans" = "ローン";
 "export.filename.loan_installments" = "ローン返済";
+
+"onboarding.allinone.title" = "すべての財務を、一つの場所で";
+"onboarding.allinone.description" = "ウォレット、クレジットカード、ローンを一つのハブから管理。振替、分割払い、支払いがシンプルになります。";
+
+"onboarding.budget.title" = "スマートな予算管理";
+"onboarding.budget.description" = "繰越システム付きの自動更新予算。未使用額は自動的に翌月に繰り越されます。";
+"onboarding.budget.used" = "使用済み";
+
+"onboarding.reports.title" = "洞察に満ちたレポートと分析";
+"onboarding.reports.description" = "支出のヒートマップ、カテゴリー別の内訳、トレンド分析により、財務状況を完全に明確にします。";
+
+"onboarding.ai.title" = "無限のカテゴリ作成";
+"onboarding.ai.description" = "アイコン、色、名前を完全にカスタマイズできるカテゴリを無制限に作成できます。";
+
+"onboarding.backup.title" = "安全なバックアップ";
+"onboarding.backup.description" = "あなたのデータはiCloudで安全です。すべてのデバイスからアクセスし、何も失うことはありません。";

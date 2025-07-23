@@ -963,3 +963,19 @@
 "export.filename.transfers" = "การโอนเงิน";
 "export.filename.loans" = "เงินกู้";
 "export.filename.loan_installments" = "งวดเงินกู้";
+
+"onboarding.allinone.title" = "การเงินทั้งหมดของคุณในที่เดียว";
+"onboarding.allinone.description" = "จัดการกระเป๋าเงิน บัตรเครดิต และเงินกู้จากศูนย์กลางเดียว การโอน การผ่อนชำระ และการจ่ายเงินทำได้ง่ายขึ้น";
+
+"onboarding.budget.title" = "การจัดการงบประมาณอัจฉริยะ";
+"onboarding.budget.description" = "งบประมาณที่ต่ออายุอัตโนมัติพร้อมระบบยอดยกไป จำนวนเงินที่ไม่ได้ใช้จะถูกยกยอดไปเดือนถัดไปโดยอัตโนมัติ";
+"onboarding.budget.used" = "ใช้ไปแล้ว";
+
+"onboarding.reports.title" = "รายงานและการวิเคราะห์เชิงลึก";
+"onboarding.reports.description" = "ฮีทแมพการใช้จ่าย การแจกแจงตามหมวดหมู่ และการวิเคราะห์แนวโน้มช่วยให้คุณเห็นภาพรวมทางการเงินที่ชัดเจน";
+
+"onboarding.ai.title" = "การจัดหมวดหมู่ที่ไม่จำกัด";
+"onboarding.ai.description" = "สร้างหมวดหมู่ได้ไม่จำกัดจำนวน พร้อมไอคอน สี และชื่อที่ปรับแต่งได้ตามใจคุณ";
+
+"onboarding.backup.title" = "การสำรองข้อมูลที่ปลอดภัย";
+"onboarding.backup.description" = "ข้อมูลของคุณปลอดภัยด้วย iCloud เข้าถึงได้จากทุกอุปกรณ์ของคุณ ไม่สูญหาย";

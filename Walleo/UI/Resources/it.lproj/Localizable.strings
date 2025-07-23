@@ -965,3 +965,19 @@
 "export.filename.transfers" = "Trasferimenti";
 "export.filename.loans" = "Prestiti";
 "export.filename.loan_installments" = "Rate_del_Prestito";
+
+"onboarding.allinone.title" = "Tutte le tue finanze in un unico posto";
+"onboarding.allinone.description" = "Gestisci portafogli, carte di credito e prestiti da un unico hub. Trasferimenti, rate e pagamenti resi semplici.";
+
+"onboarding.budget.title" = "Gestione intelligente del budget";
+"onboarding.budget.description" = "Budget a rinnovo automatico con sistema di riporto. Gli importi non utilizzati vengono trasferiti automaticamente al mese successivo.";
+"onboarding.budget.used" = "Utilizzato";
+
+"onboarding.reports.title" = "Report e analisi approfonditi";
+"onboarding.reports.description" = "Mappe di calore della spesa, suddivisioni per categoria e analisi delle tendenze ti offrono una chiarezza finanziaria completa.";
+
+"onboarding.ai.title" = "Categorizzazione illimitata";
+"onboarding.ai.description" = "Crea un numero illimitato di categorie con icone, colori e nomi completamente personalizzabili per te.";
+
+"onboarding.backup.title" = "Backup sicuro";
+"onboarding.backup.description" = "I tuoi dati sono al sicuro con iCloud. Accedi da tutti i tuoi dispositivi, non perdere mai nulla.";

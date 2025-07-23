@@ -964,3 +964,19 @@
 "export.filename.transfers" = "Überweisungen";
 "export.filename.loans" = "Kredite";
 "export.filename.loan_installments" = "Kreditraten";
+
+"onboarding.allinone.title" = "Alle Ihre Finanzen an einem Ort";
+"onboarding.allinone.description" = "Verwalten Sie Wallets, Kreditkarten und Kredite von einem zentralen Punkt aus. Überweisungen, Ratenzahlungen und Zahlungen einfach gemacht.";
+
+"onboarding.budget.title" = "Intelligente Budgetverwaltung";
+"onboarding.budget.description" = "Sich automatisch verlängernde Budgets mit Übertragssystem. Nicht genutzte Beträge werden automatisch in den nächsten Monat übernommen.";
+"onboarding.budget.used" = "Verwendet";
+
+"onboarding.reports.title" = "Aufschlussreiche Berichte & Analysen";
+"onboarding.reports.description" = "Ausgaben-Heatmaps, Kategorienaufschlüsselungen und Trendanalysen geben Ihnen vollständige finanzielle Klarheit.";
+
+"onboarding.ai.title" = "Unbegrenzte Kategorisierung";
+"onboarding.ai.description" = "Erstellen Sie eine unbegrenzte Anzahl von Kategorien mit Symbolen, Farben und Namen, die vollständig an Sie anpassbar sind.";
+
+"onboarding.backup.title" = "Sicheres Backup";
+"onboarding.backup.description" = "Ihre Daten sind mit iCloud sicher. Greifen Sie von all Ihren Geräten zu und verlieren Sie nie etwas.";

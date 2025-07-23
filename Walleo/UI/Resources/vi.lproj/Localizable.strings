@@ -963,3 +963,19 @@
 "export.filename.transfers" = "Chuyen_tien";
 "export.filename.loans" = "Cac_khoan_vay";
 "export.filename.loan_installments" = "Cac_ky_tra_gop_khoan_vay";
+
+"onboarding.allinone.title" = "Tất cả tài chính của bạn ở một nơi";
+"onboarding.allinone.description" = "Quản lý ví, thẻ tín dụng và các khoản vay từ một trung tâm duy nhất. Chuyển khoản, trả góp và thanh toán trở nên đơn giản.";
+
+"onboarding.budget.title" = "Quản lý ngân sách thông minh";
+"onboarding.budget.description" = "Ngân sách tự động gia hạn với hệ thống chuyển số dư. Số tiền chưa sử dụng sẽ tự động được chuyển sang tháng tiếp theo.";
+"onboarding.budget.used" = "Đã dùng";
+
+"onboarding.reports.title" = "Báo cáo & Phân tích sâu sắc";
+"onboarding.reports.description" = "Bản đồ nhiệt chi tiêu, phân tích chi tiết theo hạng mục và phân tích xu hướng giúp bạn có cái nhìn tài chính rõ ràng.";
+
+"onboarding.ai.title" = "Phân loại không giới hạn";
+"onboarding.ai.description" = "Tạo số lượng hạng mục không giới hạn với các biểu tượng, màu sắc và tên hoàn toàn có thể tùy chỉnh theo ý bạn.";
+
+"onboarding.backup.title" = "Sao lưu an toàn";
+"onboarding.backup.description" = "Dữ liệu của bạn được an toàn với iCloud. Truy cập từ tất cả các thiết bị của bạn, không bao giờ mất bất cứ thứ gì.";
