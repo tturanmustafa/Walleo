@@ -1,0 +1,903 @@
+/* Localizable.strings (Thai) */
+
+// MARK: - Genel / Ortak Kullanım
+"common.save" = "บันทึก";
+"common.cancel" = "ยกเลิก";
+"common.edit" = "แก้ไข";
+"common.delete" = "ลบ";
+"common.done" = "เสร็จสิ้น";
+"common.reset" = "รีเซ็ต";
+"common.apply" = "ปรับใช้";
+"common.all" = "ทั้งหมด";
+"common.income" = "รายรับ";
+"common.expense" = "รายจ่าย";
+"common.category" = "หมวดหมู่";
+"common.categories" = "หมวดหมู่";
+"common.amount" = "จำนวนเงิน";
+"common.date" = "วันที่";
+"common.type" = "ประเภท";
+"common.account" = "บัญชี";
+"common.select_account" = "เลือกบัญชี";
+"common.back" = "กลับ";
+"common.total" = "ทั้งหมด";
+"common.net" = "สุทธิ";
+"common.total_amount" = "ยอดรวม";
+
+// MARK: - Ana Sekmeler
+"tab.dashboard" = "ภาพรวม";
+"tab.calendar" = "ปฏิทิน";
+"tab.reports" = "รายงาน";
+"tab.settings" = "การตั้งค่า";
+"tab.budgets" = "งบประมาณ";
+"tab.more" = "เพิ่มเติม";
+
+// MARK: - Panel / Dashboard Ekranı
+"dashboard.category_distribution" = "การกระจายหมวดหมู่";
+"dashboard.recent_transactions" = "รายการล่าสุด";
+"dashboard.see_all" = "ดูทั้งหมด";
+"dashboard.no_records_for_month" = "ไม่มีบันทึกสำหรับเดือนนี้";
+
+// MARK: - Ayarlar Ekranı
+"settings.title" = "การตั้งค่า";
+"settings.section_general" = "ทั่วไป";
+"settings.theme" = "ธีม";
+"settings.theme_system" = "ระบบ";
+"settings.theme_light" = "สว่าง";
+"settings.theme_dark" = "มืด";
+"settings.language" = "ภาษา";
+"settings.manage_categories" = "จัดการหมวดหมู่";
+"settings.section_info" = "ข้อมูล";
+"settings.version" = "เวอร์ชัน";
+"settings.currency" = "สกุลเงิน";
+
+// MARK: - Bildirim Ayarları
+"settings.notifications" = "การตั้งค่าการแจ้งเตือน";
+"settings.notifications.title" = "การตั้งค่าการแจ้งเตือน";
+"settings.notifications.master_section" = "การควบคุมหลัก";
+"settings.notifications.master_toggle" = "การแจ้งเตือนทั้งหมด";
+"settings.notifications.budget_section" = "การแจ้งเตือนงบประมาณ";
+"settings.notifications.budget_toggle" = "แสดงการแจ้งเตือนงบประมาณ";
+"settings.notifications.threshold_picker" = "เกณฑ์การแจ้งเตือน";
+"settings.notifications.threshold.option_80" = "เมื่อถึง 80%";
+"settings.notifications.threshold.option_85" = "เมื่อถึง 85%";
+"settings.notifications.threshold.option_90" = "เมื่อถึง 90%";
+"settings.notifications.threshold.option_95" = "เมื่อถึง 95%";
+"settings.notifications.loan_section" = "การแจ้งเตือนการชำระเงิน";
+"settings.notifications.loan_toggle" = "เตือนการชำระคืนเงินกู้";
+"settings.notifications.loan_stepper" = "%d วันก่อนวันครบกำหนด";
+"settings.notifications.credit_card_section" = "การแจ้งเตือนบัตรเครดิต";
+"settings.notifications.credit_card_toggle" = "เตือนวันครบกำหนดชำระเงิน";
+
+// MARK: - Bildirim İçerikleri
+"notification.budget.over_limit.title" = "เกินงบประมาณ";
+"notification.budget.over_limit.body_line1_format" = "คุณใช้จ่ายเกินเป้าหมายสำหรับงบประมาณ '%@' ของคุณ";
+"notification.budget.over_limit.body_line2" = "เป้าหมายงบประมาณ: %@";
+"notification.budget.over_limit.body_line3" = "จำนวนที่เกิน: %@";
+"notification.budget.approaching_limit.title" = "ใกล้ถึงขีดจำกัดงบประมาณ";
+"notification.budget.approaching_limit.body_line1_format" = "คุณใช้ถึง %%%2$.0f ของเป้าหมายสำหรับงบประมาณ '%1$@' ของคุณแล้ว";
+"notification.budget.approaching_limit.body_line2" = "เป้าหมายงบประมาณ: %@";
+"notification.budget.approaching_limit.body_line3" = "จำนวนเงินคงเหลือ: %@";
+"notification.credit_card.due_date.title" = "ใกล้ถึงวันชำระเงินบัตรเครดิต";
+"notification.credit_card.due_date.body_format" = "วันครบกำหนดชำระเงินสำหรับบัตร %@ ของคุณคือ %@";
+
+// MARK: - Kategori Yönetimi
+"categories.title" = "หมวดหมู่";
+"categories.income_categories" = "หมวดหมู่รายรับ";
+"categories.expense_categories" = "หมวดหมู่รายจ่าย";
+"categories.new" = "หมวดหมู่ใหม่";
+"categories.edit" = "แก้ไขหมวดหมู่";
+"categories.name" = "ชื่อหมวดหมู่";
+"categories.color" = "สีหมวดหมู่";
+"categories.select_icon" = "เลือกไอคอน";
+
+// MARK: - İşlem Ekleme / Düzenleme
+"transaction.new" = "รายการใหม่";
+"transaction.edit" = "แก้ไขรายการ";
+"transaction.type" = "ประเภทรายการ";
+"transaction.section_details" = "รายละเอียด";
+"transaction.name_placeholder" = "ชื่อรายการ (เช่น อาหารเย็น)";
+"transaction.select_category" = "เลือกหมวดหมู่";
+"transaction.recurrence" = "การเกิดซ้ำ";
+"transaction.loan_payment_name_format" = "ชำระคืนเงินกู้สำหรับ %@";
+
+// MARK: - Hesaplar
+"accounts.title" = "บัญชี";
+"accounts.empty.title" = "ยังไม่มีบัญชี";
+"accounts.empty.description" = "แตะที่ไอคอน '+' เพื่อเพิ่มบัญชีใหม่และเริ่มต้น";
+"accounts.add.wallet" = "กระเป๋าเงิน (เงินสด)";
+"accounts.add.credit_card" = "บัตรเครดิต";
+"accounts.add.loan" = "เงินกู้";
+"accounts.add.new_credit_card" = "เพิ่มบัตรเครดิตใหม่";
+"accounts.add.new_loan" = "เพิ่มเงินกู้ใหม่";
+"accounts.add.account_color" = "สีบัญชี";
+"accounts.add.interest_rate" = "อัตราดอกเบี้ย (%)";
+"accounts.add.installments" = "จำนวนงวด";
+"accounts.add.installments_stepper" = "%d เดือน";
+"accounts.add.create_installments_button" = "บันทึกและสร้างงวด";
+
+"credit_card.form.statement_date_header" = "วันสรุปยอดบัญชี";
+"credit_card.form.statement_date" = "วันสรุปยอดบัญชี";
+"credit_card.form.payment_due_date_header" = "การตั้งค่าวันครบกำหนดชำระ";
+"credit_card.form.payment_due_date_stepper" = "%d วันหลังจากวันสรุปยอด";
+"loan.form.details_header" = "ข้อมูลเงินกู้";
+"loan.form.first_payment_header" = "วันชำระงวดแรก";
+"loan.form.interest_type" = "ประเภทดอกเบี้ย";
+"loan.form.first_installment_date" = "วันที่ผ่อนชำระงวดแรก";
+"loan_details.summary_header" = "สรุปเงินกู้";
+"loan_details.installment_plan_header" = "แผนการผ่อนชำระ";
+
+"installment.edit.title" = "แก้ไขงวด";
+"installment.edit.details_header" = "รายละเอียดงวด";
+"installment.paid.label" = "ทำเครื่องหมายว่าชำระแล้ว";
+"accounts.card.current_debt" = "หนี้สินปัจจุบัน";
+"accounts.card.available_limit" = "วงเงินคงเหลือ";
+"accounts.card.paid_installments" = "งวดที่ชำระแล้ว";
+"accounts.card.remaining_debt" = "หนี้คงค้าง";
+"credit_card_details.recent_expenses" = "รายจ่ายในรอบบิล";
+"credit_card_details.no_transactions" = "ไม่มีรายการในรอบบิลนี้";
+
+"account_details.generic_title" = "รายละเอียด %@";
+"enum.interest_type.yearly" = "รายปี";
+"enum.interest_type.monthly" = "รายเดือน";
+"transaction.amount_placeholder" = "จำนวนเงิน (เช่น 125.50)";
+"account.name_placeholder_wallet" = "ชื่อกระเป๋าเงิน (เช่น เงินสด)";
+"account.name_placeholder_creditcard" = "ชื่อบัตร (เช่น บัตรโบนัส)";
+"account.name_placeholder_loan" = "ชื่อเงินกู้ (เช่น สินเชื่อรถยนต์)";
+"account.initial_balance_placeholder" = "ยอดเงินเริ่มต้น (เช่น 500)";
+"credit_card.limit_placeholder" = "วงเงินบัตร (เช่น 15000)";
+"credit_card.current_debt_placeholder" = "หนี้สินปัจจุบัน (ไม่บังคับ)";
+"loan.principal_amount_placeholder" = "จำนวนเงินกู้ (เช่น 250000)";
+"loan.interest_rate_placeholder" = "อัตราดอกเบี้ย (เช่น 1.89)";
+
+"budget.name_placeholder" = "ชื่องบประมาณ (เช่น ค่าอาหาร)";
+"budget.limit_placeholder" = "ขีดจำกัดรายเดือน (เช่น 2500)";
+"accounts.add.loan_amount" = "จำนวนเงินกู้";
+"accounts.card.initial_balance" = "ยอดเงินเริ่มต้น";
+"accounts.card.current_balance" = "ยอดเงินปัจจุบัน";
+"accounts.card.total_limit" = "วงเงินบัตรทั้งหมด";
+"accounts.card.statement_date" = "วันสรุปยอดบัญชี";
+
+"accounts.group.wallets" = "กระเป๋าเงิน";
+"accounts.group.credit_cards" = "บัตรเครดิต";
+"accounts.group.loans" = "เงินกู้";
+
+// MARK: - Diğer Ekranlar ve Uyarılar
+"all_transactions.title" = "รายการทั้งหมด";
+"all_transactions.not_found" = "ไม่พบรายการ";
+"all_transactions.not_found_desc" = "ลองเปลี่ยนเกณฑ์การกรองของคุณ";
+"filter.date_range" = "ช่วงวันที่";
+"filter.sort_by" = "จัดเรียงตาม";
+"filter.accounts" = "บัญชี";
+"alert.recurring_transaction" = "นี่คือรายการที่เกิดซ้ำ";
+"alert.update_this_only" = "อัปเดตเฉพาะรายการนี้";
+"alert.update_future" = "อัปเดตรายการนี้และรายการในอนาคต";
+"alert.delete_this_only" = "ลบเฉพาะรายการนี้";
+"alert.delete_series" = "ลบทั้งชุด";
+"alert.add_as_expense.title" = "เพิ่มเป็นรายจ่าย";
+"alert.add_as_expense.button_yes" = "ใช่, เพิ่มเป็นรายจ่าย";
+"alert.add_as_expense.button_no" = "ไม่, แค่ทำเครื่องหมาย";
+"alert.add_as_expense.message_format" = "คุณต้องการเพิ่มการชำระเงินงวดจำนวน %@ เป็นรายจ่ายหรือไม่?";
+"month_picker.title" = "เลือกวันที่";
+"month_picker.month" = "เดือน";
+"month_picker.year" = "ปี";
+"calendar.no_transactions_on_date" = "ไม่มีรายการในวันนี้";
+"calendar.monthly_summary" = "สรุปรายเดือน";
+"notifications.title" = "การแจ้งเตือน";
+"notifications.no_notifications_title" = "ยังไม่มีการแจ้งเตือน";
+"notifications.no_notifications_desc" = "การแจ้งเตือนที่สำคัญในแอปจะปรากฏที่นี่";
+"validation.error.invalid_amount_format" = "รูปแบบไม่ถูกต้อง สามารถมีตัวเลขเต็มได้สูงสุด 9 หลักและทศนิยม 2 ตำแหน่ง";
+
+// MARK: - Raporlar
+"reports.type.summary" = "สรุป";
+"reports.type.distribution" = "การกระจาย";
+"reports.summary.card.main_metrics" = "ตัวชี้วัดหลัก";
+"reports.summary.card.comparison" = "การวิเคราะห์เปรียบเทียบ";
+"reports.summary.top_expenses" = "รายจ่ายสูงสุด";
+"reports.summary.statistics" = "สถิติ";
+"reports.summary.net_flow" = "กระแสเงินสดสุทธิ";
+"reports.comparison.no_data" = "ไม่มีข้อมูลจากช่วงก่อนหน้าเพื่อเปรียบเทียบ";
+"reports.comparison.prefix_net_flow_positive" = "เมื่อเทียบกับช่วงก่อนหน้า คุณประหยัดได้มากขึ้น ";
+"reports.comparison.suffix_net_flow_positive" = "";
+"reports.comparison.prefix_net_flow_negative" = "เมื่อเทียบกับช่วงก่อนหน้า คุณใช้จ่ายมากขึ้น ";
+"reports.comparison.suffix_net_flow_negative" = "";
+"reports.comparison.prefix_expenses_increased" = "รายจ่ายของคุณเพิ่มขึ้น ";
+"reports.comparison.suffix_expenses_increased" = " เมื่อเทียบกับช่วงก่อนหน้า";
+"reports.comparison.prefix_expenses_decreased" = "รายจ่ายของคุณลดลง ";
+"reports.comparison.suffix_expenses_decreased" = " เมื่อเทียบกับช่วงก่อนหน้า";
+"reports.distribution.no_data" = "ไม่มีข้อมูลที่จะแสดงสำหรับช่วงเวลานี้";
+"reports.statistics.daily_avg_expense" = "รายจ่ายเฉลี่ยต่อวัน";
+"reports.statistics.daily_avg_income" = "รายรับเฉลี่ยต่อวัน";
+"reports.statistics.highest_expense" = "รายจ่ายเดี่ยวสูงสุด";
+"reports.statistics.highest_income" = "รายรับเดี่ยวสูงสุด";
+
+// MARK: - Bütçeler
+"budgets.title" = "งบประมาณ";
+"budgets.empty.title" = "ยังไม่มีงบประมาณ";
+"budgets.empty.description" = "สร้างงบประมาณใหม่โดยแตะที่ไอคอน '+' เพื่อควบคุมการใช้จ่ายของคุณ";
+"budgets.add.title" = "งบประมาณใหม่";
+"budgets.edit.title" = "แก้ไขงบประมาณ";
+"budgets.form.name_placeholder" = "เช่น ค่าอาหาร";
+"budgets.form.limit_amount" = "ขีดจำกัดรายเดือน";
+"budgets.form.select_categories" = "เลือกหมวดหมู่";
+"budgets.card.total_limit" = "ขีดจำกัดทั้งหมด";
+"budgets.card.amount_spent" = "จำนวนที่ใช้ไป";
+"budgets.card.amount_remaining" = "จำนวนที่เหลือ";
+"alert.delete_budget.message_format" = "คุณแน่ใจหรือไม่ว่าต้องการลบงบประมาณ '%@' อย่างถาวร?";
+
+// MARK: - Enum Değerleri ve Kategoriler
+"enum.recurrence.once" = "ครั้งเดียว";
+"enum.recurrence.monthly" = "ทุกเดือน";
+"enum.recurrence.quarterly" = "ทุก 3 เดือน";
+"enum.recurrence.semi_annually" = "ทุก 6 เดือน";
+"enum.recurrence.annually" = "ทุกปี";
+"enum.sort.date_desc" = "ตามวันที่ (ใหม่ไปเก่า)";
+"enum.sort.date_asc" = "ตามวันที่ (เก่าไปใหม่)";
+"enum.sort.amount_desc" = "ตามจำนวนเงิน (มากไปน้อย)";
+"enum.sort.amount_asc" = "ตามจำนวนเงิน (น้อยไปมาก)";
+"enum.date_range.all" = "ตลอดเวลา";
+"enum.date_range.this_week" = "สัปดาห์นี้";
+"enum.date_range.ytd" = "ตั้งแต่ต้นปี";
+"enum.date_range.this_month" = "เดือนนี้";
+"enum.date_range.last_3_months" = "3 เดือนล่าสุด";
+"enum.date_range.last_6_months" = "6 เดือนล่าสุด";
+"enum.date_range.last_year" = "12 เดือนล่าสุด";
+"enum.budget_period.monthly" = "รายเดือน";
+
+"category.salary" = "เงินเดือน";
+"category.extra_income" = "รายได้เสริม";
+"category.investment" = "การลงทุน";
+"category.groceries" = "ของชำ";
+"category.restaurant" = "ร้านอาหาร";
+"category.transport" = "การเดินทาง";
+"category.bills" = "บิล";
+"category.entertainment" = "ความบันเทิง";
+"category.health" = "สุขภาพ";
+"category.clothing" = "เสื้อผ้า";
+"category.home" = "บ้าน";
+"category.gift" = "ของขวัญ";
+"category.loan_payment" = "การชำระคืนเงินกู้";
+"category.other" = "อื่นๆ";
+
+// MARK: - Filtreleme Ekranı
+"filter.custom_range_header" = "ช่วงที่กำหนดเอง";
+"filter.start_date" = "วันที่เริ่มต้น";
+"filter.end_date" = "วันที่สิ้นสุด";
+"filter.presets_header" = "ช่วงที่ตั้งไว้ล่วงหน้า";
+"enum.date_range.custom" = "กำหนดเอง";
+
+// MARK: - Para Birimleri
+"currency.name.TRY" = "ลีราตุรกี";
+"currency.name.USD" = "ดอลลาร์สหรัฐ";
+"currency.name.EUR" = "ยูโร";
+"currency.name.GBP" = "ปอนด์สเตอร์ลิง";
+"currency.name.JPY" = "เยนญี่ปุ่น";
+"currency.name.CAD" = "ดอลลาร์แคนาดา";
+"currency.name.AUD" = "ดอลลาร์ออสเตรเลีย";
+"currency.name.CHF" = "ฟรังก์สวิส";
+"currency.name.CNY" = "หยวนจีน";
+"currency.name.SEK" = "โครนาสวีเดน";
+"currency.name.NOK" = "โครนนอร์เวย์";
+"currency.name.RUB" = "รูเบิลรัสเซีย";
+"currency.name.INR" = "รูปีอินเดีย";
+"currency.name.BRL" = "เรียลบราซิล";
+"currency.name.ZAR" = "แรนด์แอฟริกาใต้";
+"currency.name.AED" = "ดีแรห์มสหรัฐอาหรับเอมิเรตส์";
+"currency.name.SAR" = "ริยัลซาอุดีอาระเบีย";
+"currency.name.KRW" = "วอนเกาหลีใต้";
+"currency.name.SGD" = "ดอลลาร์สิงคโปร์";
+"currency.name.IDR" = "รูเปียห์อินโดนีเซีย";
+"currency.name.VND" = "ดงเวียดนาม";
+"currency.name.THB" = "บาทไทย";
+"currency.name.MYR" = "ริงกิตมาเลเซีย";
+
+"settings.section.data_management" = "การจัดการข้อมูล";
+"settings.data.export" = "ส่งออกข้อมูล (.csv)";
+"settings.data.exporting" = "กำลังส่งออก...";
+
+"settings.language_change.title" = "เปลี่ยนภาษา";
+"settings.language_change.message" = "การเปลี่ยนภาษาจำเป็นต้องรีสตาร์ทแอปพลิเคชัน ต้องการดำเนินการต่อหรือไม่?";
+"settings.language_change.restart_button" = "รีสตาร์ท";
+
+"alert.delete_confirmation.title" = "ยืนยันการลบ";
+"alert.delete_wallet.message_format" = "คุณแน่ใจหรือไม่ว่าต้องการลบกระเป๋าเงิน/บัญชี '%@' อย่างถาวร? รายการที่เกี่ยวข้องกับบัญชีนี้จะไม่ถูกลบ แต่จะยกเลิกการเชื่อมโยงบัญชีเท่านั้น";
+"alert.delete_credit_card.message_format" = "คุณแน่ใจหรือไม่ว่าต้องการลบบัตรเครดิต '%@' อย่างถาวร? รายการที่เกี่ยวข้องกับบัญชีนี้จะไม่ถูกลบ แต่จะยกเลิกการเชื่อมโยงบัญชีเท่านั้น";
+"alert.delete_loan.message_format" = "คุณแน่ใจหรือไม่ว่าต้องการลบเงินกู้ '%@' และแผนการผ่อนชำระอย่างถาวร? การกระทำนี้ไม่สามารถย้อนกลับได้";
+"alert.delete_category.message_format" = "คุณแน่ใจหรือไม่ว่าต้องการลบหมวดหมู่ '%@'? หมวดหมู่นี้จะถูกลบออกจากรายการที่เกี่ยวข้องทั้งหมด";
+"alert.delete_transaction.message" = "คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้อย่างถาวร?";
+"alert.delete_all_notifications.title" = "ลบทั้งหมด";
+"alert.delete_all_notifications.message" = "คุณแน่ใจหรือไม่ว่าต้องการลบการแจ้งเตือนทั้งหมดอย่างถาวร?";
+
+"button.add_account" = "เพิ่มบัญชี";
+"button.add_budget" = "เพิ่มงบประมาณ";
+"button.add_category" = "เพิ่มหมวดหมู่";
+
+"budget_details.no_transactions" = "ไม่มีรายการสำหรับงบประมาณนี้";
+
+"alert.no_accounts.title" = "ต้องมีบัญชี";
+"alert.no_accounts.message" = "ในการเพิ่มรายการ คุณต้องสร้างบัญชีกระเป๋าเงินหรือบัตรเครดิตก่อน";
+"alert.no_accounts.add_account_button" = "สร้างบัญชี";
+
+// MARK: - Veri Dışa Aktarma Başlıkları
+"export.header.date" = "วันที่";
+"export.header.name" = "ชื่อรายการ";
+"export.header.amount" = "จำนวนเงิน";
+"export.header.type" = "ประเภท";
+"export.header.category" = "หมวดหมู่";
+"export.header.account" = "บัญชี";
+
+"credit_card_details.no_expenses_for_month" = "ไม่มีรายจ่ายสำหรับเดือนนี้";
+"credit_card_details.total_expenses_for_period" = "รายจ่ายทั้งหมดในรอบบิล";
+"notifications.delete_all" = "ลบทั้งหมด";
+"notifications.mark_all_as_read" = "ทำเครื่องหมายทั้งหมดว่าอ่านแล้ว";
+
+// MARK: - Form Labels & Placeholders
+"form.label.transaction_name" = "ชื่อรายการ";
+"form.label.amount" = "จำนวนเงิน";
+"form.label.wallet_name" = "ชื่อกระเป๋าเงิน";
+"form.label.card_name" = "ชื่อบัตร";
+"form.label.loan_name" = "ชื่อเงินกู้";
+"form.label.initial_balance" = "ยอดเงินเริ่มต้น";
+"form.label.card_limit" = "วงเงินบัตร";
+"form.label.current_debt" = "หนี้สินปัจจุบัน";
+"form.label.principal_amount" = "เงินต้น";
+"form.label.interest_rate" = "อัตราดอกเบี้ย";
+"form.label.budget_name" = "ชื่องบประมาณ";
+"form.label.budget_limit" = "ขีดจำกัดรายเดือน";
+
+// MARK: - Time
+"time.today" = "วันนี้";
+"time.yesterday" = "เมื่อวาน";
+
+"reports.period.weekly" = "รายสัปดาห์";
+"reports.period.monthly" = "รายเดือน";
+"week_picker.select_date_label" = "เลือกวันที่";
+"week_picker.title" = "เลือกสัปดาห์";
+
+"form.label.set_end_date" = "ตั้งวันที่สิ้นสุด";
+"form.label.end_date" = "วันที่สิ้นสุด";
+
+"notification.daily.title" = "ได้เวลาสรุปยอดของวัน!";
+"notification.daily.body" = "คุณได้เพิ่มรายรับและรายจ่ายของวันนี้ใน Walleo แล้วหรือยัง? นี่เป็นเวลาที่ดีที่สุดในการติดตามสุขภาพทางการเงินของคุณ";
+"notification.weekly.title" = "รายงานประจำสัปดาห์ของคุณพร้อมแล้ว!";
+"notification.weekly.body" = "สำรวจสรุปการเงินของสัปดาห์ที่แล้วตอนนี้ ข้อมูลโดยละเอียดเกี่ยวกับรายจ่ายและรายรับของคุณกำลังรออยู่ที่หน้าจอรายงาน";
+
+"settings.data.delete_all" = "ลบข้อมูลทั้งหมด";
+"alert.delete_all_data.title" = "ลบข้อมูลทั้งหมดหรือไม่?";
+"alert.delete_all_data.message" = "การกระทำนี้ไม่สามารถย้อนกลับได้ บัญชี รายการ และงบประมาณทั้งหมดของคุณบนอุปกรณ์และใน iCloud จะถูกลบอย่างถาวร";
+"common.confirm_delete" = "ใช่, ลบทั้งหมด";
+
+"settings.data.icloud_backup" = "การสำรองข้อมูล iCloud";
+"alert.icloud_toggle.title" = "กำลังเปลี่ยนการตั้งค่าการสำรองข้อมูล";
+"alert.icloud_toggle.message" = "การเปลี่ยนการตั้งค่านี้จำเป็นต้องรีสตาร์ทแอป ต้องการดำเนินการต่อหรือไม่?";
+"alert.language_change.confirm_button" = "ยืนยัน";
+"alert.no_payment_account.title" = "ไม่พบบัญชีที่เหมาะสม";
+"alert.no_payment_account.message" = "ในการเพิ่มการชำระเงินนี้เป็นรายจ่าย คุณต้องสร้างบัญชีกระเป๋าเงินหรือบัตรเครดิตก่อน";
+"account_selection.title" = "เลือกบัญชีชำระเงิน";
+
+"account_type.wallet" = "กระเป๋าเงิน";
+"account_type.credit_card" = "บัตรเครดิต";
+"account_type.loan" = "เงินกู้";
+
+// MARK: - Onboarding
+"onboarding.page1.title" = "จักรวาลการเงินของคุณ ในสัมผัสเดียว";
+"onboarding.page1.subtitle" = "ควบคุมสถานะทางการเงินของคุณอย่างเต็มที่โดยการจัดการเงินสด บัตรเครดิต และเงินกู้ในที่เดียว";
+"onboarding.page2.title" = "คุณจัดการงบประมาณ ไม่ใช่ให้งบประมาณจัดการคุณ";
+"onboarding.page2.subtitle" = "สร้างงบประมาณตามหมวดหมู่และปรับการใช้จ่ายของคุณให้สอดคล้องกับเป้าหมายได้อย่างง่ายดายด้วยการติดตามความคืบหน้าแบบเห็นภาพ";
+"onboarding.page3.title" = "ให้ข้อมูลของคุณพูดแทน และมองเห็นอนาคต";
+"onboarding.page3.subtitle" = "ตัดสินใจทางการเงินอย่างชาญฉลาดขึ้นโดยการแปลงข้อมูลการใช้จ่ายในอดีตของคุณให้เป็นรายงานที่มีความหมายและการวิเคราะห์เปรียบเทียบ";
+"onboarding.page4.title" = "ผู้ช่วยทางการเงินที่คิดถึงคุณ";
+"onboarding.page4.subtitle" = "สบายใจไปกับการแจ้งเตือนอัจฉริยะที่คอยเตือนคุณเกี่ยวกับทุกรายละเอียดสำคัญ ตั้งแต่วันครบกำหนดชำระบิลไปจนถึงการใช้งบประมาณเกิน";
+"onboarding.page5.title" = "เป็นของคุณอย่างเต็มที่ ปรับแต่งได้ตามใจคุณ";
+"onboarding.page5.subtitle" = "ปรับแต่งแอปให้เข้ากับไลฟ์สไตล์และความชอบของคุณได้อย่างสมบูรณ์แบบด้วยธีม ภาษา สกุลเงิน และหมวดหมู่ที่กำหนดเอง";
+"onboarding.page6.title" = "ข้อมูลของคุณคือป้อมปราการของคุณ";
+"onboarding.page6.subtitle" = "ตั้งแต่การซิงค์ iCloud ที่ปลอดภัยไปจนถึงการส่งออกข้อมูลและตัวเลือกการลบถาวร การควบคุมข้อมูลของคุณอยู่ในมือคุณอย่างสมบูรณ์";
+"onboarding.signin.apple" = "ลงชื่อเข้าใช้ด้วย Apple";
+"onboarding.privacy_policy" = "การดำเนินการต่อหมายความว่าคุณยอมรับนโยบายความเป็นส่วนตัวและข้อกำหนดการใช้งานของเรา";
+
+"settings.section_ai_assistant" = "ผู้ช่วย AI";
+"settings.ai_assistant_title" = "แชทกับผู้ช่วย AI";
+
+// Aile Hesabı
+"settings.family_account" = "บัญชีครอบครัว";
+"family.no_family_title" = "ไม่มีบัญชีครอบครัว";
+"family.no_family_description" = "สร้างบัญชีครอบครัวเพื่อแบ่งปันข้อมูลทางการเงินของคุณกับสมาชิกในครอบครัว";
+"family.create_family" = "สร้างบัญชีครอบครัว";
+"family.info_section" = "ข้อมูลครอบครัว";
+"family.name" = "ชื่อครอบครัว";
+"family.owner" = "เจ้าของ";
+"family.you" = "คุณ";
+"family.member_count" = "จำนวนสมาชิก";
+"family.created_date" = "วันที่สร้าง";
+"family.members_section" = "สมาชิกในครอบครัว";
+"family.pending" = "รอดำเนินการ";
+"family.invite_member" = "เชิญสมาชิก";
+"family.leave_family" = "ออกจากครอบครัว";
+"family.owner_cannot_leave" = "ในฐานะเจ้าของ คุณไม่สามารถออกจากครอบครัวได้ กรุณาโอนความเป็นเจ้าของก่อน";
+"family.create_new" = "บัญชีครอบครัวใหม่";
+"family.name_placeholder" = "ป้อนชื่อครอบครัว";
+"family.create_description" = "ข้อมูลทางการเงินทั้งหมดของคุณจะถูกแบ่งปันกับสมาชิกในครอบครัว";
+"family.create_title" = "สร้างครอบครัว";
+"family.invite_instructions" = "สร้างลิงก์เชิญเพื่อแบ่งปันกับสมาชิกในครอบครัวของคุณ";
+"family.generate_invite_link" = "สร้างลิงก์เชิญ";
+"family.leave_confirmation_title" = "คุณแน่ใจหรือไม่ว่าต้องการออกจากครอบครัว?";
+"family.leave_confirmation_message" = "คุณจะไม่สามารถเข้าถึงข้อมูลที่แบ่งปันของครอบครัวได้อีกต่อไป การกระทำนี้ไม่สามารถย้อนกลับได้";
+"family.leave_confirm" = "ออกจากครอบครัว";
+"family.cloudkit_warning_title" = "บัญชีครอบครัวต้องใช้ iCloud";
+"family.cloudkit_warning_message" = "คุณไม่สามารถปิดการสำรองข้อมูล iCloud ในขณะที่ใช้บัญชีครอบครัวได้ กรุณาออกจากบัญชีครอบครัวก่อน";
+"family.delete_warning_title" = "ไม่สามารถลบข้อมูลได้";
+"family.delete_warning_message" = "คุณไม่สามารถลบข้อมูลทั้งหมดในขณะที่เป็นส่วนหนึ่งของบัญชีครอบครัวได้ กรุณาออกจากบัญชีครอบครัวก่อน";
+"family.invitation_title" = "คำเชิญเข้าร่วมบัญชีครอบครัว";
+"family.invitation_description" = "คุณได้รับเชิญให้เข้าร่วมบัญชีครอบครัว ข้อมูลทางการเงินทั้งหมดจะถูกแบ่งปันระหว่างสมาชิกในครอบครัว";
+"family.accepting_invitation" = "กำลังยอมรับคำเชิญ...";
+"family.invitation_accepted" = "ยอมรับคำเชิญแล้ว!";
+"family.accept_invitation" = "ยอมรับคำเชิญ";
+"family.join_family" = "เข้าร่วมครอบครัว";
+
+// MARK: - Bütçe Ek
+"budget.automation_settings" = "การตั้งค่าอัตโนมัติ";
+"budget.form.auto_renew" = "ต่ออายุอัตโนมัติทุกเดือน";
+"budget.form.rollover_balance" = "ยกยอดเงินคงเหลือจากเดือนที่แล้ว";
+"budget.list.period_ended" = "สิ้นสุดรอบเวลา";
+"budget.detail.period_info" = "ข้อมูลรอบเวลา";
+"budget.detail.budget_period" = "รอบเวลางบประมาณ";
+"budget.detail.rollover_from_last_month" = "ยอดยกมาจากเดือนที่แล้ว";
+"budget.detail.transactions_for_period" = "รายการในรอบเวลานี้";
+"notification.budget.pre_renewal.title" = "งบประมาณของคุณกำลังจะต่ออายุ";
+"notification.budget.pre_renewal.body" = "งบประมาณ '%@' ของคุณจะต่ออายุสำหรับเดือนถัดไปพร้อมกับยอดยกมา %@";
+"notification.budget.renewal_summary.title" = "งบประมาณของคุณได้รับการต่ออายุแล้ว!";
+"notification.budget.renewal_summary.body" = "ยินดีต้อนรับ %@! ☕️ งบประมาณ %d รายการของคุณสำหรับเดือนนี้ได้รับการต่ออายุโดยอัตโนมัติแล้ว";
+
+// MARK: - Detaylı Raporlar
+"reports.detailed.title" = "รายงาน";
+"reports.detailed.credit_card_report" = "รายงานบัตรเครดิต";
+"reports.detailed.loan_report" = "รายงานเงินกู้";
+"reports.detailed.start_date" = "วันที่เริ่มต้น";
+"reports.detailed.end_date" = "วันที่สิ้นสุด";
+
+"reports.detailed.no_cc_data_title" = "ไม่พบข้อมูล";
+"reports.detailed.no_cc_data_desc" = "ไม่พบการใช้จ่ายผ่านบัตรเครดิตในช่วงวันที่ที่เลือก";
+"reports.detailed.no_loan_data_title" = "ไม่พบข้อมูล";
+"reports.detailed.no_loan_data_desc" = "ไม่พบการผ่อนชำระเงินกู้ที่ครบกำหนดในช่วงวันที่ที่เลือก";
+
+"reports.detailed.overall_summary" = "สรุปภาพรวม";
+"reports.detailed.total_spending" = "การใช้จ่ายทั้งหมด";
+"reports.detailed.transaction_count" = "จำนวนรายการ";
+"reports.detailed.most_used_card" = "บัตรที่ใช้บ่อยที่สุด";
+"reports.detailed.card_details_header" = "รายละเอียดบัตร";
+"reports.detailed.category_distribution" = "การกระจายหมวดหมู่";
+"reports.detailed.daily_spending_trend" = "แนวโน้มการใช้จ่ายรายวัน";
+
+"reports.detailed.overall_loan_summary" = "สรุปภาพรวมเงินกู้";
+"reports.detailed.active_loan_count" = "เงินกู้ที่ใช้งานอยู่ %d รายการ";
+"reports.detailed.paid_installments_count" = "ชำระแล้ว: %d";
+"reports.detailed.unpaid_installments_count" = "ยังไม่ชำระ: %d";
+"reports.detailed.loan_details_header" = "รายละเอียดเงินกู้";
+"reports.detailed.installments_in_period" = "งวดในรอบเวลา: %d";
+"reports.detailed.paid_and_expensed" = "ชำระแล้วและบันทึกเป็นรายจ่าย";
+"reports.detailed.paid_only" = "ทำเครื่องหมายว่าชำระแล้วเท่านั้น";
+"reports.detailed.overdue" = "งวดที่เกินกำหนด";
+"reports.detailed.upcoming" = "งวดที่จะมาถึง";
+
+/* Harcama Isı Haritası */
+"reports.detailed.spending_heatmap" = "ฮีทแมพการใช้จ่าย";
+"reports.heatmap.no_data" = "ไม่พบการใช้จ่ายในช่วงวันที่ที่เลือก";
+"reports.heatmap.hourly_distribution" = "การกระจายรายชั่วโมง";
+"reports.heatmap.comparison" = "การเปรียบเทียบ";
+"reports.heatmap.insights" = "ข้อมูลเชิงลึก";
+
+/* Zaman Dilimleri */
+"reports.heatmap.morning" = "เช้า";
+"reports.heatmap.noon" = "กลางวัน";
+"reports.heatmap.evening" = "เย็น";
+"reports.heatmap.night" = "กลางคืน";
+"reports.heatmap.weekday" = "วันธรรมดา";
+"reports.heatmap.weekend" = "สุดสัปดาห์";
+
+/* İçgörüler */
+"reports.heatmap.insight.busiest_day" = "วันที่คึกคักที่สุด: %@";
+"reports.heatmap.insight.busiest_hour" = "ชั่วโมงที่ใช้งานมากที่สุด: %@";
+"reports.heatmap.insight.weekend_comparison" = "ใช้จ่ายช่วงสุดสัปดาห์มากขึ้น %%%@";
+"reports.heatmap.insight.no_spending_days" = "ไม่มีการใช้จ่ายเป็นเวลา %@ วัน";
+
+// MARK: - Transfer
+"transfer.title" = "โอนเงินระหว่างบัญชี";
+"transfer.source_account" = "กระเป๋าเงินต้นทาง";
+"transfer.target_account" = "กระเป๋าเงินหรือบัตรเครดิตปลายทาง";
+"transfer.amount_label" = "จำนวนเงินที่โอน";
+"transfer.amount_placeholder" = "ป้อนจำนวนเงินที่จะโอน";
+"transfer.button" = "โอนเงิน";
+"transfer.select_wallet" = "เลือกกระเป๋าเงิน";
+"transfer.select_account" = "เลือกบัญชี";
+"transfer.source_details" = "รายละเอียดบัญชีต้นทาง";
+"transfer.target_details" = "รายละเอียดบัญชีปลายทาง";
+"transfer.name" = "ชื่อ:";
+"transfer.initial_balance" = "ยอดเงินเริ่มต้น:";
+"transfer.current_balance" = "ยอดเงินปัจจุบัน:";
+"transfer.total_limit" = "วงเงินทั้งหมด:";
+"transfer.available_limit" = "วงเงินคงเหลือ:";
+"transfer.current_debt" = "หนี้สินปัจจุบัน:";
+"transfer.statement_date" = "วันสรุปยอดบัญชี:";
+"transfer.type.wallet" = "กระเป๋าเงิน";
+"transfer.type.credit_card" = "บัตรเครดิต";
+"transfer.incoming" = "การโอนเข้า";
+"transfer.outgoing" = "การโอนออก";
+"transfer.unknown_account" = "บัญชีที่ไม่รู้จัก";
+"transfer.section.transactions" = "รายการ";
+"transfer.section.transfers" = "การโอนเงิน";
+"transfer.no_transactions" = "ไม่มีรายการในรอบเวลานี้";
+"transfer.no_transfers" = "ไม่พบการโอนเงิน";
+"transfer.section.expenses" = "รายจ่าย";
+"transfer.section.payments" = "การชำระเงิน";
+"transfer.no_payments" = "ไม่พบการชำระเงิน";
+
+"credit_card.installment_summary_format" = "%@ - ผ่อน %d/%d";
+"credit_card.installment_number_format" = "งวดที่ %d";
+
+// Taksitli işlem
+"transaction.installment.toggle" = "รายการผ่อนชำระ";
+"transaction.installment.count" = "จำนวนงวด";
+"transaction.installment.preview" = "%d งวด x %@ = %@";
+"transaction.installment.edit_warning_title" = "การแก้ไขรายการผ่อนชำระ";
+"transaction.installment.edit_warning" = "การเปลี่ยนแปลงนี้จะสร้างงวดทั้งหมดขึ้นมาใหม่ ต้องการดำเนินการต่อหรือไม่?";
+"transaction.installment.delete_warning" = "รายการผ่อนชำระทั้งหมด (%d งวด) จะถูกลบ คุณยืนยันหรือไม่?";
+"transaction.edit_installment" = "แก้ไขรายการผ่อนชำระ";
+"credit_card.installment_purchases" = "การซื้อแบบผ่อนชำระ";
+"installment.completed" = "เสร็จสมบูรณ์";
+"alert.installment.delete_title" = "การลบรายการผ่อนชำระ";
+"credit_card_details.period_total" = "ยอดรวมในรอบบิล";
+"alert.no_wallet.message" = "ในการเพิ่มรายการ คุณ**ต้อง**สร้างบัญชี**กระเป๋าเงิน****ก่อน**";
+
+// MARK: - Cash Flow Report
+"reports.detailed.categories_report" = "รายงานหมวดหมู่";
+"reports.category.summary" = "สรุปหมวดหมู่";
+"reports.category.total_categories" = "หมวดหมู่ทั้งหมด";
+"reports.category.active_categories" = "หมวดหมู่ที่ใช้งานอยู่";
+"reports.category.most_spent" = "ใช้จ่ายมากที่สุด";
+"reports.category.view_list" = "มุมมองรายการ";
+"reports.category.view_chart" = "มุมมองแผนภูมิ";
+"reports.category.view_comparison" = "การเปรียบเทียบ";
+"reports.category.distribution" = "การกระจายหมวดหมู่";
+"reports.detailed.cash_flow" = "กระแสเงินสด";
+"cashflow.title" = "รายงานกระแสเงินสด";
+"cashflow.view.summary" = "สรุป";
+"cashflow.view.flow" = "กระแส";
+"cashflow.view.categories" = "หมวดหมู่";
+"cashflow.view.accounts" = "บัญชี";
+"cashflow.view.projection" = "การคาดการณ์";
+
+"cashflow.insights" = "ข้อมูลเชิงลึก";
+"cashflow.net_flow" = "กระแสเงินสดสุทธิ";
+"cashflow.of_income" = "% ของรายรับ";
+"cashflow.daily_avg" = "เฉลี่ยต่อวัน";
+
+"cashflow.normal_transactions" = "รายการปกติ";
+"cashflow.installment_transactions" = "รายการผ่อนชำระ";
+"cashflow.recurring_transactions" = "รายการที่เกิดซ้ำ";
+
+"cashflow.opening_balance" = "ยอดยกมา";
+"cashflow.closing_balance" = "ยอดยกไป";
+"cashflow.inflows" = "เงินเข้า";
+"cashflow.outflows" = "เงินออก";
+"cashflow.daily_average" = "เฉลี่ยต่อวัน";
+
+"cashflow.daily_details" = "รายละเอียดรายวัน";
+"cashflow.cumulative_balance" = "ยอดสะสม";
+
+"cashflow.flow_chart" = "แผนภูมิกระแส";
+"cashflow.income_expense" = "รายรับ/รายจ่าย";
+"cashflow.detailed" = "รายละเอียด";
+"cashflow.cumulative" = "สะสม";
+"cashflow.transaction_type_distribution" = "การกระจายประเภทรายการ";
+"cashflow.category_flow" = "กระแสตามหมวดหมู่";
+"cashflow.show_trend" = "แสดงแนวโน้ม";
+"cashflow.hide_trend" = "ซ่อนแนวโน้ม";
+"cashflow.largest_transaction" = "รายการใหญ่ที่สุด";
+
+"cashflow.transfers" = "การโอนเงิน";
+"cashflow.most_frequent_transfer" = "การโอนเงินบ่อยที่สุด";
+"cashflow.show_details" = "แสดงรายละเอียด";
+"cashflow.hide_details" = "ซ่อนรายละเอียด";
+
+// Projeksiyon
+"cashflow.projection.title" = "การคาดการณ์ในอนาคต";
+"cashflow.projection.days" = "การคาดการณ์ %d วัน";
+"cashflow.projection.income" = "รายรับโดยประมาณ";
+"cashflow.projection.expense" = "รายจ่ายโดยประมาณ";
+"cashflow.projection.net" = "สุทธิโดยประมาณ";
+"cashflow.projection.chart" = "แผนภูมิการคาดการณ์";
+
+// Risk
+"cashflow.risk.analysis" = "การวิเคราะห์ความเสี่ยง";
+"cashflow.risk.low" = "ความเสี่ยงต่ำ";
+"cashflow.risk.medium" = "ความเสี่ยงปานกลาง";
+"cashflow.risk.high" = "ความเสี่ยงสูง";
+"cashflow.risk.low_message" = "กระแสเงินสดของคุณดูดี คุณสามารถบรรลุเป้าหมายทางการเงินได้ด้วยพฤติกรรมการใช้จ่ายในปัจจุบัน";
+"cashflow.risk.medium_message" = "กระแสเงินสดของคุณมีความไม่สมดุลบางอย่าง แนะนำให้ทบทวนการใช้จ่ายของคุณ";
+"cashflow.risk.high_message" = "โปรดระวัง! กระแสเงินสดของคุณติดลบ คุณจำเป็นต้องดำเนินการอย่างเร่งด่วน";
+
+"cashflow.suggestions" = "ข้อเสนอแนะ";
+"cashflow.suggestion.low_1" = "คุณสามารถนำเงินส่วนเกินไปลงทุนได้";
+"cashflow.suggestion.low_2" = "พิจารณาสร้างกองทุนฉุกเฉิน";
+"cashflow.suggestion.medium_1" = "ลดค่าใช้จ่ายที่ไม่จำเป็น";
+"cashflow.suggestion.medium_2" = "สร้างแหล่งรายได้เพิ่มเติม";
+"cashflow.suggestion.medium_3" = "ทบทวนขีดจำกัดงบประมาณของคุณ";
+"cashflow.suggestion.high_1" = "หยุดการใช้จ่ายที่ไม่เร่งด่วน";
+"cashflow.suggestion.high_2" = "จำกัดการใช้บัตรเครดิต";
+"cashflow.suggestion.high_3" = "ปรึกษาที่ปรึกษาทางการเงินมืออาชีพ";
+
+// İçgörüler
+"cashflow.insight.positive_flow" = "กระแสเงินสดเป็นบวก";
+"cashflow.insight.positive_flow_message" = "คุณมีกระแสเงินสดเป็นบวก %@ คุณสามารถเพิ่มการออมของคุณได้";
+"cashflow.insight.negative_flow" = "กระแสเงินสดเป็นลบ";
+"cashflow.insight.negative_flow_message" = "คุณมีกระแสเงินสดเป็นลบ %@ คุณควรควบคุมการใช้จ่ายของคุณ";
+"cashflow.insight.high_installment" = "การใช้จ่ายแบบผ่อนชำระสูง";
+"cashflow.insight.high_installment_message" = "%%%@ ของการใช้จ่ายของคุณเป็นการผ่อนชำระ สัดส่วนนี้ดูเหมือนจะสูง";
+"cashflow.insight.projection_warning" = "คำเตือนการคาดการณ์";
+"cashflow.insight.projection_warning_message" = "ด้วยพฤติกรรมการใช้จ่ายในปัจจุบัน คุณอาจประสบปัญหาเงินสดขาดมือในอนาคตอันใกล้";
+
+// Genel
+"common.loading" = "กำลังโหลด...";
+"common.close" = "ปิด";
+"common.expenses" = "รายจ่าย";
+"common.incomes" = "รายรับ";
+"time.day_short" = "วัน";
+
+// Kategori Raporları
+"reports.category.view_list" = "มุมมองรายการ";
+"reports.category.view_chart" = "มุมมองแผนภูมิ";
+"reports.category.view_comparison" = "การเปรียบเทียบ";
+"reports.category.display_type" = "ประเภทการแสดงผล";
+"reports.category.transaction_type" = "ประเภทรายการ";
+"reports.category.no_comparison_data" = "ไม่มีข้อมูลเปรียบเทียบ";
+"reports.category.no_previous_period" = "ไม่พบข้อมูลจากช่วงก่อนหน้า";
+
+// Kategori Özet Kartı
+"reports.category.summary" = "สรุป";
+"reports.category.total_categories" = "หมวดหมู่ทั้งหมด";
+"reports.category.active_categories" = "หมวดหมู่ที่ใช้งานอยู่";
+"reports.category.most_spent" = "ใช้จ่ายมากที่สุด";
+
+// Kategori Detay
+"reports.category.detail_type" = "ประเภทรายละเอียด";
+"reports.category.names" = "ชื่อ";
+"reports.category.days" = "วัน";
+"reports.category.hours" = "ชั่วโมง";
+"reports.category.trend" = "แนวโน้ม";
+"reports.category.total_spending" = "การใช้จ่ายทั้งหมด";
+"reports.category.transaction" = "รายการ";
+"reports.category.average" = "เฉลี่ย";
+"reports.category.daily" = "รายวัน";
+"reports.category.most_frequent_names" = "ชื่อรายการที่ใช้บ่อยที่สุด";
+"reports.category.used_times" = "ใช้ไป %d ครั้ง";
+"reports.category.avg_short" = "เฉลี่ย";
+"reports.category.distribution_by_days" = "การกระจายตามวัน";
+"reports.category.distribution_by_hours" = "การกระจายตามชั่วโมง";
+"reports.category.monthly_trend" = "แนวโน้มรายเดือน";
+"reports.category.transaction_count" = "%d รายการ";
+"reports.category.previous" = "ก่อนหน้า";
+"reports.category.day" = "วัน";
+"reports.category.amount" = "จำนวนเงิน";
+"reports.category.month" = "เดือน";
+
+"reports.heatmap.24_hours" = "24 ชั่วโมง";
+"reports.transaction_count" = "%d รายการ";
+"reports.average_with_amount" = "เฉลี่ย: %@";
+"reports.heatmap.busiest_hours" = "คึกคักที่สุด: %@";
+
+// MARK: - Ortak Kullanım Eklemeleri
+"common.low" = "ต่ำ";
+"common.high" = "สูง";
+"common.average" = "เฉลี่ย";
+"common.highest" = "สูงสุด";
+
+// MARK: - Raporlar
+"reports.heatmap.try_different_date_range" = "ลองช่วงวันที่อื่น";
+"reports.heatmap.title.hourly" = "การกระจายการใช้จ่ายรายชั่วโมง";
+"reports.heatmap.title.daily" = "การกระจายการใช้จ่ายรายวัน";
+"reports.heatmap.title.monthly" = "การกระจายการใช้จ่ายรายเดือน";
+"reports.heatmap.title.weekly" = "การกระจายการใช้จ่ายรายสัปดาห์";
+"reports.heatmap.title.monthly_summary" = "สรุปการใช้จ่ายรายเดือน";
+"reports.heatmap.week_format" = "สัปดาห์ที่ %d";
+"reports.comparison.no_data_title" = "ไม่มีข้อมูลเปรียบเทียบ";
+"reports.category.avg_short_format" = "เฉลี่ย: %@";
+
+// MARK: - Nakit Akışı Raporu
+"reports.cashflow.no_data_title" = "ไม่พบข้อมูล";
+"reports.cashflow.no_data_desc" = "ไม่พบรายการในช่วงวันที่ที่เลือก";
+"reports.category.daily_average_format" = "%@/วัน";
+
+"cashflow.transfer_count" = "%d การโอน";
+"common.times_suffix" = "%d ครั้ง";
+
+// Kredi Kartı Raporları - Yeni Anahtarlar
+"reports.creditcard.detail_view" = "มุมมองรายละเอียด";
+"reports.creditcard.comparison_view" = "การเปรียบเทียบ";
+"reports.creditcard.summary_view" = "สรุป";
+"reports.creditcard.no_data" = "ไม่พบข้อมูล";
+"reports.creditcard.no_data_desc" = "ไม่พบการใช้จ่ายผ่านบัตรเครดิตในช่วงวันที่ที่เลือก";
+"reports.creditcard.total_spending" = "การใช้จ่ายทั้งหมด";
+"reports.creditcard.active_cards" = "บัตรที่ใช้งานอยู่";
+"reports.creditcard.transactions" = "รายการ";
+"reports.creditcard.daily_avg" = "เฉลี่ยต่อวัน";
+"reports.creditcard.most_used" = "ใช้บ่อยที่สุด";
+"reports.creditcard.limit" = "วงเงิน:";
+"reports.creditcard.usage" = "การใช้งาน";
+"reports.creditcard.hide_metrics" = "ซ่อนตัวชี้วัด";
+"reports.creditcard.show_metrics" = "แสดงตัวชี้วัด";
+"reports.creditcard.current_debt" = "หนี้สินปัจจุบัน";
+"reports.creditcard.available" = "ใช้ได้";
+"reports.creditcard.highest_day" = "วันที่ใช้จ่ายสูงสุด";
+"reports.creditcard.avg_transaction" = "รายการเฉลี่ย";
+"reports.creditcard.category_analysis" = "การวิเคราะห์หมวดหมู่";
+"reports.creditcard.more_categories" = "+%d หมวดหมู่อื่นๆ";
+"reports.creditcard.spending_trend" = "แนวโน้มการใช้จ่าย";
+"reports.creditcard.daily" = "รายวัน";
+"reports.creditcard.weekly" = "รายสัปดาห์";
+"reports.creditcard.by_category" = "ตามหมวดหมู่";
+"reports.creditcard.installments" = "การซื้อแบบผ่อนชำระ";
+"reports.creditcard.installment_count" = "%d รายการผ่อนชำระ";
+"reports.creditcard.monthly_total" = "ยอดรวมรายเดือน";
+"reports.creditcard.monthly" = "รายเดือน";
+"reports.creditcard.progress" = "ความคืบหน้า";
+"reports.creditcard.total_amount" = "จำนวนเงินทั้งหมด";
+"reports.creditcard.remaining" = "คงเหลือ";
+"reports.creditcard.card_comparison" = "การเปรียบเทียบบัตร";
+"reports.creditcard.detailed_comparison" = "การเปรียบเทียบโดยละเอียด";
+"reports.creditcard.card" = "บัตร";
+"reports.creditcard.spending" = "การใช้จ่าย";
+"reports.creditcard.total_distribution" = "การกระจายทั้งหมด";
+"reports.creditcard.category_summary" = "สรุปหมวดหมู่";
+"reports.creditcard.no_categories" = "ไม่พบข้อมูลหมวดหมู่";
+"reports.creditcard.daily_averages" = "ค่าเฉลี่ยรายวัน";
+
+// MARK: - Hesap Silme ve İşlem Aktarımı
+"alert.no_eligible_account.title" = "ไม่มีบัญชีที่เหมาะสม";
+"alert.no_eligible_account.message" = "ในการลบบัญชีนี้ คุณต้องสร้างบัญชีกระเป๋าเงินหรือบัตรเครดิตอื่นก่อนเพื่อโอนรายการไป";
+"transfer_transactions.title" = "โอนรายการและลบ";
+"transfer_transactions.message_format" = "คุณกำลังจะลบบัญชี '%@' บัญชีนี้มี %d รายการ กรุณาเลือกบัญชีใหม่เพื่อโอนรายการเหล่านี้ไป";
+"transfer_transactions.confirm_button" = "โอนและลบ";
+"alert.no_eligible_wallet.title" = "ไม่พบกระเป๋าเงินที่เหมาะสม";
+"alert.no_eligible_wallet.message" = "บัญชีที่คุณต้องการลบมีรายการรายรับอยู่ หากต้องการโอนรายการเหล่านี้ คุณต้องสร้างบัญชีประเภท 'กระเป๋าเงิน' อื่นก่อน";
+
+// MARK: - Kredi Raporu
+"loan_report.no_data" = "ไม่พบข้อมูลเงินกู้";
+"loan_report.no_data_desc" = "ไม่พบการผ่อนชำระเงินกู้ในช่วงวันที่ที่เลือก";
+"loan_report.view.summary" = "สรุป";
+"loan_report.view.detail" = "รายละเอียด";
+"loan_report.view.calendar" = "ปฏิทิน";
+"loan_report.view.performance" = "ประสิทธิภาพ";
+
+"loan_report.sort.by_date" = "ตามวันที่";
+"loan_report.sort.by_amount" = "ตามจำนวนเงิน";
+"loan_report.sort.by_progress" = "ตามความคืบหน้า";
+
+"loan_report.overview" = "สถานะหนี้สินโดยรวม";
+"loan_report.completed" = "เสร็จสมบูรณ์";
+"loan_report.active_loans" = "เงินกู้ที่ใช้งานอยู่";
+"loan_report.monthly_payment" = "การชำระเงินรายเดือน";
+"loan_report.total_paid" = "ยอดชำระทั้งหมด";
+"loan_report.remaining" = "หนี้คงค้าง";
+"loan_report.estimated_completion" = "วันที่คาดว่าจะเสร็จสิ้น";
+"loan_report.monthly_payment_load" = "ภาระการชำระเงินรายเดือน";
+"loan_report.no_future_payments" = "ไม่มีการชำระเงินในอนาคต";
+"loan_report.distribution" = "การกระจายเงินกู้";
+"loan_report.no_active_loans" = "ไม่มีเงินกู้ที่ใช้งานอยู่";
+
+"loan_report.search_placeholder" = "ค้นหาเงินกู้...";
+"loan_report.active_only" = "เฉพาะที่ใช้งานอยู่";
+"loan_report.sort" = "จัดเรียง";
+"loan_report.principal_amount" = "เงินต้น";
+"loan_report.interest_rate" = "อัตราดอกเบี้ย";
+"loan_report.total_to_pay" = "ยอดที่ต้องชำระทั้งหมด";
+"loan_report.total_interest" = "ดอกเบี้ยทั้งหมด";
+"loan_report.last_payment_date" = "วันที่ชำระเงินล่าสุด";
+"loan_report.payment_performance" = "ประสิทธิภาพการชำระเงิน";
+"loan_report.score" = "คะแนน";
+"loan_report.next_payment" = "การชำระเงินครั้งถัดไป";
+"loan_report.days_remaining" = "เหลืออีก %d วัน";
+"loan_report.due_today" = "ครบกำหนดวันนี้!";
+"loan_report.overdue" = "เกินกำหนด!";
+"loan_report.installments_in_period" = "งวดในรอบเวลา";
+"loan_report.more_installments" = "... และอีก %d งวด";
+
+"loan_report.monthly_total" = "ยอดรวมรายเดือน";
+
+"loan_report.performance_score" = "คะแนนประสิทธิภาพ";
+"loan_report.performance_excellent" = "ยอดเยี่ยม";
+"loan_report.performance_good" = "ดี";
+"loan_report.performance_fair" = "พอใช้";
+"loan_report.performance_poor" = "แย่";
+"loan_report.total_interest_paid" = "ดอกเบี้ยที่ชำระแล้วทั้งหมด";
+"loan_report.avg_monthly_payment" = "การชำระเงินเฉลี่ยรายเดือน";
+"loan_report.on_time" = "ตรงเวลา";
+"loan_report.late" = "ล่าช้า";
+"loan_report.missed" = "พลาด";
+
+// MARK: - Harcama Raporu
+"spending_report.view.summary" = "สรุป";
+"spending_report.view.category" = "หมวดหมู่";
+"spending_report.view.time" = "การวิเคราะห์เวลา";
+"spending_report.view.comparison" = "การเปรียบเทียบ";
+
+"spending_report.no_data" = "ไม่พบการใช้จ่าย";
+"spending_report.no_data_desc" = "ไม่มีการใช้จ่ายในช่วงวันที่ที่เลือก";
+
+"spending_report.total_spending" = "การใช้จ่ายทั้งหมด";
+"spending_report.daily_avg" = "เฉลี่ยต่อวัน";
+"spending_report.transaction_count" = "จำนวนรายการ";
+"spending_report.avg_transaction" = "รายการเฉลี่ย";
+"spending_report.highest_expense" = "รายจ่ายสูงสุด";
+
+"spending_report.increase" = "เพิ่มขึ้น";
+"spending_report.decrease" = "ลดลง";
+
+"spending_report.top_categories" = "หมวดหมู่การใช้จ่ายสูงสุด";
+"spending_report.weekly_summary" = "สรุปรายสัปดาห์";
+"spending_report.insights" = "ข้อมูลเชิงลึก";
+"spending_report.insight.busiest_day" = "วันที่คึกคักที่สุดของคุณคือ %@ ด้วยการใช้จ่าย %@";
+"spending_report.insight.top_category" = "หมวดหมู่ %@ คิดเป็น %%%.1f ของการใช้จ่ายทั้งหมดของคุณ";
+"spending_report.insight.weekend_warning" = "การใช้จ่ายเฉลี่ยช่วงสุดสัปดาห์ของคุณสูงกว่าวันธรรมดา";
+
+"spending_report.category_distribution" = "การกระจายหมวดหมู่";
+"spending_report.category_details" = "รายละเอียดหมวดหมู่";
+"spending_report.largest_expense" = "รายจ่ายใหญ่ที่สุด";
+"spending_report.avg_per_transaction" = "เฉลี่ยต่อรายการ";
+
+"spending_report.daily_trend" = "แนวโน้มการใช้จ่ายรายวัน";
+"spending_report.weekday_weekend" = "วันธรรมดา vs สุดสัปดาห์";
+"spending_report.hourly_distribution" = "การกระจายรายชั่วโมง";
+"spending_report.weekday" = "วันธรรมดา";
+"spending_report.weekend" = "สุดสัปดาห์";
+
+"spending_report.period_comparison" = "การเปรียบเทียบรอบเวลา";
+"spending_report.previous_period" = "รอบเวลาก่อนหน้า";
+"spending_report.current_period" = "รอบเวลาปัจจุบัน";
+"spending_report.category_changes" = "การเปลี่ยนแปลงหมวดหมู่";
+"spending_report.budget_performance" = "ประสิทธิภาพงบประมาณ";
+"spending_report.budget_status.normal" = "ปกติ";
+"spending_report.budget_status.critical" = "วิกฤต";
+"spending_report.budget_status.exceeded" = "เกินกำหนด";
+"spending_report.busiest_hours" = "ชั่วโมงที่คึกคักที่สุด";
+"common.transactions" = "รายการ";
+
+// MARK: - Onboarding
+"onboarding.skip" = "ข้าม";
+"onboarding.continue" = "ต่อไป";
+"onboarding.confirm_settings" = "ยืนยันการตั้งค่า";
+"onboarding.privacy_notice" = "การดำเนินการต่อหมายความว่าคุณยอมรับนโยบายความเป็นส่วนตัวและข้อกำหนดการใช้งานของเรา";
+
+"onboarding.welcome.title" = "ยินดีต้อนรับสู่อิสรภาพทางการเงิน";
+"onboarding.welcome.subtitle" = "ติดตามการใช้จ่ายของคุณ จัดการงบประมาณ และบรรลุเป้าหมายทางการเงินของคุณ";
+
+"onboarding.feature1.title" = "การวิเคราะห์อัจฉริยะ";
+"onboarding.feature1.description" = "จัดหมวดหมู่การใช้จ่ายของคุณและเห็นภาพสถานะทางการเงินของคุณด้วยแผนภูมิโดยละเอียด";
+
+"onboarding.feature2.title" = "การจัดการงบประมาณ";
+"onboarding.feature2.description" = "สร้างงบประมาณรายเดือน ติดตามขีดจำกัด และบรรลุเป้าหมายการออมของคุณ";
+
+"onboarding.feature3.title" = "การแจ้งเตือนอัจฉริยะ";
+"onboarding.feature3.description" = "รับการแจ้งเตือนทันเวลาสำหรับการชำระบิลและการใช้งบประมาณเกิน";
+
+"onboarding.personalize.title" = "ปรับแต่งประสบการณ์ของคุณ";
+"onboarding.select_language" = "เลือกภาษา";
+"onboarding.select_currency" = "เลือกสกุลเงิน";
+
+"reports.creditcard.show_less" = "แสดงน้อยลง";
+"reports.creditcard.usage.short" = "การใช้งาน";
+"reports.creditcard.no_category_data" = "ไม่พบข้อมูลหมวดหมู่";
+"loan_report.legend.paid" = "ชำระแล้ว";
+"loan_report.legend.pending" = "รอดำเนินการ";
+"loan_report.legend.overdue" = "เกินกำหนด";
+"loan_report.this_month_summary" = "เดือนนี้";
+"loan_report.total_installments" = "ยอดรวมงวดของเดือนนี้:";
+"loan_report.paid_installments" = "ยอดรวมงวดที่ชำระแล้ว:";
+"loan_report.no_installments_for_day" = "ไม่มีการผ่อนชำระเงินกู้สำหรับวันนี้";
+"loan_report.installment_no" = "งวด:";
+"loan_report.status.paid" = "ชำระแล้ว";
+"loan_report.status.pending" = "รอดำเนินการ";
+"loan_report.status.overdue" = "เกินกำหนด";
+"loan_report.total_for_day" = "ยอดรวมของวัน";
+"dashboard.show_less" = "แสดงน้อยลง";
+"dashboard.more_categories" = "หมวดหมู่อื่นๆ";
+"reports.category.highest_spending" = "หมวดหมู่ที่ใช้จ่ายสูงสุด";
+"reports.category.most_transactions" = "รายการมากที่สุด";

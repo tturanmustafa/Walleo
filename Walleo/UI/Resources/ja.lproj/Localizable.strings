@@ -1,0 +1,903 @@
+/* Localizable.strings (Japanese) */
+
+// MARK: - Genel / Ortak Kullanım
+"common.save" = "保存";
+"common.cancel" = "キャンセル";
+"common.edit" = "編集";
+"common.delete" = "削除";
+"common.done" = "完了";
+"common.reset" = "リセット";
+"common.apply" = "適用";
+"common.all" = "すべて";
+"common.income" = "収入";
+"common.expense" = "支出";
+"common.category" = "カテゴリー";
+"common.categories" = "カテゴリー";
+"common.amount" = "金額";
+"common.date" = "日付";
+"common.type" = "種類";
+"common.account" = "口座";
+"common.select_account" = "口座を選択";
+"common.back" = "戻る";
+"common.total" = "合計";
+"common.net" = "純額";
+"common.total_amount" = "合計金額";
+
+// MARK: - Ana Sekmeler
+"tab.dashboard" = "概要";
+"tab.calendar" = "カレンダー";
+"tab.reports" = "レポート";
+"tab.settings" = "設定";
+"tab.budgets" = "予算";
+"tab.more" = "その他";
+
+// MARK: - Panel / Dashboard Ekranı
+"dashboard.category_distribution" = "カテゴリー別分布";
+"dashboard.recent_transactions" = "最近の取引";
+"dashboard.see_all" = "すべて表示";
+"dashboard.no_records_for_month" = "今月の記録はありません";
+
+// MARK: - Ayarlar Ekranı
+"settings.title" = "設定";
+"settings.section_general" = "一般";
+"settings.theme" = "テーマ";
+"settings.theme_system" = "システム";
+"settings.theme_light" = "ライト";
+"settings.theme_dark" = "ダーク";
+"settings.language" = "言語";
+"settings.manage_categories" = "カテゴリー管理";
+"settings.section_info" = "情報";
+"settings.version" = "バージョン";
+"settings.currency" = "通貨";
+
+// MARK: - Bildirim Ayarları
+"settings.notifications" = "通知設定";
+"settings.notifications.title" = "通知設定";
+"settings.notifications.master_section" = "マスターコントロール";
+"settings.notifications.master_toggle" = "すべての通知";
+"settings.notifications.budget_section" = "予算アラート";
+"settings.notifications.budget_toggle" = "予算の通知を表示";
+"settings.notifications.threshold_picker" = "警告しきい値";
+"settings.notifications.threshold.option_80" = "80%に達した場合";
+"settings.notifications.threshold.option_85" = "85%に達した場合";
+"settings.notifications.threshold.option_90" = "90%に達した場合";
+"settings.notifications.threshold.option_95" = "95%に達した場合";
+"settings.notifications.loan_section" = "支払いリマインダー";
+"settings.notifications.loan_toggle" = "ローンの返済をリマインド";
+"settings.notifications.loan_stepper" = "期日の%d日前";
+"settings.notifications.credit_card_section" = "クレジットカードリマインダー";
+"settings.notifications.credit_card_toggle" = "支払期日をリマインド";
+
+// MARK: - Bildirim İçerikleri
+"notification.budget.over_limit.title" = "予算超過";
+"notification.budget.over_limit.body_line1_format" = "予算「%@」の目標金額を超えました。";
+"notification.budget.over_limit.body_line2" = "予算目標: %@";
+"notification.budget.over_limit.body_line3" = "超過金額: %@";
+"notification.budget.approaching_limit.title" = "予算上限が近づいています";
+"notification.budget.approaching_limit.body_line1_format" = "予算「%1$@」の目標金額の%2$.0f%%に達しました。";
+"notification.budget.approaching_limit.body_line2" = "予算目標: %@";
+"notification.budget.approaching_limit.body_line3" = "残額: %@";
+"notification.credit_card.due_date.title" = "クレジットカードの支払いが間近です";
+"notification.credit_card.due_date.body_format" = "%@カードの支払期日は%@です。";
+
+// MARK: - Kategori Yönetimi
+"categories.title" = "カテゴリー";
+"categories.income_categories" = "収入カテゴリー";
+"categories.expense_categories" = "支出カテゴリー";
+"categories.new" = "新規カテゴリー";
+"categories.edit" = "カテゴリーを編集";
+"categories.name" = "カテゴリー名";
+"categories.color" = "カテゴリーの色";
+"categories.select_icon" = "アイコンを選択";
+
+// MARK: - İşlem Ekleme / Düzenleme
+"transaction.new" = "新規取引";
+"transaction.edit" = "取引を編集";
+"transaction.type" = "取引の種類";
+"transaction.section_details" = "詳細";
+"transaction.name_placeholder" = "取引名 (例: 夕食)";
+"transaction.select_category" = "カテゴリーを選択";
+"transaction.recurrence" = "繰り返し";
+"transaction.loan_payment_name_format" = "%@のローン返済";
+
+// MARK: - Hesaplar
+"accounts.title" = "口座";
+"accounts.empty.title" = "まだ口座がありません";
+"accounts.empty.description" = "「+」アイコンをタップして新しい口座を追加してください。";
+"accounts.add.wallet" = "ウォレット (現金)";
+"accounts.add.credit_card" = "クレジットカード";
+"accounts.add.loan" = "ローン";
+"accounts.add.new_credit_card" = "新しいクレジットカードを追加";
+"accounts.add.new_loan" = "新しいローンを追加";
+"accounts.add.account_color" = "口座の色";
+"accounts.add.interest_rate" = "利率 (%)";
+"accounts.add.installments" = "分割回数";
+"accounts.add.installments_stepper" = "%dヶ月";
+"accounts.add.create_installments_button" = "保存して分割払いを作成";
+
+"credit_card.form.statement_date_header" = "請求締め日";
+"credit_card.form.statement_date" = "請求締め日";
+"credit_card.form.payment_due_date_header" = "支払期日の設定";
+"credit_card.form.payment_due_date_stepper" = "請求締め日の%d日後";
+"loan.form.details_header" = "ローン情報";
+"loan.form.first_payment_header" = "初回返済日";
+"loan.form.interest_type" = "金利タイプ";
+"loan.form.first_installment_date" = "初回返済日";
+"loan_details.summary_header" = "ローン概要";
+"loan_details.installment_plan_header" = "返済計画";
+
+"installment.edit.title" = "分割払いを編集";
+"installment.edit.details_header" = "分割払いの詳細";
+"installment.paid.label" = "支払い済みにする";
+"accounts.card.current_debt" = "現在の負債";
+"accounts.card.available_limit" = "利用可能額";
+"accounts.card.paid_installments" = "支払い済み回数";
+"accounts.card.remaining_debt" = "残債";
+"credit_card_details.recent_expenses" = "期間内の支出";
+"credit_card_details.no_transactions" = "この期間の取引はありません";
+
+"account_details.generic_title" = "%@の詳細";
+"enum.interest_type.yearly" = "年利";
+"enum.interest_type.monthly" = "月利";
+"transaction.amount_placeholder" = "金額 (例: 125.50)";
+"account.name_placeholder_wallet" = "ウォレット名 (例: 現金)";
+"account.name_placeholder_creditcard" = "カード名 (例: ボーナスカード)";
+"account.name_placeholder_loan" = "ローン名 (例: 自動車ローン)";
+"account.initial_balance_placeholder" = "初期残高 (例: 500)";
+"credit_card.limit_placeholder" = "カード限度額 (例: 15000)";
+"credit_card.current_debt_placeholder" = "現在の負債 (任意)";
+"loan.principal_amount_placeholder" = "借入額 (例: 250000)";
+"loan.interest_rate_placeholder" = "利率 (例: 1.89)";
+
+"budget.name_placeholder" = "予算名 (例: 食費)";
+"budget.limit_placeholder" = "月間限度額 (例: 2500)";
+"accounts.add.loan_amount" = "ローン金額";
+"accounts.card.initial_balance" = "初期残高";
+"accounts.card.current_balance" = "現在残高";
+"accounts.card.total_limit" = "カード限度額";
+"accounts.card.statement_date" = "請求締め日";
+
+"accounts.group.wallets" = "ウォレット";
+"accounts.group.credit_cards" = "クレジットカード";
+"accounts.group.loans" = "ローン";
+
+// MARK: - Diğer Ekranlar ve Uyarılar
+"all_transactions.title" = "すべての取引";
+"all_transactions.not_found" = "取引が見つかりません";
+"all_transactions.not_found_desc" = "フィルター条件を変更してみてください。";
+"filter.date_range" = "期間";
+"filter.sort_by" = "並べ替え";
+"filter.accounts" = "口座";
+"alert.recurring_transaction" = "これは定期的な取引です。";
+"alert.update_this_only" = "この取引のみ更新";
+"alert.update_future" = "これ以降の取引をすべて更新";
+"alert.delete_this_only" = "この取引のみ削除";
+"alert.delete_series" = "すべての定期取引を削除";
+"alert.add_as_expense.title" = "支出として追加";
+"alert.add_as_expense.button_yes" = "はい、支出として追加";
+"alert.add_as_expense.button_no" = "いいえ、マークのみ";
+"alert.add_as_expense.message_format" = "%@の分割払いを支出として追加しますか？";
+"month_picker.title" = "日付を選択";
+"month_picker.month" = "月";
+"month_picker.year" = "年";
+"calendar.no_transactions_on_date" = "この日付の取引はありません";
+"calendar.monthly_summary" = "月次概要";
+"notifications.title" = "通知";
+"notifications.no_notifications_title" = "まだ通知はありません";
+"notifications.no_notifications_desc" = "重要なアプリ内通知はここに表示されます。";
+"validation.error.invalid_amount_format" = "無効な形式です。最大整数9桁、小数2桁までです。";
+
+// MARK: - Raporlar
+"reports.type.summary" = "概要";
+"reports.type.distribution" = "分布";
+"reports.summary.card.main_metrics" = "主要指標";
+"reports.summary.card.comparison" = "比較分析";
+"reports.summary.top_expenses" = "上位の支出";
+"reports.summary.statistics" = "統計";
+"reports.summary.net_flow" = "純増減";
+"reports.comparison.no_data" = "比較対象の前期データがありません。";
+"reports.comparison.prefix_net_flow_positive" = "前期比で";
+"reports.comparison.suffix_net_flow_positive" = "多く貯蓄しました。";
+"reports.comparison.prefix_net_flow_negative" = "前期比で";
+"reports.comparison.suffix_net_flow_negative" = "多く支出しました。";
+"reports.comparison.prefix_expenses_increased" = "支出が前期比で";
+"reports.comparison.suffix_expenses_increased" = "増加しました。";
+"reports.comparison.prefix_expenses_decreased" = "支出が前期比で";
+"reports.comparison.suffix_expenses_decreased" = "減少しました。";
+"reports.distribution.no_data" = "この期間に表示するデータはありません。";
+"reports.statistics.daily_avg_expense" = "一日あたりの平均支出";
+"reports.statistics.daily_avg_income" = "一日あたりの平均収入";
+"reports.statistics.highest_expense" = "最大の単一支出";
+"reports.statistics.highest_income" = "最大の単一収入";
+
+// MARK: - Bütçeler
+"budgets.title" = "予算";
+"budgets.empty.title" = "まだ予算がありません";
+"budgets.empty.description" = "「+」アイコンをタップして新しい予算を作成し、支出を管理しましょう。";
+"budgets.add.title" = "新規予算";
+"budgets.edit.title" = "予算を編集";
+"budgets.form.name_placeholder" = "例: 食費";
+"budgets.form.limit_amount" = "月間限度額";
+"budgets.form.select_categories" = "カテゴリーを選択";
+"budgets.card.total_limit" = "総限度額";
+"budgets.card.amount_spent" = "支出額";
+"budgets.card.amount_remaining" = "残額";
+"alert.delete_budget.message_format" = "「%@」という名前の予算を完全に削除してもよろしいですか？";
+
+// MARK: - Enum Değerleri ve Kategoriler
+"enum.recurrence.once" = "一回のみ";
+"enum.recurrence.monthly" = "毎月";
+"enum.recurrence.quarterly" = "3ヶ月ごと";
+"enum.recurrence.semi_annually" = "6ヶ月ごと";
+"enum.recurrence.annually" = "毎年";
+"enum.sort.date_desc" = "日付順 (新しい順)";
+"enum.sort.date_asc" = "日付順 (古い順)";
+"enum.sort.amount_desc" = "金額順 (高い順)";
+"enum.sort.amount_asc" = "金額順 (低い順)";
+"enum.date_range.all" = "全期間";
+"enum.date_range.this_week" = "今週";
+"enum.date_range.ytd" = "年初から";
+"enum.date_range.this_month" = "今月";
+"enum.date_range.last_3_months" = "過去3ヶ月";
+"enum.date_range.last_6_months" = "過去6ヶ月";
+"enum.date_range.last_year" = "過去12ヶ月";
+"enum.budget_period.monthly" = "月次";
+
+"category.salary" = "給与";
+"category.extra_income" = "副収入";
+"category.investment" = "投資";
+"category.groceries" = "食料品";
+"category.restaurant" = "外食";
+"category.transport" = "交通費";
+"category.bills" = "光熱費・請求";
+"category.entertainment" = "娯楽";
+"category.health" = "健康";
+"category.clothing" = "衣類";
+"category.home" = "住居";
+"category.gift" = "贈り物";
+"category.loan_payment" = "ローン返済";
+"category.other" = "その他";
+
+// MARK: - Filtreleme Ekranı
+"filter.custom_range_header" = "カスタム期間";
+"filter.start_date" = "開始日";
+"filter.end_date" = "終了日";
+"filter.presets_header" = "プリセット期間";
+"enum.date_range.custom" = "カスタム";
+
+// MARK: - Para Birimleri
+"currency.name.TRY" = "トルコリラ";
+"currency.name.USD" = "米ドル";
+"currency.name.EUR" = "ユーロ";
+"currency.name.GBP" = "英ポンド";
+"currency.name.JPY" = "日本円";
+"currency.name.CAD" = "カナダドル";
+"currency.name.AUD" = "オーストラリアドル";
+"currency.name.CHF" = "スイスフラン";
+"currency.name.CNY" = "中国人民元";
+"currency.name.SEK" = "スウェーデンクローナ";
+"currency.name.NOK" = "ノルウェークローネ";
+"currency.name.RUB" = "ロシアルーブル";
+"currency.name.INR" = "インドルピー";
+"currency.name.BRL" = "ブラジルレアル";
+"currency.name.ZAR" = "南アフリカランド";
+"currency.name.AED" = "UAEディルハム";
+"currency.name.SAR" = "サウジアラビアリヤル";
+"currency.name.KRW" = "韓国ウォン";
+"currency.name.SGD" = "シンガポールドル";
+"currency.name.IDR" = "インドネシアルピア";
+"currency.name.VND" = "ベトナムドン";
+"currency.name.THB" = "タイバーツ";
+"currency.name.MYR" = "マレーシアリンギット";
+
+"settings.section.data_management" = "データ管理";
+"settings.data.export" = "データをエクスポート (.csv)";
+"settings.data.exporting" = "エクスポート中...";
+
+"settings.language_change.title" = "言語を変更";
+"settings.language_change.message" = "言語設定を変更するには、アプリの再起動が必要です。続行しますか？";
+"settings.language_change.restart_button" = "再起動";
+
+"alert.delete_confirmation.title" = "削除の確認";
+"alert.delete_wallet.message_format" = "ウォレット/口座「%@」を完全に削除してもよろしいですか？この口座に関連する取引は削除されず、口座の関連付けのみが解除されます。";
+"alert.delete_credit_card.message_format" = "クレジットカード「%@」を完全に削除してもよろしいですか？このカードに関連する取引は削除されず、口座の関連付けのみが解除されます。";
+"alert.delete_loan.message_format" = "ローン「%@」と返済計画を完全に削除してもよろしいですか？この操作は元に戻せません。";
+"alert.delete_category.message_format" = "カテゴリー「%@」を削除してもよろしいですか？関連する取引からこのカテゴリーが削除されます。";
+"alert.delete_transaction.message" = "この取引を完全に削除してもよろしいですか？";
+"alert.delete_all_notifications.title" = "すべて削除";
+"alert.delete_all_notifications.message" = "すべての通知を完全に削除してもよろしいですか？";
+
+"button.add_account" = "口座を追加";
+"button.add_budget" = "予算を追加";
+"button.add_category" = "カテゴリーを追加";
+
+"budget_details.no_transactions" = "この予算の取引はありません";
+
+"alert.no_accounts.title" = "口座が必要です";
+"alert.no_accounts.message" = "取引を追加するには、まずウォレットまたはクレジットカードの口座を作成する必要があります。";
+"alert.no_accounts.add_account_button" = "口座を作成";
+
+// MARK: - Veri Dışa Aktarma Başlıkları
+"export.header.date" = "日付";
+"export.header.name" = "取引名";
+"export.header.amount" = "金額";
+"export.header.type" = "種類";
+"export.header.category" = "カテゴリー";
+"export.header.account" = "口座";
+
+"credit_card_details.no_expenses_for_month" = "今月の支出はありません";
+"credit_card_details.total_expenses_for_period" = "期間中の総支出";
+"notifications.delete_all" = "すべて削除";
+"notifications.mark_all_as_read" = "すべて既読にする";
+
+// MARK: - Form Labels & Placeholders
+"form.label.transaction_name" = "取引名";
+"form.label.amount" = "金額";
+"form.label.wallet_name" = "ウォレット名";
+"form.label.card_name" = "カード名";
+"form.label.loan_name" = "ローン名";
+"form.label.initial_balance" = "初期残高";
+"form.label.card_limit" = "カード限度額";
+"form.label.current_debt" = "現在の負債";
+"form.label.principal_amount" = "元金";
+"form.label.interest_rate" = "利率";
+"form.label.budget_name" = "予算名";
+"form.label.budget_limit" = "月間限度額";
+
+// MARK: - Time
+"time.today" = "今日";
+"time.yesterday" = "昨日";
+
+"reports.period.weekly" = "週次";
+"reports.period.monthly" = "月次";
+"week_picker.select_date_label" = "日付を選択";
+"week_picker.title" = "週を選択";
+
+"form.label.set_end_date" = "終了日を設定";
+"form.label.end_date" = "終了日";
+
+"notification.daily.title" = "一日の終わりです！";
+"notification.daily.body" = "今日の収支をWalleoに追加しましたか？財務状況を把握する絶好の機会です。";
+"notification.weekly.title" = "週次レポートが準備できました！";
+"notification.weekly.body" = "先週の財務概要をご覧ください。支出と収入の詳細がレポート画面で待っています。";
+
+"settings.data.delete_all" = "すべてのデータを削除";
+"alert.delete_all_data.title" = "すべてのデータを削除しますか？";
+"alert.delete_all_data.message" = "この操作は元に戻せません。デバイスとiCloud上のすべての口座、取引、予算が完全に削除されます。";
+"common.confirm_delete" = "はい、すべて削除します";
+
+"settings.data.icloud_backup" = "iCloudバックアップ";
+"alert.icloud_toggle.title" = "バックアップ設定の変更";
+"alert.icloud_toggle.message" = "この設定を変更するには、アプリの再起動が必要です。続行しますか？";
+"alert.language_change.confirm_button" = "確認";
+"alert.no_payment_account.title" = "適切な口座が見つかりません";
+"alert.no_payment_account.message" = "この支払いを支出として追加するには、まずウォレットまたはクレジットカードの口座を作成する必要があります。";
+"account_selection.title" = "支払口座を選択";
+
+"account_type.wallet" = "ウォレット";
+"account_type.credit_card" = "クレジットカード";
+"account_type.loan" = "ローン";
+
+// MARK: - Onboarding
+"onboarding.page1.title" = "あなたの資産を、ワンタップで管理";
+"onboarding.page1.subtitle" = "現金、クレジットカード、ローンを一つの場所で管理し、財務状況を完全に把握しましょう。";
+"onboarding.page2.title" = "予算を管理し、目標を達成";
+"onboarding.page2.subtitle" = "カテゴリー別の予算を作成し、進捗を視覚的に追跡することで、目標に合わせて支出を簡単に調整できます。";
+"onboarding.page3.title" = "データから学び、未来を予測";
+"onboarding.page3.subtitle" = "過去の支出を有益なレポートや比較分析に変換し、より賢い財務判断を下しましょう。";
+"onboarding.page4.title" = "あなたのための財務アシスタント";
+"onboarding.page4.subtitle" = "請求日から予算超過まで、重要な詳細を積極的に通知するスマートなアラートで安心。";
+"onboarding.page5.title" = "あなただけの、完全なカスタマイズ";
+"onboarding.page5.subtitle" = "テーマ、言語、通貨、カスタムカテゴリーで、あなたのライフスタイルや好みに合わせてアプリを完璧に調整。";
+"onboarding.page6.title" = "あなたのデータは、あなたのもの";
+"onboarding.page6.subtitle" = "安全なiCloud同期からデータのエクスポート、完全削除オプションまで、データの管理は完全にあなたの手の中にあります。";
+"onboarding.signin.apple" = "Appleでサインイン";
+"onboarding.privacy_policy" = "続行することにより、プライバシーポリシーと利用規約に同意したことになります。";
+
+"settings.section_ai_assistant" = "AIアシスタント";
+"settings.ai_assistant_title" = "AIアシスタントとチャット";
+
+// Aile Hesabı
+"settings.family_account" = "ファミリー口座";
+"family.no_family_title" = "ファミリー口座がありません";
+"family.no_family_description" = "家族と財務データを共有するためにファミリー口座を作成しましょう";
+"family.create_family" = "ファミリー口座を作成";
+"family.info_section" = "ファミリー情報";
+"family.name" = "ファミリー名";
+"family.owner" = "オーナー";
+"family.you" = "あなた";
+"family.member_count" = "メンバー数";
+"family.created_date" = "作成日";
+"family.members_section" = "ファミリーメンバー";
+"family.pending" = "保留中";
+"family.invite_member" = "メンバーを招待";
+"family.leave_family" = "ファミリーから脱退";
+"family.owner_cannot_leave" = "オーナーはファミリーから脱退できません。まずオーナー権限を譲渡してください。";
+"family.create_new" = "新規ファミリー口座";
+"family.name_placeholder" = "ファミリー名を入力";
+"family.create_description" = "すべての財務データがファミリーメンバーと共有されます";
+"family.create_title" = "ファミリーを作成";
+"family.invite_instructions" = "招待リンクを生成して家族と共有しましょう";
+"family.generate_invite_link" = "招待リンクを生成";
+"family.leave_confirmation_title" = "本当にファミリーから脱退しますか？";
+"family.leave_confirmation_message" = "共有されたファミリーデータにアクセスできなくなります。この操作は元に戻せません。";
+"family.leave_confirm" = "ファミリーから脱退";
+"family.cloudkit_warning_title" = "ファミリー口座にはiCloudが必要です";
+"family.cloudkit_warning_message" = "ファミリー口座を使用している間はiCloudバックアップをオフにできません。まずファミリー口座から脱退してください。";
+"family.delete_warning_title" = "データを削除できません";
+"family.delete_warning_message" = "ファミリー口座に参加している間はすべてのデータを削除できません。まずファミリー口座から脱退してください。";
+"family.invitation_title" = "ファミリー口座への招待";
+"family.invitation_description" = "ファミリー口座への招待が届きました。すべての財務データがメンバー間で共有されます。";
+"family.accepting_invitation" = "招待を承認中...";
+"family.invitation_accepted" = "招待を承認しました！";
+"family.accept_invitation" = "招待を承認";
+"family.join_family" = "ファミリーに参加";
+
+// MARK: - Bütçe Ek
+"budget.automation_settings" = "自動化設定";
+"budget.form.auto_renew" = "毎月自動で更新";
+"budget.form.rollover_balance" = "前月の残高を繰り越し";
+"budget.list.period_ended" = "期間終了";
+"budget.detail.period_info" = "期間情報";
+"budget.detail.budget_period" = "予算期間";
+"budget.detail.rollover_from_last_month" = "前月からの繰越額";
+"budget.detail.transactions_for_period" = "この期間の取引";
+"notification.budget.pre_renewal.title" = "予算がまもなく更新されます";
+"notification.budget.pre_renewal.body" = "あなたの予算「%@」は、%@の繰越額で翌月分として更新されます。";
+"notification.budget.renewal_summary.title" = "予算が更新されました！";
+"notification.budget.renewal_summary.body" = "ようこそ、%@さん！☕️ 今月の%d個の予算が自動的に更新されました。";
+
+// MARK: - Detaylı Raporlar
+"reports.detailed.title" = "レポート";
+"reports.detailed.credit_card_report" = "クレジットカードレポート";
+"reports.detailed.loan_report" = "ローンレポート";
+"reports.detailed.start_date" = "開始日";
+"reports.detailed.end_date" = "終了日";
+
+"reports.detailed.no_cc_data_title" = "データが見つかりません";
+"reports.detailed.no_cc_data_desc" = "選択した期間にクレジットカードの支出はありません。";
+"reports.detailed.no_loan_data_title" = "データが見つかりません";
+"reports.detailed.no_loan_data_desc" = "選択した期間に返済期日のローンはありません。";
+
+"reports.detailed.overall_summary" = "全体概要";
+"reports.detailed.total_spending" = "総支出";
+"reports.detailed.transaction_count" = "取引件数";
+"reports.detailed.most_used_card" = "最も使用されたカード";
+"reports.detailed.card_details_header" = "カード詳細";
+"reports.detailed.category_distribution" = "カテゴリー別分布";
+"reports.detailed.daily_spending_trend" = "日次支出トレンド";
+
+"reports.detailed.overall_loan_summary" = "ローン全体概要";
+"reports.detailed.active_loan_count" = "%d件のアクティブなローン";
+"reports.detailed.paid_installments_count" = "支払い済み: %d";
+"reports.detailed.unpaid_installments_count" = "未払い: %d";
+"reports.detailed.loan_details_header" = "ローン詳細";
+"reports.detailed.installments_in_period" = "期間中の返済: %d回";
+"reports.detailed.paid_and_expensed" = "支払い済み（支出計上済み）";
+"reports.detailed.paid_only" = "支払い済み（支出未計上）";
+"reports.detailed.overdue" = "期日超過の返済";
+"reports.detailed.upcoming" = "今後の返済";
+
+/* Harcama Isı Haritası */
+"reports.detailed.spending_heatmap" = "支出ヒートマップ";
+"reports.heatmap.no_data" = "選択した期間に支出が見つかりませんでした";
+"reports.heatmap.hourly_distribution" = "時間帯別分布";
+"reports.heatmap.comparison" = "比較";
+"reports.heatmap.insights" = "インサイト";
+
+/* Zaman Dilimleri */
+"reports.heatmap.morning" = "朝";
+"reports.heatmap.noon" = "昼";
+"reports.heatmap.evening" = "夕方";
+"reports.heatmap.night" = "夜";
+"reports.heatmap.weekday" = "平日";
+"reports.heatmap.weekend" = "週末";
+
+/* İçgörüler */
+"reports.heatmap.insight.busiest_day" = "最も支出の多い曜日: %@";
+"reports.heatmap.insight.busiest_hour" = "最も活動的な時間帯: %@";
+"reports.heatmap.insight.weekend_comparison" = "週末は%% %@多く支出";
+"reports.heatmap.insight.no_spending_days" = "%@日間支出なし";
+
+// MARK: - Transfer
+"transfer.title" = "口座間振替";
+"transfer.source_account" = "出金元ウォレット";
+"transfer.target_account" = "入金先ウォレットまたはクレジットカード";
+"transfer.amount_label" = "振替金額";
+"transfer.amount_placeholder" = "振替金額を入力";
+"transfer.button" = "振替";
+"transfer.select_wallet" = "ウォレットを選択";
+"transfer.select_account" = "口座を選択";
+"transfer.source_details" = "出金元口座の詳細";
+"transfer.target_details" = "入金先口座の詳細";
+"transfer.name" = "名前:";
+"transfer.initial_balance" = "初期残高:";
+"transfer.current_balance" = "現在残高:";
+"transfer.total_limit" = "総限度額:";
+"transfer.available_limit" = "利用可能額:";
+"transfer.current_debt" = "現在の負債:";
+"transfer.statement_date" = "請求締め日:";
+"transfer.type.wallet" = "ウォレット";
+"transfer.type.credit_card" = "クレジットカード";
+"transfer.incoming" = "入金";
+"transfer.outgoing" = "出金";
+"transfer.unknown_account" = "不明な口座";
+"transfer.section.transactions" = "取引";
+"transfer.section.transfers" = "振替";
+"transfer.no_transactions" = "この期間の取引はありません";
+"transfer.no_transfers" = "振替はありません";
+"transfer.section.expenses" = "支出";
+"transfer.section.payments" = "支払い";
+"transfer.no_payments" = "支払いはありません";
+
+"credit_card.installment_summary_format" = "%@ - %d/%d回払い";
+"credit_card.installment_number_format" = "%d回目の支払い";
+
+// Taksitli işlem
+"transaction.installment.toggle" = "分割払い";
+"transaction.installment.count" = "分割回数";
+"transaction.installment.preview" = "%d回 x %@ = %@";
+"transaction.installment.edit_warning_title" = "分割払いの編集";
+"transaction.installment.edit_warning" = "この変更はすべての分割払いを再作成します。続行しますか？";
+"transaction.installment.delete_warning" = "この分割払い取引全体（%d回）が削除されます。よろしいですか？";
+"transaction.edit_installment" = "分割払いを編集";
+"credit_card.installment_purchases" = "分割払い購入";
+"installment.completed" = "完了済み";
+"alert.installment.delete_title" = "分割払いの削除";
+"credit_card_details.period_total" = "期間合計";
+"alert.no_wallet.message" = "取引を追加するには、**まず**「ウォレット」口座を**作成する**必要があります。";
+
+// MARK: - Cash Flow Report
+"reports.detailed.categories_report" = "カテゴリーレポート";
+"reports.category.summary" = "カテゴリー概要";
+"reports.category.total_categories" = "総カテゴリー数";
+"reports.category.active_categories" = "アクティブなカテゴリー";
+"reports.category.most_spent" = "最多支出";
+"reports.category.view_list" = "リスト表示";
+"reports.category.view_chart" = "グラフ表示";
+"reports.category.view_comparison" = "比較表示";
+"reports.category.distribution" = "カテゴリー別分布";
+"reports.detailed.cash_flow" = "キャッシュフロー";
+"cashflow.title" = "キャッシュフローレポート";
+"cashflow.view.summary" = "概要";
+"cashflow.view.flow" = "フロー";
+"cashflow.view.categories" = "カテゴリー";
+"cashflow.view.accounts" = "口座";
+"cashflow.view.projection" = "予測";
+
+"cashflow.insights" = "インサイト";
+"cashflow.net_flow" = "純増減";
+"cashflow.of_income" = "収入の%";
+"cashflow.daily_avg" = "日平均";
+
+"cashflow.normal_transactions" = "通常取引";
+"cashflow.installment_transactions" = "分割払い取引";
+"cashflow.recurring_transactions" = "定期取引";
+
+"cashflow.opening_balance" = "期首残高";
+"cashflow.closing_balance" = "期末残高";
+"cashflow.inflows" = "収入";
+"cashflow.outflows" = "支出";
+"cashflow.daily_average" = "日平均";
+
+"cashflow.daily_details" = "日次詳細";
+"cashflow.cumulative_balance" = "累積残高";
+
+"cashflow.flow_chart" = "フローチャート";
+"cashflow.income_expense" = "収支";
+"cashflow.detailed" = "詳細";
+"cashflow.cumulative" = "累積";
+"cashflow.transaction_type_distribution" = "取引タイプ別分布";
+"cashflow.category_flow" = "カテゴリー別フロー";
+"cashflow.show_trend" = "トレンドを表示";
+"cashflow.hide_trend" = "トレンドを非表示";
+"cashflow.largest_transaction" = "最大の取引";
+
+"cashflow.transfers" = "振替";
+"cashflow.most_frequent_transfer" = "最も頻繁な振替";
+"cashflow.show_details" = "詳細を表示";
+"cashflow.hide_details" = "詳細を非表示";
+
+// Projeksiyon
+"cashflow.projection.title" = "将来予測";
+"cashflow.projection.days" = "%d日間の予測";
+"cashflow.projection.income" = "予測収入";
+"cashflow.projection.expense" = "予測支出";
+"cashflow.projection.net" = "予測純額";
+"cashflow.projection.chart" = "予測グラフ";
+
+// Risk
+"cashflow.risk.analysis" = "リスク分析";
+"cashflow.risk.low" = "低リスク";
+"cashflow.risk.medium" = "中リスク";
+"cashflow.risk.high" = "高リスク";
+"cashflow.risk.low_message" = "キャッシュフローは健全です。現在の支出習慣で財務目標を達成できます。";
+"cashflow.risk.medium_message" = "キャッシュフローに若干の不均衡が見られます。支出の見直しをお勧めします。";
+"cashflow.risk.high_message" = "注意！キャッシュフローがマイナスです。緊急の対策が必要です。";
+
+"cashflow.suggestions" = "提案";
+"cashflow.suggestion.low_1" = "余剰資金を投資に回すことを検討しましょう";
+"cashflow.suggestion.low_2" = "緊急時資金の作成を検討しましょう";
+"cashflow.suggestion.medium_1" = "不要な支出を削減しましょう";
+"cashflow.suggestion.medium_2" = "追加の収入源を作りましょう";
+"cashflow.suggestion.medium_3" = "予算限度額を見直しましょう";
+"cashflow.suggestion.high_1" = "緊急でない支出を停止しましょう";
+"cashflow.suggestion.high_2" = "クレジットカードの利用を制限しましょう";
+"cashflow.suggestion.high_3" = "専門のファイナンシャルアドバイザーに相談しましょう";
+
+// İçgörüler
+"cashflow.insight.positive_flow" = "プラスのキャッシュフロー";
+"cashflow.insight.positive_flow_message" = "%@のプラスキャッシュフローがあります。貯蓄を増やすことができます。";
+"cashflow.insight.negative_flow" = "マイナスのキャッシュフロー";
+"cashflow.insight.negative_flow_message" = "%@のマイナスキャッシュフローがあります。支出を管理する必要があります。";
+"cashflow.insight.high_installment" = "高い分割払い支出";
+"cashflow.insight.high_installment_message" = "支出の%% %@が分割払いです。この割合は高いようです。";
+"cashflow.insight.projection_warning" = "予測警告";
+"cashflow.insight.projection_warning_message" = "現在の支出習慣では、次の期間に資金不足に陥る可能性があります。";
+
+// Genel
+"common.loading" = "読み込み中...";
+"common.close" = "閉じる";
+"common.expenses" = "支出";
+"common.incomes" = "収入";
+"time.day_short" = "日";
+
+// Kategori Raporları
+"reports.category.view_list" = "リスト表示";
+"reports.category.view_chart" = "グラフ表示";
+"reports.category.view_comparison" = "比較表示";
+"reports.category.display_type" = "表示タイプ";
+"reports.category.transaction_type" = "取引タイプ";
+"reports.category.no_comparison_data" = "比較データがありません";
+"reports.category.no_previous_period" = "前期のデータが見つかりませんでした";
+
+// Kategori Özet Kartı
+"reports.category.summary" = "概要";
+"reports.category.total_categories" = "総カテゴリー数";
+"reports.category.active_categories" = "アクティブなカテゴリー";
+"reports.category.most_spent" = "最多支出";
+
+// Kategori Detay
+"reports.category.detail_type" = "詳細タイプ";
+"reports.category.names" = "名前";
+"reports.category.days" = "曜日";
+"reports.category.hours" = "時間";
+"reports.category.trend" = "トレンド";
+"reports.category.total_spending" = "総支出";
+"reports.category.transaction" = "取引";
+"reports.category.average" = "平均";
+"reports.category.daily" = "日次";
+"reports.category.most_frequent_names" = "最も頻繁な取引名";
+"reports.category.used_times" = "%d回使用";
+"reports.category.avg_short" = "平均";
+"reports.category.distribution_by_days" = "曜日別分布";
+"reports.category.distribution_by_hours" = "時間帯別分布";
+"reports.category.monthly_trend" = "月次トレンド";
+"reports.category.transaction_count" = "%d件の取引";
+"reports.category.previous" = "前回";
+"reports.category.day" = "日";
+"reports.category.amount" = "金額";
+"reports.category.month" = "月";
+
+"reports.heatmap.24_hours" = "24時間";
+"reports.transaction_count" = "%d件の取引";
+"reports.average_with_amount" = "平均: %@";
+"reports.heatmap.busiest_hours" = "最多: %@";
+
+// MARK: - Ortak Kullanım Eklemeleri
+"common.low" = "低い";
+"common.high" = "高い";
+"common.average" = "平均";
+"common.highest" = "最高";
+
+// MARK: - Raporlar
+"reports.heatmap.try_different_date_range" = "別の期間を試してください";
+"reports.heatmap.title.hourly" = "時間帯別支出分布";
+"reports.heatmap.title.daily" = "日次支出分布";
+"reports.heatmap.title.monthly" = "月次支出分布";
+"reports.heatmap.title.weekly" = "週次支出分布";
+"reports.heatmap.title.monthly_summary" = "月次支出概要";
+"reports.heatmap.week_format" = "第%d週";
+"reports.comparison.no_data_title" = "比較データがありません";
+"reports.category.avg_short_format" = "平均: %@";
+
+// MARK: - Nakit Akışı Raporu
+"reports.cashflow.no_data_title" = "データが見つかりません";
+"reports.cashflow.no_data_desc" = "選択した期間に取引が見つかりませんでした。";
+"reports.category.daily_average_format" = "%@/日";
+
+"cashflow.transfer_count" = "%d件の振替";
+"common.times_suffix" = "%d回";
+
+// Kredi Kartı Raporları - Yeni Anahtarlar
+"reports.creditcard.detail_view" = "詳細表示";
+"reports.creditcard.comparison_view" = "比較";
+"reports.creditcard.summary_view" = "概要";
+"reports.creditcard.no_data" = "データが見つかりません";
+"reports.creditcard.no_data_desc" = "選択した期間にクレジットカードの支出が見つかりませんでした。";
+"reports.creditcard.total_spending" = "総支出";
+"reports.creditcard.active_cards" = "アクティブなカード";
+"reports.creditcard.transactions" = "取引";
+"reports.creditcard.daily_avg" = "日平均";
+"reports.creditcard.most_used" = "最多利用";
+"reports.creditcard.limit" = "限度額:";
+"reports.creditcard.usage" = "利用状況";
+"reports.creditcard.hide_metrics" = "詳細を非表示";
+"reports.creditcard.show_metrics" = "詳細を表示";
+"reports.creditcard.current_debt" = "現在の負債";
+"reports.creditcard.available" = "利用可能";
+"reports.creditcard.highest_day" = "最高支出日";
+"reports.creditcard.avg_transaction" = "平均取引額";
+"reports.creditcard.category_analysis" = "カテゴリー分析";
+"reports.creditcard.more_categories" = "他%dカテゴリー";
+"reports.creditcard.spending_trend" = "支出トレンド";
+"reports.creditcard.daily" = "日次";
+"reports.creditcard.weekly" = "週次";
+"reports.creditcard.by_category" = "カテゴリー別";
+"reports.creditcard.installments" = "分割払い";
+"reports.creditcard.installment_count" = "%d件の分割払い";
+"reports.creditcard.monthly_total" = "月合計";
+"reports.creditcard.monthly" = "月々";
+"reports.creditcard.progress" = "進捗";
+"reports.creditcard.total_amount" = "総額";
+"reports.creditcard.remaining" = "残り";
+"reports.creditcard.card_comparison" = "カード比較";
+"reports.creditcard.detailed_comparison" = "詳細比較";
+"reports.creditcard.card" = "カード";
+"reports.creditcard.spending" = "支出";
+"reports.creditcard.total_distribution" = "全体分布";
+"reports.creditcard.category_summary" = "カテゴリー概要";
+"reports.creditcard.no_categories" = "カテゴリーデータがありません";
+"reports.creditcard.daily_averages" = "日平均";
+
+// MARK: - Hesap Silme ve İşlem Aktarımı
+"alert.no_eligible_account.title" = "適切な口座がありません";
+"alert.no_eligible_account.message" = "この口座を削除するには、まず取引を移行できる別のウォレットまたはクレジットカード口座を作成する必要があります。";
+"transfer_transactions.title" = "取引を移行して削除";
+"transfer_transactions.message_format" = "口座「%@」を削除しようとしています。この口座には%d件の取引があります。これらの取引を移行する新しい口座を選択してください。";
+"transfer_transactions.confirm_button" = "移行して削除";
+"alert.no_eligible_wallet.title" = "適切なウォレットがありません";
+"alert.no_eligible_wallet.message" = "削除したい口座には収入取引が含まれています。これらの取引を移行するには、まず別の「ウォレット」タイプの口座を作成する必要があります。";
+
+// MARK: - Kredi Raporu
+"loan_report.no_data" = "ローンデータが見つかりません";
+"loan_report.no_data_desc" = "選択した期間にローンの返済が見つかりませんでした。";
+"loan_report.view.summary" = "概要";
+"loan_report.view.detail" = "詳細";
+"loan_report.view.calendar" = "カレンダー";
+"loan_report.view.performance" = "パフォーマンス";
+
+"loan_report.sort.by_date" = "日付順";
+"loan_report.sort.by_amount" = "金額順";
+"loan_report.sort.by_progress" = "進捗順";
+
+"loan_report.overview" = "総負債状況";
+"loan_report.completed" = "完了済み";
+"loan_report.active_loans" = "アクティブなローン";
+"loan_report.monthly_payment" = "月々の返済額";
+"loan_report.total_paid" = "返済総額";
+"loan_report.remaining" = "残債";
+"loan_report.estimated_completion" = "完済予定日";
+"loan_report.monthly_payment_load" = "月々の返済負担";
+"loan_report.no_future_payments" = "今後の返済はありません";
+"loan_report.distribution" = "ローン分布";
+"loan_report.no_active_loans" = "アクティブなローンはありません";
+
+"loan_report.search_placeholder" = "ローンを検索...";
+"loan_report.active_only" = "アクティブのみ";
+"loan_report.sort" = "並べ替え";
+"loan_report.principal_amount" = "元金";
+"loan_report.interest_rate" = "利率";
+"loan_report.total_to_pay" = "総返済額";
+"loan_report.total_interest" = "総利息";
+"loan_report.last_payment_date" = "最終返済日";
+"loan_report.payment_performance" = "返済パフォーマンス";
+"loan_report.score" = "スコア";
+"loan_report.next_payment" = "次回返済";
+"loan_report.days_remaining" = "残り%d日";
+"loan_report.due_today" = "本日が期日です！";
+"loan_report.overdue" = "期日超過！";
+"loan_report.installments_in_period" = "期間中の返済回数";
+"loan_report.more_installments" = "...さらに%d回の返済";
+
+"loan_report.monthly_total" = "月合計";
+
+"loan_report.performance_score" = "パフォーマンススコア";
+"loan_report.performance_excellent" = "優秀";
+"loan_report.performance_good" = "良好";
+"loan_report.performance_fair" = "普通";
+"loan_report.performance_poor" = "低い";
+"loan_report.total_interest_paid" = "支払い済み利息総額";
+"loan_report.avg_monthly_payment" = "平均月次返済額";
+"loan_report.on_time" = "期日通り";
+"loan_report.late" = "遅延";
+"loan_report.missed" = "未払い";
+
+// MARK: - Harcama Raporu
+"spending_report.view.summary" = "概要";
+"spending_report.view.category" = "カテゴリー";
+"spending_report.view.time" = "時間分析";
+"spending_report.view.comparison" = "比較";
+
+"spending_report.no_data" = "支出が見つかりません";
+"spending_report.no_data_desc" = "選択した期間に支出はありません";
+
+"spending_report.total_spending" = "総支出";
+"spending_report.daily_avg" = "日平均";
+"spending_report.transaction_count" = "取引件数";
+"spending_report.avg_transaction" = "平均取引額";
+"spending_report.highest_expense" = "最高支出";
+
+"spending_report.increase" = "増加";
+"spending_report.decrease" = "減少";
+
+"spending_report.top_categories" = "上位支出カテゴリー";
+"spending_report.weekly_summary" = "週次概要";
+"spending_report.insights" = "インサイト";
+"spending_report.insight.busiest_day" = "最も支出が多かった日は%@で、%@を支出しました";
+"spending_report.insight.top_category" = "カテゴリー「%@」が総支出の%%%.1fを占めています";
+"spending_report.insight.weekend_warning" = "週末の平均支出は平日よりも高くなっています";
+
+"spending_report.category_distribution" = "カテゴリー別分布";
+"spending_report.category_details" = "カテゴリー詳細";
+"spending_report.largest_expense" = "最大の支出";
+"spending_report.avg_per_transaction" = "取引あたりの平均";
+
+"spending_report.daily_trend" = "日次支出トレンド";
+"spending_report.weekday_weekend" = "平日 vs 週末";
+"spending_report.hourly_distribution" = "時間帯別分布";
+"spending_report.weekday" = "平日";
+"spending_report.weekend" = "週末";
+
+"spending_report.period_comparison" = "期間比較";
+"spending_report.previous_period" = "前期";
+"spending_report.current_period" = "当期";
+"spending_report.category_changes" = "カテゴリー変動";
+"spending_report.budget_performance" = "予算パフォーマンス";
+"spending_report.budget_status.normal" = "正常";
+"spending_report.budget_status.critical" = "注意";
+"spending_report.budget_status.exceeded" = "超過";
+"spending_report.busiest_hours" = "最も支出の多い時間帯";
+"common.transactions" = "取引";
+
+// MARK: - Onboarding
+"onboarding.skip" = "スキップ";
+"onboarding.continue" = "続ける";
+"onboarding.confirm_settings" = "設定を確認";
+"onboarding.privacy_notice" = "続行することにより、当社のプライバシーポリシーと利用規約に同意したことになります。";
+
+"onboarding.welcome.title" = "経済的自由へようこそ";
+"onboarding.welcome.subtitle" = "支出を追跡し、予算を管理し、財務目標を達成しましょう";
+
+"onboarding.feature1.title" = "スマート分析";
+"onboarding.feature1.description" = "支出をカテゴリー分けし、詳細なグラフで財務状況を可視化します";
+
+"onboarding.feature2.title" = "予算管理";
+"onboarding.feature2.description" = "月次予算を作成し、限度額を追跡し、貯蓄目標を達成します";
+
+"onboarding.feature3.title" = "スマートリマインダー";
+"onboarding.feature3.description" = "請求書の支払いや予算超過の際にタイムリーな通知を受け取ります";
+
+"onboarding.personalize.title" = "体験をカスタマイズ";
+"onboarding.select_language" = "言語を選択";
+"onboarding.select_currency" = "通貨を選択";
+
+"reports.creditcard.show_less" = "少なく表示";
+"reports.creditcard.usage.short" = "利用状況";
+"reports.creditcard.no_category_data" = "カテゴリーデータがありません";
+"loan_report.legend.paid" = "支払い済み";
+"loan_report.legend.pending" = "未払い";
+"loan_report.legend.overdue" = "期日超過";
+"loan_report.this_month_summary" = "今月";
+"loan_report.total_installments" = "今月の返済総額:";
+"loan_report.paid_installments" = "支払い済み返済額の合計:";
+"loan_report.no_installments_for_day" = "本日のローン返済はありません";
+"loan_report.installment_no" = "返済回:";
+"loan_report.status.paid" = "支払い済み";
+"loan_report.status.pending" = "未払い";
+"loan_report.status.overdue" = "期日超過";
+"loan_report.total_for_day" = "日合計";
+"dashboard.show_less" = "少なく表示";
+"dashboard.more_categories" = "の他カテゴリー";
+"reports.category.highest_spending" = "最多支出カテゴリー";
+"reports.category.most_transactions" = "最多取引数";

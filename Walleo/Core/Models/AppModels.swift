@@ -9,6 +9,7 @@ public enum Sekme {
 // YENİ: Desteklenen para birimlerini tanımlayan genişletilmiş enum
 public enum Currency: String, CaseIterable, Identifiable {
     case TRY, USD, EUR, GBP, JPY, CAD, AUD, CHF, CNY, SEK, NOK, RUB, INR, BRL, ZAR, AED, SAR, KRW, SGD
+    case IDR, VND, THB, MYR // Yeni para birimleri
 
     public var id: String { self.rawValue }
 
@@ -33,6 +34,10 @@ public enum Currency: String, CaseIterable, Identifiable {
         case .SAR: return "﷼"
         case .KRW: return "₩"
         case .SGD: return "S$"
+        case .IDR: return "Rp"
+        case .VND: return "₫"
+        case .THB: return "฿"
+        case .MYR: return "RM"
         }
     }
     

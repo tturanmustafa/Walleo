@@ -1,0 +1,903 @@
+/* Localizable.strings (Hindi) */
+
+// MARK: - Genel / Ortak Kullanım
+"common.save" = "सहेजें";
+"common.cancel" = "रद्द करें";
+"common.edit" = "संपादित करें";
+"common.delete" = "हटाएं";
+"common.done" = "हो गया";
+"common.reset" = "रीसेट करें";
+"common.apply" = "लागू करें";
+"common.all" = "सभी";
+"common.income" = "आय";
+"common.expense" = "व्यय";
+"common.category" = "श्रेणी";
+"common.categories" = "श्रेणियाँ";
+"common.amount" = "राशि";
+"common.date" = "तारीख";
+"common.type" = "प्रकार";
+"common.account" = "खाता";
+"common.select_account" = "खाता चुनें";
+"common.back" = "वापस";
+"common.total" = "कुल";
+"common.net" = "शुद्ध";
+"common.total_amount" = "कुल राशि";
+
+// MARK: - Ana Sekmeler
+"tab.dashboard" = "अवलोकन";
+"tab.calendar" = "कैलेंडर";
+"tab.reports" = "रिपोर्ट";
+"tab.settings" = "सेटिंग्स";
+"tab.budgets" = "बजट";
+"tab.more" = "अधिक";
+
+// MARK: - Panel / Dashboard Ekranı
+"dashboard.category_distribution" = "श्रेणी वितरण";
+"dashboard.recent_transactions" = "हाल के लेन-देन";
+"dashboard.see_all" = "सभी देखें";
+"dashboard.no_records_for_month" = "इस महीने के लिए कोई रिकॉर्ड नहीं है";
+
+// MARK: - Ayarlar Ekranı
+"settings.title" = "सेटिंग्स";
+"settings.section_general" = "सामान्य";
+"settings.theme" = "थीम";
+"settings.theme_system" = "सिस्टम";
+"settings.theme_light" = "लाइट";
+"settings.theme_dark" = "डार्क";
+"settings.language" = "भाषा";
+"settings.manage_categories" = "श्रेणियाँ प्रबंधित करें";
+"settings.section_info" = "जानकारी";
+"settings.version" = "संस्करण";
+"settings.currency" = "मुद्रा";
+
+// MARK: - Bildirim Ayarları
+"settings.notifications" = "सूचना सेटिंग्स";
+"settings.notifications.title" = "सूचना सेटिंग्स";
+"settings.notifications.master_section" = "मुख्य नियंत्रण";
+"settings.notifications.master_toggle" = "सभी सूचनाएं";
+"settings.notifications.budget_section" = "बजट अलर्ट";
+"settings.notifications.budget_toggle" = "बजट सूचनाएं दिखाएं";
+"settings.notifications.threshold_picker" = "चेतावनी सीमा";
+"settings.notifications.threshold.option_80" = "80% तक पहुंचने पर";
+"settings.notifications.threshold.option_85" = "85% तक पहुंचने पर";
+"settings.notifications.threshold.option_90" = "90% तक पहुंचने पर";
+"settings.notifications.threshold.option_95" = "95% तक पहुंचने पर";
+"settings.notifications.loan_section" = "भुगतान अनुस्मारक";
+"settings.notifications.loan_toggle" = "ऋण किस्तों की याद दिलाएं";
+"settings.notifications.loan_stepper" = "नियत तारीख से %d दिन पहले";
+"settings.notifications.credit_card_section" = "क्रेडिट कार्ड अनुस्मारक";
+"settings.notifications.credit_card_toggle" = "अंतिम भुगतान तिथि की याद दिलाएं";
+
+// MARK: - Bildirim İçerikleri
+"notification.budget.over_limit.title" = "बजट पार हो गया";
+"notification.budget.over_limit.body_line1_format" = "आपका बजट '%@' अपनी लक्ष्य राशि को पार कर गया है।";
+"notification.budget.over_limit.body_line2" = "बजट लक्ष्य: %@";
+"notification.budget.over_limit.body_line3" = "पार की गई राशि: %@";
+"notification.budget.approaching_limit.title" = "बजट सीमा निकट आ रही है";
+"notification.budget.approaching_limit.body_line1_format" = "आप अपने बजट '%1$@' के लक्ष्य का %2$.0f%% तक पहुंच गए हैं।";
+"notification.budget.approaching_limit.body_line2" = "बजट लक्ष्य: %@";
+"notification.budget.approaching_limit.body_line3" = "शेष राशि: %@";
+"notification.credit_card.due_date.title" = "क्रेडिट कार्ड का भुगतान निकट है";
+"notification.credit_card.due_date.body_format" = "आपके %@ कार्ड की अंतिम भुगतान तिथि %@ है।";
+
+// MARK: - Kategori Yönetimi
+"categories.title" = "श्रेणियाँ";
+"categories.income_categories" = "आय श्रेणियाँ";
+"categories.expense_categories" = "व्यय श्रेणियाँ";
+"categories.new" = "नई श्रेणी";
+"categories.edit" = "श्रेणी संपादित करें";
+"categories.name" = "श्रेणी का नाम";
+"categories.color" = "श्रेणी का रंग";
+"categories.select_icon" = "आइकन चुनें";
+
+// MARK: - İşlem Ekleme / Düzenleme
+"transaction.new" = "नया लेन-देन";
+"transaction.edit" = "लेन-देन संपादित करें";
+"transaction.type" = "लेन-देन का प्रकार";
+"transaction.section_details" = "विवरण";
+"transaction.name_placeholder" = "लेन-देन का नाम (उदा: रात का खाना)";
+"transaction.select_category" = "श्रेणी चुनें";
+"transaction.recurrence" = "पुनरावृत्ति";
+"transaction.loan_payment_name_format" = "%@ के लिए किस्त भुगतान";
+
+// MARK: - Hesaplar
+"accounts.title" = "खाते";
+"accounts.empty.title" = "अभी तक कोई खाता नहीं है";
+"accounts.empty.description" = "शुरू करने के लिए '+' आइकन पर टैप करके एक नया खाता जोड़ें।";
+"accounts.add.wallet" = "बटुआ (नक़द)";
+"accounts.add.credit_card" = "क्रेडिट कार्ड";
+"accounts.add.loan" = "ऋण";
+"accounts.add.new_credit_card" = "नया क्रेडिट कार्ड जोड़ें";
+"accounts.add.new_loan" = "नया ऋण जोड़ें";
+"accounts.add.account_color" = "खाते का रंग";
+"accounts.add.interest_rate" = "ब्याज दर (%)";
+"accounts.add.installments" = "किस्तों की संख्या";
+"accounts.add.installments_stepper" = "%d महीने";
+"accounts.add.create_installments_button" = "सहेजें और किस्तें बनाएं";
+
+"credit_card.form.statement_date_header" = "विवरण तिथि";
+"credit_card.form.statement_date" = "विवरण तिथि";
+"credit_card.form.payment_due_date_header" = "अंतिम भुगतान तिथि सेटिंग";
+"credit_card.form.payment_due_date_stepper" = "विवरण तिथि के %d दिन बाद";
+"loan.form.details_header" = "ऋण जानकारी";
+"loan.form.first_payment_header" = "पहली किस्त भुगतान तिथि";
+"loan.form.interest_type" = "ब्याज का प्रकार";
+"loan.form.first_installment_date" = "पहली किस्त की तारीख";
+"loan_details.summary_header" = "ऋण सारांश";
+"loan_details.installment_plan_header" = "किस्त योजना";
+
+"installment.edit.title" = "किस्त संपादित करें";
+"installment.edit.details_header" = "किस्त विवरण";
+"installment.paid.label" = "भुगतान किया गया चिह्नित करें";
+"accounts.card.current_debt" = "वर्तमान ऋण";
+"accounts.card.available_limit" = "उपलब्ध सीमा";
+"accounts.card.paid_installments" = "भुगतान की गई किस्तें";
+"accounts.card.remaining_debt" = "शेष ऋण";
+"credit_card_details.recent_expenses" = "अवधि के व्यय";
+"credit_card_details.no_transactions" = "इस अवधि में कोई लेन-देन नहीं";
+
+"account_details.generic_title" = "%@ का विवरण";
+"enum.interest_type.yearly" = "वार्षिक";
+"enum.interest_type.monthly" = "मासिक";
+"transaction.amount_placeholder" = "राशि (उदा: 125.50)";
+"account.name_placeholder_wallet" = "बटुए का नाम (उदा: नक़द)";
+"account.name_placeholder_creditcard" = "कार्ड का नाम (उदा: बोनस कार्ड)";
+"account.name_placeholder_loan" = "ऋण का नाम (उदा: कार ऋण)";
+"account.initial_balance_placeholder" = "प्रारंभिक शेष (उदा: 500)";
+"credit_card.limit_placeholder" = "कार्ड की सीमा (उदा: 15000)";
+"credit_card.current_debt_placeholder" = "वर्तमान ऋण (वैकल्पिक)";
+"loan.principal_amount_placeholder" = "ऋण राशि (उदा: 250000)";
+"loan.interest_rate_placeholder" = "ब्याज दर (उदा: 1.89)";
+
+"budget.name_placeholder" = "बजट का नाम (उदा: किराने का खर्च)";
+"budget.limit_placeholder" = "मासिक सीमा (उदा: 2500)";
+"accounts.add.loan_amount" = "ऋण राशि";
+"accounts.card.initial_balance" = "प्रारंभिक शेष";
+"accounts.card.current_balance" = "वर्तमान शेष";
+"accounts.card.total_limit" = "कुल सीमा";
+"accounts.card.statement_date" = "विवरण तिथि";
+
+"accounts.group.wallets" = "बटुए";
+"accounts.group.credit_cards" = "क्रेडिट कार्ड";
+"accounts.group.loans" = "ऋण";
+
+// MARK: - Diğer Ekranlar ve Uyarılar
+"all_transactions.title" = "सभी लेन-देन";
+"all_transactions.not_found" = "कोई लेन-देन नहीं मिला";
+"all_transactions.not_found_desc" = "अपने फ़िल्टर मानदंड को बदलने का प्रयास करें।";
+"filter.date_range" = "तिथि सीमा";
+"filter.sort_by" = "इसके अनुसार क्रमबद्ध करें";
+"filter.accounts" = "खाते";
+"alert.recurring_transaction" = "यह एक आवर्ती लेन-देन है।";
+"alert.update_this_only" = "केवल इस लेन-देन को अपडेट करें";
+"alert.update_future" = "इस और भविष्य के लेन-देनों को अपडेट करें";
+"alert.delete_this_only" = "केवल इस लेन-देन को हटाएं";
+"alert.delete_series" = "पूरी श्रृंखला को हटाएं";
+"alert.add_as_expense.title" = "व्यय के रूप में जोड़ें";
+"alert.add_as_expense.button_yes" = "हाँ, व्यय के रूप में जोड़ें";
+"alert.add_as_expense.button_no" = "नहीं, केवल चिह्नित करें";
+"alert.add_as_expense.message_format" = "क्या आप %@ की किस्त राशि को व्यय के रूप में जोड़ना चाहते हैं?";
+"month_picker.title" = "तिथि चुनें";
+"month_picker.month" = "महीना";
+"month_picker.year" = "वर्ष";
+"calendar.no_transactions_on_date" = "इस तिथि पर कोई लेन-देन नहीं";
+"calendar.monthly_summary" = "मासिक सारांश";
+"notifications.title" = "सूचनाएं";
+"notifications.no_notifications_title" = "अभी तक कोई सूचना नहीं";
+"notifications.no_notifications_desc" = "महत्वपूर्ण इन-ऐप सूचनाएं यहां दिखाई देंगी।";
+"validation.error.invalid_amount_format" = "अमान्य प्रारूप। अधिकतम 9 पूर्णांक और 2 दशमलव अंक।";
+
+// MARK: - Raporlar
+"reports.type.summary" = "सारांश";
+"reports.type.distribution" = "वितरण";
+"reports.summary.card.main_metrics" = "मुख्य मेट्रिक्स";
+"reports.summary.card.comparison" = "तुलनात्मक विश्लेषण";
+"reports.summary.top_expenses" = "शीर्ष व्यय";
+"reports.summary.statistics" = "सांख्यिकी";
+"reports.summary.net_flow" = "शुद्ध प्रवाह";
+"reports.comparison.no_data" = "तुलना के लिए पिछली अवधि का कोई डेटा नहीं है।";
+"reports.comparison.prefix_net_flow_positive" = "पिछली अवधि की तुलना में, आपने ";
+"reports.comparison.suffix_net_flow_positive" = " अधिक बचाया।";
+"reports.comparison.prefix_net_flow_negative" = "पिछली अवधि की तुलना में, आपने ";
+"reports.comparison.suffix_net_flow_negative" = " अधिक खर्च किया।";
+"reports.comparison.prefix_expenses_increased" = "आपके व्यय पिछली अवधि की तुलना में ";
+"reports.comparison.suffix_expenses_increased" = " बढ़ गए हैं।";
+"reports.comparison.prefix_expenses_decreased" = "आपके व्यय पिछली अवधि की तुलना में ";
+"reports.comparison.suffix_expenses_decreased" = " कम हो गए हैं।";
+"reports.distribution.no_data" = "इस अवधि के लिए कोई डेटा नहीं दिखाया जा सकता है।";
+"reports.statistics.daily_avg_expense" = "दैनिक औसत व्यय";
+"reports.statistics.daily_avg_income" = "दैनिक औसत आय";
+"reports.statistics.highest_expense" = "उच्चतम एकल व्यय";
+"reports.statistics.highest_income" = "उच्चतम एकल आय";
+
+// MARK: - Bütçeler
+"budgets.title" = "बजट";
+"budgets.empty.title" = "अभी तक कोई बजट नहीं";
+"budgets.empty.description" = "अपने खर्चों को नियंत्रित करने के लिए '+' आइकन पर टैप करके एक नया बजट बनाएं।";
+"budgets.add.title" = "नया बजट";
+"budgets.edit.title" = "बजट संपादित करें";
+"budgets.form.name_placeholder" = "उदा: किराने का खर्च";
+"budgets.form.limit_amount" = "मासिक सीमा";
+"budgets.form.select_categories" = "श्रेणियाँ चुनें";
+"budgets.card.total_limit" = "कुल सीमा";
+"budgets.card.amount_spent" = "खर्च की गई राशि";
+"budgets.card.amount_remaining" = "शेष राशि";
+"alert.delete_budget.message_format" = "क्या आप निश्चित रूप से बजट '%@' को स्थायी रूप से हटाना चाहते हैं?";
+
+// MARK: - Enum Değerleri ve Kategoriler
+"enum.recurrence.once" = "एक बार";
+"enum.recurrence.monthly" = "हर महीने";
+"enum.recurrence.quarterly" = "हर 3 महीने में";
+"enum.recurrence.semi_annually" = "हर 6 महीने में";
+"enum.recurrence.annually" = "हर साल";
+"enum.sort.date_desc" = "तिथि के अनुसार (नए से पुराने)";
+"enum.sort.date_asc" = "तिथि के अनुसार (पुराने से नए)";
+"enum.sort.amount_desc" = "राशि के अनुसार (अधिक से कम)";
+"enum.sort.amount_asc" = "राशि के अनुसार (कम से अधिक)";
+"enum.date_range.all" = "सभी समय";
+"enum.date_range.this_week" = "इस सप्ताह";
+"enum.date_range.ytd" = "इस वर्ष अब तक";
+"enum.date_range.this_month" = "इस महीने";
+"enum.date_range.last_3_months" = "पिछले 3 महीने";
+"enum.date_range.last_6_months" = "पिछले 6 महीने";
+"enum.date_range.last_year" = "पिछले 12 महीने";
+"enum.budget_period.monthly" = "मासिक";
+
+"category.salary" = "वेतन";
+"category.extra_income" = "अतिरिक्त आय";
+"category.investment" = "निवेश";
+"category.groceries" = "किराना";
+"category.restaurant" = "रेस्टोरेंट";
+"category.transport" = "परिवहन";
+"category.bills" = "बिल";
+"category.entertainment" = "मनोरंजन";
+"category.health" = "स्वास्थ्य";
+"category.clothing" = "कपड़े";
+"category.home" = "घर";
+"category.gift" = "उपहार";
+"category.loan_payment" = "ऋण भुगतान";
+"category.other" = "अन्य";
+
+// MARK: - Filtreleme Ekranı
+"filter.custom_range_header" = "कस्टम रेंज";
+"filter.start_date" = "आरंभ तिथि";
+"filter.end_date" = "अंतिम तिथि";
+"filter.presets_header" = "पूर्व निर्धारित रेंज";
+"enum.date_range.custom" = "कस्टम";
+
+// MARK: - Para Birimleri
+"currency.name.TRY" = "तुर्की लीरा";
+"currency.name.USD" = "अमेरिकी डॉलर";
+"currency.name.EUR" = "यूरो";
+"currency.name.GBP" = "ब्रिटिश पाउंड";
+"currency.name.JPY" = "जापानी येन";
+"currency.name.CAD" = "कनाडाई डॉलर";
+"currency.name.AUD" = "ऑस्ट्रेलियाई डॉलर";
+"currency.name.CHF" = "स्विस फ्रैंक";
+"currency.name.CNY" = "चीनी युआन";
+"currency.name.SEK" = "स्वीडिश क्रोना";
+"currency.name.NOK" = "नॉर्वेजियन क्रोन";
+"currency.name.RUB" = "रूसी रूबल";
+"currency.name.INR" = "भारतीय रुपया";
+"currency.name.BRL" = "ब्राज़ीलियाई रियल";
+"currency.name.ZAR" = "दक्षिण अफ़्रीकी रैंड";
+"currency.name.AED" = "संयुक्त अरब अमीरात दिरहम";
+"currency.name.SAR" = "सऊदी रियाल";
+"currency.name.KRW" = "दक्षिण कोरियाई वॉन";
+"currency.name.SGD" = "सिंगापुर डॉलर";
+"currency.name.IDR" = "इंडोनेशियाई रुपिया";
+"currency.name.VND" = "वियतनामी डोंग";
+"currency.name.THB" = "थाई बहत";
+"currency.name.MYR" = "मलेशियाई रिंगित";
+
+"settings.section.data_management" = "डेटा प्रबंधन";
+"settings.data.export" = "डेटा निर्यात करें (.csv)";
+"settings.data.exporting" = "निर्यात हो रहा है...";
+
+"settings.language_change.title" = "भाषा बदलें";
+"settings.language_change.message" = "भाषा सेटिंग बदलने के लिए ऐप को पुनरारंभ करना आवश्यक है। क्या आप जारी रखना चाहते हैं?";
+"settings.language_change.restart_button" = "पुनरारंभ करें";
+
+"alert.delete_confirmation.title" = "हटाने की पुष्टि करें";
+"alert.delete_wallet.message_format" = "क्या आप निश्चित रूप से बटुए/खाते '%@' को स्थायी रूप से हटाना चाहते हैं? इस खाते से जुड़े लेन-देन नहीं हटाए जाएंगे, केवल खाता लिंक हटा दिया जाएगा।";
+"alert.delete_credit_card.message_format" = "क्या आप निश्चित रूप से क्रेडिट कार्ड '%@' को स्थायी रूप से हटाना चाहते हैं? इस खाते से जुड़े लेन-देन नहीं हटाए जाएंगे, केवल खाता लिंक हटा दिया जाएगा।";
+"alert.delete_loan.message_format" = "क्या आप निश्चित रूप से ऋण '%@' और उसकी किस्त योजना को स्थायी रूप से हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती है।";
+"alert.delete_category.message_format" = "क्या आप निश्चित रूप से श्रेणी '%@' को हटाना चाहते हैं? इस श्रेणी से संबंधित लेन-देनों से श्रेणी हटा दी जाएगी।";
+"alert.delete_transaction.message" = "क्या आप निश्चित रूप से इस लेन-देन को स्थायी रूप से हटाना चाहते हैं?";
+"alert.delete_all_notifications.title" = "सभी हटाएं";
+"alert.delete_all_notifications.message" = "क्या आप निश्चित रूप से सभी सूचनाओं को स्थायी रूप से हटाना चाहते हैं?";
+
+"button.add_account" = "खाता जोड़ें";
+"button.add_budget" = "बजट जोड़ें";
+"button.add_category" = "श्रेणी जोड़ें";
+
+"budget_details.no_transactions" = "इस बजट के लिए कोई लेन-देन नहीं";
+
+"alert.no_accounts.title" = "खाते की आवश्यकता है";
+"alert.no_accounts.message" = "लेन-देन जोड़ने के लिए, आपको पहले एक बटुआ या क्रेडिट कार्ड खाता बनाना होगा।";
+"alert.no_accounts.add_account_button" = "खाता बनाएं";
+
+// MARK: - Veri Dışa Aktarma Başlıkları
+"export.header.date" = "तारीख";
+"export.header.name" = "लेन-देन का नाम";
+"export.header.amount" = "राशि";
+"export.header.type" = "प्रकार";
+"export.header.category" = "श्रेणी";
+"export.header.account" = "खाता";
+
+"credit_card_details.no_expenses_for_month" = "इस महीने कोई खर्च नहीं";
+"credit_card_details.total_expenses_for_period" = "अवधि के लिए कुल खर्च";
+"notifications.delete_all" = "सभी हटाएं";
+"notifications.mark_all_as_read" = "सभी को पढ़ा हुआ चिह्नित करें";
+
+// MARK: - Form Labels & Placeholders
+"form.label.transaction_name" = "लेन-देन का नाम";
+"form.label.amount" = "राशि";
+"form.label.wallet_name" = "बटुए का नाम";
+"form.label.card_name" = "कार्ड का नाम";
+"form.label.loan_name" = "ऋण का नाम";
+"form.label.initial_balance" = "प्रारंभिक शेष";
+"form.label.card_limit" = "कार्ड की सीमा";
+"form.label.current_debt" = "वर्तमान ऋण";
+"form.label.principal_amount" = "मूल राशि";
+"form.label.interest_rate" = "ब्याज दर";
+"form.label.budget_name" = "बजट का नाम";
+"form.label.budget_limit" = "मासिक सीमा";
+
+// MARK: - Time
+"time.today" = "आज";
+"time.yesterday" = "कल";
+
+"reports.period.weekly" = "साप्ताहिक";
+"reports.period.monthly" = "मासिक";
+"week_picker.select_date_label" = "तिथि चुनें";
+"week_picker.title" = "सप्ताह चुनें";
+
+"form.label.set_end_date" = "अंतिम तिथि निर्धारित करें";
+"form.label.end_date" = "अंतिम तिथि";
+
+"notification.daily.title" = "दिन समाप्त करने का समय!";
+"notification.daily.body" = "क्या आपने आज की अपनी आय और व्यय को Walleo में जोड़ा है? अपनी वित्तीय सेहत पर नज़र रखने का यह सबसे अच्छा समय है।";
+"notification.weekly.title" = "आपकी साप्ताहिक रिपोर्ट तैयार है!";
+"notification.weekly.body" = "अब पिछले सप्ताह का अपना वित्तीय सारांश देखें। आपके खर्चों और आय के बारे में विस्तृत जानकारी रिपोर्ट स्क्रीन में आपका इंतजार कर रही है।";
+
+"settings.data.delete_all" = "सभी डेटा हटाएं";
+"alert.delete_all_data.title" = "सभी डेटा हटाएं?";
+"alert.delete_all_data.message" = "यह क्रिया पूर्ववत नहीं की जा सकती है। डिवाइस और iCloud पर आपके सभी खाते, लेन-देन और बजट स्थायी रूप से हटा दिए जाएंगे।";
+"common.confirm_delete" = "हाँ, सभी हटाएं";
+
+"settings.data.icloud_backup" = "iCloud बैकअप";
+"alert.icloud_toggle.title" = "बैकअप सेटिंग बदल रही है";
+"alert.icloud_toggle.message" = "इस सेटिंग को बदलने के लिए ऐप को पुनरारंभ करना आवश्यक है। क्या आप जारी रखना चाहते हैं?";
+"alert.language_change.confirm_button" = "पुष्टि करें";
+"alert.no_payment_account.title" = "उपयुक्त खाता नहीं मिला";
+"alert.no_payment_account.message" = "इस भुगतान को व्यय के रूप में जोड़ने के लिए, आपको पहले एक बटुआ या क्रेडिट कार्ड खाता बनाना होगा।";
+"account_selection.title" = "भुगतान खाता चुनें";
+
+"account_type.wallet" = "बटुआ";
+"account_type.credit_card" = "क्रेडिट कार्ड";
+"account_type.loan" = "ऋण";
+
+// MARK: - Onboarding
+"onboarding.page1.title" = "आपकी वित्तीय दुनिया, बस एक टैप में";
+"onboarding.page1.subtitle" = "एक ही स्थान पर अपने नक़द, क्रेडिट कार्ड और ऋण का प्रबंधन करके अपनी वित्तीय स्थिति पर पूर्ण नियंत्रण प्राप्त करें।";
+"onboarding.page2.title" = "आप बजट का प्रबंधन करें, न कि बजट आपका";
+"onboarding.page2.subtitle" = "श्रेणी-विशिष्ट बजट बनाएं और दृश्य प्रगति ट्रैकिंग के साथ अपने खर्चों को अपने लक्ष्यों के अनुसार आसानी से आकार दें।";
+"onboarding.page3.title" = "अपने डेटा को बोलने दें, अपना भविष्य देखें";
+"onboarding.page3.subtitle" = "अपने पिछले खर्चों को सार्थक रिपोर्ट और तुलनात्मक विश्लेषण में बदलकर बेहतर वित्तीय निर्णय लें।";
+"onboarding.page4.title" = "आपका वित्तीय सहायक जो आपके बारे में सोचता है";
+"onboarding.page4.subtitle" = "स्मार्ट सूचनाओं के साथ निश्चिंत रहें जो आपको बिल की तारीखों से लेकर बजट से अधिक होने तक हर महत्वपूर्ण विवरण की सक्रिय रूप से याद दिलाती हैं।";
+"onboarding.page5.title" = "पूरी तरह से आपका, पूरी तरह से आपके लिए";
+"onboarding.page5.subtitle" = "थीम, भाषा, मुद्रा और कस्टम श्रेणियों के साथ ऐप को अपनी जीवन शैली और प्राथमिकताओं के अनुसार पूरी तरह से अनुकूलित करें।";
+"onboarding.page6.title" = "आपका डेटा आपका किला है";
+"onboarding.page6.subtitle" = "सुरक्षित iCloud सिंक से लेकर डेटा निर्यात और स्थायी विलोपन विकल्प तक, आपके डेटा का नियंत्रण पूरी तरह से आपके हाथ में है।";
+"onboarding.signin.apple" = "Apple के साथ साइन इन करें";
+"onboarding.privacy_policy" = "जारी रखकर, आप हमारी गोपनीयता नीति और उपयोग की शर्तों से सहमत होते हैं।";
+
+"settings.section_ai_assistant" = "एआई सहायक";
+"settings.ai_assistant_title" = "एआई सहायक के साथ चैट करें";
+
+// Aile Hesabı
+"settings.family_account" = "पारिवारिक खाता";
+"family.no_family_title" = "कोई पारिवारिक खाता नहीं";
+"family.no_family_description" = "अपने परिवार के सदस्यों के साथ अपने वित्तीय डेटा को साझा करने के लिए एक पारिवारिक खाता बनाएं";
+"family.create_family" = "पारिवारिक खाता बनाएं";
+"family.info_section" = "परिवार की जानकारी";
+"family.name" = "परिवार का नाम";
+"family.owner" = "मालिक";
+"family.you" = "आप";
+"family.member_count" = "सदस्यों की संख्या";
+"family.created_date" = "बनाने की तारीख";
+"family.members_section" = "परिवार के सदस्य";
+"family.pending" = "लंबित";
+"family.invite_member" = "सदस्य को आमंत्रित करें";
+"family.leave_family" = "परिवार छोड़ें";
+"family.owner_cannot_leave" = "परिवार के मालिक के रूप में, आप परिवार नहीं छोड़ सकते। पहले स्वामित्व स्थानांतरित करें।";
+"family.create_new" = "नया पारिवारिक खाता";
+"family.name_placeholder" = "परिवार का नाम दर्ज करें";
+"family.create_description" = "आपका सभी वित्तीय डेटा परिवार के सदस्यों के साथ साझा किया जाएगा";
+"family.create_title" = "परिवार बनाएं";
+"family.invite_instructions" = "अपने परिवार के सदस्य के साथ साझा करने के लिए एक आमंत्रण लिंक बनाएं";
+"family.generate_invite_link" = "आमंत्रण लिंक बनाएं";
+"family.leave_confirmation_title" = "क्या आप निश्चित रूप से परिवार छोड़ना चाहते हैं?";
+"family.leave_confirmation_message" = "आप साझा किए गए पारिवारिक डेटा तक नहीं पहुंच पाएंगे। यह क्रिया पूर्ववत नहीं की जा सकती है।";
+"family.leave_confirm" = "परिवार छोड़ें";
+"family.cloudkit_warning_title" = "पारिवारिक खाते के लिए iCloud आवश्यक है";
+"family.cloudkit_warning_message" = "पारिवारिक खाते का उपयोग करते समय आप iCloud बैकअप को बंद नहीं कर सकते। कृपया पहले पारिवारिक खाते को छोड़ दें।";
+"family.delete_warning_title" = "डेटा हटाया नहीं जा सकता";
+"family.delete_warning_message" = "पारिवारिक खाते का हिस्सा रहते हुए आप सभी डेटा नहीं हटा सकते। कृपया पहले पारिवारिक खाते को छोड़ दें।";
+"family.invitation_title" = "पारिवारिक खाते का निमंत्रण";
+"family.invitation_description" = "आपको एक पारिवारिक खाते में शामिल होने के लिए आमंत्रित किया गया है। सभी वित्तीय डेटा परिवार के सदस्यों के बीच साझा किया जाएगा।";
+"family.accepting_invitation" = "निमंत्रण स्वीकार किया जा रहा है...";
+"family.invitation_accepted" = "निमंत्रण स्वीकार कर लिया गया!";
+"family.accept_invitation" = "निमंत्रण स्वीकार करें";
+"family.join_family" = "परिवार में शामिल हों";
+
+// MARK: - Bütçe Ek
+"budget.automation_settings" = "स्वचालन सेटिंग्स";
+"budget.form.auto_renew" = "हर महीने स्वचालित रूप से नवीनीकृत करें";
+"budget.form.rollover_balance" = "पिछले महीने से शेष राशि आगे बढ़ाएं";
+"budget.list.period_ended" = "अवधि समाप्त हो गई";
+"budget.detail.period_info" = "अवधि की जानकारी";
+"budget.detail.budget_period" = "बजट अवधि";
+"budget.detail.rollover_from_last_month" = "पिछले महीने से आगे बढ़ाया गया";
+"budget.detail.transactions_for_period" = "इस अवधि के लिए लेन-देन";
+"notification.budget.pre_renewal.title" = "आपका बजट नवीनीकृत होने वाला है";
+"notification.budget.pre_renewal.body" = "आपका बजट '%@' अगले महीने के लिए %@ की शेष राशि के साथ नवीनीकृत किया जाएगा।";
+"notification.budget.renewal_summary.title" = "आपके बजट नवीनीकृत हो गए हैं!";
+"notification.budget.renewal_summary.body" = "स्वागत है %@! ☕️ इस महीने के लिए आपके %d बजट स्वचालित रूप से नवीनीकृत हो गए हैं।";
+
+// MARK: - Detaylı Raporlar
+"reports.detailed.title" = "विस्तृत रिपोर्ट";
+"reports.detailed.credit_card_report" = "क्रेडिट कार्ड रिपोर्ट";
+"reports.detailed.loan_report" = "ऋण रिपोर्ट";
+"reports.detailed.start_date" = "आरंभ तिथि";
+"reports.detailed.end_date" = "अंतिम तिथि";
+
+"reports.detailed.no_cc_data_title" = "कोई डेटा नहीं मिला";
+"reports.detailed.no_cc_data_desc" = "चयनित तिथि सीमा में कोई क्रेडिट कार्ड खर्च नहीं मिला।";
+"reports.detailed.no_loan_data_title" = "कोई डेटा नहीं मिला";
+"reports.detailed.no_loan_data_desc" = "चयनित तिथि सीमा में कोई देय ऋण किस्त नहीं मिली।";
+
+"reports.detailed.overall_summary" = "समग्र सारांश";
+"reports.detailed.total_spending" = "कुल खर्च";
+"reports.detailed.transaction_count" = "लेन-देन की संख्या";
+"reports.detailed.most_used_card" = "सबसे अधिक उपयोग किया गया कार्ड";
+"reports.detailed.card_details_header" = "कार्ड का विवरण";
+"reports.detailed.category_distribution" = "श्रेणी वितरण";
+"reports.detailed.daily_spending_trend" = "दैनिक खर्च की प्रवृत्ति";
+
+"reports.detailed.overall_loan_summary" = "समग्र ऋण सारांश";
+"reports.detailed.active_loan_count" = "%d सक्रिय ऋण";
+"reports.detailed.paid_installments_count" = "भुगतान किया गया: %d";
+"reports.detailed.unpaid_installments_count" = "अवैतनिक: %d";
+"reports.detailed.loan_details_header" = "ऋण का विवरण";
+"reports.detailed.installments_in_period" = "अवधि में किस्तें: %d";
+"reports.detailed.paid_and_expensed" = "भुगतान किया गया और व्यय के रूप में जोड़ा गया";
+"reports.detailed.paid_only" = "केवल भुगतान किया गया चिह्नित";
+"reports.detailed.overdue" = "अतिदेय किस्तें";
+"reports.detailed.upcoming" = "आगामी किस्तें";
+
+/* Harcama Isı Haritası */
+"reports.detailed.spending_heatmap" = "व्यय हीटमैप";
+"reports.heatmap.no_data" = "चयनित तिथि सीमा में कोई खर्च नहीं मिला";
+"reports.heatmap.hourly_distribution" = "घंटे के अनुसार वितरण";
+"reports.heatmap.comparison" = "तुलना";
+"reports.heatmap.insights" = "स्मार्ट अंतर्दृष्टि";
+
+/* Zaman Dilimleri */
+"reports.heatmap.morning" = "सुबह";
+"reports.heatmap.noon" = "दोपहर";
+"reports.heatmap.evening" = "शाम";
+"reports.heatmap.night" = "रात";
+"reports.heatmap.weekday" = "कार्यदिवस";
+"reports.heatmap.weekend" = "सप्ताहांत";
+
+/* İçgörüler */
+"reports.heatmap.insight.busiest_day" = "सबसे व्यस्त दिन: %@";
+"reports.heatmap.insight.busiest_hour" = "सबसे सक्रिय घंटा: %@";
+"reports.heatmap.insight.weekend_comparison" = "सप्ताहांत पर %% %@ अधिक खर्च";
+"reports.heatmap.insight.no_spending_days" = "%@ दिनों तक कोई खर्च नहीं";
+
+// MARK: - Transfer
+"transfer.title" = "खातों के बीच स्थानांतरण";
+"transfer.source_account" = "स्रोत बटुआ";
+"transfer.target_account" = "लक्ष्य बटुआ या क्रेडिट कार्ड";
+"transfer.amount_label" = "स्थानांतरण राशि";
+"transfer.amount_placeholder" = "स्थानांतरित की जाने वाली राशि दर्ज करें";
+"transfer.button" = "स्थानांतरण करें";
+"transfer.select_wallet" = "बटुआ चुनें";
+"transfer.select_account" = "खाता चुनें";
+"transfer.source_details" = "स्रोत खाते का विवरण";
+"transfer.target_details" = "लक्ष्य खाते का विवरण";
+"transfer.name" = "नाम:";
+"transfer.initial_balance" = "प्रारंभिक शेष:";
+"transfer.current_balance" = "वर्तमान शेष:";
+"transfer.total_limit" = "कुल सीमा:";
+"transfer.available_limit" = "उपलब्ध सीमा:";
+"transfer.current_debt" = "वर्तमान ऋण:";
+"transfer.statement_date" = "विवरण तिथि:";
+"transfer.type.wallet" = "बटुआ";
+"transfer.type.credit_card" = "क्रेडिट कार्ड";
+"transfer.incoming" = "आने वाला स्थानांतरण";
+"transfer.outgoing" = "जाने वाला स्थानांतरण";
+"transfer.unknown_account" = "अज्ञात खाता";
+"transfer.section.transactions" = "लेन-देन";
+"transfer.section.transfers" = "स्थानांतरण";
+"transfer.no_transactions" = "इस अवधि में कोई लेन-देन नहीं";
+"transfer.no_transfers" = "कोई स्थानांतरण नहीं मिला";
+"transfer.section.expenses" = "व्यय";
+"transfer.section.payments" = "भुगतान";
+"transfer.no_payments" = "कोई भुगतान नहीं मिला";
+
+"credit_card.installment_summary_format" = "%@ - %d/%d किस्त";
+"credit_card.installment_number_format" = "%dवीं किस्त";
+
+// Taksitli işlem
+"transaction.installment.toggle" = "किस्त लेन-देन";
+"transaction.installment.count" = "किस्तों की संख्या";
+"transaction.installment.preview" = "%d किस्तें x %@ = %@";
+"transaction.installment.edit_warning_title" = "किस्त लेन-देन संपादित करें";
+"transaction.installment.edit_warning" = "यह परिवर्तन सभी किस्तों को फिर से बना देगा। क्या आप जारी रखना चाहते हैं?";
+"transaction.installment.delete_warning" = "यह पूरी किस्त लेन-देन (%d किस्तें) हटा दी जाएगी। क्या आप पुष्टि करते हैं?";
+"transaction.edit_installment" = "किस्त लेन-देन संपादित करें";
+"credit_card.installment_purchases" = "किस्त खरीद";
+"installment.completed" = "पूर्ण";
+"alert.installment.delete_title" = "किस्त लेन-देन हटाएं";
+"credit_card_details.period_total" = "अवधि का कुल";
+"alert.no_wallet.message" = "लेन-देन जोड़ने के लिए, आपको **पहले** एक **बटुआ** खाता **बनाना होगा**।";
+
+// MARK: - Cash Flow Report
+"reports.detailed.categories_report" = "श्रेणी रिपोर्ट";
+"reports.category.summary" = "श्रेणी सारांश";
+"reports.category.total_categories" = "कुल श्रेणियाँ";
+"reports.category.active_categories" = "सक्रिय श्रेणियाँ";
+"reports.category.most_spent" = "सबसे अधिक खर्च";
+"reports.category.view_list" = "सूची दृश्य";
+"reports.category.view_chart" = "चार्ट दृश्य";
+"reports.category.view_comparison" = "तुलना";
+"reports.category.distribution" = "श्रेणी वितरण";
+"reports.detailed.cash_flow" = "नकद प्रवाह";
+"cashflow.title" = "नकद प्रवाह रिपोर्ट";
+"cashflow.view.summary" = "सारांश";
+"cashflow.view.flow" = "प्रवाह";
+"cashflow.view.categories" = "श्रेणियाँ";
+"cashflow.view.accounts" = "खाते";
+"cashflow.view.projection" = "अनुमान";
+
+"cashflow.insights" = "अंतर्दृष्टि";
+"cashflow.net_flow" = "शुद्ध प्रवाह";
+"cashflow.of_income" = "आय का %";
+"cashflow.daily_avg" = "दैनिक औसत";
+
+"cashflow.normal_transactions" = "सामान्य लेन-देन";
+"cashflow.installment_transactions" = "किस्त लेन-देन";
+"cashflow.recurring_transactions" = "आवर्ती लेन-देन";
+
+"cashflow.opening_balance" = "प्रारंभिक शेष";
+"cashflow.closing_balance" = "अंतिम शेष";
+"cashflow.inflows" = "आमद";
+"cashflow.outflows" = "जावक";
+"cashflow.daily_average" = "दैनिक औसत";
+
+"cashflow.daily_details" = "दैनिक विवरण";
+"cashflow.cumulative_balance" = "संचयी शेष";
+
+"cashflow.flow_chart" = "प्रवाह चार्ट";
+"cashflow.income_expense" = "आय/व्यय";
+"cashflow.detailed" = "विस्तृत";
+"cashflow.cumulative" = "संचयी";
+"cashflow.transaction_type_distribution" = "लेन-देन प्रकार वितरण";
+"cashflow.category_flow" = "श्रेणी प्रवाह";
+"cashflow.show_trend" = "प्रवृत्ति दिखाएं";
+"cashflow.hide_trend" = "प्रवृत्ति छिपाएं";
+"cashflow.largest_transaction" = "सबसे बड़ा लेन-देन";
+
+"cashflow.transfers" = "स्थानांतरण";
+"cashflow.most_frequent_transfer" = "सबसे लगातार स्थानांतरण";
+"cashflow.show_details" = "विवरण दिखाएं";
+"cashflow.hide_details" = "विवरण छिपाएं";
+
+// Projeksiyon
+"cashflow.projection.title" = "भविष्य का अनुमान";
+"cashflow.projection.days" = "%d-दिन का अनुमान";
+"cashflow.projection.income" = "अनुमानित आय";
+"cashflow.projection.expense" = "अनुमानित व्यय";
+"cashflow.projection.net" = "अनुमानित शुद्ध";
+"cashflow.projection.chart" = "अनुमान चार्ट";
+
+// Risk
+"cashflow.risk.analysis" = "जोखिम विश्लेषण";
+"cashflow.risk.low" = "कम जोखिम";
+"cashflow.risk.medium" = "मध्यम जोखिम";
+"cashflow.risk.high" = "उच्च जोखिम";
+"cashflow.risk.low_message" = "आपका नकद प्रवाह स्वस्थ दिख रहा है। आप अपनी वर्तमान खर्च की आदतों के साथ अपने वित्तीय लक्ष्यों को प्राप्त कर सकते हैं।";
+"cashflow.risk.medium_message" = "आपके नकद प्रवाह में कुछ असंतुलन हैं। अपने खर्चों की समीक्षा करने की सलाह दी जाती है।";
+"cashflow.risk.high_message" = "ध्यान दें! आपका नकद प्रवाह नकारात्मक है। आपको तत्काल उपाय करने की आवश्यकता है।";
+
+"cashflow.suggestions" = "सुझाव";
+"cashflow.suggestion.low_1" = "आप अपने अतिरिक्त धन को निवेश में लगा सकते हैं";
+"cashflow.suggestion.low_2" = "एक आपातकालीन निधि बनाने पर विचार करें";
+"cashflow.suggestion.medium_1" = "अनावश्यक खर्च कम करें";
+"cashflow.suggestion.medium_2" = "अतिरिक्त आय के स्रोत बनाएं";
+"cashflow.suggestion.medium_3" = "बजट सीमा की समीक्षा करें";
+"cashflow.suggestion.high_1" = "तत्काल खर्च बंद करें";
+"cashflow.suggestion.high_2" = "क्रेडिट कार्ड का उपयोग सीमित करें";
+"cashflow.suggestion.high_3" = "पेशेवर वित्तीय सलाह लें";
+
+// İçgörüler
+"cashflow.insight.positive_flow" = "सकारात्मक नकद प्रवाह";
+"cashflow.insight.positive_flow_message" = "आपके पास %@ का सकारात्मक नकद प्रवाह है। आप अपनी बचत बढ़ा सकते हैं।";
+"cashflow.insight.negative_flow" = "नकारात्मक नकद प्रवाह";
+"cashflow.insight.negative_flow_message" = "आपके पास %@ का नकारात्मक नकद प्रवाह है। आपको अपने खर्चों को नियंत्रित करना चाहिए।";
+"cashflow.insight.high_installment" = "उच्च किस्त खर्च";
+"cashflow.insight.high_installment_message" = "आपके खर्चों का %% %@ किस्त है। यह अनुपात अधिक लगता है।";
+"cashflow.insight.projection_warning" = "अनुमान चेतावनी";
+"cashflow.insight.projection_warning_message" = "आपकी वर्तमान खर्च की आदतों के साथ, आपको आने वाली अवधि में नकदी की कमी का सामना करना पड़ सकता है।";
+
+// Genel
+"common.loading" = "लोड हो रहा है...";
+"common.close" = "बंद करें";
+"common.expenses" = "व्यय";
+"common.incomes" = "आय";
+"time.day_short" = "दिन";
+
+// Kategori Raporları
+"reports.category.view_list" = "सूची दृश्य";
+"reports.category.view_chart" = "चार्ट दृश्य";
+"reports.category.view_comparison" = "तुलना";
+"reports.category.display_type" = "प्रदर्शन प्रकार";
+"reports.category.transaction_type" = "लेन-देन प्रकार";
+"reports.category.no_comparison_data" = "कोई तुलना डेटा नहीं";
+"reports.category.no_previous_period" = "पिछली अवधि का कोई डेटा नहीं मिला";
+
+// Kategori Özet Kartı
+"reports.category.summary" = "सारांश";
+"reports.category.total_categories" = "कुल श्रेणियाँ";
+"reports.category.active_categories" = "सक्रिय श्रेणियाँ";
+"reports.category.most_spent" = "सबसे अधिक खर्च";
+
+// Kategori Detay
+"reports.category.detail_type" = "विवरण प्रकार";
+"reports.category.names" = "नाम";
+"reports.category.days" = "दिन";
+"reports.category.hours" = "घंटे";
+"reports.category.trend" = "प्रवृत्ति";
+"reports.category.total_spending" = "कुल खर्च";
+"reports.category.transaction" = "लेन-देन";
+"reports.category.average" = "औसत";
+"reports.category.daily" = "दैनिक";
+"reports.category.most_frequent_names" = "सबसे अधिक उपयोग किए जाने वाले लेन-देन के नाम";
+"reports.category.used_times" = "%d बार उपयोग किया गया";
+"reports.category.avg_short" = "औसत";
+"reports.category.distribution_by_days" = "दिनों के अनुसार वितरण";
+"reports.category.distribution_by_hours" = "घंटों के अनुसार वितरण";
+"reports.category.monthly_trend" = "मासिक प्रवृत्ति";
+"reports.category.transaction_count" = "%d लेन-देन";
+"reports.category.previous" = "पिछला";
+"reports.category.day" = "दिन";
+"reports.category.amount" = "राशि";
+"reports.category.month" = "महीना";
+
+"reports.heatmap.24_hours" = "24 घंटे";
+"reports.transaction_count" = "%d लेन-देन";
+"reports.average_with_amount" = "औसत: %@";
+"reports.heatmap.busiest_hours" = "सबसे व्यस्त: %@";
+
+// MARK: - Ortak Kullanım Eklemeleri
+"common.low" = "कम";
+"common.high" = "अधिक";
+"common.average" = "औसत";
+"common.highest" = "उच्चतम";
+
+// MARK: - Raporlar
+"reports.heatmap.try_different_date_range" = "एक अलग तिथि सीमा का प्रयास करें";
+"reports.heatmap.title.hourly" = "घंटे के अनुसार खर्च वितरण";
+"reports.heatmap.title.daily" = "दैनिक खर्च वितरण";
+"reports.heatmap.title.monthly" = "मासिक खर्च वितरण";
+"reports.heatmap.title.weekly" = "साप्ताहिक खर्च वितरण";
+"reports.heatmap.title.monthly_summary" = "मासिक खर्च सारांश";
+"reports.heatmap.week_format" = "सप्ताह %d";
+"reports.comparison.no_data_title" = "कोई तुलना डेटा नहीं";
+"reports.category.avg_short_format" = "औसत: %@";
+
+// MARK: - Nakit Akışı Raporu
+"reports.cashflow.no_data_title" = "कोई डेटा नहीं मिला";
+"reports.cashflow.no_data_desc" = "चयनित तिथि सीमा में कोई लेन-देन नहीं मिला।";
+"reports.category.daily_average_format" = "%@/दिन";
+
+"cashflow.transfer_count" = "%d स्थानांतरण";
+"common.times_suffix" = "%d बार";
+
+// Kredi Kartı Raporları - Yeni Anahtarlar
+"reports.creditcard.detail_view" = "विस्तृत दृश्य";
+"reports.creditcard.comparison_view" = "तुलना";
+"reports.creditcard.summary_view" = "सारांश";
+"reports.creditcard.no_data" = "कोई डेटा नहीं मिला";
+"reports.creditcard.no_data_desc" = "चयनित तिथि सीमा में कोई क्रेडिट कार्ड खर्च नहीं मिला।";
+"reports.creditcard.total_spending" = "कुल खर्च";
+"reports.creditcard.active_cards" = "सक्रिय कार्ड";
+"reports.creditcard.transactions" = "लेन-देन";
+"reports.creditcard.daily_avg" = "दैनिक औसत";
+"reports.creditcard.most_used" = "सबसे अधिक उपयोग किया गया";
+"reports.creditcard.limit" = "सीमा:";
+"reports.creditcard.usage" = "उपयोग";
+"reports.creditcard.hide_metrics" = "मेट्रिक्स छिपाएं";
+"reports.creditcard.show_metrics" = "मेट्रिक्स दिखाएं";
+"reports.creditcard.current_debt" = "वर्तमान ऋण";
+"reports.creditcard.available" = "उपलब्ध";
+"reports.creditcard.highest_day" = "उच्चतम दिन";
+"reports.creditcard.avg_transaction" = "औसत लेन-देन";
+"reports.creditcard.category_analysis" = "श्रेणी विश्लेषण";
+"reports.creditcard.more_categories" = "+%d और श्रेणियाँ";
+"reports.creditcard.spending_trend" = "खर्च की प्रवृत्ति";
+"reports.creditcard.daily" = "दैनिक";
+"reports.creditcard.weekly" = "साप्ताहिक";
+"reports.creditcard.by_category" = "श्रेणी के अनुसार";
+"reports.creditcard.installments" = "किस्त खरीद";
+"reports.creditcard.installment_count" = "%d किस्त खरीद";
+"reports.creditcard.monthly_total" = "मासिक कुल";
+"reports.creditcard.monthly" = "मासिक";
+"reports.creditcard.progress" = "प्रगति";
+"reports.creditcard.total_amount" = "कुल राशि";
+"reports.creditcard.remaining" = "शेष";
+"reports.creditcard.card_comparison" = "कार्ड की तुलना";
+"reports.creditcard.detailed_comparison" = "विस्तृत तुलना";
+"reports.creditcard.card" = "कार्ड";
+"reports.creditcard.spending" = "खर्च";
+"reports.creditcard.total_distribution" = "कुल वितरण";
+"reports.creditcard.category_summary" = "श्रेणी सारांश";
+"reports.creditcard.no_categories" = "कोई श्रेणी डेटा नहीं मिला";
+"reports.creditcard.daily_averages" = "दैनिक औसत";
+
+// MARK: - Hesap Silme ve İşlem Aktarımı
+"alert.no_eligible_account.title" = "कोई योग्य खाता नहीं";
+"alert.no_eligible_account.message" = "इस खाते को हटाने के लिए, आपको पहले एक और बटुआ या क्रेडिट कार्ड खाता बनाना होगा जिसमें इसके लेन-देन को स्थानांतरित किया जा सके।";
+"transfer_transactions.title" = "लेन-देन स्थानांतरित करें और हटाएं";
+"transfer_transactions.message_format" = "आप खाता '%@' हटाने वाले हैं। इस खाते में %d लेन-देन हैं। कृपया इन लेन-देनों को स्थानांतरित करने के लिए एक नया खाता चुनें।";
+"transfer_transactions.confirm_button" = "स्थानांतरित करें और हटाएं";
+"alert.no_eligible_wallet.title" = "कोई योग्य बटुआ नहीं मिला";
+"alert.no_eligible_wallet.message" = "आप जिस खाते को हटाना चाहते हैं, उसमें आय लेन-देन हैं। इन लेन-देनों को स्थानांतरित करने के लिए, आपको पहले एक और 'बटुआ' प्रकार का खाता बनाना होगा।";
+
+// MARK: - Kredi Raporu
+"loan_report.no_data" = "कोई ऋण डेटा नहीं मिला";
+"loan_report.no_data_desc" = "चयनित तिथि सीमा में कोई ऋण किस्त नहीं मिली।";
+"loan_report.view.summary" = "सारांश";
+"loan_report.view.detail" = "विवरण";
+"loan_report.view.calendar" = "कैलेंडर";
+"loan_report.view.performance" = "प्रदर्शन";
+
+"loan_report.sort.by_date" = "तिथि के अनुसार";
+"loan_report.sort.by_amount" = "राशि के अनुसार";
+"loan_report.sort.by_progress" = "प्रगति के अनुसार";
+
+"loan_report.overview" = "कुल ऋण स्थिति";
+"loan_report.completed" = "पूर्ण";
+"loan_report.active_loans" = "सक्रिय ऋण";
+"loan_report.monthly_payment" = "मासिक भुगतान";
+"loan_report.total_paid" = "कुल भुगतान किया गया";
+"loan_report.remaining" = "शेष ऋण";
+"loan_report.estimated_completion" = "अनुमानित समाप्ति तिथि";
+"loan_report.monthly_payment_load" = "मासिक किस्त का बोझ";
+"loan_report.no_future_payments" = "कोई भविष्य का भुगतान नहीं";
+"loan_report.distribution" = "ऋण वितरण";
+"loan_report.no_active_loans" = "कोई सक्रिय ऋण नहीं";
+
+"loan_report.search_placeholder" = "ऋण खोजें...";
+"loan_report.active_only" = "केवल सक्रिय";
+"loan_report.sort" = "क्रमबद्ध करें";
+"loan_report.principal_amount" = "मूल राशि";
+"loan_report.interest_rate" = "ब्याज दर";
+"loan_report.total_to_pay" = "कुल देय";
+"loan_report.total_interest" = "कुल ब्याज";
+"loan_report.last_payment_date" = "अंतिम भुगतान तिथि";
+"loan_report.payment_performance" = "भुगतान प्रदर्शन";
+"loan_report.score" = "स्कोर";
+"loan_report.next_payment" = "अगला भुगतान";
+"loan_report.days_remaining" = "%d दिन शेष";
+"loan_report.due_today" = "आज देय है!";
+"loan_report.overdue" = "अतिदेय!";
+"loan_report.installments_in_period" = "अवधि में किस्तें";
+"loan_report.more_installments" = "... और %d और किस्तें";
+
+"loan_report.monthly_total" = "मासिक कुल";
+
+"loan_report.performance_score" = "प्रदर्शन स्कोर";
+"loan_report.performance_excellent" = "उत्कृष्ट";
+"loan_report.performance_good" = "अच्छा";
+"loan_report.performance_fair" = "ठीक";
+"loan_report.performance_poor" = "खराब";
+"loan_report.total_interest_paid" = "कुल ब्याज भुगतान किया गया";
+"loan_report.avg_monthly_payment" = "औसत मासिक भुगतान";
+"loan_report.on_time" = "समय पर";
+"loan_report.late" = "देर से";
+"loan_report.missed" = "चूका हुआ";
+
+// MARK: - Harcama Raporu
+"spending_report.view.summary" = "सारांश";
+"spending_report.view.category" = "श्रेणियाँ";
+"spending_report.view.time" = "समय विश्लेषण";
+"spending_report.view.comparison" = "तुलना";
+
+"spending_report.no_data" = "कोई खर्च नहीं मिला";
+"spending_report.no_data_desc" = "चयनित तिथि सीमा में कोई खर्च नहीं है";
+
+"spending_report.total_spending" = "कुल खर्च";
+"spending_report.daily_avg" = "दैनिक औसत";
+"spending_report.transaction_count" = "लेन-देन की संख्या";
+"spending_report.avg_transaction" = "औसत लेन-देन";
+"spending_report.highest_expense" = "उच्चतम खर्च";
+
+"spending_report.increase" = "वृद्धि";
+"spending_report.decrease" = "कमी";
+
+"spending_report.top_categories" = "शीर्ष खर्च श्रेणियाँ";
+"spending_report.weekly_summary" = "साप्ताहिक सारांश";
+"spending_report.insights" = "स्मार्ट अंतर्दृष्टि";
+"spending_report.insight.busiest_day" = "%@ को %@ खर्च के साथ आपका सबसे व्यस्त दिन था";
+"spending_report.insight.top_category" = "%@ श्रेणी आपके कुल खर्च का %%%.1f है";
+"spending_report.insight.weekend_warning" = "आपका सप्ताहांत का औसत खर्च कार्यदिवसों की तुलना में अधिक है";
+
+"spending_report.category_distribution" = "श्रेणी वितरण";
+"spending_report.category_details" = "श्रेणी विवरण";
+"spending_report.largest_expense" = "सबसे बड़ा खर्च";
+"spending_report.avg_per_transaction" = "प्रति लेन-देन औसत";
+
+"spending_report.daily_trend" = "दैनिक खर्च की प्रवृत्ति";
+"spending_report.weekday_weekend" = "कार्यदिवस बनाम सप्ताहांत";
+"spending_report.hourly_distribution" = "घंटे के अनुसार वितरण";
+"spending_report.weekday" = "कार्यदिवस";
+"spending_report.weekend" = "सप्ताहांत";
+
+"spending_report.period_comparison" = "अवधि की तुलना";
+"spending_report.previous_period" = "पिछली अवधि";
+"spending_report.current_period" = "वर्तमान अवधि";
+"spending_report.category_changes" = "श्रेणी परिवर्तन";
+"spending_report.budget_performance" = "बजट प्रदर्शन";
+"spending_report.budget_status.normal" = "सामान्य";
+"spending_report.budget_status.critical" = "गंभीर";
+"spending_report.budget_status.exceeded" = "पार हो गया";
+"spending_report.busiest_hours" = "सबसे व्यस्त घंटे";
+"common.transactions" = "लेन-देन";
+
+// MARK: - Onboarding
+"onboarding.skip" = "छोड़ें";
+"onboarding.continue" = "जारी रखें";
+"onboarding.confirm_settings" = "सेटिंग्स की पुष्टि करें";
+"onboarding.privacy_notice" = "जारी रखकर, आप हमारी गोपनीयता नीति और सेवा की शर्तों से सहमत होते हैं।";
+
+"onboarding.welcome.title" = "वित्तीय स्वतंत्रता में आपका स्वागत है";
+"onboarding.welcome.subtitle" = "अपने खर्चों को ट्रैक करें, अपने बजट का प्रबंधन करें, और अपने वित्तीय लक्ष्यों को प्राप्त करें";
+
+"onboarding.feature1.title" = "स्मार्ट विश्लेषण";
+"onboarding.feature1.description" = "अपने खर्चों को वर्गीकृत करें और विस्तृत चार्ट के साथ अपनी वित्तीय स्थिति देखें";
+
+"onboarding.feature2.title" = "बजट प्रबंधन";
+"onboarding.feature2.description" = "मासिक बजट बनाएं, अपनी सीमाओं को ट्रैक करें, और अपने बचत लक्ष्यों को प्राप्त करें";
+
+"onboarding.feature3.title" = "स्मार्ट अनुस्मारक";
+"onboarding.feature3.description" = "बिल भुगतान और बजट से अधिक होने पर समय पर सूचनाएं प्राप्त करें";
+
+"onboarding.personalize.title" = "अपने अनुभव को निजीकृत करें";
+"onboarding.select_language" = "भाषा चुनें";
+"onboarding.select_currency" = "मुद्रा चुनें";
+
+"reports.creditcard.show_less" = "कम दिखाएं";
+"reports.creditcard.usage.short" = "उपयोग";
+"reports.creditcard.no_category_data" = "कोई श्रेणी डेटा नहीं";
+"loan_report.legend.paid" = "भुगतान किया गया";
+"loan_report.legend.pending" = "लंबित";
+"loan_report.legend.overdue" = "अतिदेय";
+"loan_report.this_month_summary" = "इस महीने";
+"loan_report.total_installments" = "इस महीने की कुल किस्त राशि:";
+"loan_report.paid_installments" = "भुगतान की गई किस्तों का योग:";
+"loan_report.no_installments_for_day" = "आज के लिए कोई ऋण किस्त नहीं";
+"loan_report.installment_no" = "किस्त:";
+"loan_report.status.paid" = "भुगतान किया गया";
+"loan_report.status.pending" = "लंबित";
+"loan_report.status.overdue" = "अतिदेय";
+"loan_report.total_for_day" = "दिन का कुल";
+"dashboard.show_less" = "कम दिखाएं";
+"dashboard.more_categories" = " और श्रेणियाँ";
+"reports.category.highest_spending" = "उच्चतम खर्च श्रेणी";
+"reports.category.most_transactions" = "सबसे अधिक लेन-देन";

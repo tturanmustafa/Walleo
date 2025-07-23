@@ -1,0 +1,903 @@
+/* Localizable.strings (Vietnamese) */
+
+// MARK: - Genel / Ortak Kullanım
+"common.save" = "Lưu";
+"common.cancel" = "Hủy";
+"common.edit" = "Sửa";
+"common.delete" = "Xóa";
+"common.done" = "Xong";
+"common.reset" = "Thiết lập lại";
+"common.apply" = "Áp dụng";
+"common.all" = "Tất cả";
+"common.income" = "Thu nhập";
+"common.expense" = "Chi tiêu";
+"common.category" = "Hạng mục";
+"common.categories" = "Các hạng mục";
+"common.amount" = "Số tiền";
+"common.date" = "Ngày";
+"common.type" = "Loại";
+"common.account" = "Tài khoản";
+"common.select_account" = "Chọn tài khoản";
+"common.back" = "Quay lại";
+"common.total" = "Tổng cộng";
+"common.net" = "Ròng";
+"common.total_amount" = "Tổng số tiền";
+
+// MARK: - Ana Sekmeler
+"tab.dashboard" = "Tổng quan";
+"tab.calendar" = "Lịch";
+"tab.reports" = "Báo cáo";
+"tab.settings" = "Cài đặt";
+"tab.budgets" = "Ngân sách";
+"tab.more" = "Thêm";
+
+// MARK: - Panel / Dashboard Ekranı
+"dashboard.category_distribution" = "Phân bổ theo hạng mục";
+"dashboard.recent_transactions" = "Giao dịch gần đây";
+"dashboard.see_all" = "Xem tất cả";
+"dashboard.no_records_for_month" = "Không có bản ghi nào cho tháng này";
+
+// MARK: - Ayarlar Ekranı
+"settings.title" = "Cài đặt";
+"settings.section_general" = "CHUNG";
+"settings.theme" = "Chủ đề";
+"settings.theme_system" = "Hệ thống";
+"settings.theme_light" = "Sáng";
+"settings.theme_dark" = "Tối";
+"settings.language" = "Ngôn ngữ";
+"settings.manage_categories" = "Quản lý hạng mục";
+"settings.section_info" = "THÔNG TIN";
+"settings.version" = "Phiên bản";
+"settings.currency" = "Tiền tệ";
+
+// MARK: - Bildirim Ayarları
+"settings.notifications" = "Cài đặt thông báo";
+"settings.notifications.title" = "Cài đặt thông báo";
+"settings.notifications.master_section" = "ĐIỀU KHIỂN CHÍNH";
+"settings.notifications.master_toggle" = "Tất cả thông báo";
+"settings.notifications.budget_section" = "CẢNH BÁO NGÂN SÁCH";
+"settings.notifications.budget_toggle" = "Hiển thị thông báo ngân sách";
+"settings.notifications.threshold_picker" = "Ngưỡng cảnh báo";
+"settings.notifications.threshold.option_80" = "Khi đạt 80%";
+"settings.notifications.threshold.option_85" = "Khi đạt 85%";
+"settings.notifications.threshold.option_90" = "Khi đạt 90%";
+"settings.notifications.threshold.option_95" = "Khi đạt 95%";
+"settings.notifications.loan_section" = "NHẮC NHỞ THANH TOÁN";
+"settings.notifications.loan_toggle" = "Nhắc nhở trả góp khoản vay";
+"settings.notifications.loan_stepper" = "%d ngày trước hạn";
+"settings.notifications.credit_card_section" = "NHẮC NHỞ THẺ TÍN DỤNG";
+"settings.notifications.credit_card_toggle" = "Nhắc nhở ngày đến hạn thanh toán";
+
+// MARK: - Bildirim İçerikleri
+"notification.budget.over_limit.title" = "Vượt ngân sách";
+"notification.budget.over_limit.body_line1_format" = "Bạn đã vượt quá số tiền mục tiêu cho ngân sách '%@'.";
+"notification.budget.over_limit.body_line2" = "Mục tiêu ngân sách: %@";
+"notification.budget.over_limit.body_line3" = "Số tiền vượt: %@";
+"notification.budget.approaching_limit.title" = "Sắp đến giới hạn ngân sách";
+"notification.budget.approaching_limit.body_line1_format" = "Bạn đã đạt %%%2$.0f mục tiêu cho ngân sách '%1$@'.";
+"notification.budget.approaching_limit.body_line2" = "Mục tiêu ngân sách: %@";
+"notification.budget.approaching_limit.body_line3" = "Số tiền còn lại: %@";
+"notification.credit_card.due_date.title" = "Sắp đến hạn thanh toán thẻ tín dụng";
+"notification.credit_card.due_date.body_format" = "Ngày đến hạn thanh toán cho thẻ %@ của bạn là %@.";
+
+// MARK: - Kategori Yönetimi
+"categories.title" = "Các hạng mục";
+"categories.income_categories" = "Hạng mục thu nhập";
+"categories.expense_categories" = "Hạng mục chi tiêu";
+"categories.new" = "Hạng mục mới";
+"categories.edit" = "Sửa hạng mục";
+"categories.name" = "Tên hạng mục";
+"categories.color" = "Màu hạng mục";
+"categories.select_icon" = "Chọn biểu tượng";
+
+// MARK: - İşlem Ekleme / Düzenleme
+"transaction.new" = "Giao dịch mới";
+"transaction.edit" = "Sửa giao dịch";
+"transaction.type" = "Loại giao dịch";
+"transaction.section_details" = "Chi tiết";
+"transaction.name_placeholder" = "Tên giao dịch (ví dụ: Ăn tối)";
+"transaction.select_category" = "Chọn hạng mục";
+"transaction.recurrence" = "Lặp lại";
+"transaction.loan_payment_name_format" = "Thanh toán trả góp cho %@";
+
+// MARK: - Hesaplar
+"accounts.title" = "Tài khoản";
+"accounts.empty.title" = "Chưa có tài khoản";
+"accounts.empty.description" = "Chạm vào biểu tượng '+' để thêm tài khoản mới và bắt đầu.";
+"accounts.add.wallet" = "Ví (Tiền mặt)";
+"accounts.add.credit_card" = "Thẻ tín dụng";
+"accounts.add.loan" = "Khoản vay";
+"accounts.add.new_credit_card" = "Thêm thẻ tín dụng mới";
+"accounts.add.new_loan" = "Thêm khoản vay mới";
+"accounts.add.account_color" = "Màu tài khoản";
+"accounts.add.interest_rate" = "Lãi suất (%)";
+"accounts.add.installments" = "Số kỳ trả góp";
+"accounts.add.installments_stepper" = "%d tháng";
+"accounts.add.create_installments_button" = "Lưu và tạo các kỳ trả góp";
+
+"credit_card.form.statement_date_header" = "Ngày sao kê";
+"credit_card.form.statement_date" = "Ngày sao kê";
+"credit_card.form.payment_due_date_header" = "Cài đặt ngày đến hạn thanh toán";
+"credit_card.form.payment_due_date_stepper" = "%d ngày sau ngày sao kê";
+"loan.form.details_header" = "Thông tin khoản vay";
+"loan.form.first_payment_header" = "Ngày trả góp đầu tiên";
+"loan.form.interest_type" = "Loại lãi suất";
+"loan.form.first_installment_date" = "Ngày trả góp đầu tiên";
+"loan_details.summary_header" = "Tóm tắt khoản vay";
+"loan_details.installment_plan_header" = "Kế hoạch trả góp";
+
+"installment.edit.title" = "Sửa kỳ trả góp";
+"installment.edit.details_header" = "Chi tiết kỳ trả góp";
+"installment.paid.label" = "Đánh dấu đã trả";
+"accounts.card.current_debt" = "Nợ hiện tại";
+"accounts.card.available_limit" = "Hạn mức khả dụng";
+"accounts.card.paid_installments" = "Kỳ đã trả";
+"accounts.card.remaining_debt" = "Nợ còn lại";
+"credit_card_details.recent_expenses" = "Chi tiêu trong kỳ";
+"credit_card_details.no_transactions" = "Không có giao dịch trong kỳ này";
+
+"account_details.generic_title" = "Chi tiết %@";
+"enum.interest_type.yearly" = "Hàng năm";
+"enum.interest_type.monthly" = "Hàng tháng";
+"transaction.amount_placeholder" = "Số tiền (ví dụ: 125,50)";
+"account.name_placeholder_wallet" = "Tên ví (ví dụ: Tiền mặt)";
+"account.name_placeholder_creditcard" = "Tên thẻ (ví dụ: Thẻ Bonus)";
+"account.name_placeholder_loan" = "Tên khoản vay (ví dụ: Vay mua xe)";
+"account.initial_balance_placeholder" = "Số dư ban đầu (ví dụ: 500)";
+"credit_card.limit_placeholder" = "Hạn mức thẻ (ví dụ: 15000)";
+"credit_card.current_debt_placeholder" = "Nợ hiện tại (Tùy chọn)";
+"loan.principal_amount_placeholder" = "Số tiền vay (ví dụ: 250000)";
+"loan.interest_rate_placeholder" = "Lãi suất (ví dụ: 1,89)";
+
+"budget.name_placeholder" = "Tên ngân sách (ví dụ: Chi tiêu nhà bếp)";
+"budget.limit_placeholder" = "Hạn mức hàng tháng (ví dụ: 2500)";
+"accounts.add.loan_amount" = "Số tiền vay";
+"accounts.card.initial_balance" = "Số dư ban đầu";
+"accounts.card.current_balance" = "Số dư hiện tại";
+"accounts.card.total_limit" = "Tổng hạn mức";
+"accounts.card.statement_date" = "Ngày sao kê";
+
+"accounts.group.wallets" = "Các ví";
+"accounts.group.credit_cards" = "Thẻ tín dụng";
+"accounts.group.loans" = "Các khoản vay";
+
+// MARK: - Diğer Ekranlar ve Uyarılar
+"all_transactions.title" = "Tất cả giao dịch";
+"all_transactions.not_found" = "Không tìm thấy giao dịch";
+"all_transactions.not_found_desc" = "Hãy thử thay đổi tiêu chí lọc của bạn.";
+"filter.date_range" = "Phạm vi ngày";
+"filter.sort_by" = "Sắp xếp theo";
+"filter.accounts" = "Tài khoản";
+"alert.recurring_transaction" = "Đây là một giao dịch lặp lại.";
+"alert.update_this_only" = "Chỉ cập nhật giao dịch này";
+"alert.update_future" = "Cập nhật giao dịch này và các giao dịch trong tương lai";
+"alert.delete_this_only" = "Chỉ xóa giao dịch này";
+"alert.delete_series" = "Xóa toàn bộ chuỗi";
+"alert.add_as_expense.title" = "Thêm dưới dạng chi tiêu";
+"alert.add_as_expense.button_yes" = "Có, thêm làm chi tiêu";
+"alert.add_as_expense.button_no" = "Không, chỉ đánh dấu";
+"alert.add_as_expense.message_format" = "Bạn có muốn thêm khoản thanh toán trả góp trị giá %@ làm chi tiêu không?";
+"month_picker.title" = "Chọn ngày";
+"month_picker.month" = "Tháng";
+"month_picker.year" = "Năm";
+"calendar.no_transactions_on_date" = "Không có giao dịch vào ngày này";
+"calendar.monthly_summary" = "Tóm tắt hàng tháng";
+"notifications.title" = "Thông báo";
+"notifications.no_notifications_title" = "Chưa có thông báo";
+"notifications.no_notifications_desc" = "Các thông báo quan trọng trong ứng dụng sẽ xuất hiện ở đây.";
+"validation.error.invalid_amount_format" = "Định dạng không hợp lệ. Tối đa 9 chữ số nguyên và 2 chữ số thập phân.";
+
+// MARK: - Raporlar
+"reports.type.summary" = "Tóm tắt";
+"reports.type.distribution" = "Phân bổ";
+"reports.summary.card.main_metrics" = "Các chỉ số chính";
+"reports.summary.card.comparison" = "Phân tích so sánh";
+"reports.summary.top_expenses" = "Các khoản chi tiêu nhiều nhất";
+"reports.summary.statistics" = "Thống kê";
+"reports.summary.net_flow" = "Dòng tiền ròng";
+"reports.comparison.no_data" = "Không có dữ liệu kỳ trước để so sánh.";
+"reports.comparison.prefix_net_flow_positive" = "So với kỳ trước, bạn đã tiết kiệm được ";
+"reports.comparison.suffix_net_flow_positive" = " nhiều hơn.";
+"reports.comparison.prefix_net_flow_negative" = "So với kỳ trước, bạn đã chi tiêu ";
+"reports.comparison.suffix_net_flow_negative" = " nhiều hơn.";
+"reports.comparison.prefix_expenses_increased" = "Chi tiêu của bạn đã tăng ";
+"reports.comparison.suffix_expenses_increased" = " so với kỳ trước.";
+"reports.comparison.prefix_expenses_decreased" = "Chi tiêu của bạn đã giảm ";
+"reports.comparison.suffix_expenses_decreased" = " so với kỳ trước.";
+"reports.distribution.no_data" = "Không có dữ liệu để hiển thị cho kỳ này.";
+"reports.statistics.daily_avg_expense" = "Chi tiêu trung bình hàng ngày";
+"reports.statistics.daily_avg_income" = "Thu nhập trung bình hàng ngày";
+"reports.statistics.highest_expense" = "Chi tiêu một lần cao nhất";
+"reports.statistics.highest_income" = "Thu nhập một lần cao nhất";
+
+// MARK: - Bütçeler
+"budgets.title" = "Ngân sách";
+"budgets.empty.title" = "Chưa có ngân sách";
+"budgets.empty.description" = "Tạo ngân sách mới bằng cách chạm vào biểu tượng '+' để kiểm soát chi tiêu của bạn.";
+"budgets.add.title" = "Ngân sách mới";
+"budgets.edit.title" = "Sửa ngân sách";
+"budgets.form.name_placeholder" = "ví dụ: Chi tiêu nhà bếp";
+"budgets.form.limit_amount" = "Hạn mức hàng tháng";
+"budgets.form.select_categories" = "Chọn các hạng mục";
+"budgets.card.total_limit" = "Tổng hạn mức";
+"budgets.card.amount_spent" = "Số tiền đã chi";
+"budgets.card.amount_remaining" = "Số tiền còn lại";
+"alert.delete_budget.message_format" = "Bạn có chắc chắn muốn xóa vĩnh viễn ngân sách '%@' không?";
+
+// MARK: - Enum Değerleri ve Kategoriler
+"enum.recurrence.once" = "Một lần";
+"enum.recurrence.monthly" = "Hàng tháng";
+"enum.recurrence.quarterly" = "Hàng quý";
+"enum.recurrence.semi_annually" = "Nửa năm một lần";
+"enum.recurrence.annually" = "Hàng năm";
+"enum.sort.date_desc" = "Theo ngày (Mới nhất đến cũ nhất)";
+"enum.sort.date_asc" = "Theo ngày (Cũ nhất đến mới nhất)";
+"enum.sort.amount_desc" = "Theo số tiền (Cao đến thấp)";
+"enum.sort.amount_asc" = "Theo số tiền (Thấp đến cao)";
+"enum.date_range.all" = "Toàn bộ thời gian";
+"enum.date_range.this_week" = "Tuần này";
+"enum.date_range.ytd" = "Từ đầu năm";
+"enum.date_range.this_month" = "Tháng này";
+"enum.date_range.last_3_months" = "3 tháng qua";
+"enum.date_range.last_6_months" = "6 tháng qua";
+"enum.date_range.last_year" = "12 tháng qua";
+"enum.budget_period.monthly" = "Hàng tháng";
+
+"category.salary" = "Lương";
+"category.extra_income" = "Thu nhập thêm";
+"category.investment" = "Đầu tư";
+"category.groceries" = "Tạp hóa";
+"category.restaurant" = "Nhà hàng";
+"category.transport" = "Đi lại";
+"category.bills" = "Hóa đơn";
+"category.entertainment" = "Giải trí";
+"category.health" = "Sức khỏe";
+"category.clothing" = "Quần áo";
+"category.home" = "Nhà cửa";
+"category.gift" = "Quà tặng";
+"category.loan_payment" = "Trả nợ vay";
+"category.other" = "Khác";
+
+// MARK: - Filtreleme Ekranı
+"filter.custom_range_header" = "Phạm vi tùy chỉnh";
+"filter.start_date" = "Ngày bắt đầu";
+"filter.end_date" = "Ngày kết thúc";
+"filter.presets_header" = "Phạm vi đặt sẵn";
+"enum.date_range.custom" = "Tùy chỉnh";
+
+// MARK: - Para Birimleri
+"currency.name.TRY" = "Lira Thổ Nhĩ Kỳ";
+"currency.name.USD" = "Đô la Mỹ";
+"currency.name.EUR" = "Euro";
+"currency.name.GBP" = "Bảng Anh";
+"currency.name.JPY" = "Yên Nhật";
+"currency.name.CAD" = "Đô la Canada";
+"currency.name.AUD" = "Đô la Úc";
+"currency.name.CHF" = "Franc Thụy Sĩ";
+"currency.name.CNY" = "Nhân dân tệ Trung Quốc";
+"currency.name.SEK" = "Krona Thụy Điển";
+"currency.name.NOK" = "Krone Na Uy";
+"currency.name.RUB" = "Rúp Nga";
+"currency.name.INR" = "Rupee Ấn Độ";
+"currency.name.BRL" = "Real Brazil";
+"currency.name.ZAR" = "Rand Nam Phi";
+"currency.name.AED" = "Dirham UAE";
+"currency.name.SAR" = "Riyal Ả Rập Xê Út";
+"currency.name.KRW" = "Won Hàn Quốc";
+"currency.name.SGD" = "Đô la Singapore";
+"currency.name.IDR" = "Rupiah Indonesia";
+"currency.name.VND" = "Đồng Việt Nam";
+"currency.name.THB" = "Baht Thái Lan";
+"currency.name.MYR" = "Ringgit Malaysia";
+
+"settings.section.data_management" = "Quản lý dữ liệu";
+"settings.data.export" = "Xuất dữ liệu (.csv)";
+"settings.data.exporting" = "Đang xuất...";
+
+"settings.language_change.title" = "Thay đổi ngôn ngữ";
+"settings.language_change.message" = "Để thay đổi cài đặt ngôn ngữ, ứng dụng cần phải khởi động lại. Bạn có muốn tiếp tục không?";
+"settings.language_change.restart_button" = "Khởi động lại";
+
+"alert.delete_confirmation.title" = "Xác nhận xóa";
+"alert.delete_wallet.message_format" = "Bạn có chắc chắn muốn xóa vĩnh viễn ví/tài khoản '%@' không? Các giao dịch liên quan đến tài khoản này sẽ không bị xóa, chỉ có liên kết tài khoản sẽ bị xóa.";
+"alert.delete_credit_card.message_format" = "Bạn có chắc chắn muốn xóa vĩnh viễn thẻ tín dụng '%@' không? Các giao dịch liên quan đến tài khoản này sẽ không bị xóa, chỉ có liên kết tài khoản sẽ bị xóa.";
+"alert.delete_loan.message_format" = "Bạn có chắc chắn muốn xóa vĩnh viễn khoản vay '%@' và kế hoạch trả góp của nó không? Hành động này không thể hoàn tác.";
+"alert.delete_category.message_format" = "Bạn có chắc chắn muốn xóa hạng mục '%@' không? Hạng mục này sẽ bị xóa khỏi tất cả các giao dịch liên quan.";
+"alert.delete_transaction.message" = "Bạn có chắc chắn muốn xóa vĩnh viễn giao dịch này không?";
+"alert.delete_all_notifications.title" = "Xóa tất cả";
+"alert.delete_all_notifications.message" = "Bạn có chắc chắn muốn xóa vĩnh viễn tất cả thông báo không?";
+
+"button.add_account" = "Thêm tài khoản";
+"button.add_budget" = "Thêm ngân sách";
+"button.add_category" = "Thêm hạng mục";
+
+"budget_details.no_transactions" = "Không có giao dịch cho ngân sách này";
+
+"alert.no_accounts.title" = "Cần có tài khoản";
+"alert.no_accounts.message" = "Để thêm giao dịch, trước tiên bạn phải tạo tài khoản Ví hoặc Thẻ tín dụng.";
+"alert.no_accounts.add_account_button" = "Tạo tài khoản";
+
+// MARK: - Veri Dışa Aktarma Başlıkları
+"export.header.date" = "Ngày";
+"export.header.name" = "Tên giao dịch";
+"export.header.amount" = "Số tiền";
+"export.header.type" = "Loại";
+"export.header.category" = "Hạng mục";
+"export.header.account" = "Tài khoản";
+
+"credit_card_details.no_expenses_for_month" = "Không có chi tiêu trong tháng này";
+"credit_card_details.total_expenses_for_period" = "Tổng chi tiêu trong kỳ";
+"notifications.delete_all" = "Xóa tất cả";
+"notifications.mark_all_as_read" = "Đánh dấu tất cả đã đọc";
+
+// MARK: - Form Labels & Placeholders
+"form.label.transaction_name" = "Tên giao dịch";
+"form.label.amount" = "Số tiền";
+"form.label.wallet_name" = "Tên ví";
+"form.label.card_name" = "Tên thẻ";
+"form.label.loan_name" = "Tên khoản vay";
+"form.label.initial_balance" = "Số dư ban đầu";
+"form.label.card_limit" = "Hạn mức thẻ";
+"form.label.current_debt" = "Nợ hiện tại";
+"form.label.principal_amount" = "Số tiền gốc";
+"form.label.interest_rate" = "Lãi suất";
+"form.label.budget_name" = "Tên ngân sách";
+"form.label.budget_limit" = "Hạn mức hàng tháng";
+
+// MARK: - Time
+"time.today" = "Hôm nay";
+"time.yesterday" = "Hôm qua";
+
+"reports.period.weekly" = "Hàng tuần";
+"reports.period.monthly" = "Hàng tháng";
+"week_picker.select_date_label" = "Chọn ngày";
+"week_picker.title" = "Chọn tuần";
+
+"form.label.set_end_date" = "Đặt ngày kết thúc";
+"form.label.end_date" = "Ngày kết thúc";
+
+"notification.daily.title" = "Đã đến lúc kết thúc ngày hôm nay!";
+"notification.daily.body" = "Bạn đã thêm thu nhập và chi tiêu hôm nay vào Walleo chưa? Thời điểm tốt nhất để theo dõi sức khỏe tài chính của bạn.";
+"notification.weekly.title" = "Báo cáo hàng tuần của bạn đã sẵn sàng!";
+"notification.weekly.body" = "Khám phá ngay bản tóm tắt tài chính tuần trước của bạn. Thông tin chi tiết về chi tiêu và thu nhập đang chờ bạn trong màn hình Báo cáo.";
+
+"settings.data.delete_all" = "Xóa tất cả dữ liệu";
+"alert.delete_all_data.title" = "Xóa tất cả dữ liệu?";
+"alert.delete_all_data.message" = "Hành động này không thể hoàn tác. Tất cả tài khoản, giao dịch và ngân sách của bạn trên thiết bị và trong iCloud sẽ bị xóa vĩnh viễn.";
+"common.confirm_delete" = "Có, xóa tất cả";
+
+"settings.data.icloud_backup" = "Sao lưu iCloud";
+"alert.icloud_toggle.title" = "Đang thay đổi cài đặt sao lưu";
+"alert.icloud_toggle.message" = "Thay đổi cài đặt này yêu cầu khởi động lại ứng dụng. Bạn có muốn tiếp tục không?";
+"alert.language_change.confirm_button" = "Xác nhận";
+"alert.no_payment_account.title" = "Không tìm thấy tài khoản phù hợp";
+"alert.no_payment_account.message" = "Để thêm khoản thanh toán này dưới dạng chi tiêu, trước tiên bạn phải tạo tài khoản Ví hoặc Thẻ tín dụng.";
+"account_selection.title" = "Chọn tài khoản thanh toán";
+
+"account_type.wallet" = "Ví";
+"account_type.credit_card" = "Thẻ tín dụng";
+"account_type.loan" = "Khoản vay";
+
+// MARK: - Onboarding
+"onboarding.page1.title" = "Vũ trụ tài chính của bạn, trong một lần chạm";
+"onboarding.page1.subtitle" = "Kiểm soát hoàn toàn tình hình tài chính của bạn bằng cách quản lý tiền mặt, thẻ tín dụng và các khoản vay ở một nơi duy nhất.";
+"onboarding.page2.title" = "Bạn quản lý ngân sách, không phải ngược lại";
+"onboarding.page2.subtitle" = "Tạo ngân sách theo từng hạng mục và dễ dàng định hình chi tiêu của bạn theo mục tiêu với tính năng theo dõi tiến độ trực quan.";
+"onboarding.page3.title" = "Hãy để dữ liệu lên tiếng, nhìn thấy tương lai của bạn";
+"onboarding.page3.subtitle" = "Đưa ra quyết định tài chính thông minh hơn bằng cách biến các khoản chi tiêu trong quá khứ thành các báo cáo có ý nghĩa và phân tích so sánh.";
+"onboarding.page4.title" = "Trợ lý tài chính luôn nghĩ cho bạn";
+"onboarding.page4.subtitle" = "Hãy yên tâm với các thông báo thông minh chủ động nhắc nhở bạn về mọi chi tiết quan trọng, từ ngày thanh toán hóa đơn đến việc vượt ngân sách.";
+"onboarding.page5.title" = "Hoàn toàn của bạn, hoàn toàn dành cho bạn";
+"onboarding.page5.subtitle" = "Điều chỉnh ứng dụng một cách hoàn hảo cho phù hợp với lối sống và sở thích của bạn với các chủ đề, ngôn ngữ, tiền tệ và hạng mục tùy chỉnh.";
+"onboarding.page6.title" = "Dữ liệu của bạn là pháo đài của bạn";
+"onboarding.page6.subtitle" = "Từ đồng bộ hóa iCloud an toàn đến xuất dữ liệu và tùy chọn xóa vĩnh viễn, quyền kiểm soát dữ liệu hoàn toàn nằm trong tay bạn.";
+"onboarding.signin.apple" = "Đăng nhập bằng Apple";
+"onboarding.privacy_policy" = "Bằng cách tiếp tục, bạn đồng ý với Chính sách quyền riêng tư và Điều khoản sử dụng của chúng tôi.";
+
+"settings.section_ai_assistant" = "TRỢ LÝ AI";
+"settings.ai_assistant_title" = "Trò chuyện với Trợ lý AI";
+
+// Aile Hesabı
+"settings.family_account" = "Tài khoản gia đình";
+"family.no_family_title" = "Không có tài khoản gia đình";
+"family.no_family_description" = "Tạo một tài khoản gia đình để chia sẻ dữ liệu tài chính của bạn với các thành viên trong gia đình";
+"family.create_family" = "Tạo tài khoản gia đình";
+"family.info_section" = "Thông tin gia đình";
+"family.name" = "Tên gia đình";
+"family.owner" = "Chủ sở hữu";
+"family.you" = "Bạn";
+"family.member_count" = "Số thành viên";
+"family.created_date" = "Ngày tạo";
+"family.members_section" = "Thành viên gia đình";
+"family.pending" = "Đang chờ xử lý";
+"family.invite_member" = "Mời thành viên";
+"family.leave_family" = "Rời khỏi gia đình";
+"family.owner_cannot_leave" = "Là chủ sở hữu, bạn không thể rời khỏi gia đình. Hãy chuyển quyền sở hữu trước.";
+"family.create_new" = "Tài khoản gia đình mới";
+"family.name_placeholder" = "Nhập tên gia đình";
+"family.create_description" = "Tất cả dữ liệu tài chính của bạn sẽ được chia sẻ với các thành viên trong gia đình";
+"family.create_title" = "Tạo gia đình";
+"family.invite_instructions" = "Tạo một liên kết mời để chia sẻ với thành viên gia đình của bạn";
+"family.generate_invite_link" = "Tạo liên kết mời";
+"family.leave_confirmation_title" = "Bạn có chắc chắn muốn rời khỏi gia đình không?";
+"family.leave_confirmation_message" = "Bạn sẽ không còn quyền truy cập vào dữ liệu gia đình được chia sẻ nữa. Hành động này không thể hoàn tác.";
+"family.leave_confirm" = "Rời khỏi gia đình";
+"family.cloudkit_warning_title" = "Cần có iCloud cho tài khoản gia đình";
+"family.cloudkit_warning_message" = "Bạn không thể tắt sao lưu iCloud khi đang sử dụng tài khoản gia đình. Vui lòng rời khỏi tài khoản gia đình trước.";
+"family.delete_warning_title" = "Không thể xóa dữ liệu";
+"family.delete_warning_message" = "Bạn không thể xóa tất cả dữ liệu khi đang là thành viên của tài khoản gia đình. Vui lòng rời khỏi tài khoản gia đình trước.";
+"family.invitation_title" = "Lời mời tham gia tài khoản gia đình";
+"family.invitation_description" = "Bạn đã được mời tham gia một tài khoản gia đình. Tất cả dữ liệu tài chính sẽ được chia sẻ giữa các thành viên trong gia đình.";
+"family.accepting_invitation" = "Đang chấp nhận lời mời...";
+"family.invitation_accepted" = "Đã chấp nhận lời mời!";
+"family.accept_invitation" = "Chấp nhận lời mời";
+"family.join_family" = "Tham gia gia đình";
+
+// MARK: - Bütçe Ek
+"budget.automation_settings" = "Cài đặt tự động hóa";
+"budget.form.auto_renew" = "Tự động gia hạn hàng tháng";
+"budget.form.rollover_balance" = "Chuyển số dư còn lại từ tháng trước";
+"budget.list.period_ended" = "Kỳ đã kết thúc";
+"budget.detail.period_info" = "Thông tin kỳ";
+"budget.detail.budget_period" = "Kỳ ngân sách";
+"budget.detail.rollover_from_last_month" = "Chuyển từ tháng trước";
+"budget.detail.transactions_for_period" = "Giao dịch trong kỳ này";
+"notification.budget.pre_renewal.title" = "Ngân sách của bạn sắp được gia hạn";
+"notification.budget.pre_renewal.body" = "Ngân sách '%@' của bạn sẽ được gia hạn cho tháng tiếp theo với số dư chuyển sang là %@.";
+"notification.budget.renewal_summary.title" = "Ngân sách của bạn đã được gia hạn!";
+"notification.budget.renewal_summary.body" = "Chào mừng %@! ☕️ %d ngân sách của bạn cho tháng này đã được tự động gia hạn.";
+
+// MARK: - Detaylı Raporlar
+"reports.detailed.title" = "Báo cáo";
+"reports.detailed.credit_card_report" = "Báo cáo thẻ tín dụng";
+"reports.detailed.loan_report" = "Báo cáo khoản vay";
+"reports.detailed.start_date" = "Ngày bắt đầu";
+"reports.detailed.end_date" = "Ngày kết thúc";
+
+"reports.detailed.no_cc_data_title" = "Không tìm thấy dữ liệu";
+"reports.detailed.no_cc_data_desc" = "Không có chi tiêu bằng thẻ tín dụng trong khoảng thời gian đã chọn.";
+"reports.detailed.no_loan_data_title" = "Không tìm thấy dữ liệu";
+"reports.detailed.no_loan_data_desc" = "Không có khoản trả góp nào đến hạn trong khoảng thời gian đã chọn.";
+
+"reports.detailed.overall_summary" = "Tổng quan chung";
+"reports.detailed.total_spending" = "Tổng chi tiêu";
+"reports.detailed.transaction_count" = "Số lượng giao dịch";
+"reports.detailed.most_used_card" = "Thẻ được sử dụng nhiều nhất";
+"reports.detailed.card_details_header" = "Chi tiết thẻ";
+"reports.detailed.category_distribution" = "Phân bổ theo hạng mục";
+"reports.detailed.daily_spending_trend" = "Xu hướng chi tiêu hàng ngày";
+
+"reports.detailed.overall_loan_summary" = "Tổng quan chung về khoản vay";
+"reports.detailed.active_loan_count" = "%d khoản vay đang hoạt động";
+"reports.detailed.paid_installments_count" = "Đã trả: %d";
+"reports.detailed.unpaid_installments_count" = "Chưa trả: %d";
+"reports.detailed.loan_details_header" = "Chi tiết khoản vay";
+"reports.detailed.installments_in_period" = "Kỳ trả góp trong kỳ: %d";
+"reports.detailed.paid_and_expensed" = "Đã trả & ghi nhận là chi tiêu";
+"reports.detailed.paid_only" = "Chỉ đánh dấu đã trả";
+"reports.detailed.overdue" = "Kỳ trả góp quá hạn";
+"reports.detailed.upcoming" = "Kỳ trả góp sắp tới";
+
+/* Harcama Isı Haritası */
+"reports.detailed.spending_heatmap" = "Bản đồ nhiệt chi tiêu";
+"reports.heatmap.no_data" = "Không tìm thấy chi tiêu trong khoảng thời gian đã chọn";
+"reports.heatmap.hourly_distribution" = "Phân bổ theo giờ";
+"reports.heatmap.comparison" = "So sánh";
+"reports.heatmap.insights" = "Thông tin chi tiết thông minh";
+
+/* Zaman Dilimleri */
+"reports.heatmap.morning" = "Buổi sáng";
+"reports.heatmap.noon" = "Buổi trưa";
+"reports.heatmap.evening" = "Buổi tối";
+"reports.heatmap.night" = "Ban đêm";
+"reports.heatmap.weekday" = "Ngày thường";
+"reports.heatmap.weekend" = "Cuối tuần";
+
+/* İçgörüler */
+"reports.heatmap.insight.busiest_day" = "Ngày bận rộn nhất: %@";
+"reports.heatmap.insight.busiest_hour" = "Giờ hoạt động nhiều nhất: %@";
+"reports.heatmap.insight.weekend_comparison" = "Chi tiêu cuối tuần nhiều hơn %%%@";
+"reports.heatmap.insight.no_spending_days" = "Không chi tiêu trong %@ ngày";
+
+// MARK: - Transfer
+"transfer.title" = "Chuyển tiền giữa các tài khoản";
+"transfer.source_account" = "Ví nguồn";
+"transfer.target_account" = "Ví hoặc Thẻ tín dụng đích";
+"transfer.amount_label" = "Số tiền chuyển";
+"transfer.amount_placeholder" = "Nhập số tiền cần chuyển";
+"transfer.button" = "Chuyển tiền";
+"transfer.select_wallet" = "Chọn ví";
+"transfer.select_account" = "Chọn tài khoản";
+"transfer.source_details" = "Chi tiết tài khoản nguồn";
+"transfer.target_details" = "Chi tiết tài khoản đích";
+"transfer.name" = "Tên:";
+"transfer.initial_balance" = "Số dư ban đầu:";
+"transfer.current_balance" = "Số dư hiện tại:";
+"transfer.total_limit" = "Tổng hạn mức:";
+"transfer.available_limit" = "Hạn mức khả dụng:";
+"transfer.current_debt" = "Nợ hiện tại:";
+"transfer.statement_date" = "Ngày sao kê:";
+"transfer.type.wallet" = "Ví";
+"transfer.type.credit_card" = "Thẻ tín dụng";
+"transfer.incoming" = "Chuyển tiền đến";
+"transfer.outgoing" = "Chuyển tiền đi";
+"transfer.unknown_account" = "Tài khoản không xác định";
+"transfer.section.transactions" = "Giao dịch";
+"transfer.section.transfers" = "Chuyển tiền";
+"transfer.no_transactions" = "Không có giao dịch trong kỳ này";
+"transfer.no_transfers" = "Không tìm thấy giao dịch chuyển tiền";
+"transfer.section.expenses" = "Chi tiêu";
+"transfer.section.payments" = "Thanh toán";
+"transfer.no_payments" = "Không tìm thấy giao dịch thanh toán";
+
+"credit_card.installment_summary_format" = "%@ - %d/%d kỳ trả góp";
+"credit_card.installment_number_format" = "Kỳ trả góp thứ %d";
+
+// Taksitli işlem
+"transaction.installment.toggle" = "Giao dịch trả góp";
+"transaction.installment.count" = "Số kỳ trả góp";
+"transaction.installment.preview" = "%d kỳ x %@ = %@";
+"transaction.installment.edit_warning_title" = "Sửa giao dịch trả góp";
+"transaction.installment.edit_warning" = "Thay đổi này sẽ tạo lại tất cả các kỳ trả góp. Bạn có muốn tiếp tục không?";
+"transaction.installment.delete_warning" = "Toàn bộ giao dịch trả góp này (%d kỳ) sẽ bị xóa. Bạn có xác nhận không?";
+"transaction.edit_installment" = "Sửa giao dịch trả góp";
+"credit_card.installment_purchases" = "Mua hàng trả góp";
+"installment.completed" = "Đã hoàn thành";
+"alert.installment.delete_title" = "Xóa giao dịch trả góp";
+"credit_card_details.period_total" = "Tổng cộng trong kỳ";
+"alert.no_wallet.message" = "Để thêm giao dịch, **trước tiên** bạn **phải** **tạo** một tài khoản **Ví**.";
+
+// MARK: - Cash Flow Report
+"reports.detailed.categories_report" = "Báo cáo hạng mục";
+"reports.category.summary" = "Tóm tắt hạng mục";
+"reports.category.total_categories" = "Tổng số hạng mục";
+"reports.category.active_categories" = "Hạng mục đang hoạt động";
+"reports.category.most_spent" = "Chi tiêu nhiều nhất";
+"reports.category.view_list" = "Dạng danh sách";
+"reports.category.view_chart" = "Dạng biểu đồ";
+"reports.category.view_comparison" = "So sánh";
+"reports.category.distribution" = "Phân bổ theo hạng mục";
+"reports.detailed.cash_flow" = "Dòng tiền";
+"cashflow.title" = "Báo cáo dòng tiền";
+"cashflow.view.summary" = "Tóm tắt";
+"cashflow.view.flow" = "Luồng";
+"cashflow.view.categories" = "Hạng mục";
+"cashflow.view.accounts" = "Tài khoản";
+"cashflow.view.projection" = "Dự báo";
+
+"cashflow.insights" = "Thông tin chi tiết";
+"cashflow.net_flow" = "Dòng tiền ròng";
+"cashflow.of_income" = "%% thu nhập";
+"cashflow.daily_avg" = "Trung bình hàng ngày";
+
+"cashflow.normal_transactions" = "Giao dịch thông thường";
+"cashflow.installment_transactions" = "Giao dịch trả góp";
+"cashflow.recurring_transactions" = "Giao dịch lặp lại";
+
+"cashflow.opening_balance" = "Số dư đầu kỳ";
+"cashflow.closing_balance" = "Số dư cuối kỳ";
+"cashflow.inflows" = "Các khoản thu";
+"cashflow.outflows" = "Các khoản chi";
+"cashflow.daily_average" = "Trung bình hàng ngày";
+
+"cashflow.daily_details" = "Chi tiết hàng ngày";
+"cashflow.cumulative_balance" = "Số dư lũy kế";
+
+"cashflow.flow_chart" = "Biểu đồ luồng";
+"cashflow.income_expense" = "Thu/Chi";
+"cashflow.detailed" = "Chi tiết";
+"cashflow.cumulative" = "Lũy kế";
+"cashflow.transaction_type_distribution" = "Phân bổ theo loại giao dịch";
+"cashflow.category_flow" = "Luồng theo hạng mục";
+"cashflow.show_trend" = "Hiển thị xu hướng";
+"cashflow.hide_trend" = "Ẩn xu hướng";
+"cashflow.largest_transaction" = "Giao dịch lớn nhất";
+
+"cashflow.transfers" = "Chuyển tiền";
+"cashflow.most_frequent_transfer" = "Chuyển tiền thường xuyên nhất";
+"cashflow.show_details" = "Hiển thị chi tiết";
+"cashflow.hide_details" = "Ẩn chi tiết";
+
+// Projeksiyon
+"cashflow.projection.title" = "Dự báo tương lai";
+"cashflow.projection.days" = "Dự báo %d ngày";
+"cashflow.projection.income" = "Thu nhập dự kiến";
+"cashflow.projection.expense" = "Chi tiêu dự kiến";
+"cashflow.projection.net" = "Ròng dự kiến";
+"cashflow.projection.chart" = "Biểu đồ dự báo";
+
+// Risk
+"cashflow.risk.analysis" = "Phân tích rủi ro";
+"cashflow.risk.low" = "Rủi ro thấp";
+"cashflow.risk.medium" = "Rủi ro trung bình";
+"cashflow.risk.high" = "Rủi ro cao";
+"cashflow.risk.low_message" = "Dòng tiền của bạn có vẻ lành mạnh. Bạn có thể đạt được mục tiêu tài chính của mình với thói quen chi tiêu hiện tại.";
+"cashflow.risk.medium_message" = "Có một số sự mất cân đối trong dòng tiền của bạn. Bạn nên xem xét lại các khoản chi tiêu của mình.";
+"cashflow.risk.high_message" = "Chú ý! Dòng tiền của bạn đang âm. Bạn cần phải hành động ngay lập tức.";
+
+"cashflow.suggestions" = "Gợi ý";
+"cashflow.suggestion.low_1" = "Bạn có thể đầu tư số tiền dư thừa của mình";
+"cashflow.suggestion.low_2" = "Hãy cân nhắc việc tạo một quỹ khẩn cấp";
+"cashflow.suggestion.medium_1" = "Giảm các khoản chi tiêu không cần thiết";
+"cashflow.suggestion.medium_2" = "Tạo thêm các nguồn thu nhập";
+"cashflow.suggestion.medium_3" = "Xem lại các giới hạn ngân sách của bạn";
+"cashflow.suggestion.high_1" = "Ngừng các khoản chi tiêu không khẩn cấp";
+"cashflow.suggestion.high_2" = "Hạn chế sử dụng thẻ tín dụng";
+"cashflow.suggestion.high_3" = "Tìm kiếm sự tư vấn tài chính chuyên nghiệp";
+
+// İçgörüler
+"cashflow.insight.positive_flow" = "Dòng tiền dương";
+"cashflow.insight.positive_flow_message" = "Bạn có dòng tiền dương là %@. Bạn có thể tăng các khoản tiết kiệm của mình.";
+"cashflow.insight.negative_flow" = "Dòng tiền âm";
+"cashflow.insight.negative_flow_message" = "Bạn có dòng tiền âm là %@. Bạn nên kiểm soát các khoản chi tiêu của mình.";
+"cashflow.insight.high_installment" = "Chi tiêu trả góp cao";
+"cashflow.insight.high_installment_message" = "%% %@ chi tiêu của bạn là trả góp. Tỷ lệ này có vẻ cao.";
+"cashflow.insight.projection_warning" = "Cảnh báo dự báo";
+"cashflow.insight.projection_warning_message" = "Với thói quen chi tiêu hiện tại, bạn có thể gặp khó khăn về tiền mặt trong kỳ tới.";
+
+// Genel
+"common.loading" = "Đang tải...";
+"common.close" = "Đóng";
+"common.expenses" = "Các khoản chi";
+"common.incomes" = "Các khoản thu";
+"time.day_short" = "ngày";
+
+// Kategori Raporları
+"reports.category.view_list" = "Dạng danh sách";
+"reports.category.view_chart" = "Dạng biểu đồ";
+"reports.category.view_comparison" = "So sánh";
+"reports.category.display_type" = "Kiểu hiển thị";
+"reports.category.transaction_type" = "Loại giao dịch";
+"reports.category.no_comparison_data" = "Không có dữ liệu so sánh";
+"reports.category.no_previous_period" = "Không tìm thấy dữ liệu kỳ trước";
+
+// Kategori Özet Kartı
+"reports.category.summary" = "Tóm tắt";
+"reports.category.total_categories" = "Tổng số hạng mục";
+"reports.category.active_categories" = "Hạng mục đang hoạt động";
+"reports.category.most_spent" = "Chi tiêu nhiều nhất";
+
+// Kategori Detay
+"reports.category.detail_type" = "Loại chi tiết";
+"reports.category.names" = "Tên";
+"reports.category.days" = "Ngày";
+"reports.category.hours" = "Giờ";
+"reports.category.trend" = "Xu hướng";
+"reports.category.total_spending" = "Tổng chi tiêu";
+"reports.category.transaction" = "Giao dịch";
+"reports.category.average" = "Trung bình";
+"reports.category.daily" = "Hàng ngày";
+"reports.category.most_frequent_names" = "Tên giao dịch thường xuyên nhất";
+"reports.category.used_times" = "đã sử dụng %d lần";
+"reports.category.avg_short" = "TB";
+"reports.category.distribution_by_days" = "Phân bổ theo ngày";
+"reports.category.distribution_by_hours" = "Phân bổ theo giờ";
+"reports.category.monthly_trend" = "Xu hướng hàng tháng";
+"reports.category.transaction_count" = "%d giao dịch";
+"reports.category.previous" = "Trước";
+"reports.category.day" = "Ngày";
+"reports.category.amount" = "Số tiền";
+"reports.category.month" = "Tháng";
+
+"reports.heatmap.24_hours" = "24 giờ";
+"reports.transaction_count" = "%d giao dịch";
+"reports.average_with_amount" = "TB: %@";
+"reports.heatmap.busiest_hours" = "Bận rộn nhất: %@";
+
+// MARK: - Ortak Kullanım Eklemeleri
+"common.low" = "Thấp";
+"common.high" = "Cao";
+"common.average" = "Trung bình";
+"common.highest" = "Cao nhất";
+
+// MARK: - Raporlar
+"reports.heatmap.try_different_date_range" = "Hãy thử một khoảng thời gian khác";
+"reports.heatmap.title.hourly" = "Phân bổ chi tiêu theo giờ";
+"reports.heatmap.title.daily" = "Phân bổ chi tiêu hàng ngày";
+"reports.heatmap.title.monthly" = "Phân bổ chi tiêu hàng tháng";
+"reports.heatmap.title.weekly" = "Phân bổ chi tiêu hàng tuần";
+"reports.heatmap.title.monthly_summary" = "Tóm tắt chi tiêu hàng tháng";
+"reports.heatmap.week_format" = "Tuần thứ %d";
+"reports.comparison.no_data_title" = "Không có dữ liệu so sánh";
+"reports.category.avg_short_format" = "TB: %@";
+
+// MARK: - Nakit Akışı Raporu
+"reports.cashflow.no_data_title" = "Không tìm thấy dữ liệu";
+"reports.cashflow.no_data_desc" = "Không tìm thấy giao dịch trong khoảng thời gian đã chọn.";
+"reports.category.daily_average_format" = "%@/ngày";
+
+"cashflow.transfer_count" = "%d lần chuyển tiền";
+"common.times_suffix" = "%d lần";
+
+// Kredi Kartı Raporları - Yeni Anahtarlar
+"reports.creditcard.detail_view" = "Chế độ xem chi tiết";
+"reports.creditcard.comparison_view" = "So sánh";
+"reports.creditcard.summary_view" = "Tóm tắt";
+"reports.creditcard.no_data" = "Không tìm thấy dữ liệu";
+"reports.creditcard.no_data_desc" = "Không tìm thấy chi tiêu bằng thẻ tín dụng trong khoảng thời gian đã chọn.";
+"reports.creditcard.total_spending" = "Tổng chi tiêu";
+"reports.creditcard.active_cards" = "Thẻ đang hoạt động";
+"reports.creditcard.transactions" = "Giao dịch";
+"reports.creditcard.daily_avg" = "Trung bình hàng ngày";
+"reports.creditcard.most_used" = "Sử dụng nhiều nhất";
+"reports.creditcard.limit" = "Hạn mức:";
+"reports.creditcard.usage" = "Mức sử dụng";
+"reports.creditcard.hide_metrics" = "Ẩn các chỉ số";
+"reports.creditcard.show_metrics" = "Hiển thị các chỉ số";
+"reports.creditcard.current_debt" = "Nợ hiện tại";
+"reports.creditcard.available" = "Khả dụng";
+"reports.creditcard.highest_day" = "Ngày cao nhất";
+"reports.creditcard.avg_transaction" = "Giao dịch trung bình";
+"reports.creditcard.category_analysis" = "Phân tích hạng mục";
+"reports.creditcard.more_categories" = "+%d hạng mục khác";
+"reports.creditcard.spending_trend" = "Xu hướng chi tiêu";
+"reports.creditcard.daily" = "Hàng ngày";
+"reports.creditcard.weekly" = "Hàng tuần";
+"reports.creditcard.by_category" = "Theo hạng mục";
+"reports.creditcard.installments" = "Mua hàng trả góp";
+"reports.creditcard.installment_count" = "%d giao dịch mua trả góp";
+"reports.creditcard.monthly_total" = "Tổng cộng hàng tháng";
+"reports.creditcard.monthly" = "hàng tháng";
+"reports.creditcard.progress" = "Tiến độ";
+"reports.creditcard.total_amount" = "Tổng số tiền";
+"reports.creditcard.remaining" = "Còn lại";
+"reports.creditcard.card_comparison" = "So sánh thẻ";
+"reports.creditcard.detailed_comparison" = "So sánh chi tiết";
+"reports.creditcard.card" = "Thẻ";
+"reports.creditcard.spending" = "Chi tiêu";
+"reports.creditcard.total_distribution" = "Tổng phân bổ";
+"reports.creditcard.category_summary" = "Tóm tắt hạng mục";
+"reports.creditcard.no_categories" = "Không tìm thấy dữ liệu hạng mục";
+"reports.creditcard.daily_averages" = "Trung bình hàng ngày";
+
+// MARK: - Hesap Silme ve İşlem Aktarımı
+"alert.no_eligible_account.title" = "Không có tài khoản đủ điều kiện";
+"alert.no_eligible_account.message" = "Để xóa tài khoản này, trước tiên bạn phải tạo một tài khoản Ví hoặc Thẻ tín dụng khác để chuyển các giao dịch của nó sang.";
+"transfer_transactions.title" = "Chuyển giao dịch & Xóa";
+"transfer_transactions.message_format" = "Bạn sắp xóa tài khoản '%@'. Tài khoản này có %d giao dịch. Vui lòng chọn một tài khoản mới để chuyển các giao dịch này sang.";
+"transfer_transactions.confirm_button" = "Chuyển & Xóa";
+"alert.no_eligible_wallet.title" = "Không tìm thấy ví đủ điều kiện";
+"alert.no_eligible_wallet.message" = "Tài khoản bạn muốn xóa có chứa các giao dịch thu nhập. Để chuyển các giao dịch này, trước tiên bạn phải tạo một tài khoản loại 'Ví' khác.";
+
+// MARK: - Kredi Raporu
+"loan_report.no_data" = "Không tìm thấy dữ liệu khoản vay";
+"loan_report.no_data_desc" = "Không tìm thấy khoản trả góp nào trong khoảng thời gian đã chọn.";
+"loan_report.view.summary" = "Tóm tắt";
+"loan_report.view.detail" = "Chi tiết";
+"loan_report.view.calendar" = "Lịch";
+"loan_report.view.performance" = "Hiệu suất";
+
+"loan_report.sort.by_date" = "Theo ngày";
+"loan_report.sort.by_amount" = "Theo số tiền";
+"loan_report.sort.by_progress" = "Theo tiến độ";
+
+"loan_report.overview" = "Tình hình nợ tổng thể";
+"loan_report.completed" = "Đã hoàn thành";
+"loan_report.active_loans" = "Các khoản vay đang hoạt động";
+"loan_report.monthly_payment" = "Thanh toán hàng tháng";
+"loan_report.total_paid" = "Tổng đã trả";
+"loan_report.remaining" = "Nợ còn lại";
+"loan_report.estimated_completion" = "Ngày hoàn thành dự kiến";
+"loan_report.monthly_payment_load" = "Gánh nặng trả góp hàng tháng";
+"loan_report.no_future_payments" = "Không có khoản thanh toán trong tương lai";
+"loan_report.distribution" = "Phân bổ khoản vay";
+"loan_report.no_active_loans" = "Không có khoản vay đang hoạt động";
+
+"loan_report.search_placeholder" = "Tìm kiếm khoản vay...";
+"loan_report.active_only" = "Chỉ đang hoạt động";
+"loan_report.sort" = "Sắp xếp";
+"loan_report.principal_amount" = "Tiền gốc";
+"loan_report.interest_rate" = "Lãi suất";
+"loan_report.total_to_pay" = "Tổng phải trả";
+"loan_report.total_interest" = "Tổng lãi";
+"loan_report.last_payment_date" = "Ngày thanh toán cuối cùng";
+"loan_report.payment_performance" = "Hiệu suất thanh toán";
+"loan_report.score" = "Điểm";
+"loan_report.next_payment" = "Thanh toán tiếp theo";
+"loan_report.days_remaining" = "còn lại %d ngày";
+"loan_report.due_today" = "Đến hạn hôm nay!";
+"loan_report.overdue" = "Quá hạn!";
+"loan_report.installments_in_period" = "Kỳ trả góp trong kỳ";
+"loan_report.more_installments" = "... và %d kỳ trả góp nữa";
+
+"loan_report.monthly_total" = "Tổng cộng hàng tháng";
+
+"loan_report.performance_score" = "Điểm hiệu suất";
+"loan_report.performance_excellent" = "Xuất sắc";
+"loan_report.performance_good" = "Tốt";
+"loan_report.performance_fair" = "Khá";
+"loan_report.performance_poor" = "Kém";
+"loan_report.total_interest_paid" = "Tổng lãi đã trả";
+"loan_report.avg_monthly_payment" = "Thanh toán trung bình hàng tháng";
+"loan_report.on_time" = "Đúng hạn";
+"loan_report.late" = "Trễ hạn";
+"loan_report.missed" = "Bỏ lỡ";
+
+// MARK: - Harcama Raporu
+"spending_report.view.summary" = "Tóm tắt";
+"spending_report.view.category" = "Hạng mục";
+"spending_report.view.time" = "Phân tích thời gian";
+"spending_report.view.comparison" = "So sánh";
+
+"spending_report.no_data" = "Không tìm thấy chi tiêu";
+"spending_report.no_data_desc" = "Không có chi tiêu trong khoảng thời gian đã chọn";
+
+"spending_report.total_spending" = "Tổng chi tiêu";
+"spending_report.daily_avg" = "Trung bình hàng ngày";
+"spending_report.transaction_count" = "Số lượng giao dịch";
+"spending_report.avg_transaction" = "Giao dịch trung bình";
+"spending_report.highest_expense" = "Chi tiêu cao nhất";
+
+"spending_report.increase" = "Tăng";
+"spending_report.decrease" = "Giảm";
+
+"spending_report.top_categories" = "Các hạng mục chi tiêu hàng đầu";
+"spending_report.weekly_summary" = "Tóm tắt hàng tuần";
+"spending_report.insights" = "Thông tin chi tiết thông minh";
+"spending_report.insight.busiest_day" = "Ngày bận rộn nhất của bạn là %@ với chi tiêu %@";
+"spending_report.insight.top_category" = "Hạng mục %@ chiếm %%%.1f tổng chi tiêu của bạn";
+"spending_report.insight.weekend_warning" = "Chi tiêu trung bình cuối tuần của bạn cao hơn ngày thường";
+
+"spending_report.category_distribution" = "Phân bổ theo hạng mục";
+"spending_report.category_details" = "Chi tiết hạng mục";
+"spending_report.largest_expense" = "Chi tiêu lớn nhất";
+"spending_report.avg_per_transaction" = "Trung bình mỗi giao dịch";
+
+"spending_report.daily_trend" = "Xu hướng chi tiêu hàng ngày";
+"spending_report.weekday_weekend" = "Ngày thường và cuối tuần";
+"spending_report.hourly_distribution" = "Phân bổ theo giờ";
+"spending_report.weekday" = "Ngày thường";
+"spending_report.weekend" = "Cuối tuần";
+
+"spending_report.period_comparison" = "So sánh các kỳ";
+"spending_report.previous_period" = "Kỳ trước";
+"spending_report.current_period" = "Kỳ hiện tại";
+"spending_report.category_changes" = "Thay đổi hạng mục";
+"spending_report.budget_performance" = "Hiệu suất ngân sách";
+"spending_report.budget_status.normal" = "Bình thường";
+"spending_report.budget_status.critical" = "Quan trọng";
+"spending_report.budget_status.exceeded" = "Vượt quá";
+"spending_report.busiest_hours" = "Giờ bận rộn nhất";
+"common.transactions" = "Giao dịch";
+
+// MARK: - Onboarding
+"onboarding.skip" = "Bỏ qua";
+"onboarding.continue" = "Tiếp tục";
+"onboarding.confirm_settings" = "Xác nhận cài đặt";
+"onboarding.privacy_notice" = "Bằng cách tiếp tục, bạn đồng ý với Chính sách quyền riêng tư và Điều khoản dịch vụ của chúng tôi.";
+
+"onboarding.welcome.title" = "Chào mừng đến với Tự do Tài chính";
+"onboarding.welcome.subtitle" = "Theo dõi chi tiêu, quản lý ngân sách và đạt được mục tiêu tài chính của bạn";
+
+"onboarding.feature1.title" = "Phân tích thông minh";
+"onboarding.feature1.description" = "Phân loại chi tiêu của bạn và hình dung tình hình tài chính của bạn bằng các biểu đồ chi tiết";
+
+"onboarding.feature2.title" = "Quản lý ngân sách";
+"onboarding.feature2.description" = "Tạo ngân sách hàng tháng, theo dõi giới hạn của bạn và đạt được mục tiêu tiết kiệm của bạn";
+
+"onboarding.feature3.title" = "Nhắc nhở thông minh";
+"onboarding.feature3.description" = "Nhận thông báo kịp thời về các khoản thanh toán hóa đơn và việc vượt ngân sách";
+
+"onboarding.personalize.title" = "Cá nhân hóa trải nghiệm của bạn";
+"onboarding.select_language" = "Chọn ngôn ngữ";
+"onboarding.select_currency" = "Chọn tiền tệ";
+
+"reports.creditcard.show_less" = "Hiển thị ít hơn";
+"reports.creditcard.usage.short" = "Sử dụng";
+"reports.creditcard.no_category_data" = "Không có dữ liệu hạng mục";
+"loan_report.legend.paid" = "Đã trả";
+"loan_report.legend.pending" = "Đang chờ";
+"loan_report.legend.overdue" = "Quá hạn";
+"loan_report.this_month_summary" = "Tháng này";
+"loan_report.total_installments" = "Tổng số tiền trả góp của tháng này:";
+"loan_report.paid_installments" = "Tổng số tiền trả góp đã trả:";
+"loan_report.no_installments_for_day" = "Không có khoản trả góp nào cho ngày hôm nay";
+"loan_report.installment_no" = "Kỳ trả góp:";
+"loan_report.status.paid" = "Đã trả";
+"loan_report.status.pending" = "Đang chờ";
+"loan_report.status.overdue" = "Quá hạn";
+"loan_report.total_for_day" = "Tổng cộng trong ngày";
+"dashboard.show_less" = "Hiển thị ít hơn";
+"dashboard.more_categories" = "hạng mục khác";
+"reports.category.highest_spending" = "Hạng mục chi tiêu cao nhất";
+"reports.category.most_transactions" = "Nhiều giao dịch nhất";

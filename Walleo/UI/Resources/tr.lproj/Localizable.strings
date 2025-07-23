@@ -281,6 +281,10 @@
 "currency.name.SAR" = "Suudi Arabistan Riyali";
 "currency.name.KRW" = "Güney Kore Wonu";
 "currency.name.SGD" = "Singapur Doları";
+"currency.name.IDR" = "Endonezya Rupisi";
+"currency.name.VND" = "Vietnam Dongu";
+"currency.name.THB" = "Tayland Bahtı";
+"currency.name.MYR" = "Malezya Ringgiti";
 
 "settings.section.data_management" = "Veri Yönetimi";
 "settings.data.export" = "Verileri Dışa Aktar (.csv)";
@@ -945,3 +949,4 @@
 "dashboard.more_categories" = "kategori daha";
 "reports.category.highest_spending" = "En Çok Harcanan Kategori";
 "reports.category.most_transactions" = "En Çok İşlem Yapılan";
+

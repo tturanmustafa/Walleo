@@ -24,17 +24,35 @@ struct OnboardingView: View {
     let totalPages = 5
     
     init() {
-        // Sistem dilini kontrol et
         let preferredLanguage = Locale.preferredLanguages.first ?? "en"
-        if preferredLanguage.lowercased().starts(with: "tr") {
-            _selectedLanguage = State(initialValue: "tr")
-            _selectedCurrency = State(initialValue: "TRY")
+        let languageCode = String(preferredLanguage.prefix(2))
+        
+        // Desteklenen diller listesi
+        let supportedLanguages = ["tr", "en", "de", "fr", "es", "it", "ja", "zh", "id", "hi", "vi", "th", "ms"]
+        
+        if supportedLanguages.contains(languageCode) {
+            _selectedLanguage = State(initialValue: languageCode)
         } else {
             _selectedLanguage = State(initialValue: "en")
-            _selectedCurrency = State(initialValue: "USD")
+        }
+        
+        // Para birimi seçimi
+        switch languageCode {
+        case "tr": _selectedCurrency = State(initialValue: "TRY")
+        case "de": _selectedCurrency = State(initialValue: "EUR")
+        case "fr": _selectedCurrency = State(initialValue: "EUR")
+        case "es": _selectedCurrency = State(initialValue: "EUR")
+        case "it": _selectedCurrency = State(initialValue: "EUR")
+        case "ja": _selectedCurrency = State(initialValue: "JPY")
+        case "zh": _selectedCurrency = State(initialValue: "CNY")
+        case "id": _selectedCurrency = State(initialValue: "IDR")
+        case "hi": _selectedCurrency = State(initialValue: "INR")
+        case "vi": _selectedCurrency = State(initialValue: "VND")
+        case "th": _selectedCurrency = State(initialValue: "THB")
+        case "ms": _selectedCurrency = State(initialValue: "MYR")
+        default: _selectedCurrency = State(initialValue: "USD")
         }
     }
-    
     var body: some View {
         ZStack {
             // Gradient arka plan
@@ -333,7 +351,18 @@ struct PersonalizationWithSignInPage: View {
     // Desteklenen diller - uygulamadaki ayarlardan
     let supportedLanguages = [
         ("tr", "🇹🇷", "Türkçe"),
-        ("en", "🇬🇧", "English")
+        ("en", "🇬🇧", "English"),
+        ("de", "🇩🇪", "Deutsch"),
+        ("fr", "🇫🇷", "Français"),
+        ("es", "🇪🇸", "Español"),
+        ("it", "🇮🇹", "Italiano"),
+        ("ja", "🇯🇵", "日本語"),
+        ("zh", "🇨🇳", "中文"),
+        ("id", "🇮🇩", "Bahasa Indonesia"),
+        ("hi", "🇮🇳", "हिन्दी"),
+        ("vi", "🇻🇳", "Tiếng Việt"),
+        ("th", "🇹🇭", "ไทย"),
+        ("ms", "🇲🇾", "Bahasa Melayu")
     ]
     
     var body: some View {

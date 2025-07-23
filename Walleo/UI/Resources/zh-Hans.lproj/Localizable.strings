@@ -1,0 +1,903 @@
+/* Localizable.strings (Simplified Chinese) */
+
+// MARK: - Genel / Ortak Kullanım
+"common.save" = "保存";
+"common.cancel" = "取消";
+"common.edit" = "编辑";
+"common.delete" = "删除";
+"common.done" = "完成";
+"common.reset" = "重置";
+"common.apply" = "应用";
+"common.all" = "全部";
+"common.income" = "收入";
+"common.expense" = "支出";
+"common.category" = "类别";
+"common.categories" = "类别";
+"common.amount" = "金额";
+"common.date" = "日期";
+"common.type" = "类型";
+"common.account" = "账户";
+"common.select_account" = "选择账户";
+"common.back" = "返回";
+"common.total" = "总计";
+"common.net" = "净额";
+"common.total_amount" = "总金额";
+
+// MARK: - Ana Sekmeler
+"tab.dashboard" = "概览";
+"tab.calendar" = "日历";
+"tab.reports" = "报告";
+"tab.settings" = "设置";
+"tab.budgets" = "预算";
+"tab.more" = "更多";
+
+// MARK: - Panel / Dashboard Ekranı
+"dashboard.category_distribution" = "类别分布";
+"dashboard.recent_transactions" = "最近交易";
+"dashboard.see_all" = "查看全部";
+"dashboard.no_records_for_month" = "本月无记录";
+
+// MARK: - Ayarlar Ekranı
+"settings.title" = "设置";
+"settings.section_general" = "通用";
+"settings.theme" = "主题";
+"settings.theme_system" = "跟随系统";
+"settings.theme_light" = "浅色";
+"settings.theme_dark" = "深色";
+"settings.language" = "语言";
+"settings.manage_categories" = "管理类别";
+"settings.section_info" = "信息";
+"settings.version" = "版本";
+"settings.currency" = "货币";
+
+// MARK: - Bildirim Ayarları
+"settings.notifications" = "通知设置";
+"settings.notifications.title" = "通知设置";
+"settings.notifications.master_section" = "主开关";
+"settings.notifications.master_toggle" = "所有通知";
+"settings.notifications.budget_section" = "预算提醒";
+"settings.notifications.budget_toggle" = "显示预算通知";
+"settings.notifications.threshold_picker" = "提醒阈值";
+"settings.notifications.threshold.option_80" = "达到80%";
+"settings.notifications.threshold.option_85" = "达到85%";
+"settings.notifications.threshold.option_90" = "达到90%";
+"settings.notifications.threshold.option_95" = "达到95%";
+"settings.notifications.loan_section" = "还款提醒";
+"settings.notifications.loan_toggle" = "提醒贷款还款";
+"settings.notifications.loan_stepper" = "到期前%d天";
+"settings.notifications.credit_card_section" = "信用卡还款提醒";
+"settings.notifications.credit_card_toggle" = "提醒最后还款日";
+
+// MARK: - Bildirim İçerikleri
+"notification.budget.over_limit.title" = "预算超支";
+"notification.budget.over_limit.body_line1_format" = "您的预算“%@”已超出目标金额。";
+"notification.budget.over_limit.body_line2" = "预算目标: %@";
+"notification.budget.over_limit.body_line3" = "超支金额: %@";
+"notification.budget.approaching_limit.title" = "预算接近限额";
+"notification.budget.approaching_limit.body_line1_format" = "您的预算“%1$@”已达到目标金额的%2$.0f%%。";
+"notification.budget.approaching_limit.body_line2" = "预算目标: %@";
+"notification.budget.approaching_limit.body_line3" = "剩余金额: %@";
+"notification.credit_card.due_date.title" = "信用卡还款日临近";
+"notification.credit_card.due_date.body_format" = "您的%@卡最后还款日是%@。";
+
+// MARK: - Kategori Yönetimi
+"categories.title" = "类别";
+"categories.income_categories" = "收入类别";
+"categories.expense_categories" = "支出类别";
+"categories.new" = "新建类别";
+"categories.edit" = "编辑类别";
+"categories.name" = "类别名称";
+"categories.color" = "类别颜色";
+"categories.select_icon" = "选择图标";
+
+// MARK: - İşlem Ekleme / Düzenleme
+"transaction.new" = "新建交易";
+"transaction.edit" = "编辑交易";
+"transaction.type" = "交易类型";
+"transaction.section_details" = "详情";
+"transaction.name_placeholder" = "交易名称 (例如：晚餐)";
+"transaction.select_category" = "选择类别";
+"transaction.recurrence" = "周期";
+"transaction.loan_payment_name_format" = "%@ 的还款";
+
+// MARK: - Hesaplar
+"accounts.title" = "账户";
+"accounts.empty.title" = "暂无账户";
+"accounts.empty.description" = "点击“+”图标添加新账户以开始使用。";
+"accounts.add.wallet" = "钱包 (现金)";
+"accounts.add.credit_card" = "信用卡";
+"accounts.add.loan" = "贷款";
+"accounts.add.new_credit_card" = "添加新信用卡";
+"accounts.add.new_loan" = "添加新贷款";
+"accounts.add.account_color" = "账户颜色";
+"accounts.add.interest_rate" = "利率 (%)";
+"accounts.add.installments" = "分期数";
+"accounts.add.installments_stepper" = "%d个月";
+"accounts.add.create_installments_button" = "保存并创建分期";
+
+"credit_card.form.statement_date_header" = "账单日";
+"credit_card.form.statement_date" = "账单日";
+"credit_card.form.payment_due_date_header" = "最后还款日设置";
+"credit_card.form.payment_due_date_stepper" = "账单日后%d天";
+"loan.form.details_header" = "贷款信息";
+"loan.form.first_payment_header" = "首次还款日";
+"loan.form.interest_type" = "利率类型";
+"loan.form.first_installment_date" = "首次分期还款日";
+"loan_details.summary_header" = "贷款概要";
+"loan_details.installment_plan_header" = "还款计划";
+
+"installment.edit.title" = "编辑分期";
+"installment.edit.details_header" = "分期详情";
+"installment.paid.label" = "标记为已付";
+"accounts.card.current_debt" = "当前欠款";
+"accounts.card.available_limit" = "可用额度";
+"accounts.card.paid_installments" = "已付分期";
+"accounts.card.remaining_debt" = "剩余欠款";
+"credit_card_details.recent_expenses" = "本期支出";
+"credit_card_details.no_transactions" = "本期无交易";
+
+"account_details.generic_title" = "%@ 详情";
+"enum.interest_type.yearly" = "年利率";
+"enum.interest_type.monthly" = "月利率";
+"transaction.amount_placeholder" = "金额 (例如：125.50)";
+"account.name_placeholder_wallet" = "钱包名称 (例如：现金)";
+"account.name_placeholder_creditcard" = "卡名称 (例如：XX卡)";
+"account.name_placeholder_loan" = "贷款名称 (例如：车贷)";
+"account.initial_balance_placeholder" = "初始余额 (例如：500)";
+"credit_card.limit_placeholder" = "信用卡额度 (例如：15000)";
+"credit_card.current_debt_placeholder" = "当前欠款 (可选)";
+"loan.principal_amount_placeholder" = "贷款本金 (例如：250000)";
+"loan.interest_rate_placeholder" = "利率 (例如：1.89)";
+
+"budget.name_placeholder" = "预算名称 (例如：餐饮支出)";
+"budget.limit_placeholder" = "每月限额 (例如：2500)";
+"accounts.add.loan_amount" = "贷款金额";
+"accounts.card.initial_balance" = "初始余额";
+"accounts.card.current_balance" = "当前余额";
+"accounts.card.total_limit" = "总额度";
+"accounts.card.statement_date" = "账单日";
+
+"accounts.group.wallets" = "钱包";
+"accounts.group.credit_cards" = "信用卡";
+"accounts.group.loans" = "贷款";
+
+// MARK: - Diğer Ekranlar ve Uyarılar
+"all_transactions.title" = "所有交易";
+"all_transactions.not_found" = "未找到交易";
+"all_transactions.not_found_desc" = "请尝试更改您的筛选条件。";
+"filter.date_range" = "日期范围";
+"filter.sort_by" = "排序方式";
+"filter.accounts" = "账户";
+"alert.recurring_transaction" = "这是一笔周期性交易。";
+"alert.update_this_only" = "仅更新此笔交易";
+"alert.update_future" = "更新此笔及未来的交易";
+"alert.delete_this_only" = "仅删除此笔交易";
+"alert.delete_series" = "删除整个系列";
+"alert.add_as_expense.title" = "添加为支出";
+"alert.add_as_expense.button_yes" = "是，添加为支出";
+"alert.add_as_expense.button_no" = "否，仅标记";
+"alert.add_as_expense.message_format" = "您想将金额为%@的分期付款添加为支出吗？";
+"month_picker.title" = "选择日期";
+"month_picker.month" = "月";
+"month_picker.year" = "年";
+"calendar.no_transactions_on_date" = "此日期无交易";
+"calendar.monthly_summary" = "月度概要";
+"notifications.title" = "通知";
+"notifications.no_notifications_title" = "暂无通知";
+"notifications.no_notifications_desc" = "重要的应用内通知将显示在此处。";
+"validation.error.invalid_amount_format" = "格式无效。最多9位整数和2位小数。";
+
+// MARK: - Raporlar
+"reports.type.summary" = "概要";
+"reports.type.distribution" = "分布";
+"reports.summary.card.main_metrics" = "主要指标";
+"reports.summary.card.comparison" = "对比分析";
+"reports.summary.top_expenses" = "主要支出";
+"reports.summary.statistics" = "统计";
+"reports.summary.net_flow" = "净流量";
+"reports.comparison.no_data" = "没有上一时期的数据可供比较。";
+"reports.comparison.prefix_net_flow_positive" = "与上一时期相比，您多节省了";
+"reports.comparison.suffix_net_flow_positive" = "。";
+"reports.comparison.prefix_net_flow_negative" = "与上一时期相比，您多花费了";
+"reports.comparison.suffix_net_flow_negative" = "。";
+"reports.comparison.prefix_expenses_increased" = "您的支出比上一时期增加了";
+"reports.comparison.suffix_expenses_increased" = "。";
+"reports.comparison.prefix_expenses_decreased" = "您的支出比上一时期减少了";
+"reports.comparison.suffix_expenses_decreased" = "。";
+"reports.distribution.no_data" = "此期间无数据显示。";
+"reports.statistics.daily_avg_expense" = "日均支出";
+"reports.statistics.daily_avg_income" = "日均收入";
+"reports.statistics.highest_expense" = "最高单笔支出";
+"reports.statistics.highest_income" = "最高单笔收入";
+
+// MARK: - Bütçeler
+"budgets.title" = "预算";
+"budgets.empty.title" = "暂无预算";
+"budgets.empty.description" = "点击“+”图标创建新预算以控制您的支出。";
+"budgets.add.title" = "新建预算";
+"budgets.edit.title" = "编辑预算";
+"budgets.form.name_placeholder" = "例如：餐饮支出";
+"budgets.form.limit_amount" = "每月限额";
+"budgets.form.select_categories" = "选择类别";
+"budgets.card.total_limit" = "总限额";
+"budgets.card.amount_spent" = "已用金额";
+"budgets.card.amount_remaining" = "剩余金额";
+"alert.delete_budget.message_format" = "您确定要永久删除预算“%@”吗？";
+
+// MARK: - Enum Değerleri ve Kategoriler
+"enum.recurrence.once" = "仅一次";
+"enum.recurrence.monthly" = "每月";
+"enum.recurrence.quarterly" = "每3个月";
+"enum.recurrence.semi_annually" = "每6个月";
+"enum.recurrence.annually" = "每年";
+"enum.sort.date_desc" = "按日期 (从新到旧)";
+"enum.sort.date_asc" = "按日期 (从旧到新)";
+"enum.sort.amount_desc" = "按金额 (从高到低)";
+"enum.sort.amount_asc" = "按金额 (从低到高)";
+"enum.date_range.all" = "所有时间";
+"enum.date_range.this_week" = "本周";
+"enum.date_range.ytd" = "今年以来";
+"enum.date_range.this_month" = "本月";
+"enum.date_range.last_3_months" = "过去3个月";
+"enum.date_range.last_6_months" = "过去6个月";
+"enum.date_range.last_year" = "过去12个月";
+"enum.budget_period.monthly" = "每月";
+
+"category.salary" = "工资";
+"category.extra_income" = "额外收入";
+"category.investment" = "投资";
+"category.groceries" = "购物";
+"category.restaurant" = "餐饮";
+"category.transport" = "交通";
+"category.bills" = "账单";
+"category.entertainment" = "娱乐";
+"category.health" = "健康";
+"category.clothing" = "服饰";
+"category.home" = "家居";
+"category.gift" = "礼物";
+"category.loan_payment" = "还贷";
+"category.other" = "其它";
+
+// MARK: - Filtreleme Ekranı
+"filter.custom_range_header" = "自定义范围";
+"filter.start_date" = "开始日期";
+"filter.end_date" = "结束日期";
+"filter.presets_header" = "预设范围";
+"enum.date_range.custom" = "自定义";
+
+// MARK: - Para Birimleri
+"currency.name.TRY" = "土耳其里拉";
+"currency.name.USD" = "美元";
+"currency.name.EUR" = "欧元";
+"currency.name.GBP" = "英镑";
+"currency.name.JPY" = "日元";
+"currency.name.CAD" = "加拿大元";
+"currency.name.AUD" = "澳大利亚元";
+"currency.name.CHF" = "瑞士法郎";
+"currency.name.CNY" = "人民币";
+"currency.name.SEK" = "瑞典克朗";
+"currency.name.NOK" = "挪威克朗";
+"currency.name.RUB" = "俄罗斯卢布";
+"currency.name.INR" = "印度卢比";
+"currency.name.BRL" = "巴西雷亚尔";
+"currency.name.ZAR" = "南非兰特";
+"currency.name.AED" = "阿联酋迪拉姆";
+"currency.name.SAR" = "沙特里亚尔";
+"currency.name.KRW" = "韩元";
+"currency.name.SGD" = "新加坡元";
+"currency.name.IDR" = "印尼盾";
+"currency.name.VND" = "越南盾";
+"currency.name.THB" = "泰铢";
+"currency.name.MYR" = "马来西亚林吉特";
+
+"settings.section.data_management" = "数据管理";
+"settings.data.export" = "导出数据 (.csv)";
+"settings.data.exporting" = "导出中...";
+
+"settings.language_change.title" = "更改语言";
+"settings.language_change.message" = "更改语言设置需要重启应用。要继续吗？";
+"settings.language_change.restart_button" = "重启";
+
+"alert.delete_confirmation.title" = "确认删除";
+"alert.delete_wallet.message_format" = "您确定要永久删除钱包/账户“%@”吗？与此账户关联的交易将不会被删除，仅会解除账户链接。";
+"alert.delete_credit_card.message_format" = "您确定要永久删除信用卡“%@”吗？与此账户关联的交易将不会被删除，仅会解除账户链接。";
+"alert.delete_loan.message_format" = "您确定要永久删除贷款“%@”及其还款计划吗？此操作无法撤销。";
+"alert.delete_category.message_format" = "您确定要删除类别“%@”吗？此类别将从所有相关交易中移除。";
+"alert.delete_transaction.message" = "您确定要永久删除此交易吗？";
+"alert.delete_all_notifications.title" = "全部删除";
+"alert.delete_all_notifications.message" = "您确定要永久删除所有通知吗？";
+
+"button.add_account" = "添加账户";
+"button.add_budget" = "添加预算";
+"button.add_category" = "添加类别";
+
+"budget_details.no_transactions" = "此预算无交易";
+
+"alert.no_accounts.title" = "需要账户";
+"alert.no_accounts.message" = "要添加交易，您必须先创建一个钱包或信用卡账户。";
+"alert.no_accounts.add_account_button" = "创建账户";
+
+// MARK: - Veri Dışa Aktarma Başlıkları
+"export.header.date" = "日期";
+"export.header.name" = "交易名称";
+"export.header.amount" = "金额";
+"export.header.type" = "类型";
+"export.header.category" = "类别";
+"export.header.account" = "账户";
+
+"credit_card_details.no_expenses_for_month" = "本月无支出";
+"credit_card_details.total_expenses_for_period" = "本期总支出";
+"notifications.delete_all" = "全部删除";
+"notifications.mark_all_as_read" = "全部标记为已读";
+
+// MARK: - Form Labels & Placeholders
+"form.label.transaction_name" = "交易名称";
+"form.label.amount" = "金额";
+"form.label.wallet_name" = "钱包名称";
+"form.label.card_name" = "卡名称";
+"form.label.loan_name" = "贷款名称";
+"form.label.initial_balance" = "初始余额";
+"form.label.card_limit" = "卡额度";
+"form.label.current_debt" = "当前欠款";
+"form.label.principal_amount" = "贷款本金";
+"form.label.interest_rate" = "利率";
+"form.label.budget_name" = "预算名称";
+"form.label.budget_limit" = "每月限额";
+
+// MARK: - Time
+"time.today" = "今天";
+"time.yesterday" = "昨天";
+
+"reports.period.weekly" = "每周";
+"reports.period.monthly" = "每月";
+"week_picker.select_date_label" = "选择日期";
+"week_picker.title" = "选择周";
+
+"form.label.set_end_date" = "设置结束日期";
+"form.label.end_date" = "结束日期";
+
+"notification.daily.title" = "是时候结束今天了！";
+"notification.daily.body" = "您今天是否已将收入和支出添加到Walleo？这是跟踪您财务健康的最佳时机。";
+"notification.weekly.title" = "您的周报已准备就绪！";
+"notification.weekly.body" = "立即查看上周的财务摘要。有关您的支出和收入的详细信息正在报告屏幕上等着您。";
+
+"settings.data.delete_all" = "删除所有数据";
+"alert.delete_all_data.title" = "要删除所有数据吗？";
+"alert.delete_all_data.message" = "此操作无法撤销。设备和iCloud中的所有账户、交易和预算都将被永久删除。";
+"common.confirm_delete" = "是，全部删除";
+
+"settings.data.icloud_backup" = "iCloud备份";
+"alert.icloud_toggle.title" = "正在更改备份设置";
+"alert.icloud_toggle.message" = "更改此设置需要重启应用。要继续吗？";
+"alert.language_change.confirm_button" = "确认";
+"alert.no_payment_account.title" = "未找到合适的账户";
+"alert.no_payment_account.message" = "要将此付款添加为支出，您必须先创建一个钱包或信用卡账户。";
+"account_selection.title" = "选择付款账户";
+
+"account_type.wallet" = "钱包";
+"account_type.credit_card" = "信用卡";
+"account_type.loan" = "贷款";
+
+// MARK: - Onboarding
+"onboarding.page1.title" = "您的财务世界，一键掌控";
+"onboarding.page1.subtitle" = "在一个地方管理您的现金、信用卡和贷款，完全掌控您的财务状况。";
+"onboarding.page2.title" = "管理您的预算，而非被预算管理";
+"onboarding.page2.subtitle" = "创建特定类别的预算，并通过可视化进度跟踪轻松地根据您的目标调整支出。";
+"onboarding.page3.title" = "让数据说话，洞见您的未来";
+"onboarding.page3.subtitle" = "将您过去的支出转化为有意义的报告和对比分析，从而做出更明智的财务决策。";
+"onboarding.page4.title" = "为您着想的财务助理";
+"onboarding.page4.subtitle" = "智能通知会主动提醒您从账单日到预算超支的每一个重要细节，让您高枕无忧。";
+"onboarding.page5.title" = "完全属于您，完全为您定制";
+"onboarding.page5.subtitle" = "通过主题、语言、货币和自定义类别，将应用完美地调整以适应您的生活方式和偏好。";
+"onboarding.page6.title" = "您的数据，您的堡垒";
+"onboarding.page6.subtitle" = "从安全的iCloud同步到数据导出和永久删除选项，您的数据完全由您掌控。";
+"onboarding.signin.apple" = "通过Apple登录";
+"onboarding.privacy_policy" = "继续即表示您同意我们的隐私政策和使用条款。";
+
+"settings.section_ai_assistant" = "人工智能助理";
+"settings.ai_assistant_title" = "与AI助理聊天";
+
+// Aile Hesabı
+"settings.family_account" = "家庭账户";
+"family.no_family_title" = "无家庭账户";
+"family.no_family_description" = "创建一个家庭账户与家人共享您的财务数据";
+"family.create_family" = "创建家庭账户";
+"family.info_section" = "家庭信息";
+"family.name" = "家庭名称";
+"family.owner" = "所有者";
+"family.you" = "您";
+"family.member_count" = "成员数量";
+"family.created_date" = "创建日期";
+"family.members_section" = "家庭成员";
+"family.pending" = "待处理";
+"family.invite_member" = "邀请成员";
+"family.leave_family" = "退出家庭";
+"family.owner_cannot_leave" = "作为所有者，您不能退出家庭。请先转让所有权。";
+"family.create_new" = "新建家庭账户";
+"family.name_placeholder" = "输入家庭名称";
+"family.create_description" = "您的所有财务数据将与家庭成员共享";
+"family.create_title" = "创建家庭";
+"family.invite_instructions" = "生成邀请链接以与您的家庭成员共享";
+"family.generate_invite_link" = "生成邀请链接";
+"family.leave_confirmation_title" = "您确定要退出家庭吗？";
+"family.leave_confirmation_message" = "您将无法再访问共享的家庭数据。此操作无法撤销。";
+"family.leave_confirm" = "退出家庭";
+"family.cloudkit_warning_title" = "家庭账户需要iCloud";
+"family.cloudkit_warning_message" = "使用家庭账户时，您不能关闭iCloud备份。请先退出家庭账户。";
+"family.delete_warning_title" = "无法删除数据";
+"family.delete_warning_message" = "当您是家庭账户的一部分时，无法删除所有数据。请先退出家庭账户。";
+"family.invitation_title" = "家庭账户邀请";
+"family.invitation_description" = "您被邀请加入一个家庭账户。所有财务数据将在家庭成员之间共享。";
+"family.accepting_invitation" = "正在接受邀请...";
+"family.invitation_accepted" = "邀请已接受！";
+"family.accept_invitation" = "接受邀请";
+"family.join_family" = "加入家庭";
+
+// MARK: - Bütçe Ek
+"budget.automation_settings" = "自动化设置";
+"budget.form.auto_renew" = "每月自动续订";
+"budget.form.rollover_balance" = "结转上月余额";
+"budget.list.period_ended" = "周期已结束";
+"budget.detail.period_info" = "周期信息";
+"budget.detail.budget_period" = "预算周期";
+"budget.detail.rollover_from_last_month" = "上月结转";
+"budget.detail.transactions_for_period" = "本期交易";
+"notification.budget.pre_renewal.title" = "您的预算即将续订";
+"notification.budget.pre_renewal.body" = "您的预算“%@”将以下个月的结转金额%@进行续订。";
+"notification.budget.renewal_summary.title" = "您的预算已更新！";
+"notification.budget.renewal_summary.body" = "欢迎您，%@！☕️ 您本月的%d个预算已自动更新。";
+
+// MARK: - Detaylı Raporlar
+"reports.detailed.title" = "报告";
+"reports.detailed.credit_card_report" = "信用卡报告";
+"reports.detailed.loan_report" = "贷款报告";
+"reports.detailed.start_date" = "开始日期";
+"reports.detailed.end_date" = "结束日期";
+
+"reports.detailed.no_cc_data_title" = "未找到数据";
+"reports.detailed.no_cc_data_desc" = "所选日期范围内没有任何信用卡支出。";
+"reports.detailed.no_loan_data_title" = "未找到数据";
+"reports.detailed.no_loan_data_desc" = "所选日期范围内没有任何到期的贷款分期。";
+
+"reports.detailed.overall_summary" = "总体概要";
+"reports.detailed.total_spending" = "总支出";
+"reports.detailed.transaction_count" = "交易次数";
+"reports.detailed.most_used_card" = "最常用卡";
+"reports.detailed.card_details_header" = "卡详情";
+"reports.detailed.category_distribution" = "类别分布";
+"reports.detailed.daily_spending_trend" = "每日支出趋势";
+
+"reports.detailed.overall_loan_summary" = "贷款总体概要";
+"reports.detailed.active_loan_count" = "%d笔有效贷款";
+"reports.detailed.paid_installments_count" = "已付: %d";
+"reports.detailed.unpaid_installments_count" = "未付: %d";
+"reports.detailed.loan_details_header" = "贷款详情";
+"reports.detailed.installments_in_period" = "本期分期: %d";
+"reports.detailed.paid_and_expensed" = "已付并计为支出";
+"reports.detailed.paid_only" = "仅标记为已付";
+"reports.detailed.overdue" = "逾期分期";
+"reports.detailed.upcoming" = "即将到期";
+
+/* Harcama Isı Haritası */
+"reports.detailed.spending_heatmap" = "支出热力图";
+"reports.heatmap.no_data" = "在选定日期范围内未找到支出";
+"reports.heatmap.hourly_distribution" = "小时分布";
+"reports.heatmap.comparison" = "对比";
+"reports.heatmap.insights" = "智能洞察";
+
+/* Zaman Dilimleri */
+"reports.heatmap.morning" = "早上";
+"reports.heatmap.noon" = "中午";
+"reports.heatmap.evening" = "晚上";
+"reports.heatmap.night" = "深夜";
+"reports.heatmap.weekday" = "工作日";
+"reports.heatmap.weekend" = "周末";
+
+/* İçgörüler */
+"reports.heatmap.insight.busiest_day" = "最繁忙的一天: %@";
+"reports.heatmap.insight.busiest_hour" = "最活跃的时间: %@";
+"reports.heatmap.insight.weekend_comparison" = "周末支出增加%% %@";
+"reports.heatmap.insight.no_spending_days" = "%@天无支出";
+
+// MARK: - Transfer
+"transfer.title" = "账户间转账";
+"transfer.source_account" = "转出钱包";
+"transfer.target_account" = "转入钱包或信用卡";
+"transfer.amount_label" = "转账金额";
+"transfer.amount_placeholder" = "输入要转账的金额";
+"transfer.button" = "转账";
+"transfer.select_wallet" = "选择钱包";
+"transfer.select_account" = "选择账户";
+"transfer.source_details" = "转出账户详情";
+"transfer.target_details" = "转入账户详情";
+"transfer.name" = "名称:";
+"transfer.initial_balance" = "初始余额:";
+"transfer.current_balance" = "当前余额:";
+"transfer.total_limit" = "总额度:";
+"transfer.available_limit" = "可用额度:";
+"transfer.current_debt" = "当前欠款:";
+"transfer.statement_date" = "账单日:";
+"transfer.type.wallet" = "钱包";
+"transfer.type.credit_card" = "信用卡";
+"transfer.incoming" = "转入";
+"transfer.outgoing" = "转出";
+"transfer.unknown_account" = "未知账户";
+"transfer.section.transactions" = "交易";
+"transfer.section.transfers" = "转账";
+"transfer.no_transactions" = "本期无交易";
+"transfer.no_transfers" = "无转账记录";
+"transfer.section.expenses" = "支出";
+"transfer.section.payments" = "付款";
+"transfer.no_payments" = "无付款记录";
+
+"credit_card.installment_summary_format" = "%@ - %d/%d期";
+"credit_card.installment_number_format" = "第%d期";
+
+// Taksitli işlem
+"transaction.installment.toggle" = "分期付款";
+"transaction.installment.count" = "分期数";
+"transaction.installment.preview" = "%d期 x %@ = %@";
+"transaction.installment.edit_warning_title" = "编辑分期付款";
+"transaction.installment.edit_warning" = "此更改将重新创建所有分期。您想继续吗？";
+"transaction.installment.delete_warning" = "此分期付款交易（共%d期）将被完全删除。您确认吗？";
+"transaction.edit_installment" = "编辑分期付款";
+"credit_card.installment_purchases" = "分期消费";
+"installment.completed" = "已完成";
+"alert.installment.delete_title" = "删除分期付款";
+"credit_card_details.period_total" = "本期总计";
+"alert.no_wallet.message" = "要添加交易，您**必须****首先**创建一个**钱包**账户。";
+
+// MARK: - Cash Flow Report
+"reports.detailed.categories_report" = "类别报告";
+"reports.category.summary" = "类别概要";
+"reports.category.total_categories" = "总类别数";
+"reports.category.active_categories" = "活跃类别";
+"reports.category.most_spent" = "支出最多";
+"reports.category.view_list" = "列表视图";
+"reports.category.view_chart" = "图表视图";
+"reports.category.view_comparison" = "对比视图";
+"reports.category.distribution" = "类别分布";
+"reports.detailed.cash_flow" = "现金流";
+"cashflow.title" = "现金流报告";
+"cashflow.view.summary" = "概要";
+"cashflow.view.flow" = "流量";
+"cashflow.view.categories" = "类别";
+"cashflow.view.accounts" = "账户";
+"cashflow.view.projection" = "预测";
+
+"cashflow.insights" = "洞察";
+"cashflow.net_flow" = "净流量";
+"cashflow.of_income" = "占收入%";
+"cashflow.daily_avg" = "日均";
+
+"cashflow.normal_transactions" = "普通交易";
+"cashflow.installment_transactions" = "分期交易";
+"cashflow.recurring_transactions" = "周期性交易";
+
+"cashflow.opening_balance" = "期初余额";
+"cashflow.closing_balance" = "期末余额";
+"cashflow.inflows" = "流入";
+"cashflow.outflows" = "流出";
+"cashflow.daily_average" = "日均";
+
+"cashflow.daily_details" = "每日详情";
+"cashflow.cumulative_balance" = "累计余额";
+
+"cashflow.flow_chart" = "流量图";
+"cashflow.income_expense" = "收入/支出";
+"cashflow.detailed" = "详细";
+"cashflow.cumulative" = "累计";
+"cashflow.transaction_type_distribution" = "交易类型分布";
+"cashflow.category_flow" = "类别流量";
+"cashflow.show_trend" = "显示趋势";
+"cashflow.hide_trend" = "隐藏趋势";
+"cashflow.largest_transaction" = "最大交易";
+
+"cashflow.transfers" = "转账";
+"cashflow.most_frequent_transfer" = "最频繁转账";
+"cashflow.show_details" = "显示详情";
+"cashflow.hide_details" = "隐藏详情";
+
+// Projeksiyon
+"cashflow.projection.title" = "未来预测";
+"cashflow.projection.days" = "%d天预测";
+"cashflow.projection.income" = "预计收入";
+"cashflow.projection.expense" = "预计支出";
+"cashflow.projection.net" = "预计净额";
+"cashflow.projection.chart" = "预测图";
+
+// Risk
+"cashflow.risk.analysis" = "风险分析";
+"cashflow.risk.low" = "低风险";
+"cashflow.risk.medium" = "中等风险";
+"cashflow.risk.high" = "高风险";
+"cashflow.risk.low_message" = "您的现金流看起来很健康。以您当前的消费习惯，您可以实现财务目标。";
+"cashflow.risk.medium_message" = "您的现金流存在一些不平衡。建议您检查您的支出。";
+"cashflow.risk.high_message" = "注意！您的现金流为负。您需要立即采取措施。";
+
+"cashflow.suggestions" = "建议";
+"cashflow.suggestion.low_1" = "您可以将多余的钱用于投资";
+"cashflow.suggestion.low_2" = "考虑建立一个应急基金";
+"cashflow.suggestion.medium_1" = "减少不必要的开支";
+"cashflow.suggestion.medium_2" = "创造额外的收入来源";
+"cashflow.suggestion.medium_3" = "检查您的预算限额";
+"cashflow.suggestion.high_1" = "停止非紧急支出";
+"cashflow.suggestion.high_2" = "限制信用卡的使用";
+"cashflow.suggestion.high_3" = "寻求专业的财务咨询";
+
+// İçgörüler
+"cashflow.insight.positive_flow" = "正向现金流";
+"cashflow.insight.positive_flow_message" = "您有%@的正向现金流。您可以增加您的储蓄。";
+"cashflow.insight.negative_flow" = "负向现金流";
+"cashflow.insight.negative_flow_message" = "您有%@的负向现金流。您应该控制您的支出。";
+"cashflow.insight.high_installment" = "高额分期支出";
+"cashflow.insight.high_installment_message" = "您%% %@的支出是分期付款。这个比例似乎很高。";
+"cashflow.insight.projection_warning" = "预测警告";
+"cashflow.insight.projection_warning_message" = "以您目前的消费习惯，您可能会在下个时期遇到现金短缺。";
+
+// Genel
+"common.loading" = "加载中...";
+"common.close" = "关闭";
+"common.expenses" = "支出";
+"common.incomes" = "收入";
+"time.day_short" = "天";
+
+// Kategori Raporları
+"reports.category.view_list" = "列表视图";
+"reports.category.view_chart" = "图表视图";
+"reports.category.view_comparison" = "对比";
+"reports.category.display_type" = "显示类型";
+"reports.category.transaction_type" = "交易类型";
+"reports.category.no_comparison_data" = "无对比数据";
+"reports.category.no_previous_period" = "未找到上一时期的数据";
+
+// Kategori Özet Kartı
+"reports.category.summary" = "概要";
+"reports.category.total_categories" = "总类别数";
+"reports.category.active_categories" = "活跃类别";
+"reports.category.most_spent" = "支出最多";
+
+// Kategori Detay
+"reports.category.detail_type" = "详情类型";
+"reports.category.names" = "名称";
+"reports.category.days" = "天";
+"reports.category.hours" = "小时";
+"reports.category.trend" = "趋势";
+"reports.category.total_spending" = "总支出";
+"reports.category.transaction" = "交易";
+"reports.category.average" = "平均";
+"reports.category.daily" = "每日";
+"reports.category.most_frequent_names" = "最常用的交易名称";
+"reports.category.used_times" = "使用%d次";
+"reports.category.avg_short" = "平均";
+"reports.category.distribution_by_days" = "按天分布";
+"reports.category.distribution_by_hours" = "按小时分布";
+"reports.category.monthly_trend" = "月度趋势";
+"reports.category.transaction_count" = "%d笔交易";
+"reports.category.previous" = "上期";
+"reports.category.day" = "日";
+"reports.category.amount" = "金额";
+"reports.category.month" = "月";
+
+"reports.heatmap.24_hours" = "24小时";
+"reports.transaction_count" = "%d笔交易";
+"reports.average_with_amount" = "平均: %@";
+"reports.heatmap.busiest_hours" = "最繁忙: %@";
+
+// MARK: - Ortak Kullanım Eklemeleri
+"common.low" = "低";
+"common.high" = "高";
+"common.average" = "平均";
+"common.highest" = "最高";
+
+// MARK: - Raporlar
+"reports.heatmap.try_different_date_range" = "尝试不同的日期范围";
+"reports.heatmap.title.hourly" = "每小时支出分布";
+"reports.heatmap.title.daily" = "每日支出分布";
+"reports.heatmap.title.monthly" = "每月支出分布";
+"reports.heatmap.title.weekly" = "每周支出分布";
+"reports.heatmap.title.monthly_summary" = "月度支出概要";
+"reports.heatmap.week_format" = "第%d周";
+"reports.comparison.no_data_title" = "无对比数据";
+"reports.category.avg_short_format" = "平均: %@";
+
+// MARK: - Nakit Akışı Raporu
+"reports.cashflow.no_data_title" = "未找到数据";
+"reports.cashflow.no_data_desc" = "在选定日期范围内未找到交易。";
+"reports.category.daily_average_format" = "%@/天";
+
+"cashflow.transfer_count" = "%d笔转账";
+"common.times_suffix" = "%d次";
+
+// Kredi Kartı Raporları - Yeni Anahtarlar
+"reports.creditcard.detail_view" = "详细视图";
+"reports.creditcard.comparison_view" = "对比";
+"reports.creditcard.summary_view" = "概要";
+"reports.creditcard.no_data" = "未找到数据";
+"reports.creditcard.no_data_desc" = "在选定日期范围内未找到信用卡支出。";
+"reports.creditcard.total_spending" = "总支出";
+"reports.creditcard.active_cards" = "活跃卡片";
+"reports.creditcard.transactions" = "交易";
+"reports.creditcard.daily_avg" = "日均";
+"reports.creditcard.most_used" = "最常用";
+"reports.creditcard.limit" = "额度:";
+"reports.creditcard.usage" = "使用情况";
+"reports.creditcard.hide_metrics" = "隐藏指标";
+"reports.creditcard.show_metrics" = "显示指标";
+"reports.creditcard.current_debt" = "当前欠款";
+"reports.creditcard.available" = "可用";
+"reports.creditcard.highest_day" = "最高日";
+"reports.creditcard.avg_transaction" = "平均交易";
+"reports.creditcard.category_analysis" = "类别分析";
+"reports.creditcard.more_categories" = "还有%d个类别";
+"reports.creditcard.spending_trend" = "支出趋势";
+"reports.creditcard.daily" = "每日";
+"reports.creditcard.weekly" = "每周";
+"reports.creditcard.by_category" = "按类别";
+"reports.creditcard.installments" = "分期消费";
+"reports.creditcard.installment_count" = "%d笔分期消费";
+"reports.creditcard.monthly_total" = "月度总计";
+"reports.creditcard.monthly" = "每月";
+"reports.creditcard.progress" = "进度";
+"reports.creditcard.total_amount" = "总金额";
+"reports.creditcard.remaining" = "剩余";
+"reports.creditcard.card_comparison" = "卡片对比";
+"reports.creditcard.detailed_comparison" = "详细对比";
+"reports.creditcard.card" = "卡";
+"reports.creditcard.spending" = "支出";
+"reports.creditcard.total_distribution" = "总分布";
+"reports.creditcard.category_summary" = "类别概要";
+"reports.creditcard.no_categories" = "未找到类别数据";
+"reports.creditcard.daily_averages" = "日均值";
+
+// MARK: - Hesap Silme ve İşlem Aktarımı
+"alert.no_eligible_account.title" = "没有合适的账户";
+"alert.no_eligible_account.message" = "要删除此账户，您必须先创建另一个钱包或信用卡账户来转移其交易。";
+"transfer_transactions.title" = "转移交易并删除";
+"transfer_transactions.message_format" = "您即将删除账户“%@”。此账户有%d笔交易。请选择一个新账户来转移这些交易。";
+"transfer_transactions.confirm_button" = "转移并删除";
+"alert.no_eligible_wallet.title" = "未找到合适的钱包";
+"alert.no_eligible_wallet.message" = "您要删除的账户包含收入交易。要转移这些交易，您必须先创建另一个“钱包”类型的账户。";
+
+// MARK: - Kredi Raporu
+"loan_report.no_data" = "未找到贷款数据";
+"loan_report.no_data_desc" = "在选定日期范围内未找到贷款分期。";
+"loan_report.view.summary" = "概要";
+"loan_report.view.detail" = "详情";
+"loan_report.view.calendar" = "日历";
+"loan_report.view.performance" = "表现";
+
+"loan_report.sort.by_date" = "按日期";
+"loan_report.sort.by_amount" = "按金额";
+"loan_report.sort.by_progress" = "按进度";
+
+"loan_report.overview" = "总债务状况";
+"loan_report.completed" = "已完成";
+"loan_report.active_loans" = "有效贷款";
+"loan_report.monthly_payment" = "每月还款";
+"loan_report.total_paid" = "已付总额";
+"loan_report.remaining" = "剩余债务";
+"loan_report.estimated_completion" = "预计完成日期";
+"loan_report.monthly_payment_load" = "每月分期负担";
+"loan_report.no_future_payments" = "无未来付款";
+"loan_report.distribution" = "贷款分布";
+"loan_report.no_active_loans" = "无有效贷款";
+
+"loan_report.search_placeholder" = "搜索贷款...";
+"loan_report.active_only" = "仅有效";
+"loan_report.sort" = "排序";
+"loan_report.principal_amount" = "本金";
+"loan_report.interest_rate" = "利率";
+"loan_report.total_to_pay" = "应付总额";
+"loan_report.total_interest" = "总利息";
+"loan_report.last_payment_date" = "最后付款日期";
+"loan_report.payment_performance" = "付款表现";
+"loan_report.score" = "得分";
+"loan_report.next_payment" = "下次付款";
+"loan_report.days_remaining" = "剩余%d天";
+"loan_report.due_today" = "今天到期！";
+"loan_report.overdue" = "已逾期！";
+"loan_report.installments_in_period" = "本期分期";
+"loan_report.more_installments" = "...以及另外%d期";
+
+"loan_report.monthly_total" = "月度总计";
+
+"loan_report.performance_score" = "表现得分";
+"loan_report.performance_excellent" = "优秀";
+"loan_report.performance_good" = "良好";
+"loan_report.performance_fair" = "一般";
+"loan_report.performance_poor" = "差";
+"loan_report.total_interest_paid" = "已付总利息";
+"loan_report.avg_monthly_payment" = "月均还款";
+"loan_report.on_time" = "准时";
+"loan_report.late" = "延迟";
+"loan_report.missed" = "错过";
+
+// MARK: - Harcama Raporu
+"spending_report.view.summary" = "概要";
+"spending_report.view.category" = "类别";
+"spending_report.view.time" = "时间分析";
+"spending_report.view.comparison" = "对比";
+
+"spending_report.no_data" = "未找到支出";
+"spending_report.no_data_desc" = "在选定日期范围内无支出";
+
+"spending_report.total_spending" = "总支出";
+"spending_report.daily_avg" = "日均";
+"spending_report.transaction_count" = "交易次数";
+"spending_report.avg_transaction" = "平均交易额";
+"spending_report.highest_expense" = "最高支出";
+
+"spending_report.increase" = "增加";
+"spending_report.decrease" = "减少";
+
+"spending_report.top_categories" = "主要支出类别";
+"spending_report.weekly_summary" = "周度概要";
+"spending_report.insights" = "智能洞察";
+"spending_report.insight.busiest_day" = "您最繁忙的一天是%@，支出为%@";
+"spending_report.insight.top_category" = "%@类别占您总支出的%%%.1f";
+"spending_report.insight.weekend_warning" = "您的周末平均支出高于工作日";
+
+"spending_report.category_distribution" = "类别分布";
+"spending_report.category_details" = "类别详情";
+"spending_report.largest_expense" = "最大支出";
+"spending_report.avg_per_transaction" = "每笔交易平均";
+
+"spending_report.daily_trend" = "每日支出趋势";
+"spending_report.weekday_weekend" = "工作日 vs 周末";
+"spending_report.hourly_distribution" = "小时分布";
+"spending_report.weekday" = "工作日";
+"spending_report.weekend" = "周末";
+
+"spending_report.period_comparison" = "周期对比";
+"spending_report.previous_period" = "上一周期";
+"spending_report.current_period" = "当前周期";
+"spending_report.category_changes" = "类别变化";
+"spending_report.budget_performance" = "预算表现";
+"spending_report.budget_status.normal" = "正常";
+"spending_report.budget_status.critical" = "临界";
+"spending_report.budget_status.exceeded" = "超支";
+"spending_report.busiest_hours" = "最繁忙时段";
+"common.transactions" = "交易";
+
+// MARK: - Onboarding
+"onboarding.skip" = "跳过";
+"onboarding.continue" = "继续";
+"onboarding.confirm_settings" = "确认设置";
+"onboarding.privacy_notice" = "继续即表示您同意我们的隐私政策和使用条款。";
+
+"onboarding.welcome.title" = "欢迎来到财务自由";
+"onboarding.welcome.subtitle" = "跟踪您的支出，管理您的预算，实现您的财务目标";
+
+"onboarding.feature1.title" = "智能分析";
+"onboarding.feature1.description" = "将您的支出分类，并通过详细的图表查看您的财务状况";
+
+"onboarding.feature2.title" = "预算管理";
+"onboarding.feature2.description" = "创建月度预算，跟踪您的限额，并实现您的储蓄目标";
+
+"onboarding.feature3.title" = "智能提醒";
+"onboarding.feature3.description" = "及时收到账单支付和预算超支的通知";
+
+"onboarding.personalize.title" = "个性化您的体验";
+"onboarding.select_language" = "选择语言";
+"onboarding.select_currency" = "选择货币";
+
+"reports.creditcard.show_less" = "显示更少";
+"reports.creditcard.usage.short" = "使用";
+"reports.creditcard.no_category_data" = "无类别数据";
+"loan_report.legend.paid" = "已付";
+"loan_report.legend.pending" = "待付";
+"loan_report.legend.overdue" = "逾期";
+"loan_report.this_month_summary" = "本月";
+"loan_report.total_installments" = "本月总分期金额:";
+"loan_report.paid_installments" = "已付分期总额:";
+"loan_report.no_installments_for_day" = "今日无贷款分期";
+"loan_report.installment_no" = "分期:";
+"loan_report.status.paid" = "已付";
+"loan_report.status.pending" = "待付";
+"loan_report.status.overdue" = "逾期";
+"loan_report.total_for_day" = "本日总计";
+"dashboard.show_less" = "显示更少";
+"dashboard.more_categories" = "个其它类别";
+"reports.category.highest_spending" = "最高支出类别";
+"reports.category.most_transactions" = "交易最频繁";
