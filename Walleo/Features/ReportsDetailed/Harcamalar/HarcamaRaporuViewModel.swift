@@ -9,7 +9,8 @@ class HarcamaRaporuViewModel {
     private var modelContext: ModelContext
     var baslangicTarihi: Date
     var bitisTarihi: Date
-    
+    private var appSettings: AppSettings  // ← YENİ SATIR
+
     // UI veriler - TÜM TİPLER GÜNCELLENDİ
     var genelOzet = HarcamaGenelOzet()
     var topKategoriler: [HarcamaKategoriOzet] = []
@@ -30,6 +31,7 @@ class HarcamaRaporuViewModel {
         self.modelContext = modelContext
         self.baslangicTarihi = baslangicTarihi
         self.bitisTarihi = bitisTarihi
+        self.appSettings = AppSettings()  // ← YENİ SATIR
         
         NotificationCenter.default.addObserver(
             self,
@@ -294,32 +296,74 @@ class HarcamaRaporuViewModel {
     private func generateInsights(islemler: [Islem]) {
         var icgoruler: [HarcamaIcgoru] = []
         
+        // Doğru dil bundle'ını al
+        let languageBundle: Bundle = {
+            if let path = Bundle.main.path(forResource: appSettings.languageCode, ofType: "lproj"),
+               let bundle = Bundle(path: path) {
+                return bundle
+            }
+            return .main
+        }()
+        
         // En yoğun gün
         if let enYogunGun = findBusiestDay(islemler: islemler) {
+            let mesajFormat = languageBundle.localizedString(
+                forKey: "spending_report.insight.busiest_day",
+                value: "",
+                table: nil
+            )
+            let mesaj = String(
+                format: mesajFormat,
+                enYogunGun.tarih,
+                formatCurrency(
+                    amount: enYogunGun.tutar,
+                    currencyCode: appSettings.currencyCode,
+                    localeIdentifier: appSettings.languageCode
+                )
+            )
+            
             icgoruler.append(HarcamaIcgoru(
                 id: UUID(),
                 tip: .bilgi,
-                mesaj: String(format: NSLocalizedString("spending_report.insight.busiest_day", comment: ""), enYogunGun.tarih, formatCurrency(amount: enYogunGun.tutar, currencyCode: "TRY", localeIdentifier: "tr_TR")),
+                mesaj: mesaj,
                 oncelik: 1
             ))
         }
         
         // En çok harcanan kategori
         if let topKategori = topKategoriler.first {
+            let kategoriAdi = languageBundle.localizedString(
+                forKey: topKategori.localizationKey ?? topKategori.isim,
+                value: topKategori.isim,
+                table: nil
+            )
+            let mesajFormat = languageBundle.localizedString(
+                forKey: "spending_report.insight.top_category",
+                value: "",
+                table: nil
+            )
+            let mesaj = String(format: mesajFormat, kategoriAdi, topKategori.yuzde)
+            
             icgoruler.append(HarcamaIcgoru(
                 id: UUID(),
                 tip: .bilgi,
-                mesaj: String(format: NSLocalizedString("spending_report.insight.top_category", comment: ""), NSLocalizedString(topKategori.localizationKey ?? topKategori.isim, comment: ""), topKategori.yuzde),
+                mesaj: mesaj,
                 oncelik: 2
             ))
         }
         
         // Hafta sonu uyarısı
         if haftaIciSonuKarsilastirma.haftaSonuToplam > haftaIciSonuKarsilastirma.haftaIciToplam * 0.5 {
+            let mesaj = languageBundle.localizedString(
+                forKey: "spending_report.insight.weekend_warning",
+                value: "",
+                table: nil
+            )
+            
             icgoruler.append(HarcamaIcgoru(
                 id: UUID(),
                 tip: .uyari,
-                mesaj: NSLocalizedString("spending_report.insight.weekend_warning", comment: ""),
+                mesaj: mesaj,
                 oncelik: 3
             ))
         }
@@ -358,7 +402,7 @@ class HarcamaRaporuViewModel {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "d MMMM"
-        formatter.locale = Locale(identifier: "tr_TR") // TODO: appSettings'ten alınmalı
+        formatter.locale = Locale(identifier: appSettings.languageCode) // ← DİNAMİK
         
         return (formatter.string(from: enYogun.key), enYogun.value)
     }

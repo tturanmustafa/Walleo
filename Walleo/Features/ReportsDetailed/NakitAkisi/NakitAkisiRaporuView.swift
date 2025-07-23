@@ -103,8 +103,8 @@ struct NakitAkisiRaporuView: View {
             NakitAkisiAnaMetriklerView(rapor: rapor)
                 .padding(.horizontal)
             
-            // İşlem tipi dağılımı
-            IslemTipiDagilimiView(dagilim: rapor.islemTipiDagilimi)
+            // İşlem tipi dağılımı - SADECE KARTLAR (GRAFİK KALDIRILDI)
+            IslemTipiKartlariView(dagilim: rapor.islemTipiDagilimi)
                 .padding(.horizontal)
             
             // Transfer özeti

@@ -144,7 +144,11 @@ class NakitAkisiViewModel {
     }
     
     private func fetchAccounts() async throws -> [Hesap] {
-        return try modelContext.fetch(FetchDescriptor<Hesap>())
+        let krediTuruRawValue = HesapTuru.kredi.rawValue
+        let predicate = #Predicate<Hesap> { hesap in
+            hesap.hesapTuruRawValue != krediTuruRawValue
+        }
+        return try modelContext.fetch(FetchDescriptor(predicate: predicate))
     }
     
     private func fetchCategories() async throws -> [Kategori] {
@@ -331,10 +335,19 @@ class NakitAkisiViewModel {
         let gunSayisi = Calendar.current.dateComponents([.day], from: baslangicTarihi, to: bitisTarihi).day ?? 1
         
         for hesap in hesaplar {
+            // Kredi hesaplarını atla
+            if case .kredi = hesap.detay {
+                continue
+            }
+            
             if !dahilEdilecekHesaplar.isEmpty && !dahilEdilecekHesaplar.contains(hesap.id) {
                 continue
             }
             
+            // Rapor tarihindeki açılış bakiyesini hesapla
+            let acilistakiBakiye = calculateOpeningBalance(for: hesap, at: baslangicTarihi)
+            
+            // Rapor dönemindeki işlemler
             let hesapIslemleri = islemler.filter { $0.hesap?.id == hesap.id }
             let gelenTransferler = transferler.filter { $0.hedefHesap?.id == hesap.id }
             let gidenTransferler = transferler.filter { $0.kaynakHesap?.id == hesap.id }
@@ -347,12 +360,12 @@ class NakitAkisiViewModel {
             let toplamGiris = gelirler + gelenTransferToplam
             let toplamCikis = giderler + gidenTransferToplam
             let netDegisim = toplamGiris - toplamCikis
-            let donemSonuBakiyesi = hesap.baslangicBakiyesi + netDegisim
+            let donemSonuBakiyesi = acilistakiBakiye + netDegisim
             
             let akis = HesapNakitAkisi(
                 id: hesap.id,
                 hesap: hesap,
-                baslangicBakiyesi: hesap.baslangicBakiyesi,
+                baslangicBakiyesi: acilistakiBakiye,
                 donemSonuBakiyesi: donemSonuBakiyesi,
                 toplamGiris: toplamGiris,
                 toplamCikis: toplamCikis,
@@ -365,6 +378,54 @@ class NakitAkisiViewModel {
         }
         
         return hesapAkislari.sorted { abs($0.netDegisim) > abs($1.netDegisim) }
+    }
+
+    // Yeni yardımcı fonksiyon
+    private func calculateOpeningBalance(for hesap: Hesap, at date: Date) -> Double {
+        do {
+            // Sadece tarih bazlı predicate kullan
+            let islemPredicate = #Predicate<Islem> { islem in
+                islem.tarih < date
+            }
+            let tumOncekiIslemler = try modelContext.fetch(FetchDescriptor(predicate: islemPredicate))
+            let oncekiIslemler = tumOncekiIslemler.filter { $0.hesap?.id == hesap.id }
+            
+            // Transferler için de aynı yaklaşım
+            let transferPredicate = #Predicate<Transfer> { transfer in
+                transfer.tarih < date
+            }
+            let tumOncekiTransferler = try modelContext.fetch(FetchDescriptor(predicate: transferPredicate))
+            let oncekiTransferler = tumOncekiTransferler.filter { transfer in
+                transfer.kaynakHesap?.id == hesap.id || transfer.hedefHesap?.id == hesap.id
+            }
+            
+            // Hesapla
+            var bakiye = hesap.baslangicBakiyesi
+            
+            // İşlemleri ekle/çıkar
+            for islem in oncekiIslemler {
+                if islem.tur == .gelir {
+                    bakiye += islem.tutar
+                } else {
+                    bakiye -= islem.tutar
+                }
+            }
+            
+            // Transferleri ekle/çıkar
+            for transfer in oncekiTransferler {
+                if transfer.hedefHesap?.id == hesap.id {
+                    bakiye += transfer.tutar
+                } else if transfer.kaynakHesap?.id == hesap.id {
+                    bakiye -= transfer.tutar
+                }
+            }
+            
+            return bakiye
+            
+        } catch {
+            Logger.log("Açılış bakiyesi hesaplanırken hata: \(error)", log: Logger.service, type: .error)
+            return hesap.baslangicBakiyesi
+        }
     }
         
     private func shouldProjectTransaction(islem: Islem, tarih: Date) -> Bool {
