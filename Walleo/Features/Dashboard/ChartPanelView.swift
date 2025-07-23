@@ -6,12 +6,21 @@ struct ChartPanelView: View {
     let kategoriDetaylari: [String: (renk: Color, ikon: String)]
     let toplamTutar: Double
     
-    // YENİ: Yüzdeleri bir kere hesapla
-    private var kategorilerVeYuzdeler: [(veri: KategoriHarcamasi, yuzde: String)] {
-        pieChartVerisi.map { veri in
-            let yuzde = toplamTutar > 0 ? (veri.tutar / toplamTutar) * 100 : 0
-            return (veri, String(format: "%.1f%%", yuzde))
+    // YENİ: Genişletilmiş görünüm state'i
+    @State private var isExpanded = false
+    
+    // YENİ: Görüntülenecek kategori sayısı
+    private var displayedCategories: [KategoriHarcamasi] {
+        if isExpanded {
+            return pieChartVerisi
+        } else {
+            return Array(pieChartVerisi.prefix(4))
         }
+    }
+    
+    // YENİ: Gizli kategori sayısı
+    private var hiddenCategoriesCount: Int {
+        max(0, pieChartVerisi.count - 4)
     }
 
     var body: some View {
@@ -23,18 +32,17 @@ struct ChartPanelView: View {
                     .padding([.top, .leading, .trailing])
                     .padding(.bottom, 14)
                 
-                HStack(alignment: .center, spacing: 15) {
-                    // YENİ: Chart'ı memoize et
+                HStack(alignment: .top, spacing: 15) {
+                    // Chart - tüm kategorileri göster
                     chartView
                         .frame(width: 140, height: 140)
                     
-                    // YENİ: Liste performansını artır
-                    categoryListView
+                    // YENİ: Genişletilebilir kategori listesi
+                    expandableCategoryListView
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.trailing)
                 }
                 .padding([.leading, .bottom])
-                .frame(height: 150)
             }
             .background(Color(.systemGray6).opacity(0.4))
             .cornerRadius(12)
@@ -42,7 +50,7 @@ struct ChartPanelView: View {
         }
     }
     
-    // YENİ: Chart'ı ayrı view'a çıkar
+    // Chart'ı ayrı view'a çıkar
     @ViewBuilder
     private var chartView: some View {
         Chart(pieChartVerisi) { veri in
@@ -55,26 +63,60 @@ struct ChartPanelView: View {
             .cornerRadius(8)
             .shadow(color: .black.opacity(0.3), radius: 2, x: 2, y: 2)
         }
-        // YENİ: Chart animasyonlarını kontrol et
         .animation(.easeInOut(duration: 0.5), value: pieChartVerisi.map { $0.tutar })
     }
     
-    // YENİ: Kategori listesini ayrı view'a çıkar
+    // YENİ: Genişletilebilir kategori listesi
     @ViewBuilder
-    private var categoryListView: some View {
+    private var expandableCategoryListView: some View {
         VStack(alignment: .leading, spacing: 12) {
-            ForEach(kategorilerVeYuzdeler, id: \.veri.id) { item in
+            // Görünen kategoriler
+            ForEach(displayedCategories) { veri in
                 CategoryRowView(
-                    veri: item.veri,
-                    yuzde: item.yuzde,
-                    ikon: kategoriDetaylari[item.veri.kategori]?.ikon ?? "tag.fill"
+                    veri: veri,
+                    yuzde: calculatePercentage(for: veri.tutar),
+                    ikon: veri.ikonAdi
                 )
+            }
+            
+            // Genişlet/Daralt butonu
+            if hiddenCategoriesCount > 0 {
+                Button(action: { withAnimation(.spring()) { isExpanded.toggle() } }) {
+                    HStack(spacing: 6) {
+                        Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                            .font(.caption)
+                        
+                        if isExpanded {
+                            Text("dashboard.show_less")
+                                .font(.callout)
+                                .fontWeight(.medium)
+                        } else {
+                            Text("+\(hiddenCategoriesCount) ")
+                                .font(.callout)
+                                .fontWeight(.medium)
+                            + Text("dashboard.more_categories")
+                                .font(.callout)
+                                .fontWeight(.medium)
+                        }
+                        
+                        Spacer()
+                    }
+                    .foregroundColor(.accentColor)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.top, 4)
             }
         }
     }
+    
+    // YENİ: Yüzde hesaplama helper fonksiyonu
+    private func calculatePercentage(for amount: Double) -> String {
+        let yuzde = toplamTutar > 0 ? (amount / toplamTutar) * 100 : 0
+        return String(format: "%.1f%%", yuzde)
+    }
 }
 
-// YENİ: Kategori satırını ayrı struct'a çıkar
+// Kategori satırını ayrı struct'a çıkar
 struct CategoryRowView: View {
     let veri: KategoriHarcamasi
     let yuzde: String

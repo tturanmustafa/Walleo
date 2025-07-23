@@ -941,3 +941,5 @@
 "loan_report.status.pending" = "Pending";
 "loan_report.status.overdue" = "Overdue";
 "loan_report.total_for_day" = "Total for Day";
+"dashboard.show_less" = "Show less";
+"dashboard.more_categories" = "more categories";

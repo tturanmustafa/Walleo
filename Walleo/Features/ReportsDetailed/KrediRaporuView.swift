@@ -503,7 +503,7 @@ struct KrediDagilimiKarti: View {
             return KategoriHarcamasi(
                 kategori: rapor.hesap.isim,
                 tutar: detay.kalanAnaparaTutari,
-                renk: rapor.hesap.renk,
+                renk: rapor.hesap.renk, // Bu satır zaten mevcut
                 localizationKey: nil,
                 ikonAdi: rapor.hesap.ikonAdi
             )

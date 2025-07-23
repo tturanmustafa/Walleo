@@ -175,38 +175,20 @@ class DashboardViewModel {
         
         self.kategoriDetaylari = tempKategoriDetaylari.mapValues { ($0.renk, $0.ikon) }
         
-        // Chart verisi oluştur
+        // Chart verisi oluştur - TÜM KATEGORİLER DAHİL
         var chartData: [KategoriHarcamasi] = []
-        var digerTutar: Double = 0.0
         
-        // En yüksek 4 kategoriyi al
+        // Tutara göre sıralı tüm kategorileri ekle
         let sortedCategories = kategoriTutarlari.sorted { $0.value > $1.value }
         
-        for (index, (kategoriAdi, tutar)) in sortedCategories.enumerated() {
-            if kategoriAdi == "Diğer" {
-                digerTutar += tutar
-                continue
-            }
-            
-            if index < 4 {
-                let detay = tempKategoriDetaylari[kategoriAdi]
-                chartData.append(KategoriHarcamasi(
-                    kategori: kategoriAdi,
-                    tutar: tutar,
-                    renk: detay?.renk ?? .gray,
-                    localizationKey: detay?.key
-                ))
-            } else {
-                digerTutar += tutar
-            }
-        }
-        
-        if digerTutar > 0 {
+        for (kategoriAdi, tutar) in sortedCategories {
+            let detay = tempKategoriDetaylari[kategoriAdi]
             chartData.append(KategoriHarcamasi(
-                kategori: "Diğer",
-                tutar: digerTutar,
-                renk: .gray,
-                localizationKey: "category.other"
+                kategori: kategoriAdi,
+                tutar: tutar,
+                renk: detay?.renk ?? .gray,
+                localizationKey: detay?.key,
+                ikonAdi: detay?.ikon ?? "tag.fill"
             ))
         }
         
