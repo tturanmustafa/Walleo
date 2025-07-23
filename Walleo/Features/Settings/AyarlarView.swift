@@ -254,32 +254,44 @@ struct VeriYonetimiBolumu: View {
     }
     
     // MARK: - Helpers
+    // VeriYonetimiBolumu içindeki exportData fonksiyonunu güncelleyin
     private func exportData() {
         isExporting = true
         
-        let descriptor = FetchDescriptor<Islem>(sortBy: [SortDescriptor(\.tarih, order: .reverse)])
-        guard let islemler = try? modelContext.fetch(descriptor) else {
+        // İşlemleri çek
+        let islemDescriptor = FetchDescriptor<Islem>(sortBy: [SortDescriptor(\.tarih, order: .reverse)])
+        guard let islemler = try? modelContext.fetch(islemDescriptor) else {
             isExporting = false
             Logger.log("Dışa aktarma için işlemler çekilemedi.", log: Logger.service, type: .error)
             return
         }
         
+        // Transferleri çek
+        let transferDescriptor = FetchDescriptor<Transfer>(sortBy: [SortDescriptor(\.tarih, order: .reverse)])
+        let transferler = (try? modelContext.fetch(transferDescriptor)) ?? []
+        
+        // Hesapları çek
+        let hesapDescriptor = FetchDescriptor<Hesap>()
+        let hesaplar = (try? modelContext.fetch(hesapDescriptor)) ?? []
+        
         DispatchQueue.global(qos: .userInitiated).async {
-            let csvString = ExportService.generateCSV(from: islemler, languageCode: appSettings.languageCode)
-            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("Walleo_Export.csv")
+            // ZIP içinde CSV'ler oluştur
+            guard let zipURL = ExportService.generateExportZip(
+                islemler: islemler,
+                transferler: transferler,
+                hesaplar: hesaplar,
+                languageCode: appSettings.languageCode
+            ) else {
+                DispatchQueue.main.async {
+                    self.isExporting = false
+                    Logger.log("Export ZIP oluşturulamadı.", log: Logger.service, type: .error)
+                }
+                return
+            }
             
-            do {
-                try csvString.write(to: tempURL, atomically: true, encoding: .utf8)
-                
-                DispatchQueue.main.async {
-                    self.shareableURL = ShareableURL(url: tempURL)
-                    self.isExporting = false
-                }
-            } catch {
-                Logger.log("CSV dosyası geçici olarak kaydedilirken hata oluştu: \(error.localizedDescription)", log: Logger.service, type: .error)
-                DispatchQueue.main.async {
-                    self.isExporting = false
-                }
+            DispatchQueue.main.async {
+                self.shareableURL = ShareableURL(url: zipURL)
+                self.isExporting = false
             }
         }
     }

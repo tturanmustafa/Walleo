@@ -950,3 +950,62 @@
 "reports.category.highest_spending" = "Highest Spending Category";
 "reports.category.most_transactions" = "Most Transaction Count";
 
+// Export Headers - Installment Transactions
+"export.installment.sheet_name" = "Installment Transactions";
+"export.installment.header.transaction_name" = "Transaction Name";
+"export.installment.header.total_amount" = "Total Amount";
+"export.installment.header.installment_count" = "Number of Installments";
+"export.installment.header.current_installment" = "Current Installment";
+"export.installment.header.installment_amount" = "Installment Amount";
+"export.installment.header.date" = "Date";
+"export.installment.header.category" = "Category";
+"export.installment.header.account" = "Account";
+
+// Export Headers - Recurring Transactions
+"export.recurring.sheet_name" = "Recurring Transactions";
+"export.recurring.header.transaction_name" = "Transaction Name";
+"export.recurring.header.amount" = "Amount";
+"export.recurring.header.start_date" = "Start Date";
+"export.recurring.header.end_date" = "End Date";
+"export.recurring.header.frequency" = "Frequency";
+"export.recurring.header.type" = "Type";
+"export.recurring.header.category" = "Category";
+"export.recurring.header.account" = "Account";
+
+// Export Headers - Transfers
+"export.transfer.sheet_name" = "Transfers";
+"export.transfer.header.date" = "Date";
+"export.transfer.header.amount" = "Amount";
+"export.transfer.header.from_account" = "From Account";
+"export.transfer.header.to_account" = "To Account";
+
+// Export Headers - Loans
+"export.loan.sheet_name" = "Loans";
+"export.loan.header.account_name" = "Loan Name";
+"export.loan.header.loan_amount" = "Loan Amount";
+"export.loan.header.interest_type" = "Interest Type";
+"export.loan.header.interest_rate" = "Interest Rate (%)";
+"export.loan.header.installment_count" = "Number of Installments";
+"export.loan.header.installment_amount" = "Monthly Payment";
+"export.loan.header.first_payment_date" = "First Payment Date";
+"export.loan.header.remaining_installments" = "Remaining Installments";
+"export.loan.header.remaining_amount" = "Remaining Balance";
+
+// Export Headers - Loan Installments
+"export.loan_installments.sheet_name" = "Loan Installments";
+"export.loan_installments.header.loan_name" = "Loan Name";
+"export.loan_installments.header.installment_no" = "Installment No";
+"export.loan_installments.header.amount" = "Amount";
+"export.loan_installments.header.due_date" = "Due Date";
+"export.loan_installments.header.status" = "Status";
+
+// Export
+"export.all_transactions.sheet_name" = "All Transactions";
+"export.status.paid" = "Paid";
+"export.status.pending" = "Pending";
+
+// Export File Names
+"export.filename.all_transactions" = "All_Transactions";
+"export.filename.installments" = "Installment_Transactions";
+"export.filename.recurring" = "Recurring_Transactions";
+"export.filename.transfers" = "Transfers";

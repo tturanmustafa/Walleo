@@ -901,3 +901,65 @@
 "dashboard.more_categories" = "kategori lagi";
 "reports.category.highest_spending" = "Kategori Perbelanjaan Tertinggi";
 "reports.category.most_transactions" = "Urus Niaga Terbanyak";
+
+// Export Headers - Installment Transactions
+"export.installment.sheet_name" = "Urus Niaga Ansuran";
+"export.installment.header.transaction_name" = "Nama Urus Niaga";
+"export.installment.header.total_amount" = "Jumlah Keseluruhan";
+"export.installment.header.installment_count" = "Bilangan Ansuran";
+"export.installment.header.current_installment" = "Ansuran Semasa";
+"export.installment.header.installment_amount" = "Jumlah Ansuran";
+"export.installment.header.date" = "Tarikh";
+"export.installment.header.category" = "Kategori";
+"export.installment.header.account" = "Akaun";
+
+// Export Headers - Recurring Transactions
+"export.recurring.sheet_name" = "Urus Niaga Berulang";
+"export.recurring.header.transaction_name" = "Nama Urus Niaga";
+"export.recurring.header.amount" = "Jumlah";
+"export.recurring.header.start_date" = "Tarikh Mula";
+"export.recurring.header.end_date" = "Tarikh Tamat";
+"export.recurring.header.frequency" = "Kekerapan";
+"export.recurring.header.type" = "Jenis";
+"export.recurring.header.category" = "Kategori";
+"export.recurring.header.account" = "Akaun";
+
+// Export Headers - Transfers
+"export.transfer.sheet_name" = "Pindahan";
+"export.transfer.header.date" = "Tarikh";
+"export.transfer.header.amount" = "Jumlah";
+"export.transfer.header.from_account" = "Dari Akaun";
+"export.transfer.header.to_account" = "Ke Akaun";
+
+// Export Headers - Loans
+"export.loan.sheet_name" = "Pinjaman";
+"export.loan.header.account_name" = "Nama Pinjaman";
+"export.loan.header.loan_amount" = "Jumlah Pinjaman";
+"export.loan.header.interest_type" = "Jenis Faedah";
+"export.loan.header.interest_rate" = "Kadar Faedah (%)";
+"export.loan.header.installment_count" = "Bilangan Ansuran";
+"export.loan.header.installment_amount" = "Bayaran Bulanan";
+"export.loan.header.first_payment_date" = "Tarikh Bayaran Pertama";
+"export.loan.header.remaining_installments" = "Baki Ansuran";
+"export.loan.header.remaining_amount" = "Baki Hutang";
+
+// Export Headers - Loan Installments
+"export.loan_installments.sheet_name" = "Ansuran Pinjaman";
+"export.loan_installments.header.loan_name" = "Nama Pinjaman";
+"export.loan_installments.header.installment_no" = "No. Ansuran";
+"export.loan_installments.header.amount" = "Jumlah";
+"export.loan_installments.header.due_date" = "Tarikh Akhir";
+"export.loan_installments.header.status" = "Status";
+
+// Export
+"export.all_transactions.sheet_name" = "Semua Urus Niaga";
+"export.status.paid" = "Telah Dibayar";
+"export.status.pending" = "Menunggu";
+
+// Export File Names
+"export.filename.all_transactions" = "Semua_Urus_Niaga";
+"export.filename.installments" = "Urus_Niaga_Ansuran";
+"export.filename.recurring" = "Urus_Niaga_Berulang";
+"export.filename.transfers" = "Pindahan";
+"export.filename.loans" = "Pinjaman";
+"export.filename.loan_installments" = "Ansuran_Pinjaman";

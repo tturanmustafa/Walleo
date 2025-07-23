@@ -901,3 +901,65 @@
 "dashboard.more_categories" = "hạng mục khác";
 "reports.category.highest_spending" = "Hạng mục chi tiêu cao nhất";
 "reports.category.most_transactions" = "Nhiều giao dịch nhất";
+
+// Export Headers - Installment Transactions
+"export.installment.sheet_name" = "Giao dịch trả góp";
+"export.installment.header.transaction_name" = "Tên giao dịch";
+"export.installment.header.total_amount" = "Tổng số tiền";
+"export.installment.header.installment_count" = "Số kỳ trả góp";
+"export.installment.header.current_installment" = "Kỳ trả góp hiện tại";
+"export.installment.header.installment_amount" = "Số tiền trả góp";
+"export.installment.header.date" = "Ngày";
+"export.installment.header.category" = "Hạng mục";
+"export.installment.header.account" = "Tài khoản";
+
+// Export Headers - Recurring Transactions
+"export.recurring.sheet_name" = "Giao dịch lặp lại";
+"export.recurring.header.transaction_name" = "Tên giao dịch";
+"export.recurring.header.amount" = "Số tiền";
+"export.recurring.header.start_date" = "Ngày bắt đầu";
+"export.recurring.header.end_date" = "Ngày kết thúc";
+"export.recurring.header.frequency" = "Tần suất";
+"export.recurring.header.type" = "Loại";
+"export.recurring.header.category" = "Hạng mục";
+"export.recurring.header.account" = "Tài khoản";
+
+// Export Headers - Transfers
+"export.transfer.sheet_name" = "Chuyển tiền";
+"export.transfer.header.date" = "Ngày";
+"export.transfer.header.amount" = "Số tiền";
+"export.transfer.header.from_account" = "Từ Tài khoản";
+"export.transfer.header.to_account" = "Đến Tài khoản";
+
+// Export Headers - Loans
+"export.loan.sheet_name" = "Các khoản vay";
+"export.loan.header.account_name" = "Tên khoản vay";
+"export.loan.header.loan_amount" = "Số tiền vay";
+"export.loan.header.interest_type" = "Loại lãi suất";
+"export.loan.header.interest_rate" = "Lãi suất (%)";
+"export.loan.header.installment_count" = "Số kỳ trả góp";
+"export.loan.header.installment_amount" = "Thanh toán hàng tháng";
+"export.loan.header.first_payment_date" = "Ngày thanh toán đầu tiên";
+"export.loan.header.remaining_installments" = "Số kỳ trả góp còn lại";
+"export.loan.header.remaining_amount" = "Số dư còn lại";
+
+// Export Headers - Loan Installments
+"export.loan_installments.sheet_name" = "Các kỳ trả góp khoản vay";
+"export.loan_installments.header.loan_name" = "Tên khoản vay";
+"export.loan_installments.header.installment_no" = "Kỳ trả góp số";
+"export.loan_installments.header.amount" = "Số tiền";
+"export.loan_installments.header.due_date" = "Ngày đến hạn";
+"export.loan_installments.header.status" = "Trạng thái";
+
+// Export
+"export.all_transactions.sheet_name" = "Tất cả giao dịch";
+"export.status.paid" = "Đã trả";
+"export.status.pending" = "Đang chờ xử lý";
+
+// Export File Names
+"export.filename.all_transactions" = "Tat_ca_giao_dich";
+"export.filename.installments" = "Giao_dich_tra_gop";
+"export.filename.recurring" = "Giao_dich_lap_lai";
+"export.filename.transfers" = "Chuyen_tien";
+"export.filename.loans" = "Cac_khoan_vay";
+"export.filename.loan_installments" = "Cac_ky_tra_gop_khoan_vay";

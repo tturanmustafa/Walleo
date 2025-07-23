@@ -901,3 +901,65 @@
 "dashboard.more_categories" = "个其它类别";
 "reports.category.highest_spending" = "最高支出类别";
 "reports.category.most_transactions" = "交易最频繁";
+
+// Export Headers - Installment Transactions
+"export.installment.sheet_name" = "分期交易";
+"export.installment.header.transaction_name" = "交易名称";
+"export.installment.header.total_amount" = "总金额";
+"export.installment.header.installment_count" = "分期数";
+"export.installment.header.current_installment" = "当前分期";
+"export.installment.header.installment_amount" = "分期金额";
+"export.installment.header.date" = "日期";
+"export.installment.header.category" = "类别";
+"export.installment.header.account" = "账户";
+
+// Export Headers - Recurring Transactions
+"export.recurring.sheet_name" = "周期性交易";
+"export.recurring.header.transaction_name" = "交易名称";
+"export.recurring.header.amount" = "金额";
+"export.recurring.header.start_date" = "开始日期";
+"export.recurring.header.end_date" = "结束日期";
+"export.recurring.header.frequency" = "频率";
+"export.recurring.header.type" = "类型";
+"export.recurring.header.category" = "类别";
+"export.recurring.header.account" = "账户";
+
+// Export Headers - Transfers
+"export.transfer.sheet_name" = "转账";
+"export.transfer.header.date" = "日期";
+"export.transfer.header.amount" = "金额";
+"export.transfer.header.from_account" = "从账户";
+"export.transfer.header.to_account" = "至账户";
+
+// Export Headers - Loans
+"export.loan.sheet_name" = "贷款";
+"export.loan.header.account_name" = "贷款名称";
+"export.loan.header.loan_amount" = "贷款金额";
+"export.loan.header.interest_type" = "利率类型";
+"export.loan.header.interest_rate" = "利率 (%)";
+"export.loan.header.installment_count" = "分期数";
+"export.loan.header.installment_amount" = "月度还款";
+"export.loan.header.first_payment_date" = "首次还款日期";
+"export.loan.header.remaining_installments" = "剩余分期";
+"export.loan.header.remaining_amount" = "剩余余额";
+
+// Export Headers - Loan Installments
+"export.loan_installments.sheet_name" = "贷款分期";
+"export.loan_installments.header.loan_name" = "贷款名称";
+"export.loan_installments.header.installment_no" = "分期号";
+"export.loan_installments.header.amount" = "金额";
+"export.loan_installments.header.due_date" = "到期日";
+"export.loan_installments.header.status" = "状态";
+
+// Export
+"export.all_transactions.sheet_name" = "所有交易";
+"export.status.paid" = "已付";
+"export.status.pending" = "待处理";
+
+// Export File Names
+"export.filename.all_transactions" = "所有交易";
+"export.filename.installments" = "分期交易";
+"export.filename.recurring" = "周期性交易";
+"export.filename.transfers" = "转账";
+"export.filename.loans" = "贷款";
+"export.filename.loan_installments" = "贷款分期";

@@ -950,3 +950,64 @@
 "reports.category.highest_spending" = "En Çok Harcanan Kategori";
 "reports.category.most_transactions" = "En Çok İşlem Yapılan";
 
+// Export Headers - Taksitli İşlemler
+"export.installment.sheet_name" = "Taksitli İşlemler";
+"export.installment.header.transaction_name" = "İşlem Adı";
+"export.installment.header.total_amount" = "Toplam Tutar";
+"export.installment.header.installment_count" = "Taksit Sayısı";
+"export.installment.header.current_installment" = "Mevcut Taksit";
+"export.installment.header.installment_amount" = "Taksit Tutarı";
+"export.installment.header.date" = "Tarih";
+"export.installment.header.category" = "Kategori";
+"export.installment.header.account" = "Hesap";
+
+// Export Headers - Tekrarlı İşlemler
+"export.recurring.sheet_name" = "Tekrarlı İşlemler";
+"export.recurring.header.transaction_name" = "İşlem Adı";
+"export.recurring.header.amount" = "Tutar";
+"export.recurring.header.start_date" = "Başlangıç Tarihi";
+"export.recurring.header.end_date" = "Bitiş Tarihi";
+"export.recurring.header.frequency" = "Tekrar Sıklığı";
+"export.recurring.header.type" = "Tür";
+"export.recurring.header.category" = "Kategori";
+"export.recurring.header.account" = "Hesap";
+
+// Export Headers - Transferler
+"export.transfer.sheet_name" = "Transferler";
+"export.transfer.header.date" = "Tarih";
+"export.transfer.header.amount" = "Tutar";
+"export.transfer.header.from_account" = "Kaynak Hesap";
+"export.transfer.header.to_account" = "Hedef Hesap";
+
+// Export Headers - Krediler
+"export.loan.sheet_name" = "Krediler";
+"export.loan.header.account_name" = "Kredi Adı";
+"export.loan.header.loan_amount" = "Kredi Tutarı";
+"export.loan.header.interest_type" = "Faiz Tipi";
+"export.loan.header.interest_rate" = "Faiz Oranı (%)";
+"export.loan.header.installment_count" = "Taksit Sayısı";
+"export.loan.header.installment_amount" = "Aylık Taksit";
+"export.loan.header.first_payment_date" = "İlk Ödeme Tarihi";
+"export.loan.header.remaining_installments" = "Kalan Taksit";
+"export.loan.header.remaining_amount" = "Kalan Borç";
+
+// Export Headers - Kredi Taksitleri
+"export.loan_installments.sheet_name" = "Kredi Taksitleri";
+"export.loan_installments.header.loan_name" = "Kredi Adı";
+"export.loan_installments.header.installment_no" = "Taksit No";
+"export.loan_installments.header.amount" = "Tutar";
+"export.loan_installments.header.due_date" = "Vade Tarihi";
+"export.loan_installments.header.status" = "Durum";
+
+// Export
+"export.all_transactions.sheet_name" = "Tüm İşlemler";
+"export.status.paid" = "Ödendi";
+"export.status.pending" = "Bekliyor";
+
+// Export File Names
+"export.filename.all_transactions" = "Tum_Islemler";
+"export.filename.installments" = "Taksitli_Islemler";
+"export.filename.recurring" = "Tekrarli_Islemler";
+"export.filename.transfers" = "Transferler";
+"export.filename.loans" = "Krediler";
+"export.filename.loan_installments" = "Kredi_Taksitleri";
