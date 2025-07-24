@@ -979,3 +979,55 @@
 
 "onboarding.backup.title" = "Sao lưu an toàn";
 "onboarding.backup.description" = "Dữ liệu của bạn được an toàn với iCloud. Truy cập từ tất cả các thiết bị của bạn, không bao giờ mất bất cứ thứ gì.";
+
+// MARK: - Paywall Main
+"paywall.title" = "Walleo Premium";
+"paywall.subtitle" = "Khám phá Tự do Tài chính của bạn";
+"paywall.select_plan" = "Chọn Gói của bạn";
+"paywall.purchase_button" = "Dùng thử 3 ngày miễn phí";
+"paywall.restore" = "Khôi phục giao dịch mua";
+"paywall.terms" = "Điều khoản sử dụng";
+"paywall.privacy" = "Chính sách bảo mật";
+"paywall.subscription_info" = "Đăng ký tự động gia hạn. Hủy bất cứ lúc nào từ cài đặt App Store.";
+
+// Premium Features
+"paywall.feature.unlimited_accounts.title" = "Tài khoản không giới hạn";
+"paywall.feature.unlimited_accounts.description" = "Cuối cùng cũng có chỗ cho tất cả tiền của bạn";
+"paywall.feature.unlimited_accounts.detail" = "Thêm mọi ví, mọi thẻ, mọi khoản vay - không giới hạn như mục tiêu của bạn.";
+
+"paywall.feature.export.title" = "Xuất dữ liệu của bạn";
+"paywall.feature.export.description" = "Bởi vì đó là dữ liệu CỦA BẠN";
+"paywall.feature.export.detail" = "Mang lịch sử tài chính của bạn đi bất cứ đâu. Xuất, phân tích, chia sẻ - bạn nắm quyền kiểm soát.";
+
+"paywall.feature.budgets.title" = "Ngân sách không giới hạn";
+"paywall.feature.budgets.description" = "Mơ ước, Lập ngân sách, Đạt được";
+"paywall.feature.budgets.detail" = "Từ cà phê hàng ngày đến kỳ nghỉ mơ ước của bạn - tạo ngân sách phù hợp với cuộc sống của bạn.";
+
+"paywall.feature.reports.title" = "Báo cáo chi tiết";
+"paywall.feature.reports.description" = "Kiến thức là sức mạnh tài chính";
+"paywall.feature.reports.detail" = "Hiểu tiền của bạn hơn bao giờ hết với những thông tin chi tiết thực sự quan trọng.";
+
+"paywall.feature.pdf.title" = "Báo cáo PDF";
+"paywall.feature.pdf.description" = "Báo cáo chuyên nghiệp trong vài giây";
+"paywall.feature.pdf.detail" = "Các báo cáo đẹp, chi tiết sẵn sàng để in, chia sẻ hoặc lưu. Sẵn sàng chỉ với một lần chạm!";
+
+// Package Options
+"paywall.monthly" = "Hàng tháng";
+"paywall.yearly" = "Hàng năm";
+"paywall.weekly" = "Hàng tuần";
+"paywall.most_popular" = "PHỔ BIẾN NHẤT";
+"paywall.best_value" = "GIÁ TRỊ TỐT NHẤT";
+"paywall.save_percent" = "Tiết kiệm %%%@";
+"paywall.per_month" = "mỗi tháng";
+"paywall.per_year" = "mỗi năm";
+"paywall.free_trial" = "dùng thử miễn phí %d ngày";
+
+// Errors
+"paywall.error.loading" = "Không thể tải sản phẩm";
+"paywall.error.purchase_failed" = "Mua hàng thất bại";
+"paywall.error.restore_failed" = "Khôi phục thất bại";
+"paywall.error.no_purchases" = "Không có giao dịch mua nào để khôi phục";
+
+// Common
+"common.loading" = "Đang tải...";
+"common.ok" = "OK";

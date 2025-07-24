@@ -1028,3 +1028,55 @@
 
 "onboarding.backup.title" = "Güvenli Yedekleme";
 "onboarding.backup.description" = "Verileriniz iCloud ile güvende. Tüm cihazlarınızdan erişin, asla kaybetmeyin.";
+
+// MARK: - Paywall Ana
+"paywall.title" = "Walleo Premium";
+"paywall.subtitle" = "Finansal Özgürlüğünüzü Keşfedin";
+"paywall.select_plan" = "Planınızı Seçin";
+"paywall.purchase_button" = "3 Gün Ücretsiz Dene";
+"paywall.restore" = "Satın Alımları Geri Yükle";
+"paywall.terms" = "Kullanım Koşulları";
+"paywall.privacy" = "Gizlilik Politikası";
+"paywall.subscription_info" = "Abonelikler otomatik yenilenir. App Store ayarlarından istediğiniz zaman iptal edebilirsiniz.";
+
+// Premium Özellikler
+"paywall.feature.unlimited_accounts.title" = "Sınırsız Hesap";
+"paywall.feature.unlimited_accounts.description" = "Tüm Paranız İçin Nihayet Yer Var";
+"paywall.feature.unlimited_accounts.detail" = "Her cüzdanı, her kartı, her krediyi ekleyin - hedefleriniz gibi sınırsız.";
+
+"paywall.feature.export.title" = "Verilerinizi Dışa Aktarın";
+"paywall.feature.export.description" = "Çünkü Bu SİZİN Veriniz";
+"paywall.feature.export.detail" = "Finansal geçmişinizi istediğiniz yere götürün. Dışa aktarın, analiz edin, paylaşın - kontrol sizde.";
+
+"paywall.feature.budgets.title" = "Sınırsız Bütçe";
+"paywall.feature.budgets.description" = "Hayal Et, Bütçele, Başar";
+"paywall.feature.budgets.detail" = "Günlük kahveden hayalinizdeki tatile - hayatınıza uyan bütçeler oluşturun.";
+
+"paywall.feature.reports.title" = "Detaylı Raporlar";
+"paywall.feature.reports.description" = "Bilgi, Finansal Güçtür";
+"paywall.feature.reports.detail" = "Paranızı gerçekten önemli olan içgörülerle hiç olmadığı kadar iyi anlayın.";
+
+"paywall.feature.pdf.title" = "PDF Raporları";
+"paywall.feature.pdf.description" = "Saniyeler İçinde Profesyonel Raporlar";
+"paywall.feature.pdf.detail" = "Yazdırmaya, paylaşmaya veya kaydetmeye hazır güzel, detaylı raporlar. Tek dokunuşla hazır!";
+
+// Paket Seçenekleri
+"paywall.monthly" = "Aylık";
+"paywall.yearly" = "Yıllık";
+"paywall.weekly" = "Haftalık";
+"paywall.most_popular" = "EN POPÜLER";
+"paywall.best_value" = "EN AVANTAJLI";
+"paywall.save_percent" = "%%%@ Tasarruf";
+"paywall.per_month" = "ayda";
+"paywall.per_year" = "yılda";
+"paywall.free_trial" = "%d gün ücretsiz deneme";
+
+// Hatalar
+"paywall.error.loading" = "Ürünler yüklenemedi";
+"paywall.error.purchase_failed" = "Satın alma başarısız";
+"paywall.error.restore_failed" = "Geri yükleme başarısız";
+"paywall.error.no_purchases" = "Geri yüklenecek satın alım yok";
+
+// Common
+"common.loading" = "Yükleniyor...";
+"common.ok" = "Tamam";

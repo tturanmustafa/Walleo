@@ -979,3 +979,55 @@
 
 "onboarding.backup.title" = "सुरक्षित बैकअप";
 "onboarding.backup.description" = "आपका डेटा iCloud के साथ सुरक्षित है। अपने सभी उपकरणों से पहुंचें, कभी कुछ न खोएं।";
+
+// MARK: - Paywall Main
+"paywall.title" = "Walleo प्रीमियम";
+"paywall.subtitle" = "अपनी वित्तीय स्वतंत्रता की खोज करें";
+"paywall.select_plan" = "अपनी योजना चुनें";
+"paywall.purchase_button" = "3 दिन मुफ़्त आज़माएँ";
+"paywall.restore" = "खरीदारी बहाल करें";
+"paywall.terms" = "उपयोग की शर्तें";
+"paywall.privacy" = "गोपनीयता नीति";
+"paywall.subscription_info" = "सदस्यता स्वचालित रूप से नवीनीकृत हो जाती है। App Store सेटिंग्स से किसी भी समय रद्द करें।";
+
+// Premium Features
+"paywall.feature.unlimited_accounts.title" = "असीमित खाते";
+"paywall.feature.unlimited_accounts.description" = "अंततः आपके सभी पैसों के लिए जगह";
+"paywall.feature.unlimited_accounts.detail" = "हर बटुआ, हर कार्ड, हर ऋण जोड़ें - आपके लक्ष्यों की तरह असीमित।";
+
+"paywall.feature.export.title" = "अपना डेटा निर्यात करें";
+"paywall.feature.export.description" = "क्योंकि यह आपका डेटा है";
+"paywall.feature.export.detail" = "अपने वित्तीय इतिहास को कहीं भी ले जाएं। निर्यात करें, विश्लेषण करें, साझा करें - नियंत्रण आपके हाथ में है।";
+
+"paywall.feature.budgets.title" = "असीमित बजट";
+"paywall.feature.budgets.description" = "सपना देखें, बजट बनाएं, हासिल करें";
+"paywall.feature.budgets.detail" = "आपकी दैनिक कॉफी से लेकर आपके सपनों की छुट्टियों तक - ऐसे बजट बनाएं जो आपके जीवन के अनुकूल हों।";
+
+"paywall.feature.reports.title" = "विस्तृत रिपोर्ट";
+"paywall.feature.reports.description" = "ज्ञान ही वित्तीय शक्ति है";
+"paywall.feature.reports.detail" = "वास्तव में मायने रखने वाली अंतर्दृष्टि के साथ अपने पैसे को पहले से कहीं बेहतर समझें।";
+
+"paywall.feature.pdf.title" = "पीडीएफ रिपोर्ट";
+"paywall.feature.pdf.description" = "सेकंडों में पेशेवर रिपोर्ट";
+"paywall.feature.pdf.detail" = "प्रिंट करने, साझा करने या सहेजने के लिए तैयार सुंदर, विस्तृत रिपोर्ट। एक टैप में तैयार!";
+
+// Package Options
+"paywall.monthly" = "मासिक";
+"paywall.yearly" = "वार्षिक";
+"paywall.weekly" = "साप्ताहिक";
+"paywall.most_popular" = "सबसे लोकप्रिय";
+"paywall.best_value" = "सबसे अच्छा मूल्य";
+"paywall.save_percent" = "%%%@ बचाएं";
+"paywall.per_month" = "प्रति माह";
+"paywall.per_year" = "प्रति वर्ष";
+"paywall.free_trial" = "%d दिनों का निःशुल्क परीक्षण";
+
+// Errors
+"paywall.error.loading" = "उत्पाद लोड नहीं हो सके";
+"paywall.error.purchase_failed" = "खरीद विफल";
+"paywall.error.restore_failed" = "बहाली विफल";
+"paywall.error.no_purchases" = "बहाल करने के लिए कोई खरीदारी नहीं";
+
+// Common
+"common.loading" = "लोड हो रहा है...";
+"common.ok" = "ठीक है";
