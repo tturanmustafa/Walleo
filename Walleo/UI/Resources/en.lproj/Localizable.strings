@@ -1089,39 +1089,3 @@
 "premium.limit.subtitle" = "Upgrade to Walleo Premium to create multiple accounts";
 "premium.limit.info" = "Free users can create only 1 account of each type";
 "premium.limit.button" = "Go Premium";
-
-// PDF Report
-"settings.data.pdf_report" = "Generate Detailed PDF Report";
-"pdf.report.title" = "Generate PDF Report";
-"pdf.report.date_range" = "Date Range";
-"pdf.report.start_date" = "Start Date";
-"pdf.report.end_date" = "End Date";
-"pdf.report.date_range_description" = "Select start and end dates for the report.";
-"pdf.report.content_info" = "Report Content";
-"pdf.report.content_details" = "Includes detailed analysis, charts, and performance indicators for credit cards and loans.";
-"pdf.report.quick_ranges" = "Quick Selections";
-"pdf.report.this_month" = "This Month";
-"pdf.report.last_month" = "Last Month";
-"pdf.report.last_3_months" = "Last 3 Months";
-"pdf.report.year_to_date" = "Year to Date";
-"pdf.report.generate" = "Generate PDF Report";
-"pdf.report.generating" = "Generating PDF...";
-"pdf.report.generation_note" = "Report generation may take a few seconds depending on data volume.";
-"pdf.report.error" = "Report Error";
-"pdf.report.generation_failed" = "Failed to generate PDF report. Please try again.";
-"pdf.report.generated_on" = "Generated on:";
-
-// PDF Content
-"reports.creditcard.summary" = "Credit Card Summary";
-"loan_report.summary" = "Loan Summary";
-"reports.creditcard.category_distribution" = "Category Distribution";
-"reports.creditcard.spending_trend" = "Spending Trend";
-"loan_report.payment_performance" = "Payment Performance";
-"loan_report.principal_amount" = "Principal Amount";
-"loan_report.interest_rate" = "Interest Rate";
-"loan_report.remaining" = "Remaining Debt";
-"loan_report.progress" = "Progress";
-"loan_report.on_time" = "On Time";
-"loan_report.late" = "Late";
-"loan_report.score" = "Score";
-"pdf.report.main_title" = "Financial Report";
