@@ -981,3 +981,55 @@
 
 "onboarding.backup.title" = "Backup sicuro";
 "onboarding.backup.description" = "I tuoi dati sono al sicuro con iCloud. Accedi da tutti i tuoi dispositivi, non perdere mai nulla.";
+
+// MARK: - Paywall Main
+"paywall.title" = "Walleo Premium";
+"paywall.subtitle" = "Scopri la tua libertà finanziaria";
+"paywall.select_plan" = "Scegli il tuo piano";
+"paywall.purchase_button" = "Prova 3 giorni gratis";
+"paywall.restore" = "Ripristina acquisti";
+"paywall.terms" = "Termini di utilizzo";
+"paywall.privacy" = "Informativa sulla privacy";
+"paywall.subscription_info" = "Gli abbonamenti si rinnovano automaticamente. Annulla in qualsiasi momento dalle impostazioni dell'App Store.";
+
+// Premium Features
+"paywall.feature.unlimited_accounts.title" = "Conti illimitati";
+"paywall.feature.unlimited_accounts.description" = "Finalmente spazio per tutti i tuoi soldi";
+"paywall.feature.unlimited_accounts.detail" = "Aggiungi ogni portafoglio, ogni carta, ogni prestito - illimitato come i tuoi obiettivi.";
+
+"paywall.feature.export.title" = "Esporta i tuoi dati";
+"paywall.feature.export.description" = "Perché sono i TUOI dati";
+"paywall.feature.export.detail" = "Porta la tua cronologia finanziaria ovunque. Esporta, analizza, condividi - hai tu il controllo.";
+
+"paywall.feature.budgets.title" = "Budget illimitati";
+"paywall.feature.budgets.description" = "Sogna, pianifica, realizza";
+"paywall.feature.budgets.detail" = "Dal caffè quotidiano alla vacanza dei tuoi sogni - crea budget adatti alla tua vita.";
+
+"paywall.feature.reports.title" = "Report dettagliati";
+"paywall.feature.reports.description" = "La conoscenza è potere finanziario";
+"paywall.feature.reports.detail" = "Comprendi i tuoi soldi meglio che mai con approfondimenti che contano davvero.";
+
+"paywall.feature.pdf.title" = "Report in PDF";
+"paywall.feature.pdf.description" = "Report professionali in pochi secondi";
+"paywall.feature.pdf.detail" = "Report belli e dettagliati pronti da stampare, condividere o salvare. Pronti con un solo tocco!";
+
+// Package Options
+"paywall.monthly" = "Mensile";
+"paywall.yearly" = "Annuale";
+"paywall.weekly" = "Settimanale";
+"paywall.most_popular" = "PIÙ POPOLARE";
+"paywall.best_value" = "MIGLIOR VALORE";
+"paywall.save_percent" = "Risparmia il %%%@";
+"paywall.per_month" = "al mese";
+"paywall.per_year" = "all'anno";
+"paywall.free_trial" = "%d giorni di prova gratuita";
+
+// Errors
+"paywall.error.loading" = "Impossibile caricare i prodotti";
+"paywall.error.purchase_failed" = "Acquisto non riuscito";
+"paywall.error.restore_failed" = "Ripristino non riuscito";
+"paywall.error.no_purchases" = "Nessun acquisto da ripristinare";
+
+// Common
+"common.loading" = "Caricamento...";
+"common.ok" = "OK";

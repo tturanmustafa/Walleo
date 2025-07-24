@@ -980,3 +980,55 @@
 
 "onboarding.backup.title" = "Sicheres Backup";
 "onboarding.backup.description" = "Ihre Daten sind mit iCloud sicher. Greifen Sie von all Ihren Geräten zu und verlieren Sie nie etwas.";
+
+// MARK: - Paywall Main
+"paywall.title" = "Walleo Premium";
+"paywall.subtitle" = "Entdecken Sie Ihre finanzielle Freiheit";
+"paywall.select_plan" = "Wählen Sie Ihren Plan";
+"paywall.purchase_button" = "3 Tage kostenlos testen";
+"paywall.restore" = "Käufe wiederherstellen";
+"paywall.terms" = "Nutzungsbedingungen";
+"paywall.privacy" = "Datenschutzrichtlinie";
+"paywall.subscription_info" = "Abonnements verlängern sich automatisch. Jederzeit in den App Store-Einstellungen kündbar.";
+
+// Premium Features
+"paywall.feature.unlimited_accounts.title" = "Unbegrenzte Konten";
+"paywall.feature.unlimited_accounts.description" = "Endlich Platz für Ihr ganzes Geld";
+"paywall.feature.unlimited_accounts.detail" = "Fügen Sie jede Wallet, jede Karte, jeden Kredit hinzu – unbegrenzt wie Ihre Ziele.";
+
+"paywall.feature.export.title" = "Ihre Daten exportieren";
+"paywall.feature.export.description" = "Weil es IHRE Daten sind";
+"paywall.feature.export.detail" = "Nehmen Sie Ihre Finanzhistorie überallhin mit. Exportieren, analysieren, teilen – Sie haben die Kontrolle.";
+
+"paywall.feature.budgets.title" = "Unbegrenzte Budgets";
+"paywall.feature.budgets.description" = "Träumen, budgetieren, erreichen";
+"paywall.feature.budgets.detail" = "Vom täglichen Kaffee bis zum Traumurlaub – erstellen Sie Budgets, die zu Ihrem Leben passen.";
+
+"paywall.feature.reports.title" = "Detaillierte Berichte";
+"paywall.feature.reports.description" = "Wissen ist finanzielle Macht";
+"paywall.feature.reports.detail" = "Verstehen Sie Ihr Geld besser als je zuvor mit Einblicken, die wirklich zählen.";
+
+"paywall.feature.pdf.title" = "PDF-Berichte";
+"paywall.feature.pdf.description" = "Professionelle Berichte in Sekunden";
+"paywall.feature.pdf.detail" = "Schöne, detaillierte Berichte zum Drucken, Teilen oder Speichern. Mit einem Fingertipp fertig!";
+
+// Package Options
+"paywall.monthly" = "Monatlich";
+"paywall.yearly" = "Jährlich";
+"paywall.weekly" = "Wöchentlich";
+"paywall.most_popular" = "AM BELIEBTESTEN";
+"paywall.best_value" = "BESTES PREIS-LEISTUNGS-VERHÄLTNIS";
+"paywall.save_percent" = "Sparen Sie %%%@";
+"paywall.per_month" = "pro Monat";
+"paywall.per_year" = "pro Jahr";
+"paywall.free_trial" = "%d Tage kostenlose Testversion";
+
+// Errors
+"paywall.error.loading" = "Produkte konnten nicht geladen werden";
+"paywall.error.purchase_failed" = "Kauf fehlgeschlagen";
+"paywall.error.restore_failed" = "Wiederherstellung fehlgeschlagen";
+"paywall.error.no_purchases" = "Keine Käufe zum Wiederherstellen";
+
+// Common
+"common.loading" = "Wird geladen...";
+"common.ok" = "OK";

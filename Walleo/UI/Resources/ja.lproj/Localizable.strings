@@ -979,3 +979,55 @@
 
 "onboarding.backup.title" = "安全なバックアップ";
 "onboarding.backup.description" = "あなたのデータはiCloudで安全です。すべてのデバイスからアクセスし、何も失うことはありません。";
+
+// MARK: - Paywall Main
+"paywall.title" = "Walleoプレミアム";
+"paywall.subtitle" = "経済的自由を見つけよう";
+"paywall.select_plan" = "プランを選択";
+"paywall.purchase_button" = "3日間無料でお試し";
+"paywall.restore" = "購入を復元";
+"paywall.terms" = "利用規約";
+"paywall.privacy" = "プライバシーポリシー";
+"paywall.subscription_info" = "サブスクリプションは自動的に更新されます。App Storeの設定からいつでもキャンセルできます。";
+
+// Premium Features
+"paywall.feature.unlimited_accounts.title" = "無制限の口座";
+"paywall.feature.unlimited_accounts.description" = "すべてのお金を管理する場所";
+"paywall.feature.unlimited_accounts.detail" = "すべてのウォレット、カード、ローンを追加 - あなたの目標のように無制限に。";
+
+"paywall.feature.export.title" = "データをエクスポート";
+"paywall.feature.export.description" = "それはあなたのデータだから";
+"paywall.feature.export.detail" = "財務履歴をどこへでも持ち運べます。エクスポート、分析、共有 - あなたが管理します。";
+
+"paywall.feature.budgets.title" = "無制限の予算";
+"paywall.feature.budgets.description" = "夢見て、予算を立て、達成する";
+"paywall.feature.budgets.detail" = "毎日のコーヒーから夢の休暇まで - あなたの生活に合った予算を作成します。";
+
+"paywall.feature.reports.title" = "詳細レポート";
+"paywall.feature.reports.description" = "知識は経済的な力です";
+"paywall.feature.reports.detail" = "本当に重要な洞察で、これまで以上にお金を理解しましょう。";
+
+"paywall.feature.pdf.title" = "PDFレポート";
+"paywall.feature.pdf.description" = "数秒でプロフェッショナルなレポート";
+"paywall.feature.pdf.detail" = "印刷、共有、保存の準備ができた、美しく詳細なレポート。ワンタップで準備完了！";
+
+// Package Options
+"paywall.monthly" = "月額";
+"paywall.yearly" = "年額";
+"paywall.weekly" = "週額";
+"paywall.most_popular" = "一番人気";
+"paywall.best_value" = "最もお得";
+"paywall.save_percent" = "%%%@割引";
+"paywall.per_month" = "/月";
+"paywall.per_year" = "/年";
+"paywall.free_trial" = "%d日間無料トライアル";
+
+// Errors
+"paywall.error.loading" = "製品を読み込めませんでした";
+"paywall.error.purchase_failed" = "購入に失敗しました";
+"paywall.error.restore_failed" = "復元に失敗しました";
+"paywall.error.no_purchases" = "復元する購入がありません";
+
+// Common
+"common.loading" = "読み込み中...";
+"common.ok" = "OK";

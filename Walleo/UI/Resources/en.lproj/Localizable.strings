@@ -1026,3 +1026,55 @@
 
 "onboarding.backup.title" = "Secure Backup";
 "onboarding.backup.description" = "Your data is safe with iCloud. Access from all your devices, never lose anything.";
+
+// MARK: - Paywall Main
+"paywall.title" = "Walleo Premium";
+"paywall.subtitle" = "Discover Your Financial Freedom";
+"paywall.select_plan" = "Choose Your Plan";
+"paywall.purchase_button" = "Try 3 Days Free";
+"paywall.restore" = "Restore Purchases";
+"paywall.terms" = "Terms of Use";
+"paywall.privacy" = "Privacy Policy";
+"paywall.subscription_info" = "Subscriptions automatically renew. Cancel anytime from App Store settings.";
+
+// Premium Features
+"paywall.feature.unlimited_accounts.title" = "Unlimited Accounts";
+"paywall.feature.unlimited_accounts.description" = "Finally Room for All Your Money";
+"paywall.feature.unlimited_accounts.detail" = "Add every wallet, every card, every loan - unlimited like your goals.";
+
+"paywall.feature.export.title" = "Export Your Data";
+"paywall.feature.export.description" = "Because It's YOUR Data";
+"paywall.feature.export.detail" = "Take your financial history anywhere. Export, analyze, share - you're in control.";
+
+"paywall.feature.budgets.title" = "Unlimited Budgets";
+"paywall.feature.budgets.description" = "Dream It, Budget It, Achieve It";
+"paywall.feature.budgets.detail" = "From your daily coffee to your dream vacation - create budgets that fit your life.";
+
+"paywall.feature.reports.title" = "Detailed Reports";
+"paywall.feature.reports.description" = "Knowledge Is Financial Power";
+"paywall.feature.reports.detail" = "Understand your money better than ever with insights that actually matter.";
+
+"paywall.feature.pdf.title" = "PDF Reports";
+"paywall.feature.pdf.description" = "Professional Reports in Seconds";
+"paywall.feature.pdf.detail" = "Beautiful, detailed reports ready to print, share, or save. Ready with one tap!";
+
+// Package Options
+"paywall.monthly" = "Monthly";
+"paywall.yearly" = "Yearly";
+"paywall.weekly" = "Weekly";
+"paywall.most_popular" = "MOST POPULAR";
+"paywall.best_value" = "BEST VALUE";
+"paywall.save_percent" = "Save %@%%";
+"paywall.per_month" = "per month";
+"paywall.per_year" = "per year";
+"paywall.free_trial" = "%d days free trial";
+
+// Errors
+"paywall.error.loading" = "Could not load products";
+"paywall.error.purchase_failed" = "Purchase failed";
+"paywall.error.restore_failed" = "Restore failed";
+"paywall.error.no_purchases" = "No purchases to restore";
+
+// Common
+"common.loading" = "Loading...";
+"common.ok" = "OK";

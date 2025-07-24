@@ -979,3 +979,55 @@
 
 "onboarding.backup.title" = "Cadangan Aman";
 "onboarding.backup.description" = "Data Anda aman dengan iCloud. Akses dari semua perangkat Anda, jangan pernah kehilangan apa pun.";
+
+// MARK: - Paywall Main
+"paywall.title" = "Walleo Premium";
+"paywall.subtitle" = "Temukan Kebebasan Finansial Anda";
+"paywall.select_plan" = "Pilih Paket Anda";
+"paywall.purchase_button" = "Coba Gratis 3 Hari";
+"paywall.restore" = "Pulihkan Pembelian";
+"paywall.terms" = "Ketentuan Penggunaan";
+"paywall.privacy" = "Kebijakan Privasi";
+"paywall.subscription_info" = "Langganan diperpanjang secara otomatis. Batalkan kapan saja dari pengaturan App Store.";
+
+// Premium Features
+"paywall.feature.unlimited_accounts.title" = "Akun Tanpa Batas";
+"paywall.feature.unlimited_accounts.description" = "Akhirnya Ada Ruang untuk Semua Uang Anda";
+"paywall.feature.unlimited_accounts.detail" = "Tambahkan setiap dompet, setiap kartu, setiap pinjaman - tanpa batas seperti tujuan Anda.";
+
+"paywall.feature.export.title" = "Ekspor Data Anda";
+"paywall.feature.export.description" = "Karena Ini Data ANDA";
+"paywall.feature.export.detail" = "Bawa riwayat keuangan Anda ke mana saja. Ekspor, analisis, bagikan - Anda yang memegang kendali.";
+
+"paywall.feature.budgets.title" = "Anggaran Tanpa Batas";
+"paywall.feature.budgets.description" = "Impikan, Anggarkan, Capai";
+"paywall.feature.budgets.detail" = "Dari kopi harian hingga liburan impian Anda - buat anggaran yang sesuai dengan hidup Anda.";
+
+"paywall.feature.reports.title" = "Laporan Rinci";
+"paywall.feature.reports.description" = "Pengetahuan Adalah Kekuatan Finansial";
+"paywall.feature.reports.detail" = "Pahami uang Anda lebih baik dari sebelumnya dengan wawasan yang benar-benar penting.";
+
+"paywall.feature.pdf.title" = "Laporan PDF";
+"paywall.feature.pdf.description" = "Laporan Profesional dalam Hitungan Detik";
+"paywall.feature.pdf.detail" = "Laporan indah dan rinci siap untuk dicetak, dibagikan, atau disimpan. Siap dengan satu ketukan!";
+
+// Package Options
+"paywall.monthly" = "Bulanan";
+"paywall.yearly" = "Tahunan";
+"paywall.weekly" = "Mingguan";
+"paywall.most_popular" = "PALING POPULER";
+"paywall.best_value" = "NILAI TERBAIK";
+"paywall.save_percent" = "Hemat %%%@";
+"paywall.per_month" = "per bulan";
+"paywall.per_year" = "per tahun";
+"paywall.free_trial" = "Uji coba gratis %d hari";
+
+// Errors
+"paywall.error.loading" = "Tidak dapat memuat produk";
+"paywall.error.purchase_failed" = "Pembelian gagal";
+"paywall.error.restore_failed" = "Pemulihan gagal";
+"paywall.error.no_purchases" = "Tidak ada pembelian untuk dipulihkan";
+
+// Common
+"common.loading" = "Memuat...";
+"common.ok" = "OKE";

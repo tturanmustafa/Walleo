@@ -979,3 +979,55 @@
 
 "onboarding.backup.title" = "การสำรองข้อมูลที่ปลอดภัย";
 "onboarding.backup.description" = "ข้อมูลของคุณปลอดภัยด้วย iCloud เข้าถึงได้จากทุกอุปกรณ์ของคุณ ไม่สูญหาย";
+
+// MARK: - Paywall Main
+"paywall.title" = "Walleo Premium";
+"paywall.subtitle" = "ค้นพบอิสรภาพทางการเงินของคุณ";
+"paywall.select_plan" = "เลือกแผนของคุณ";
+"paywall.purchase_button" = "ทดลองใช้ฟรี 3 วัน";
+"paywall.restore" = "กู้คืนการซื้อ";
+"paywall.terms" = "ข้อกำหนดการใช้งาน";
+"paywall.privacy" = "นโยบายความเป็นส่วนตัว";
+"paywall.subscription_info" = "การสมัครสมาชิกจะต่ออายุโดยอัตโนมัติ สามารถยกเลิกได้ตลอดเวลาจากการตั้งค่า App Store";
+
+// Premium Features
+"paywall.feature.unlimited_accounts.title" = "บัญชีไม่จำกัด";
+"paywall.feature.unlimited_accounts.description" = "ในที่สุดก็มีที่สำหรับเงินทั้งหมดของคุณ";
+"paywall.feature.unlimited_accounts.detail" = "เพิ่มทุกกระเป๋าเงิน ทุกบัตร ทุกเงินกู้ - ไม่จำกัดเหมือนเป้าหมายของคุณ";
+
+"paywall.feature.export.title" = "ส่งออกข้อมูลของคุณ";
+"paywall.feature.export.description" = "เพราะนี่คือข้อมูลของคุณ";
+"paywall.feature.export.detail" = "นำประวัติทางการเงินของคุณไปได้ทุกที่ ส่งออก วิเคราะห์ แบ่งปัน - คุณคือผู้ควบคุม";
+
+"paywall.feature.budgets.title" = "งบประมาณไม่จำกัด";
+"paywall.feature.budgets.description" = "ฝัน วางแผน บรรลุเป้าหมาย";
+"paywall.feature.budgets.detail" = "ตั้งแต่กาแฟประจำวันไปจนถึงวันหยุดในฝัน - สร้างงบประมาณที่เหมาะกับชีวิตของคุณ";
+
+"paywall.feature.reports.title" = "รายงานโดยละเอียด";
+"paywall.feature.reports.description" = "ความรู้คือพลังทางการเงิน";
+"paywall.feature.reports.detail" = "ทำความเข้าใจเงินของคุณได้ดีกว่าที่เคยด้วยข้อมูลเชิงลึกที่สำคัญอย่างแท้จริง";
+
+"paywall.feature.pdf.title" = "รายงาน PDF";
+"paywall.feature.pdf.description" = "รายงานระดับมืออาชีพในไม่กี่วินาที";
+"paywall.feature.pdf.detail" = "รายงานที่สวยงามและมีรายละเอียดพร้อมพิมพ์ แบ่งปัน หรือบันทึก พร้อมใช้งานในสัมผัสเดียว!";
+
+// Package Options
+"paywall.monthly" = "รายเดือน";
+"paywall.yearly" = "รายปี";
+"paywall.weekly" = "รายสัปดาห์";
+"paywall.most_popular" = "ยอดนิยมที่สุด";
+"paywall.best_value" = "คุ้มค่าที่สุด";
+"paywall.save_percent" = "ประหยัด %%%@";
+"paywall.per_month" = "ต่อเดือน";
+"paywall.per_year" = "ต่อปี";
+"paywall.free_trial" = "ทดลองใช้ฟรี %d วัน";
+
+// Errors
+"paywall.error.loading" = "ไม่สามารถโหลดผลิตภัณฑ์ได้";
+"paywall.error.purchase_failed" = "การซื้อล้มเหลว";
+"paywall.error.restore_failed" = "การกู้คืนล้มเหลว";
+"paywall.error.no_purchases" = "ไม่มีการซื้อที่จะกู้คืน";
+
+// Common
+"common.loading" = "กำลังโหลด...";
+"common.ok" = "ตกลง";

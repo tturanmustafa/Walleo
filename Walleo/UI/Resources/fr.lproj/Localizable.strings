@@ -981,3 +981,55 @@
 
 "onboarding.backup.title" = "Sauvegarde sécurisée";
 "onboarding.backup.description" = "Vos données sont en sécurité avec iCloud. Accédez-y depuis tous vos appareils, ne perdez jamais rien.";
+
+// MARK: - Paywall Main
+"paywall.title" = "Walleo Premium";
+"paywall.subtitle" = "Découvrez votre liberté financière";
+"paywall.select_plan" = "Choisissez votre forfait";
+"paywall.purchase_button" = "Essayer 3 jours gratuits";
+"paywall.restore" = "Restaurer les achats";
+"paywall.terms" = "Conditions d'utilisation";
+"paywall.privacy" = "Politique de confidentialité";
+"paywall.subscription_info" = "Les abonnements se renouvellent automatiquement. Annulez à tout moment depuis les réglages de l'App Store.";
+
+// Premium Features
+"paywall.feature.unlimited_accounts.title" = "Comptes illimités";
+"paywall.feature.unlimited_accounts.description" = "Enfin de la place pour tout votre argent";
+"paywall.feature.unlimited_accounts.detail" = "Ajoutez chaque portefeuille, chaque carte, chaque prêt - illimité comme vos objectifs.";
+
+"paywall.feature.export.title" = "Exportez vos données";
+"paywall.feature.export.description" = "Parce que ce sont VOS données";
+"paywall.feature.export.detail" = "Emportez votre historique financier partout. Exportez, analysez, partagez - vous avez le contrôle.";
+
+"paywall.feature.budgets.title" = "Budgets illimités";
+"paywall.feature.budgets.description" = "Rêvez, budgétez, réalisez";
+"paywall.feature.budgets.detail" = "De votre café quotidien aux vacances de vos rêves - créez des budgets adaptés à votre vie.";
+
+"paywall.feature.reports.title" = "Rapports détaillés";
+"paywall.feature.reports.description" = "Le savoir est un pouvoir financier";
+"paywall.feature.reports.detail" = "Comprenez votre argent mieux que jamais avec des informations qui comptent vraiment.";
+
+"paywall.feature.pdf.title" = "Rapports PDF";
+"paywall.feature.pdf.description" = "Des rapports professionnels en quelques secondes";
+"paywall.feature.pdf.detail" = "De beaux rapports détaillés prêts à être imprimés, partagés ou sauvegardés. Prêts en un seul clic !";
+
+// Package Options
+"paywall.monthly" = "Mensuel";
+"paywall.yearly" = "Annuel";
+"paywall.weekly" = "Hebdomadaire";
+"paywall.most_popular" = "LE PLUS POPULAIRE";
+"paywall.best_value" = "MEILLEUR RAPPORT QUALITÉ/PRIX";
+"paywall.save_percent" = "Économisez %%%@";
+"paywall.per_month" = "par mois";
+"paywall.per_year" = "par an";
+"paywall.free_trial" = "%d jours d'essai gratuit";
+
+// Errors
+"paywall.error.loading" = "Impossible de charger les produits";
+"paywall.error.purchase_failed" = "Échec de l'achat";
+"paywall.error.restore_failed" = "Échec de la restauration";
+"paywall.error.no_purchases" = "Aucun achat à restaurer";
+
+// Common
+"common.loading" = "Chargement...";
+"common.ok" = "OK";
