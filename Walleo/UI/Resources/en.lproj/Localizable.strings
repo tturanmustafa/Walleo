@@ -1078,3 +1078,14 @@
 // Common
 "common.loading" = "Loading...";
 "common.ok" = "OK";
+
+// Localizable.strings (English)
+"accounts.type.wallet" = "Wallet";
+"accounts.type.credit_card" = "Credit Card";
+"accounts.type.loan" = "Loan";
+"accounts.type.account" = "Account";
+
+"premium.limit.title" = "Premium Feature";
+"premium.limit.subtitle" = "Upgrade to Walleo Premium to create multiple accounts";
+"premium.limit.info" = "Free users can create only 1 account of each type";
+"premium.limit.button" = "Go Premium";

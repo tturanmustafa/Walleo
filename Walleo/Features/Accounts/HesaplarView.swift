@@ -1,15 +1,15 @@
+// Walleo/Features/Accounts/HesaplarView.swift
+
 import SwiftUI
 import SwiftData
 
 struct HesaplarView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var entitlementManager: EntitlementManager // YENİ: EntitlementManager eklendi
 
-    // GÜNCELLENDİ: ViewModel artık @State olarak ve init içinde kuruluyor. Bu daha stabil bir yöntem.
     @State private var viewModel: HesaplarViewModel
 
-    // YENİ: Sheet'leri ve Alert'leri yönetmek için enum yapısı ve state'ler.
-    // Bu yapı, hem ekleme hem düzenleme sheet'lerini tek bir yerden yönetmemizi sağlar.
     enum SheetTuru: Identifiable {
         case cuzdanEkle, krediKartiEkle, krediEkle
         case cuzdanDuzenle(Hesap), krediKartiDuzenle(Hesap), krediDuzenle(Hesap)
@@ -26,13 +26,10 @@ struct HesaplarView: View {
     }
     @State private var gosterilecekSheet: SheetTuru?
     @State private var transferSheetGoster = false
-    @State private var aktarimSheetiGoster = false // YENİ: İşlem aktarım sheet'i için state
+    @State private var aktarimSheetiGoster = false
+    @State private var showPaywall = false // YENİ: Paywall state
 
-    // GÜNCELLENDİ: init metodu viewModel'ı kuracak şekilde güncellendi
     init() {
-        // ViewModel'ı bu view'a özel bir @State olarak başlatıyoruz.
-        // Bu, SwiftData context'inin view yeniden çizildiğinde kaybolmamasını sağlar.
-        // Geçici bir container ile başlatıyoruz, onAppear içinde gerçeğiyle değiştireceğiz.
         let container = try! ModelContainer(for: Hesap.self, Islem.self, Transfer.self)
         _viewModel = State(initialValue: HesaplarViewModel(modelContext: ModelContext(container)))
     }
@@ -66,7 +63,6 @@ struct HesaplarView: View {
             .toolbar { toolbarIcerigi() }
         }
         .onAppear {
-            // View ekrana geldiğinde, environment'tan gelen doğru modelContext'i ViewModel'e atıyoruz.
             viewModel.modelContext = self.modelContext
             Task { await viewModel.hesaplamalariYap() }
         }
@@ -78,9 +74,8 @@ struct HesaplarView: View {
         .sheet(isPresented: $transferSheetGoster) {
             HesaplarArasiTransferView().environmentObject(appSettings)
         }
-        // YENİ: İşlem Aktarım Ekranını gösteren sheet
         .sheet(isPresented: $aktarimSheetiGoster, onDismiss: {
-            viewModel.aktarilacakHesap = nil // Sheet kapanınca state'i temizle
+            viewModel.aktarilacakHesap = nil
         }) {
             if let hesap = viewModel.aktarilacakHesap {
                 HesapSecimAktarimView(
@@ -93,7 +88,28 @@ struct HesaplarView: View {
                 .environmentObject(appSettings)
             }
         }
-        // GÜNCELLENDİ: Bu alert artık SADECE işlemi olmayan hesaplar için çalışacak
+        // YENİ: Paywall sheet
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+        }
+        // YENİ: Premium limit popup
+        .overlay(
+            ZStack {
+                if viewModel.premiumLimitUyarisiGoster {
+                    PremiumLimitPopup(
+                        isPresented: $viewModel.premiumLimitUyarisiGoster,
+                        hesapTuru: viewModel.limitAsilanHesapTuru,
+                        onContinue: {
+                            showPaywall = true
+                        }
+                    )
+                    .transition(.opacity.combined(with: .scale))
+                    .zIndex(999)
+                }
+            }
+            .animation(.spring(), value: viewModel.premiumLimitUyarisiGoster)
+        )
+        // Mevcut alert'ler aynı kalacak...
         .alert(
             LocalizedStringKey("alert.delete_confirmation.title"),
             isPresented: .constant(viewModel.silinecekHesap != nil),
@@ -118,18 +134,16 @@ struct HesaplarView: View {
             let formatString = languageBundle.localizedString(forKey: key, value: "", table: nil)
             return Text(String(format: formatString, hesap.isim))
         }
-        // YENİ: Uygun hesap bulunamadığında gösterilecek uyarı
         .alert(
             LocalizedStringKey("alert.no_eligible_account.title"),
             isPresented: $viewModel.uygunHesapYokUyarisiGoster
         ) {
             Button("common.ok", role: .cancel) {
-                viewModel.uygunHesapYokUyarisiGoster = false // Uyarıyı kapat
+                viewModel.uygunHesapYokUyarisiGoster = false
             }
         } message: {
             Text(LocalizedStringKey("alert.no_eligible_account.message"))
         }
-        // YENİ: ViewModel'deki değişiklikleri dinleyip sheet'i tetikleyen yapı
         .onChange(of: viewModel.aktarilacakHesap) { _, newValue in
             aktarimSheetiGoster = (newValue != nil)
         }
@@ -138,7 +152,7 @@ struct HesaplarView: View {
             isPresented: $viewModel.sadeceCuzdanGerekliUyarisiGoster
         ) {
             Button("common.ok", role: .cancel) {
-                viewModel.sadeceCuzdanGerekliUyarisiGoster = false // Uyarıyı kapat
+                viewModel.sadeceCuzdanGerekliUyarisiGoster = false
             }
         } message: {
             Text(LocalizedStringKey("alert.no_eligible_wallet.message"))
@@ -172,21 +186,37 @@ struct HesaplarView: View {
         HesapKartView(
             gosterilecekHesap: bilgi,
             onEdit: { presentEditSheet(for: bilgi.hesap) },
-            // GÜNCELLENDİ: onDelete artık ViewModel'deki yeni akıllı fonksiyonu çağırıyor
             onDelete: { viewModel.silmeIsleminiBaslat(hesap: bilgi.hesap) }
         )
         .environmentObject(appSettings)
     }
+    
+    // YENİ: Güncellenmiş toolbar içeriği
     private func toolbarIcerigi() -> some ToolbarContent {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
             Menu {
-                Button(action: { gosterilecekSheet = .cuzdanEkle }) {
+                Button(action: {
+                    // YENİ: Limit kontrolü
+                    if !viewModel.checkAndShowLimitWarning(for: .cuzdan, isPremium: entitlementManager.hasPremiumAccess) {
+                        gosterilecekSheet = .cuzdanEkle
+                    }
+                }) {
                     Label(LocalizedStringKey("accounts.add.wallet"), systemImage: "wallet.pass.fill")
                 }
-                Button(action: { gosterilecekSheet = .krediKartiEkle }) {
+                Button(action: {
+                    // YENİ: Limit kontrolü
+                    if !viewModel.checkAndShowLimitWarning(for: .krediKarti, isPremium: entitlementManager.hasPremiumAccess) {
+                        gosterilecekSheet = .krediKartiEkle
+                    }
+                }) {
                     Label(LocalizedStringKey("accounts.add.credit_card"), systemImage: "creditcard.fill")
                 }
-                Button(action: { gosterilecekSheet = .krediEkle }) {
+                Button(action: {
+                    // YENİ: Limit kontrolü
+                    if !viewModel.checkAndShowLimitWarning(for: .kredi, isPremium: entitlementManager.hasPremiumAccess) {
+                        gosterilecekSheet = .krediEkle
+                    }
+                }) {
                     Label(LocalizedStringKey("accounts.add.loan"), systemImage: "banknote.fill")
                 }
             } label: {
@@ -219,7 +249,7 @@ struct HesaplarView: View {
     }
 }
 
-// Bu extension'da değişiklik yok
+// Mevcut extension aynı kalacak
 extension HesaplarView.SheetTuru {
     @ViewBuilder
     var view: some View {

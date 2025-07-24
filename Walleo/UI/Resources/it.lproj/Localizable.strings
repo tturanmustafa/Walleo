@@ -1033,3 +1033,14 @@
 // Common
 "common.loading" = "Caricamento...";
 "common.ok" = "OK";
+
+// Localizable.strings (Italian)
+"accounts.type.wallet" = "Portafoglio";
+"accounts.type.credit_card" = "Carta di Credito";
+"accounts.type.loan" = "Prestito";
+"accounts.type.account" = "Conto";
+
+"premium.limit.title" = "Funzione Premium";
+"premium.limit.subtitle" = "Approfitta dei vantaggi di Walleo Premium per creare più conti";
+"premium.limit.info" = "Gli utenti gratuiti possono creare solo 1 conto per ogni tipo";
+"premium.limit.button" = "Passa a Premium";

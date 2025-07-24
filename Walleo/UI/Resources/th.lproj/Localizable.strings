@@ -1031,3 +1031,14 @@
 // Common
 "common.loading" = "กำลังโหลด...";
 "common.ok" = "ตกลง";
+
+// Localizable.strings (Thai)
+"accounts.type.wallet" = "กระเป๋าเงิน";
+"accounts.type.credit_card" = "บัตรเครดิต";
+"accounts.type.loan" = "สินเชื่อ";
+"accounts.type.account" = "บัญชี";
+
+"premium.limit.title" = "ฟีเจอร์พรีเมียม";
+"premium.limit.subtitle" = "อัปเกรดเป็น Walleo Premium เพื่อสร้างหลายบัญชี";
+"premium.limit.info" = "ผู้ใช้ฟรีสามารถสร้างบัญชีได้เพียง 1 บัญชีต่อประเภท";
+"premium.limit.button" = "อัปเกรดพรีเมียม";

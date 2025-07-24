@@ -1031,3 +1031,14 @@
 // Common
 "common.loading" = "Đang tải...";
 "common.ok" = "OK";
+
+// Localizable.strings (Vietnamese)
+"accounts.type.wallet" = "Ví";
+"accounts.type.credit_card" = "Thẻ Tín Dụng";
+"accounts.type.loan" = "Khoản Vay";
+"accounts.type.account" = "Tài Khoản";
+
+"premium.limit.title" = "Tính Năng Premium";
+"premium.limit.subtitle" = "Nâng cấp lên Walleo Premium để tạo nhiều tài khoản";
+"premium.limit.info" = "Người dùng miễn phí chỉ có thể tạo 1 tài khoản cho mỗi loại";
+"premium.limit.button" = "Nâng Cấp Premium";
