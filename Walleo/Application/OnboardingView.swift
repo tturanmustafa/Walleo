@@ -67,7 +67,7 @@ struct OnboardingView: View {
             .ignoresSafeArea()
             
             // Ana içerik
-            VStack(spacing: 0) {
+            VStack(spacing: 10) { // spacing optimize edildi
                 // Skip butonu - sadece welcome ve feature sayfalarında göster
                 HStack {
                     Spacer()
@@ -93,11 +93,9 @@ struct OnboardingView: View {
                 Image("app_logo_onboarding")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 160, height: 160)
+                    .frame(width: 120, height: 120)
                     .scaleEffect(logoScale)
-                    .padding(.top, 10)
-                
-                Spacer()
+                    .padding(.top, -10) // Yukarıya aldık
                 
                 // İçerik alanı
                 TabView(selection: $currentPage) {
@@ -129,15 +127,14 @@ struct OnboardingView: View {
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .opacity(contentOpacity)
-                
-                Spacer()
+                .padding(.top, -30) // TabView'i yukarı aldık
                 
                 // Alt kontroller
-                VStack(spacing: 20) {
+                VStack(spacing: 15) { // spacing azaltıldı
                     // Page indicator
                     if currentPage < totalPages - 1 {
                         PageIndicator(currentPage: currentPage, totalPages: totalPages)
-                            .padding(.bottom, 10)
+                            .padding(.bottom, 5) // padding azaltıldı
                     }
                     
                     // Action button - sadece personalization sayfası hariç
@@ -246,13 +243,13 @@ struct WelcomePage: View {
     @State private var animateElements = false
     
     var body: some View {
-        VStack(spacing: 30) {
-            Image("text_logo_onboarding")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 60)
+        VStack(spacing: 30) { // spacing eski haline döndü
+            // Animated Financial Hub Visual
+            WelcomeAnimatedVisual()
+                .frame(height: 200)
                 .scaleEffect(animateElements ? 1 : 0.8)
                 .opacity(animateElements ? 1 : 0)
+                .padding(.top, -50) // Sadece görsel yukarıda
             
             Text(LocalizedStringKey("onboarding.welcome.title"))
                 .font(.largeTitle)
@@ -277,6 +274,215 @@ struct WelcomePage: View {
     }
 }
 
+// MARK: - Welcome Animated Visual
+struct WelcomeAnimatedVisual: View {
+    @State private var rotationAngle: Double = 0
+    @State private var transactionScale: CGFloat = 0
+    @State private var transferArrowOffset: CGFloat = -30
+    @State private var budgetProgress: CGFloat = 0
+    @State private var creditCardFlip: Double = 0
+    @State private var installmentStep: Int = 0
+    @State private var recurringPulse: CGFloat = 1
+    
+    var body: some View {
+        ZStack {
+            // Central Hub Circle
+            Circle()
+                .stroke(Color.accentColor.opacity(0.2), lineWidth: 2)
+                .frame(width: 140, height: 140)
+            
+            // Rotating Background Pattern
+            ForEach(0..<6) { index in
+                Circle()
+                    .fill(Color.accentColor.opacity(0.05))
+                    .frame(width: 30, height: 30)
+                    .offset(x: 0, y: -70)
+                    .rotationEffect(.degrees(Double(index) * 60 + rotationAngle))
+            }
+            
+            // 1. Transaction Entry Animation (Top)
+            VStack(spacing: 4) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.green.opacity(0.1))
+                        .frame(width: 60, height: 40)
+                    
+                    HStack(spacing: 4) {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundColor(.green)
+                            .font(.caption)
+                        Text("₺150")
+                            .font(.caption2)
+                            .fontWeight(.medium)
+                    }
+                }
+                .scaleEffect(transactionScale)
+                
+                Image(systemName: "arrow.down")
+                    .font(.caption)
+                    .foregroundColor(.green)
+                    .opacity(transactionScale)
+            }
+            .offset(y: -90)
+            
+            // 2. Transfer Animation (Right)
+            HStack(spacing: 15) {
+                Circle()
+                    .fill(Color.blue.opacity(0.2))
+                    .frame(width: 35, height: 35)
+                    .overlay(
+                        Image(systemName: "wallet.pass")
+                            .font(.caption)
+                            .foregroundColor(.blue)
+                    )
+                
+                Image(systemName: "arrow.right")
+                    .font(.caption)
+                    .foregroundColor(.blue)
+                    .offset(x: transferArrowOffset)
+                
+                Circle()
+                    .fill(Color.purple.opacity(0.2))
+                    .frame(width: 35, height: 35)
+                    .overlay(
+                        Image(systemName: "creditcard")
+                            .font(.caption)
+                            .foregroundColor(.purple)
+                    )
+            }
+            .offset(x: 90, y: 0)
+            
+            // 3. Budget Progress (Bottom)
+            VStack(spacing: 8) {
+                HStack(spacing: 4) {
+                    ForEach(0..<3) { index in
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(index == 0 ? Color.orange : Color.gray.opacity(0.3))
+                            .frame(width: 25, height: 8)
+                            .scaleEffect(x: index == 0 ? budgetProgress : 1, y: 1, anchor: .leading)
+                    }
+                }
+                
+                Text("Budget")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+            .offset(y: 90)
+            
+            // 4. Credit Card (Left Top)
+            RoundedRectangle(cornerRadius: 8)
+                .fill(
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color.purple, Color.pink]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: 50, height: 35)
+                .overlay(
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack {
+                            Circle()
+                                .fill(Color.white.opacity(0.3))
+                                .frame(width: 8, height: 8)
+                            Circle()
+                                .fill(Color.white.opacity(0.3))
+                                .frame(width: 8, height: 8)
+                        }
+                        Rectangle()
+                            .fill(Color.white.opacity(0.3))
+                            .frame(height: 2)
+                    }
+                    .padding(4)
+                )
+                .rotation3DEffect(
+                    .degrees(creditCardFlip),
+                    axis: (x: 0, y: 1, z: 0)
+                )
+                .offset(x: -75, y: -45)
+            
+            // 5. Installment Indicator (Left Bottom)
+            HStack(spacing: 3) {
+                ForEach(0..<3) { index in
+                    Circle()
+                        .fill(index <= installmentStep ? Color.orange : Color.gray.opacity(0.3))
+                        .frame(width: 8, height: 8)
+                }
+            }
+            .offset(x: -75, y: 45)
+            
+            // 6. Recurring Transaction (Right Top)
+            ZStack {
+                Circle()
+                    .stroke(Color.cyan, lineWidth: 2)
+                    .frame(width: 30, height: 30)
+                    .scaleEffect(recurringPulse)
+                    .opacity(2 - recurringPulse)
+                
+                Image(systemName: "arrow.triangle.2.circlepath")
+                    .font(.caption)
+                    .foregroundColor(.cyan)
+            }
+            .offset(x: 75, y: -45)
+            
+            // Center Logo/Icon
+            ZStack {
+                Circle()
+                    .fill(Color.accentColor.opacity(0.1))
+                    .frame(width: 60, height: 60)
+                
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                    .font(.title2)
+                    .foregroundColor(.accentColor)
+                    .rotationEffect(.degrees(sin(rotationAngle * .pi / 180) * 5))
+            }
+        }
+        .onAppear {
+            // Start all animations
+            startAnimations()
+        }
+    }
+    
+    private func startAnimations() {
+        // Continuous rotation
+        withAnimation(.linear(duration: 20).repeatForever(autoreverses: false)) {
+            rotationAngle = 360
+        }
+        
+        // Transaction animation
+        withAnimation(.spring(response: 0.6).delay(0.5)) {
+            transactionScale = 1
+        }
+        
+        // Transfer animation
+        withAnimation(.easeInOut(duration: 1).delay(0.8).repeatForever(autoreverses: true)) {
+            transferArrowOffset = 5
+        }
+        
+        // Budget progress
+        withAnimation(.easeInOut(duration: 1.5).delay(1).repeatForever(autoreverses: false)) {
+            budgetProgress = 1
+        }
+        
+        // Credit card flip
+        withAnimation(.easeInOut(duration: 2).delay(0.3).repeatForever(autoreverses: true)) {
+            creditCardFlip = 180
+        }
+        
+        // Installment steps
+        Timer.scheduledTimer(withTimeInterval: 0.8, repeats: true) { _ in
+            withAnimation {
+                installmentStep = (installmentStep + 1) % 3
+            }
+        }
+        
+        // Recurring pulse
+        withAnimation(.easeInOut(duration: 1.5).repeatForever(autoreverses: false)) {
+            recurringPulse = 1.5
+        }
+    }
+}
+
 // MARK: - Enhanced Feature Pages
 
 // 1. All-in-One Financial Hub
@@ -286,7 +492,7 @@ struct AllInOneFeaturePage: View {
     @Environment(\.colorScheme) private var colorScheme
     
     var body: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 30) { // spacing eski haline döndü
             // Animated Cards Stack
             ZStack {
                 // Kredi Kartı
@@ -380,6 +586,8 @@ struct AllInOneFeaturePage: View {
                     .onTapGesture { withAnimation(.spring()) { selectedCard = 2 } }
             }
             .frame(height: 150)
+            .padding(.top, -50) // Sadece görsel yukarıda
+            .padding(.bottom, 20) // <-- BU SATIRI EKLEYİN
             
             VStack(spacing: 20) {
                 Text(LocalizedStringKey("onboarding.allinone.title"))
@@ -393,7 +601,7 @@ struct AllInOneFeaturePage: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
-            .offset(y: animateCards ? 0 : 30)
+            .offset(y: animateCards ? 0 : 20)
             .opacity(animateCards ? 1 : 0)
         }
         .onAppear {
@@ -416,7 +624,7 @@ struct SmartBudgetFeaturePage: View {
     @State private var rolloverAmount: Double = 0
     
     var body: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 30) { // spacing eski haline döndü
             // Animated Budget Visual
             ZStack {
                 // Main Budget Circle
@@ -462,6 +670,8 @@ struct SmartBudgetFeaturePage: View {
                 }
             }
             .frame(height: 150)
+            .padding(.top, -50) // Sadece görsel yukarıda
+            .padding(.bottom, 20) // <-- BU SATIRI EKLEYİN
             
             VStack(spacing: 20) {
                 Text(LocalizedStringKey("onboarding.budget.title"))
@@ -475,7 +685,7 @@ struct SmartBudgetFeaturePage: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
-            .offset(y: animateProgress ? 0 : 30)
+            .offset(y: animateProgress ? 0 : 20)
             .opacity(animateProgress ? 1 : 0)
         }
         .onAppear {
@@ -499,84 +709,88 @@ struct InsightfulReportsFeaturePage: View {
     let targetValues: [Double] = [0.6, 0.8, 0.4, 0.9, 0.7]
     
     var body: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 30) { // spacing eski haline döndü
             // Animated Bar Chart
-            HStack(alignment: .bottom, spacing: 12) {
-                ForEach(0..<5) { index in
-                    VStack {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        Color.blue.opacity(0.8),
-                                        Color.purple.opacity(0.8)
-                                    ]),
-                                    startPoint: .bottom,
-                                    endPoint: .top
+            VStack(spacing: 15) {
+                HStack(alignment: .bottom, spacing: 12) {
+                    ForEach(0..<5) { index in
+                        VStack {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [
+                                            Color.blue.opacity(0.8),
+                                            Color.purple.opacity(0.8)
+                                        ]),
+                                        startPoint: .bottom,
+                                        endPoint: .top
+                                    )
                                 )
-                            )
-                            .frame(width: 30, height: CGFloat(chartValues[index] * 100))
-                        
-                        Text(["M", "T", "W", "T", "F"][index])
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                }
-            }
-            .frame(height: 150)
-            .opacity(animateCharts ? 1 : 0)
-            
-            // Pie Chart Icon
-            if animateCharts {
-                HStack(spacing: 20) {
-                    // Mini pie chart representation
-                    ZStack {
-                        Circle()
-                            .stroke(Color.orange, lineWidth: 15)
-                            .frame(width: 40, height: 40)
-                            .opacity(0.3)
-                        
-                        Circle()
-                            .trim(from: 0, to: 0.3)
-                            .stroke(Color.orange, lineWidth: 15)
-                            .frame(width: 40, height: 40)
-                            .rotationEffect(.degrees(-90))
-                        
-                        Circle()
-                            .trim(from: 0.3, to: 0.6)
-                            .stroke(Color.green, lineWidth: 15)
-                            .frame(width: 40, height: 40)
-                            .rotationEffect(.degrees(-90))
-                        
-                        Circle()
-                            .trim(from: 0.6, to: 1)
-                            .stroke(Color.blue, lineWidth: 15)
-                            .frame(width: 40, height: 40)
-                            .rotationEffect(.degrees(-90))
-                    }
-                    .scaleEffect(animateCharts ? 1 : 0)
-                    
-                    // Heat map representation
-                    VStack(spacing: 4) {
-                        HStack(spacing: 4) {
-                            ForEach(0..<3) { _ in
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(Color.red.opacity(Double.random(in: 0.2...0.9)))
-                                    .frame(width: 15, height: 15)
-                            }
-                        }
-                        HStack(spacing: 4) {
-                            ForEach(0..<3) { _ in
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(Color.orange.opacity(Double.random(in: 0.2...0.9)))
-                                    .frame(width: 15, height: 15)
-                            }
+                                .frame(width: 30, height: CGFloat(chartValues[index] * 100))
+                            
+                            Text(["M", "T", "W", "T", "F"][index])
+                                .font(.caption)
+                                .foregroundColor(.secondary)
                         }
                     }
-                    .scaleEffect(animateCharts ? 1 : 0)
                 }
-                .transition(.scale.combined(with: .opacity))
+                .opacity(animateCharts ? 1 : 0)
+                
+                // Pie Chart Icon
+                if animateCharts {
+                    HStack(spacing: 20) {
+                        // Mini pie chart representation
+                        ZStack {
+                            Circle()
+                                .stroke(Color.orange, lineWidth: 15)
+                                .frame(width: 40, height: 40)
+                                .opacity(0.3)
+                            
+                            Circle()
+                                .trim(from: 0, to: 0.3)
+                                .stroke(Color.orange, lineWidth: 15)
+                                .frame(width: 40, height: 40)
+                                .rotationEffect(.degrees(-90))
+                            
+                            Circle()
+                                .trim(from: 0.3, to: 0.6)
+                                .stroke(Color.green, lineWidth: 15)
+                                .frame(width: 40, height: 40)
+                                .rotationEffect(.degrees(-90))
+                            
+                            Circle()
+                                .trim(from: 0.6, to: 1)
+                                .stroke(Color.blue, lineWidth: 15)
+                                .frame(width: 40, height: 40)
+                                .rotationEffect(.degrees(-90))
+                        }
+                        .scaleEffect(animateCharts ? 1 : 0)
+                        
+                        // Heat map representation
+                        VStack(spacing: 4) {
+                            HStack(spacing: 4) {
+                                ForEach(0..<3) { _ in
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .fill(Color.red.opacity(Double.random(in: 0.2...0.9)))
+                                        .frame(width: 15, height: 15)
+                                }
+                            }
+                            HStack(spacing: 4) {
+                                ForEach(0..<3) { _ in
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .fill(Color.orange.opacity(Double.random(in: 0.2...0.9)))
+                                        .frame(width: 15, height: 15)
+                                }
+                            }
+                        }
+                        .scaleEffect(animateCharts ? 1 : 0)
+                    }
+                    .transition(.scale.combined(with: .opacity))
+                }
             }
+            .frame(height: 180)
+            .padding(.top, -50) // Sadece görsel yukarıda
+            .padding(.bottom, 20) // <-- BU SATIRI EKLEYİN
             
             VStack(spacing: 20) {
                 Text(LocalizedStringKey("onboarding.reports.title"))
@@ -590,7 +804,7 @@ struct InsightfulReportsFeaturePage: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
-            .offset(y: animateCharts ? 0 : 30)
+            .offset(y: animateCharts ? 0 : 20)
             .opacity(animateCharts ? 1 : 0)
         }
         .onAppear {
@@ -628,7 +842,7 @@ struct IntelligentCategorizationFeaturePage: View {
     ]
     
     var body: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 30) { // spacing eski haline döndü
             // Animated Categories Grid
             ZStack {
                 ForEach(0..<sampleCategories.count, id: \.self) { index in
@@ -659,6 +873,8 @@ struct IntelligentCategorizationFeaturePage: View {
                 }
             }
             .frame(height: 200)
+            .padding(.top, -50) // Sadece görsel yukarıda
+            .padding(.bottom, 20) // <-- BU SATIRI EKLEYİN
             
             VStack(spacing: 20) {
                 Text(LocalizedStringKey("onboarding.ai.title"))
@@ -672,7 +888,7 @@ struct IntelligentCategorizationFeaturePage: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
-            .offset(y: animateCategories ? 0 : 30)
+            .offset(y: animateCategories ? 0 : 20)
             .opacity(animateCategories ? 1 : 0)
         }
         .onAppear {
@@ -764,7 +980,7 @@ struct SecureBackupFeaturePage: View {
     ]
     
     var body: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 30) { // spacing eski haline döndü
             // Cloud Sync Animation
             ZStack {
                 // Cloud
@@ -805,6 +1021,8 @@ struct SecureBackupFeaturePage: View {
                 }
             }
             .frame(height: 150)
+            .padding(.top, -50) // Sadece görsel yukarıda
+            .padding(.bottom, 20) // <-- BU SATIRI EKLEYİN
             
             VStack(spacing: 20) {
                 Text(LocalizedStringKey("onboarding.backup.title"))
@@ -818,7 +1036,7 @@ struct SecureBackupFeaturePage: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
             }
-            .offset(y: animateCloud ? 0 : 30)
+            .offset(y: animateCloud ? 0 : 20)
             .opacity(animateCloud ? 1 : 0)
         }
         .onAppear {
