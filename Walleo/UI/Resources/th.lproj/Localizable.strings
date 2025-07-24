@@ -1045,3 +1045,4 @@
 "reports.category.hourly_activity" = "การวิเคราะห์กิจกรรมรายชั่วโมง";
 "reports.category.busiest_hours" = "ชั่วโมงที่ยุ่งที่สุด";
 "search.placeholder" = "ค้นหาธุรกรรม หมวดหมู่ หรือจำนวนเงิน...";
+"paywall.purchase_button_regular" = "เริ่มพรีเมียม";

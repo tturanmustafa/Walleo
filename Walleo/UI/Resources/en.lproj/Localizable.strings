@@ -1092,3 +1092,4 @@
 "reports.category.hourly_activity" = "Hourly Activity Analysis";
 "reports.category.busiest_hours" = "Busiest Hours";
 "search.placeholder" = "Search transactions, categories or amounts...";
+"paywall.purchase_button_regular" = "Start Premium";

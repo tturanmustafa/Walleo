@@ -1045,3 +1045,4 @@
 "reports.category.hourly_activity" = "घंटेवार गतिविधि विश्लेषण";
 "reports.category.busiest_hours" = "सबसे व्यस्त घंटे";
 "search.placeholder" = "लेन-देन, श्रेणियाँ या राशियाँ खोजें...";
+"paywall.purchase_button_regular" = "प्रीमियम शुरू करें";

@@ -1045,3 +1045,4 @@
 "reports.category.hourly_activity" = "每小时活动分析";
 "reports.category.busiest_hours" = "最繁忙时段";
 "search.placeholder" = "搜索交易、类别或金额...";
+"paywall.purchase_button_regular" = "开始高级版";

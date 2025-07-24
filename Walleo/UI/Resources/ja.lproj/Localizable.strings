@@ -1045,3 +1045,4 @@
 "reports.category.hourly_activity" = "時間別アクティビティ分析";
 "reports.category.busiest_hours" = "最も忙しい時間帯";
 "search.placeholder" = "取引、カテゴリ、または金額を検索...";
+"paywall.purchase_button_regular" = "プレミアムを開始";

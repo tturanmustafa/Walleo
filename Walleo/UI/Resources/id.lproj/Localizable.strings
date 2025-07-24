@@ -1045,3 +1045,4 @@
 "reports.category.hourly_activity" = "Analisis Aktivitas Per Jam";
 "reports.category.busiest_hours" = "Jam Tersibuk";
 "search.placeholder" = "Cari transaksi, kategori atau jumlah...";
+"paywall.purchase_button_regular" = "Mulai Premium";

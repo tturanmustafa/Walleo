@@ -1047,3 +1047,4 @@
 "reports.category.hourly_activity" = "Análisis de Actividad por Hora";
 "reports.category.busiest_hours" = "Horas de Mayor Actividad";
 "search.placeholder" = "Buscar transacciones, categorías o importes...";
+"paywall.purchase_button_regular" = "Comenzar Premium";

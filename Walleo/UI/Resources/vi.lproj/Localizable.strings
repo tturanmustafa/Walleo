@@ -1045,3 +1045,4 @@
 "reports.category.hourly_activity" = "Phân tích Hoạt động Hàng giờ";
 "reports.category.busiest_hours" = "Giờ Bận rộn nhất";
 "search.placeholder" = "Tìm kiếm giao dịch, danh mục hoặc số tiền...";
+"paywall.purchase_button_regular" = "Bắt đầu Premium";
