@@ -1031,3 +1031,14 @@
 // Common
 "common.loading" = "Memuat...";
 "common.ok" = "OKE";
+
+// Localizable.strings (Indonesian)
+"accounts.type.wallet" = "Dompet";
+"accounts.type.credit_card" = "Kartu Kredit";
+"accounts.type.loan" = "Pinjaman";
+"accounts.type.account" = "Akun";
+
+"premium.limit.title" = "Fitur Premium";
+"premium.limit.subtitle" = "Nikmati manfaat Walleo Premium untuk membuat beberapa akun";
+"premium.limit.info" = "Pengguna gratis hanya dapat membuat 1 akun untuk setiap jenis";
+"premium.limit.button" = "Dapatkan Premium";

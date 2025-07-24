@@ -1031,3 +1031,14 @@
 // Common
 "common.loading" = "読み込み中...";
 "common.ok" = "OK";
+
+// Localizable.strings (Japanese)
+"accounts.type.wallet" = "ウォレット";
+"accounts.type.credit_card" = "クレジットカード";
+"accounts.type.loan" = "ローン";
+"accounts.type.account" = "アカウント";
+
+"premium.limit.title" = "プレミアム機能";
+"premium.limit.subtitle" = "複数のアカウントを作成するにはWalleoプレミアムにアップグレードしてください";
+"premium.limit.info" = "無料ユーザーは各タイプ1つのアカウントのみ作成できます";
+"premium.limit.button" = "プレミアムへ";

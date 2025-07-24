@@ -1031,3 +1031,14 @@
 // Common
 "common.loading" = "加载中...";
 "common.ok" = "好的";
+
+// Localizable.strings (Chinese, Simplified)
+"accounts.type.wallet" = "钱包";
+"accounts.type.credit_card" = "信用卡";
+"accounts.type.loan" = "贷款";
+"accounts.type.account" = "账户";
+
+"premium.limit.title" = "高级功能";
+"premium.limit.subtitle" = "升级到 Walleo Premium 以创建多个账户";
+"premium.limit.info" = "免费用户每种类型只能创建1个账户";
+"premium.limit.button" = "获取高级版";

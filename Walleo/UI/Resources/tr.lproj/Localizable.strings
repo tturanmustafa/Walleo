@@ -1080,3 +1080,14 @@
 // Common
 "common.loading" = "Yükleniyor...";
 "common.ok" = "Tamam";
+
+// Localizable.strings (Turkish)
+"accounts.type.wallet" = "Cüzdan";
+"accounts.type.credit_card" = "Kredi Kartı";
+"accounts.type.loan" = "Kredi";
+"accounts.type.account" = "Hesap";
+
+"premium.limit.title" = "Premium Özellik";
+"premium.limit.subtitle" = "Birden fazla hesap oluşturmak için Walleo Premium'un özelliklerinden faydalanın";
+"premium.limit.info" = "Premium olmayan kullanıcılar her hesap türünden sadece 1 tane oluşturabilir";
+"premium.limit.button" = "Premium'a Geç";
