@@ -1091,3 +1091,39 @@
 "premium.limit.subtitle" = "Birden fazla hesap oluşturmak için Walleo Premium'un özelliklerinden faydalanın";
 "premium.limit.info" = "Premium olmayan kullanıcılar her hesap türünden sadece 1 tane oluşturabilir";
 "premium.limit.button" = "Premium'a Geç";
+
+// PDF Rapor
+"settings.data.pdf_report" = "Detaylı PDF Rapor Oluştur";
+"pdf.report.title" = "PDF Rapor Oluştur";
+"pdf.report.date_range" = "Tarih Aralığı";
+"pdf.report.start_date" = "Başlangıç Tarihi";
+"pdf.report.end_date" = "Bitiş Tarihi";
+"pdf.report.date_range_description" = "Rapor için başlangıç ve bitiş tarihlerini seçin.";
+"pdf.report.content_info" = "Rapor İçeriği";
+"pdf.report.content_details" = "Kredi kartı ve kredi raporlarınızın detaylı analizlerini, grafiklerini ve performans göstergelerini içerir.";
+"pdf.report.quick_ranges" = "Hızlı Seçimler";
+"pdf.report.this_month" = "Bu Ay";
+"pdf.report.last_month" = "Geçen Ay";
+"pdf.report.last_3_months" = "Son 3 Ay";
+"pdf.report.year_to_date" = "Yıl Başından İtibaren";
+"pdf.report.generate" = "PDF Rapor Oluştur";
+"pdf.report.generating" = "PDF Oluşturuluyor...";
+"pdf.report.generation_note" = "Rapor oluşturma işlemi veri miktarına göre birkaç saniye sürebilir.";
+"pdf.report.error" = "Rapor Hatası";
+"pdf.report.generation_failed" = "PDF rapor oluşturulamadı. Lütfen tekrar deneyin.";
+"pdf.report.generated_on" = "Oluşturulma Tarihi:";
+
+// PDF İçerik
+"reports.creditcard.summary" = "Kredi Kartı Özeti";
+"loan_report.summary" = "Kredi Özeti";
+"reports.creditcard.category_distribution" = "Kategori Dağılımı";
+"reports.creditcard.spending_trend" = "Harcama Trendi";
+"loan_report.payment_performance" = "Ödeme Performansı";
+"loan_report.principal_amount" = "Ana Para";
+"loan_report.interest_rate" = "Faiz Oranı";
+"loan_report.remaining" = "Kalan Borç";
+"loan_report.progress" = "İlerleme";
+"loan_report.on_time" = "Zamanında";
+"loan_report.late" = "Gecikmiş";
+"loan_report.score" = "Skor";
+"pdf.report.main_title" = "Finansal Rapor";

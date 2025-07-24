@@ -194,6 +194,7 @@ struct GenelAyarlarBolumu: View {
 }
 
 // MARK: - AyarlarView+VeriYonetimi.swift
+// MARK: - AyarlarView+VeriYonetimi.swift
 struct VeriYonetimiBolumu: View {
     @EnvironmentObject var appSettings: AppSettings
     @EnvironmentObject var entitlementManager: EntitlementManager
@@ -217,7 +218,7 @@ struct VeriYonetimiBolumu: View {
             }
             .padding(.vertical, 4)
             
-            // Veri Dışa Aktar
+            // Veri Dışa Aktar (CSV)
             Button(action: {
                 if entitlementManager.hasPremiumAccess {
                     exportData()
@@ -244,6 +245,28 @@ struct VeriYonetimiBolumu: View {
             }
             .disabled(isExporting)
             .foregroundColor(.primary)
+            .padding(.vertical, 4)
+            
+            // Detaylı PDF Rapor Oluştur
+            NavigationLink(destination: PDFReportDatePicker().environmentObject(appSettings)) {
+                HStack {
+                    AyarIkonu(iconName: "doc.richtext.fill", color: .orange)
+                    Text(LocalizedStringKey("settings.data.pdf_report"))
+                    if !entitlementManager.hasPremiumAccess {
+                        Spacer()
+                        Image(systemName: "crown.fill")
+                            .foregroundColor(.yellow)
+                            .font(.footnote)
+                    }
+                }
+            }
+            .disabled(!entitlementManager.hasPremiumAccess)
+            .foregroundColor(entitlementManager.hasPremiumAccess ? .primary : .secondary)
+            .onTapGesture {
+                if !entitlementManager.hasPremiumAccess {
+                    showPaywall = true
+                }
+            }
             .padding(.vertical, 4)
             
             // Verileri Sil
