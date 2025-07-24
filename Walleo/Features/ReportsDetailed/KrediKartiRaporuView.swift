@@ -616,6 +616,7 @@ struct KategoriAnaliziView: View {
             // Donut Chart - Tam genişlik
             VStack(spacing: 16) {
                 DonutChartView(data: rapor.kategoriDagilimi)
+                    .environmentObject(appSettings) // <-- BU SATIRI EKLEYİN
                     .frame(height: 220)
                 
                 // Kategori listesi - Grid yapısında
@@ -995,9 +996,15 @@ struct TaksitliIslemKartiView: View {
                                 .fontWeight(.medium)
                                 .lineLimit(1)
                             
-                            Text("\(taksit.odenenTaksitSayisi)/\(taksit.toplamTaksitSayisi) taksit")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                            HStack(spacing: 4) {
+                                // Mevcut çeviri anahtarını kullanarak "Taksit:" metnini al
+                                Text(LocalizedStringKey("loan_report.installment_no"))
+                                
+                                // Sayıları yanına ekle
+                                Text("\(taksit.odenenTaksitSayisi)/\(taksit.toplamTaksitSayisi)")
+                            }
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                         }
                     }
                     
