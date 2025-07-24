@@ -58,27 +58,16 @@ class TumIslemlerViewModel {
     }
     
     @objc private func handleDataChange(_ notification: Notification) {
-        // YENİ: Sadece etkilenen veriyi güncelle
-        if let payload = notification.userInfo?["payload"] as? TransactionChangePayload {
-            switch payload.type {
-            case .delete:
-                // Silinen işlemleri listeden çıkar
-                islemler.removeAll { islem in
-                    payload.affectedAccountIDs.contains(islem.hesap?.id ?? UUID()) ||
-                    payload.affectedCategoryIDs.contains(islem.kategori?.id ?? UUID())
-                }
-                // Cache'i invalidate et
-                cachedAllTransactions.removeAll()
-            case .add, .update:
-                // Cache'i invalidate et ve yeniden yükle
-                cachedAllTransactions.removeAll()
-                fetchData()
-            }
-        } else {
-            // Payload yoksa güvenli tarafta kal
-            cachedAllTransactions.removeAll()
-            fetchData()
-        }
+        // Veri değişikliği olduğunda (ekleme, silme, güncelleme fark etmeksizin)
+        // en güvenli ve tutarlı yöntem, yerel cache'i temizleyip veriyi
+        // veritabanından yeniden çekmektir.
+        // Bu, tüm filtrelerin korunmasını ve listenin doğru görüntülenmesini sağlar.
+        
+        // 1. Mevcut önbelleği temizle
+        cachedAllTransactions.removeAll() //
+        
+        // 2. Veriyi yeniden yükle
+        fetchData() //
     }
 
     @objc func fetchData() {
