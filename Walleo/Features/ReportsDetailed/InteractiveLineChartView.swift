@@ -113,7 +113,7 @@ struct InteractiveLineChartView: View {
                         .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [4, 6]))
                         .annotation(position: .top, alignment: .center, spacing: 10) {
                             VStack(spacing: 4) {
-                                Text(secilenVeri.gun, format: .dateTime.day().month())
+                                Text(formatChartDate(secilenVeri.gun))
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
                                 Text(formatCurrency(amount: secilenVeri.tutar, currencyCode: appSettings.currencyCode, localeIdentifier: appSettings.languageCode))
@@ -134,5 +134,11 @@ struct InteractiveLineChartView: View {
         .padding()
         .background(Color(.secondarySystemGroupedBackground))
         .cornerRadius(12)
+    }
+    private func formatChartDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        formatter.dateFormat = "d MMM"
+        return formatter.string(from: date)
     }
 }

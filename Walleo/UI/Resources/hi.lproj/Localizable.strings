@@ -1042,3 +1042,6 @@
 "premium.limit.subtitle" = "एकाधिक खाते बनाने के लिए Walleo Premium में अपग्रेड करें";
 "premium.limit.info" = "मुफ्त उपयोगकर्ता प्रत्येक प्रकार का केवल 1 खाता बना सकते हैं";
 "premium.limit.button" = "प्रीमियम प्राप्त करें";
+"reports.category.hourly_activity" = "घंटेवार गतिविधि विश्लेषण";
+"reports.category.busiest_hours" = "सबसे व्यस्त घंटे";
+"search.placeholder" = "लेन-देन, श्रेणियाँ या राशियाँ खोजें...";

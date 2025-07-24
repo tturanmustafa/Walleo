@@ -1042,3 +1042,6 @@
 "premium.limit.subtitle" = "อัปเกรดเป็น Walleo Premium เพื่อสร้างหลายบัญชี";
 "premium.limit.info" = "ผู้ใช้ฟรีสามารถสร้างบัญชีได้เพียง 1 บัญชีต่อประเภท";
 "premium.limit.button" = "อัปเกรดพรีเมียม";
+"reports.category.hourly_activity" = "การวิเคราะห์กิจกรรมรายชั่วโมง";
+"reports.category.busiest_hours" = "ชั่วโมงที่ยุ่งที่สุด";
+"search.placeholder" = "ค้นหาธุรกรรม หมวดหมู่ หรือจำนวนเงิน...";

@@ -1042,3 +1042,6 @@
 "premium.limit.subtitle" = "Nâng cấp lên Walleo Premium để tạo nhiều tài khoản";
 "premium.limit.info" = "Người dùng miễn phí chỉ có thể tạo 1 tài khoản cho mỗi loại";
 "premium.limit.button" = "Nâng Cấp Premium";
+"reports.category.hourly_activity" = "Phân tích Hoạt động Hàng giờ";
+"reports.category.busiest_hours" = "Giờ Bận rộn nhất";
+"search.placeholder" = "Tìm kiếm giao dịch, danh mục hoặc số tiền...";

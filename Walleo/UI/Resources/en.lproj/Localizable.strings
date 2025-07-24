@@ -1089,3 +1089,6 @@
 "premium.limit.subtitle" = "Upgrade to Walleo Premium to create multiple accounts";
 "premium.limit.info" = "Free users can create only 1 account of each type";
 "premium.limit.button" = "Go Premium";
+"reports.category.hourly_activity" = "Hourly Activity Analysis";
+"reports.category.busiest_hours" = "Busiest Hours";
+"search.placeholder" = "Search transactions, categories or amounts...";

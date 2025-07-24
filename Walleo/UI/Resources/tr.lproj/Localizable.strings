@@ -1091,3 +1091,6 @@
 "premium.limit.subtitle" = "Birden fazla hesap oluşturmak için Walleo Premium'un özelliklerinden faydalanın";
 "premium.limit.info" = "Premium olmayan kullanıcılar her hesap türünden sadece 1 tane oluşturabilir";
 "premium.limit.button" = "Premium'a Geç";
+"reports.category.hourly_activity" = "Saatlik Aktivite Analizi";
+"reports.category.busiest_hours" = "En Yoğun Saatler";
+"search.placeholder" = "İşlem, kategori veya tutar ara...";
