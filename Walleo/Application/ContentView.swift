@@ -3,13 +3,15 @@ import SwiftData
 
 // +++ DEĞİŞİKLİK YOK: Bu yapı aynı kalıyor +++
 struct FloatingActionButtonStyle: ButtonStyle {
+    var isPremium: Bool = false  // ← YENİ SATIR
+    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.headline)
             .padding()
             .frame(width: 160)
-            .background(.regularMaterial)
-            .foregroundColor(.primary)
+            .background(isPremium ? Color(.systemGray5) : Color(.systemGray6))
+            .foregroundColor(.primary) // ← DEĞİŞTİRİLEN SATIR
             .cornerRadius(16)
             .shadow(color: .black.opacity(0.2), radius: 10, y: 5)
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
@@ -21,11 +23,14 @@ struct FloatingActionButtonStyle: ButtonStyle {
 struct FloatingActionMenu: View {
     @Binding var seciliSekme: ContentView.Sekme
     @Binding var isShowing: Bool
+    @Binding var showPaywall: Bool
+    @EnvironmentObject var entitlementManager: EntitlementManager
     
     @State private var showButtons = [false, false, false]
 
     var body: some View {
         VStack(spacing: 16) {
+            // Normal Raporlar - Herkes erişebilir
             Button(action: { seciliSekme = .raporlar; isShowing = false }) {
                 Label("tab.reports", systemImage: "chart.bar.xaxis")
             }
@@ -33,17 +38,49 @@ struct FloatingActionMenu: View {
             .opacity(showButtons[1] ? 1 : 0)
             .offset(y: showButtons[1] ? 0 : 20)
             
-            Button(action: { seciliSekme = .detayliRaporlar; isShowing = false }) {
-                Label("reports.detailed.title", systemImage: "magnifyingglass")
+            // Detaylı Raporlar - Premium özellik
+            Button(action: {
+                if entitlementManager.hasPremiumAccess {
+                    seciliSekme = .detayliRaporlar
+                    isShowing = false
+                } else {
+                    isShowing = false
+                    showPaywall = true
+                }
+            }) {
+                HStack {
+                    Label("reports.detailed.title", systemImage: "magnifyingglass")
+                    if !entitlementManager.hasPremiumAccess {
+                        Image(systemName: "crown.fill")
+                            .foregroundColor(.yellow)
+                            .font(.caption)
+                    }
+                }
             }
-            .buttonStyle(FloatingActionButtonStyle())
+            .buttonStyle(FloatingActionButtonStyle(isPremium: !entitlementManager.hasPremiumAccess))
             .opacity(showButtons[0] ? 1 : 0)
             .offset(y: showButtons[0] ? 0 : 20)
             
-            Button(action: { seciliSekme = .butceler; isShowing = false }) {
-                Label("tab.budgets", systemImage: "chart.pie.fill")
+            // Bütçeler - Premium özellik
+            Button(action: {
+                if entitlementManager.hasPremiumAccess {
+                    seciliSekme = .butceler
+                    isShowing = false
+                } else {
+                    isShowing = false
+                    showPaywall = true
+                }
+            }) {
+                HStack {
+                    Label("tab.budgets", systemImage: "chart.pie.fill")
+                    if !entitlementManager.hasPremiumAccess {
+                        Image(systemName: "crown.fill")
+                            .foregroundColor(.yellow)
+                            .font(.caption)
+                    }
+                }
             }
-            .buttonStyle(FloatingActionButtonStyle())
+            .buttonStyle(FloatingActionButtonStyle(isPremium: !entitlementManager.hasPremiumAccess))
             .opacity(showButtons[2] ? 1 : 0)
             .offset(y: showButtons[2] ? 0 : 20)
         }
@@ -54,7 +91,6 @@ struct FloatingActionMenu: View {
         }
     }
 }
-
 
 struct ContentView: View {
     @State private var seciliSekme: Sekme = .panel
@@ -184,7 +220,8 @@ struct ContentView: View {
                         }
                     }
                 
-                FloatingActionMenu(seciliSekme: $seciliSekme, isShowing: $dahaFazlaShowing)
+                FloatingActionMenu(seciliSekme: $seciliSekme, isShowing: $dahaFazlaShowing, showPaywall: $showPaywall)  // ← DEĞİŞTİ
+                    .environmentObject(entitlementManager)  // ← YENİ SATIR
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
                     .padding(.trailing, 20)
                     .padding(.bottom, 90)
@@ -201,6 +238,10 @@ struct ContentView: View {
         .sheet(item: $acilacakSheet) { sheet in
             sheet.view
                 .environmentObject(appSettings)
+        }
+        // Paywall sheet'i  ← YENİ
+        .sheet(isPresented: $showPaywall) {  // ← YENİ
+            PaywallView()  // ← YENİ
         }
         .alert(
             LocalizedStringKey("alert.no_accounts.title"),

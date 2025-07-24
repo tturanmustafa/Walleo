@@ -188,12 +188,6 @@ struct GenelAyarlarBolumu: View {
                 AyarIkonu(iconName: "bell.badge.fill", color: .red)
                 Text(LocalizedStringKey("settings.notifications"))
             }
-            .disabled(!entitlementManager.hasPremiumAccess)
-            .opacity(entitlementManager.hasPremiumAccess ? 1.0 : 0.4)
-            .onTapGesture {
-                guard !entitlementManager.hasPremiumAccess else { return }
-                showPaywall = true  // Ana view'daki state'i değiştir
-            }
             .padding(.vertical, 4)
         }
     }
@@ -224,7 +218,13 @@ struct VeriYonetimiBolumu: View {
             .padding(.vertical, 4)
             
             // Veri Dışa Aktar
-            Button(action: exportData) {
+            Button(action: {
+                if entitlementManager.hasPremiumAccess {
+                    exportData()
+                } else {
+                    showPaywall = true
+                }
+            }) {
                 HStack {
                     AyarIkonu(iconName: "square.and.arrow.up", color: .purple)
                     if isExporting {
@@ -233,6 +233,12 @@ struct VeriYonetimiBolumu: View {
                         ProgressView()
                     } else {
                         Text(LocalizedStringKey("settings.data.export"))
+                        if !entitlementManager.hasPremiumAccess {
+                            Spacer()
+                            Image(systemName: "crown.fill")
+                                .foregroundColor(.yellow)
+                                .font(.footnote)
+                        }
                     }
                 }
             }
