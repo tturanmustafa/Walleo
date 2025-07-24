@@ -1094,3 +1094,4 @@
 "reports.category.hourly_activity" = "Saatlik Aktivite Analizi";
 "reports.category.busiest_hours" = "En Yoğun Saatler";
 "search.placeholder" = "İşlem, kategori veya tutar ara...";
+"paywall.purchase_button_regular" = "Premium'u Başlat";

@@ -13,6 +13,7 @@ struct PaywallView: View {
     @State private var isPurchasing = false
     @State private var showError = false
     @State private var errorMessage = ""
+    @State private var isEligibleForIntro = false // YENİ EKLE
     
     // Animation States
     @State private var logoRotation: Double = 0
@@ -77,6 +78,10 @@ struct PaywallView: View {
         .onAppear {
             startAnimations()
             fetchOfferings()
+        }
+        .onChange(of: selectedPackage) { _, _ in
+            // YENİ EKLE: Paket değiştiğinde deneme hakkını yeniden kontrol et
+            checkTrialEligibility()
         }
         .alert(LocalizedStringKey("paywall.error.purchase_failed"), isPresented: $showError) {
             Button("common.ok") { }
@@ -216,7 +221,7 @@ struct PaywallView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "crown.fill")
                             .font(.system(size: 16))
-                        Text(LocalizedStringKey("paywall.purchase_button"))
+                        Text(LocalizedStringKey(purchaseButtonTextKey)) // DEĞIŞTI
                             .font(.system(size: 15, weight: .semibold))
                     }
                     .foregroundColor(.white)
@@ -225,6 +230,15 @@ struct PaywallView: View {
         }
         .disabled(selectedPackage == nil || isPurchasing)
         .opacity(selectedPackage == nil ? 0.6 : 1)
+    }
+
+    // YENİ EKLE: Buton metni için computed property
+    private var purchaseButtonTextKey: String {
+        if isEligibleForIntro && selectedPackage?.storeProduct.introductoryDiscount != nil {
+            return "paywall.purchase_button" // "Try 3 Days Free"
+        } else {
+            return "paywall.purchase_button_regular" // Yeni localization key
+        }
     }
     
     // MARK: - Minimal Footer
@@ -320,11 +334,28 @@ struct PaywallView: View {
                 } else if let firstPackage = offerings.current?.availablePackages.first {
                     self.selectedPackage = firstPackage
                 }
+                
+                // YENİ EKLE: Deneme hakkı kontrolü
+                self.checkTrialEligibility()
             } else if let error = error {
                 self.errorMessage = error.localizedDescription
                 self.showError = true
             }
             self.isLoading = false
+        }
+    }
+
+    // YENİ EKLE: Deneme hakkı kontrol fonksiyonu
+    private func checkTrialEligibility() {
+        guard let selectedPackage = selectedPackage else { return }
+        
+        // RevenueCat ile deneme hakkı kontrolü
+        Purchases.shared.checkTrialOrIntroDiscountEligibility(productIdentifiers: [selectedPackage.storeProduct.productIdentifier]) { eligibility in
+            if let status = eligibility[selectedPackage.storeProduct.productIdentifier] {
+                self.isEligibleForIntro = (status.status == .eligible)
+            } else {
+                self.isEligibleForIntro = false
+            }
         }
     }
     
