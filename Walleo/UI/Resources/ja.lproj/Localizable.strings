@@ -1042,3 +1042,6 @@
 "premium.limit.subtitle" = "複数のアカウントを作成するにはWalleoプレミアムにアップグレードしてください";
 "premium.limit.info" = "無料ユーザーは各タイプ1つのアカウントのみ作成できます";
 "premium.limit.button" = "プレミアムへ";
+"reports.category.hourly_activity" = "時間別アクティビティ分析";
+"reports.category.busiest_hours" = "最も忙しい時間帯";
+"search.placeholder" = "取引、カテゴリ、または金額を検索...";

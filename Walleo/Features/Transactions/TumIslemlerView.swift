@@ -18,6 +18,7 @@ struct TumIslemlerView: View {
     @State private var silinecekTekrarliIslem: Islem?
     @State private var silinecekTekilIslem: Islem?
     @State private var silinecekTaksitliIslem: Islem?
+    @State private var searchText = ""  // YENİ: Arama metni state'i
     
     // YENİ: Scroll performansı için
     @State private var scrollViewProxy: ScrollViewProxy?
@@ -131,40 +132,82 @@ struct TumIslemlerView: View {
     // YENİ: Optimize edilmiş liste view
     @ViewBuilder
     private var optimizedListView: some View {
-        if viewModel.islemler.isEmpty && !viewModel.isLoading {
-            emptyStateView
-        } else {
-            ScrollViewReader { proxy in
-                ScrollView {
-                    LazyVStack(spacing: 0, pinnedViews: []) {
-                        ForEach(Array(viewModel.islemler.enumerated()), id: \.element.id) { index, islem in
-                            VStack(spacing: 0) {
-                                // YENİ: Her satırı optimize et
-                                OptimizedTransactionRow(
-                                    islem: islem,
-                                    onEdit: { duzenlenecekIslem = islem },
-                                    onDelete: { silmeyiBaslat(islem) }
-                                )
-                                .id(islem.id)
-                                .transition(.opacity.combined(with: .move(edge: .top)))
-                                
-                                if index < viewModel.islemler.count - 1 {
-                                    Divider()
-                                        .padding(.leading, 60)
+        VStack(spacing: 0) {
+            // YENİ: Arama alanı
+            searchBarView
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+            
+            if viewModel.islemler.isEmpty && !viewModel.isLoading {
+                emptyStateView
+            } else {
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        LazyVStack(spacing: 0, pinnedViews: []) {
+                            ForEach(Array(viewModel.islemler.enumerated()), id: \.element.id) { index, islem in
+                                VStack(spacing: 0) {
+                                    // YENİ: Her satırı optimize et
+                                    OptimizedTransactionRow(
+                                        islem: islem,
+                                        onEdit: { duzenlenecekIslem = islem },
+                                        onDelete: { silmeyiBaslat(islem) }
+                                    )
+                                    .id(islem.id)
+                                    .transition(.opacity.combined(with: .move(edge: .top)))
+                                    
+                                    if index < viewModel.islemler.count - 1 {
+                                        Divider()
+                                            .padding(.leading, 60)
+                                    }
                                 }
                             }
                         }
+                        .padding(.vertical, 8)
                     }
-                    .padding(.vertical, 8)
+                    .onAppear {
+                        scrollViewProxy = proxy
+                    }
+                    // YENİ: Scroll performansını artır
+                    .scrollDismissesKeyboard(.immediately)
+                    .scrollIndicators(.hidden)
                 }
-                .onAppear {
-                    scrollViewProxy = proxy
-                }
-                // YENİ: Scroll performansını artır
-                .scrollDismissesKeyboard(.immediately)
-                .scrollIndicators(.hidden)
             }
         }
+    }
+    
+    // YENİ: Arama alanı view'ı
+    @ViewBuilder
+    private var searchBarView: some View {
+        HStack {
+            Image(systemName: "magnifyingglass")
+                .foregroundColor(.secondary)
+                .padding(.leading, 8)
+            
+            TextField(LocalizedStringKey("search.placeholder"), text: $searchText)
+                .textFieldStyle(PlainTextFieldStyle())
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+                .submitLabel(.search)
+                .onChange(of: searchText) { _, newValue in
+                    viewModel.searchText = newValue
+                    viewModel.onFilterChanged()
+                }
+            
+            if !searchText.isEmpty {
+                Button(action: {
+                    searchText = ""
+                    viewModel.searchText = ""
+                    viewModel.onFilterChanged()
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.secondary)
+                }
+                .padding(.trailing, 8)
+            }
+        }
+        .padding(.vertical, 8)
+        .background(Color(.systemGray6))
+        .cornerRadius(10)
     }
     
     // YENİ: Back button

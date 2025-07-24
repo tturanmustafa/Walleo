@@ -9,6 +9,7 @@ class TumIslemlerViewModel {
     var islemler: [Islem] = []
     var isDeleting = false
     var isLoading = false
+    var searchText = ""  // YENİ: Arama metni
     
     private let modelContainer: ModelContainer
     
@@ -161,6 +162,38 @@ class TumIslemlerViewModel {
             filtrelenmisSonuclar = filtrelenmisSonuclar.filter { islem in
                 guard let hesapID = islem.hesap?.id else { return false }
                 return secilenHesapIDleri.contains(hesapID)
+            }
+        }
+        
+        // YENİ: Metin araması filtresi
+        if !searchText.isEmpty {
+            let aramaMetni = searchText.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            filtrelenmisSonuclar = filtrelenmisSonuclar.filter { islem in
+                // İşlem adında ara
+                if islem.isim.lowercased().contains(aramaMetni) {
+                    return true
+                }
+                
+                // Kategori adında ara
+                if let kategori = islem.kategori {
+                    let kategoriAdi = kategori.localizationKey ?? kategori.isim
+                    if kategoriAdi.lowercased().contains(aramaMetni) {
+                        return true
+                    }
+                }
+                
+                // Tutarda ara (sayı olarak)
+                // Kullanıcı "150" yazarsa 150.00, 150.50 gibi tutarları bulur
+                if let aramaDouble = Double(aramaMetni) {
+                    // Tam eşleşme veya tutar içinde geçiyorsa
+                    let tutarString = String(format: "%.2f", islem.tutar)
+                    if tutarString.contains(aramaMetni) || islem.tutar == aramaDouble {
+                        return true
+                    }
+                }
+                
+                return false
             }
         }
         

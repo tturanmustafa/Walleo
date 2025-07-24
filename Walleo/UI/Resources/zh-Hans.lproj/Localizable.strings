@@ -1042,3 +1042,6 @@
 "premium.limit.subtitle" = "升级到 Walleo Premium 以创建多个账户";
 "premium.limit.info" = "免费用户每种类型只能创建1个账户";
 "premium.limit.button" = "获取高级版";
+"reports.category.hourly_activity" = "每小时活动分析";
+"reports.category.busiest_hours" = "最繁忙时段";
+"search.placeholder" = "搜索交易、类别或金额...";

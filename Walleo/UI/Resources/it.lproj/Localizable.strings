@@ -1044,3 +1044,6 @@
 "premium.limit.subtitle" = "Approfitta dei vantaggi di Walleo Premium per creare più conti";
 "premium.limit.info" = "Gli utenti gratuiti possono creare solo 1 conto per ogni tipo";
 "premium.limit.button" = "Passa a Premium";
+"reports.category.hourly_activity" = "Analisi Attività Oraria";
+"reports.category.busiest_hours" = "Ore di Punta";
+"search.placeholder" = "Cerca transazioni, categorie o importi...";

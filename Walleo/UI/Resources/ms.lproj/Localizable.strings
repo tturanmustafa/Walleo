@@ -1042,3 +1042,6 @@
 "premium.limit.subtitle" = "Naik taraf ke Walleo Premium untuk mencipta berbilang akaun";
 "premium.limit.info" = "Pengguna percuma hanya boleh mencipta 1 akaun bagi setiap jenis";
 "premium.limit.button" = "Dapatkan Premium";
+"reports.category.hourly_activity" = "Analisis Aktiviti Setiap Jam";
+"reports.category.busiest_hours" = "Waktu Paling Sibuk";
+"search.placeholder" = "Cari urus niaga, kategori atau amaun...";

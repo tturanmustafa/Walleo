@@ -467,7 +467,12 @@ struct AylikTaksitYukuGrafigi: View {
                 .frame(height: 200)
                 .chartXAxis {
                     AxisMarks(values: .stride(by: .month)) { value in
-                        AxisValueLabel(format: .dateTime.month(.abbreviated))
+                        AxisValueLabel {
+                            if let dateValue = value.as(Date.self) {
+                                Text(monthAbbreviation(from: dateValue))
+                                    .font(.caption2)
+                            }
+                        }
                     }
                 }
                 .chartYAxis {
@@ -490,6 +495,13 @@ struct AylikTaksitYukuGrafigi: View {
         .padding()
         .background(Color(.secondarySystemGroupedBackground))
         .cornerRadius(16)
+    }
+    
+    private func monthAbbreviation(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        formatter.dateFormat = "MMM"
+        return formatter.string(from: date)
     }
 }
 
@@ -621,6 +633,7 @@ struct FiltrelemeBolumu: View {
 
 struct AySecici: View {
     @Binding var secilenAy: Date
+    @EnvironmentObject var appSettings: AppSettings
     
     var body: some View {
         HStack {
@@ -636,7 +649,7 @@ struct AySecici: View {
             
             Spacer()
             
-            Text(secilenAy, format: .dateTime.year().month(.wide))
+            Text(localizedMonthYear(from: secilenAy))
                 .font(.headline)
             
             Spacer()
@@ -654,6 +667,12 @@ struct AySecici: View {
         .padding()
         .background(Color(.secondarySystemGroupedBackground))
         .cornerRadius(16)
+    }
+    private func localizedMonthYear(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter.string(from: date)
     }
 }
 
@@ -714,7 +733,7 @@ struct OdemeTakvimiView: View {
             // Hafta günleri başlıkları
             HStack {
                 ForEach(0..<7) { index in
-                    Text(Calendar.current.veryShortWeekdaySymbols[index])
+                    Text(localizedWeekdaySymbol(at: index))
                         .font(.caption)
                         .fontWeight(.semibold)
                         .foregroundStyle(.secondary)
@@ -803,6 +822,16 @@ struct OdemeTakvimiView: View {
             .presentationDetents([.medium])
             .presentationDragIndicator(.visible)
         }
+    }
+    
+    private func localizedWeekdaySymbol(at index: Int) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        
+        // Pazartesi'den başlayan sıralama için index'i ayarla
+        let adjustedIndex = (index + 1) % 7
+        
+        return formatter.veryShortWeekdaySymbols[adjustedIndex]
     }
 }
 
@@ -1254,13 +1283,20 @@ struct KrediDetayBilgileri: View {
             if let sonOdeme = detay.sonOdemeTarihi {
                 DetayRow(
                     baslik: "loan_report.last_payment_date",
-                    deger: sonOdeme.formatted(date: .abbreviated, time: .omitted)
+                    deger: formatDetailDate(sonOdeme)
                 )
             }
         }
         .padding()
         .background(Color(.tertiarySystemGroupedBackground))
         .cornerRadius(12)
+    }
+    private func formatDetailDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter.string(from: date)
     }
 }
 
@@ -1362,13 +1398,13 @@ struct SonrakiTaksitKarti: View {
             }
             
             HStack {
-                Text(taksit.odemeTarihi, style: .date)
+                Text(formatDate(taksit.odemeTarihi))
                     .font(.caption)
                 
                 Spacer()
                 
                 if kalanGun > 0 {
-                    Text(String(format: NSLocalizedString("loan_report.days_remaining", comment: ""), kalanGun))
+                    Text(formatRemainingDays(kalanGun))
                         .font(.caption)
                         .foregroundColor(kalanGun <= 7 ? .orange : .secondary)
                 } else if kalanGun == 0 {
@@ -1385,6 +1421,19 @@ struct SonrakiTaksitKarti: View {
         .padding()
         .background(Color.orange.opacity(0.1))
         .cornerRadius(12)
+    }
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter.string(from: date)
+    }
+    
+    private func formatRemainingDays(_ days: Int) -> String {
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        let formatString = languageBundle.localizedString(forKey: "loan_report.days_remaining", value: "%d days remaining", table: nil)
+        return String(format: formatString, days)
     }
 }
 
@@ -1405,7 +1454,7 @@ struct TaksitListesiKompakt: View {
                         .foregroundColor(taksit.odendiMi ? .green : .secondary)
                         .font(.caption)
                     
-                    Text(taksit.odemeTarihi, style: .date)
+                    Text(formatCompactDate(taksit.odemeTarihi))
                         .font(.caption)
                     
                     if giderOlarakEklenenler.contains(taksit.id) {
@@ -1435,5 +1484,13 @@ struct TaksitListesiKompakt: View {
         .padding()
         .background(Color(.tertiarySystemGroupedBackground))
         .cornerRadius(12)
+    }
+    
+    private func formatCompactDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: appSettings.languageCode)
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter.string(from: date)
     }
 }
