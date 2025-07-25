@@ -194,36 +194,53 @@ struct OnboardingView: View {
     }
     
     private func seedInitialData() {
-        // Mevcut seedInitialData fonksiyonu aynı kalacak
         do {
             let descriptor = FetchDescriptor<AppMetadata>()
-            if let metadata = try modelContext.fetch(descriptor).first, metadata.defaultCategoriesAdded {
-                return
-            }
+            let metadata = try modelContext.fetch(descriptor).first
             
+            // Mevcut kategorileri kontrol et
             let categoryDescriptor = FetchDescriptor<Kategori>()
-            let existingCategoriesCount = try modelContext.fetchCount(categoryDescriptor)
+            let existingCategories = try modelContext.fetch(categoryDescriptor)
             
-            if existingCategoriesCount == 0 {
-                // Kategorileri ekle (önceki kod aynı)
-                modelContext.insert(Kategori(isim: "Maaş", ikonAdi: "dollarsign.circle.fill", tur: .gelir, renkHex: "#34C759", localizationKey: "category.salary"))
-                modelContext.insert(Kategori(isim: "Ek Gelir", ikonAdi: "chart.pie.fill", tur: .gelir, renkHex: "#007AFF", localizationKey: "category.extra_income"))
-                modelContext.insert(Kategori(isim: "Yatırım", ikonAdi: "chart.line.uptrend.xyaxis", tur: .gelir, renkHex: "#AF52DE", localizationKey: "category.investment"))
-                modelContext.insert(Kategori(isim: "Market", ikonAdi: "cart.fill", tur: .gider, renkHex: "#FF9500", localizationKey: "category.groceries"))
-                modelContext.insert(Kategori(isim: "Restoran", ikonAdi: "fork.knife", tur: .gider, renkHex: "#FF3B30", localizationKey: "category.restaurant"))
-                modelContext.insert(Kategori(isim: "Ulaşım", ikonAdi: "car.fill", tur: .gider, renkHex: "#5E5CE6", localizationKey: "category.transport"))
-                modelContext.insert(Kategori(isim: "Faturalar", ikonAdi: "bolt.fill", tur: .gider, renkHex: "#FFCC00", localizationKey: "category.bills"))
-                modelContext.insert(Kategori(isim: "Eğlence", ikonAdi: "film.fill", tur: .gider, renkHex: "#32ADE6", localizationKey: "category.entertainment"))
-                modelContext.insert(Kategori(isim: "Sağlık", ikonAdi: "pills.fill", tur: .gider, renkHex: "#64D2FF", localizationKey: "category.health"))
-                modelContext.insert(Kategori(isim: "Giyim", ikonAdi: "tshirt.fill", tur: .gider, renkHex: "#FF2D55", localizationKey: "category.clothing"))
-                modelContext.insert(Kategori(isim: "Ev", ikonAdi: "house.fill", tur: .gider, renkHex: "#A2845E", localizationKey: "category.home"))
-                modelContext.insert(Kategori(isim: "Hediye", ikonAdi: "gift.fill", tur: .gider, renkHex: "#BF5AF2", localizationKey: "category.gift"))
-                modelContext.insert(Kategori(isim: "Kredi Ödemesi", ikonAdi: "creditcard.and.123", tur: .gider, renkHex: "#8E8E93", localizationKey: "category.loan_payment"))
-                modelContext.insert(Kategori(isim: "Diğer", ikonAdi: "ellipsis.circle.fill", tur: .gider, renkHex: "#8E8E93", localizationKey: "category.other"))
+            // Sistem kategorilerini tanımla
+            let systemCategories: [(isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String)] = [
+                ("Maaş", "dollarsign.circle.fill", .gelir, "#34C759", "category.salary"),
+                ("Ek Gelir", "chart.pie.fill", .gelir, "#007AFF", "category.extra_income"),
+                ("Yatırım", "chart.line.uptrend.xyaxis", .gelir, "#AF52DE", "category.investment"),
+                ("Market", "cart.fill", .gider, "#FF9500", "category.groceries"),
+                ("Restoran", "fork.knife", .gider, "#FF3B30", "category.restaurant"),
+                ("Ulaşım", "car.fill", .gider, "#5E5CE6", "category.transport"),
+                ("Faturalar", "bolt.fill", .gider, "#FFCC00", "category.bills"),
+                ("Eğlence", "film.fill", .gider, "#32ADE6", "category.entertainment"),
+                ("Sağlık", "pills.fill", .gider, "#64D2FF", "category.health"),
+                ("Giyim", "tshirt.fill", .gider, "#FF2D55", "category.clothing"),
+                ("Ev", "house.fill", .gider, "#A2845E", "category.home"),
+                ("Hediye", "gift.fill", .gider, "#BF5AF2", "category.gift"),
+                ("Kredi Ödemesi", "creditcard.and.123", .gider, "#8E8E93", "category.loan_payment"),
+                ("Diğer", "ellipsis.circle.fill", .gider, "#30B0C7", "category.other")
+            ]
+            
+            // Eksik sistem kategorilerini ekle
+            for systemCat in systemCategories {
+                let exists = existingCategories.contains { cat in
+                    cat.localizationKey == systemCat.localizationKey
+                }
+                
+                if !exists {
+                    let newCategory = Kategori(
+                        isim: systemCat.isim,
+                        ikonAdi: systemCat.ikonAdi,
+                        tur: systemCat.tur,
+                        renkHex: systemCat.renkHex,
+                        localizationKey: systemCat.localizationKey
+                    )
+                    modelContext.insert(newCategory)
+                    Logger.log("Eksik sistem kategorisi eklendi: \(systemCat.isim)", log: Logger.data)
+                }
             }
-
-            let metadataDescriptor = FetchDescriptor<AppMetadata>()
-            if let metadataToUpdate = try modelContext.fetch(metadataDescriptor).first {
+            
+            // Metadata'yı güncelle veya oluştur
+            if let metadataToUpdate = metadata {
                 metadataToUpdate.defaultCategoriesAdded = true
             } else {
                 let newMetadata = AppMetadata(defaultCategoriesAdded: true)

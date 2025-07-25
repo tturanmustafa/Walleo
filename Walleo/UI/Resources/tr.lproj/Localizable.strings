@@ -1095,3 +1095,6 @@
 "reports.category.busiest_hours" = "En Yoğun Saatler";
 "search.placeholder" = "İşlem, kategori veya tutar ara...";
 "paywall.purchase_button_regular" = "Premium'u Başlat";
+
+"alert.system_category.title" = "Sistem Kategorisi";
+"alert.system_category.message" = "Bu bir sistem kategorisidir ve silinemez.";

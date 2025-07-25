@@ -42,7 +42,29 @@ struct KategoriDuzenleView: View {
     }
     
     let ikonlar = [
-        "tag.fill", "cart.fill", "fork.knife", "car.fill", "bolt.fill", "film.fill", "gift.fill", "house.fill", "airplane", "bus.fill", "fuelpump.fill", "gamecontroller.fill", "pills.fill", "tshirt.fill", "pawprint.fill", "ellipsis.circle.fill", "dollarsign.circle.fill", "chart.pie.fill", "banknote.fill", "briefcase.fill", "arrow.down.to.line.alt"
+        // Mevcut ikonlar
+        "tag.fill", "cart.fill", "fork.knife", "car.fill", "bolt.fill",
+        "film.fill", "gift.fill", "house.fill", "airplane", "bus.fill",
+        "fuelpump.fill", "gamecontroller.fill", "pills.fill", "tshirt.fill",
+        "pawprint.fill", "ellipsis.circle.fill", "dollarsign.circle.fill",
+        "chart.pie.fill", "banknote.fill", "briefcase.fill", "arrow.down.to.line.alt",
+        
+        // YENİ EKLENEN 15 İKON
+        "heart.fill",              // Sağlık, bağış, sosyal yardım
+        "book.fill",               // Eğitim, kitap
+        "graduationcap.fill",      // Eğitim, kurs
+        "sportscourt.fill",        // Spor, fitness
+        "figure.walk",             // Yürüyüş, aktivite
+        "bed.double.fill",         // Konaklama, otel
+        "cup.and.saucer.fill",     // Kafe, kahve
+        "music.note",              // Müzik, konser
+        "paintbrush.fill",         // Sanat, hobi
+        "wrench.fill",             // Tamir, bakım
+        "scissors",                // Kuaför, güzellik
+        "phone.fill",              // Telefon, iletişim
+        "envelope.fill",           // Posta, kargo
+        "creditcard.fill",         // Kredi kartı ödemeleri
+        "building.2.fill"          // Kira, emlak
     ]
     
     private var navigationTitleKey: LocalizedStringKey {

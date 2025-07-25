@@ -1046,3 +1046,6 @@
 "reports.category.busiest_hours" = "ชั่วโมงที่ยุ่งที่สุด";
 "search.placeholder" = "ค้นหาธุรกรรม หมวดหมู่ หรือจำนวนเงิน...";
 "paywall.purchase_button_regular" = "เริ่มพรีเมียม";
+
+"alert.system_category.title" = "หมวดหมู่ระบบ";
+"alert.system_category.message" = "นี่เป็นหมวดหมู่ของระบบและไม่สามารถลบได้";

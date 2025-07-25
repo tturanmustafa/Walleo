@@ -1048,3 +1048,6 @@
 "reports.category.busiest_hours" = "Heures de Pointe";
 "search.placeholder" = "Rechercher transactions, catégories ou montants...";
 "paywall.purchase_button_regular" = "Commencer Premium";
+
+"alert.system_category.title" = "Catégorie Système";
+"alert.system_category.message" = "Il s'agit d'une catégorie système et elle ne peut pas être supprimée.";

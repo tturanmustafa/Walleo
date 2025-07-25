@@ -1046,3 +1046,6 @@
 "reports.category.busiest_hours" = "最繁忙时段";
 "search.placeholder" = "搜索交易、类别或金额...";
 "paywall.purchase_button_regular" = "开始高级版";
+
+"alert.system_category.title" = "系统类别";
+"alert.system_category.message" = "这是系统类别，无法删除。";
