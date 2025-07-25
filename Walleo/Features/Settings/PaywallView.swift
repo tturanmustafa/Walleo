@@ -252,12 +252,12 @@ struct PaywallView: View {
             
             HStack(spacing: 10) {
                 Link(LocalizedStringKey("paywall.privacy"),
-                     destination: URL(string: "https://yourapp.com/privacy")!)
+                     destination: URL(string: "https://walleo.app/#privacy")!)
                 
                 Text("•")
                 
                 Link(LocalizedStringKey("paywall.terms"),
-                     destination: URL(string: "https://yourapp.com/terms")!)
+                     destination: URL(string: "https://walleo.app/#terms")!)
             }
             .font(.caption2)
             .foregroundColor(.secondary)
