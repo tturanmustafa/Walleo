@@ -156,7 +156,7 @@ struct PaywallView: View {
         VStack(spacing: 8) {
             // Smaller Feature Cards
             TabView(selection: $selectedFeatureIndex) {
-                ForEach(0..<5, id: \.self) { index in
+                ForEach(0..<4, id: \.self) { index in
                     CompactFeatureCard(feature: features[index])
                         .tag(index)
                         .padding(.horizontal)
@@ -167,7 +167,7 @@ struct PaywallView: View {
             
             // Smaller Page Indicator
             HStack(spacing: 6) {
-                ForEach(0..<5, id: \.self) { index in
+                ForEach(0..<4, id: \.self) { index in  // 5'ten 4'e değişti
                     Circle()
                         .fill(selectedFeatureIndex == index ? Color.accentColor : Color.gray.opacity(0.3))
                         .frame(width: selectedFeatureIndex == index ? 8 : 6,
@@ -301,13 +301,6 @@ struct PaywallView: View {
                 titleKey: "paywall.feature.reports.title",
                 descriptionKey: "paywall.feature.reports.description",
                 detailKey: "paywall.feature.reports.detail"
-            ),
-            PremiumFeature(
-                icon: "doc.text.fill",
-                iconColor: .red,
-                titleKey: "paywall.feature.pdf.title",
-                descriptionKey: "paywall.feature.pdf.description",
-                detailKey: "paywall.feature.pdf.detail"
             )
         ]
     }
