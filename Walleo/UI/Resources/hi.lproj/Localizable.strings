@@ -1049,3 +1049,14 @@
 
 "alert.system_category.title" = "सिस्टम श्रेणी";
 "alert.system_category.message" = "यह एक सिस्टम श्रेणी है और इसे हटाया नहीं जा सकता।";
+"notification.loan.due.title" = "ऋण भुगतान देय";
+"notification.loan.due.body" = "%@ ऋण का %@ का भुगतान निकट आ रहा है।";
+"notification.loan.reminder.title" = "ऋण भुगतान अनुस्मारक";
+"notification.loan.reminder.body_line1" = "%@ ऋण भुगतान";
+"notification.loan.reminder.body_line2" = "राशि: %@";
+"notification.loan.reminder.body_line3" = "नियत तारीख: %@";
+"notification.credit_card.due.title" = "क्रेडिट कार्ड भुगतान देय";
+"notification.credit_card.due.body" = "%@ कार्ड की भुगतान नियत तारीख %@ निकट आ रही है।";
+"notification.budget.warning.title" = "बजट चेतावनी";
+"notification.budget.warning.body" = "आपने अपने %@ बजट का %d%% खर्च कर दिया है!";
+"settings.notifications.credit_card_stepper" = "नियत तारीख से %d दिन पहले";

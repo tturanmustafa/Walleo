@@ -94,6 +94,19 @@ extension Bildirim {
             
             ikonAdi = "sparkles"
             ikonRengi = .yellow
+            
+        case .taksitHatirlatici:
+            baslik = languageBundle.localizedString(forKey: "notification.loan.reminder.title", value: "Loan Payment Reminder", table: nil)
+            let hesapAdi = self.ilgiliIsim ?? ""
+            let taksitTutari = formatCurrency(amount: self.tutar1 ?? 0, currencyCode: paraKodu, localeIdentifier: dilKodu)
+            let odemeTarihi = self.tarih1?.formatted(Date.FormatStyle(date: .long, time: .omitted, locale: Locale(identifier: dilKodu))) ?? ""
+            
+            aciklamaLine1 = String(format: languageBundle.localizedString(forKey: "notification.loan.reminder.body_line1", value: "", table: nil), hesapAdi)
+            aciklamaLine2 = String(format: languageBundle.localizedString(forKey: "notification.loan.reminder.body_line2", value: "", table: nil), taksitTutari)
+            aciklamaLine3 = String(format: languageBundle.localizedString(forKey: "notification.loan.reminder.body_line3", value: "", table: nil), odemeTarihi)
+            
+            ikonAdi = "banknote.fill"
+            ikonRengi = .orange
 
         // GÜNCELLEME: Varsayılan durum yeni yapıya uygun hale getirildi.
         default:

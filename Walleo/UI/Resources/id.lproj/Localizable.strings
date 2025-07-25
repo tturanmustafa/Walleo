@@ -1049,3 +1049,14 @@
 
 "alert.system_category.title" = "Kategori Sistem";
 "alert.system_category.message" = "Ini adalah kategori sistem dan tidak dapat dihapus.";
+"notification.loan.due.title" = "Pembayaran Pinjaman Jatuh Tempo";
+"notification.loan.due.body" = "Pembayaran pinjaman %@ sebesar %@ akan segera jatuh tempo.";
+"notification.loan.reminder.title" = "Pengingat Pembayaran Pinjaman";
+"notification.loan.reminder.body_line1" = "Pembayaran pinjaman %@";
+"notification.loan.reminder.body_line2" = "Jumlah: %@";
+"notification.loan.reminder.body_line3" = "Tanggal jatuh tempo: %@";
+"notification.credit_card.due.title" = "Pembayaran Kartu Kredit Jatuh Tempo";
+"notification.credit_card.due.body" = "Tanggal jatuh tempo pembayaran kartu %@ pada %@ akan segera tiba.";
+"notification.budget.warning.title" = "Peringatan Anggaran";
+"notification.budget.warning.body" = "Anda telah menghabiskan %d%% dari anggaran %@ Anda!";
+"settings.notifications.credit_card_stepper" = "%d hari sebelum tanggal jatuh tempo";

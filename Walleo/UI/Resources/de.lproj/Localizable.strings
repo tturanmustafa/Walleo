@@ -1050,3 +1050,14 @@
 
 "alert.system_category.title" = "Systemkategorie";
 "alert.system_category.message" = "Dies ist eine Systemkategorie und kann nicht gelöscht werden.";
+"notification.loan.due.title" = "Kreditrate fällig";
+"notification.loan.due.body" = "Die Zahlung von %@ für Ihren Kredit '%@' ist bald fällig.";
+"notification.loan.reminder.title" = "Erinnerung: Kreditrate";
+"notification.loan.reminder.body_line1" = "Zahlung für Kredit '%@'";
+"notification.loan.reminder.body_line2" = "Betrag: %@";
+"notification.loan.reminder.body_line3" = "Fälligkeitsdatum: %@";
+"notification.credit_card.due.title" = "Kreditkartenzahlung fällig";
+"notification.credit_card.due.body" = "Die Zahlung für Ihre Karte '%@' ist am %@ fällig.";
+"notification.budget.warning.title" = "Budgetwarnung";
+"notification.budget.warning.body" = "Sie haben %d%% Ihres Budgets '%@' ausgegeben!";
+"settings.notifications.credit_card_stepper" = "%d Tage vor Fälligkeit";

@@ -54,6 +54,8 @@ class AppSettings: ObservableObject {
     @AppStorage("currencyCode") var currencyCode: String = Currency.TRY.rawValue
     @AppStorage("isCloudKitEnabled") var isCloudKitEnabled: Bool = true
     @AppStorage("hasCompletedOnboarding") var hasCompletedOnboarding: Bool = false
+    @AppStorage("notifications_credit_card_reminders_enabled") var creditCardRemindersEnabled: Bool = true
+    @AppStorage("notifications_credit_card_reminder_days") var creditCardReminderDays: Int = 5
 
 
 

@@ -2,15 +2,33 @@ import SwiftUI
 import SwiftData
 import RevenueCat
 import CloudKit
-import BackgroundTasks // Arka plan görevleri için bu framework'ü import ediyoruz
+import BackgroundTasks
+import UserNotifications // YENİ: Ekleyin
+
+// YENİ: AppDelegate sınıfı
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        UNUserNotificationCenter.current().delegate = self
+        return true
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound, .badge])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
+    }
+}
 
 @main
 struct WalleoApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var entitlementManager = EntitlementManager()
     @StateObject private var appSettings = AppSettings()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
-    
     let modelContainer: ModelContainer
     @State private var viewID = UUID()
     private let budgetRenewalTaskID = "com.walleo.bgtask.renewBudgets"
@@ -30,7 +48,6 @@ struct WalleoApp: App {
                 config = ModelConfiguration("WalleoDB")
             }
             
-            // DÜZELTME: Silinen AileUyesi ve AileDavet modelleri buradan kaldırıldı.
             modelContainer = try ModelContainer(
                 for: Hesap.self, Islem.self, Kategori.self, Butce.self,
                      Bildirim.self, TransactionMemory.self, AppMetadata.self, Transfer.self,
@@ -40,6 +57,8 @@ struct WalleoApp: App {
             fatalError("ModelContainer oluşturulamadı: \(error)")
         }
         registerBackgroundTask()
+        
+        // NotificationManager başlatmayı buradan kaldırın
     }
 
     var body: some Scene {
@@ -57,30 +76,56 @@ struct WalleoApp: App {
                     .onReceive(NotificationCenter.default.publisher(for: .appShouldDeleteAllData)) { _ in
                         deleteAllData()
                     }
+                    .onChange(of: scenePhase) { _, newPhase in
+                        if newPhase == .active {
+                            NotificationManager.shared.updateBadgeCount()
+                        }
+                    }
+                    // YENİ: NotificationManager'ı burada başlatın
+                    .task {
+                        await setupNotificationManager()
+                    }
             } else {
                 OnboardingView()
                     .environmentObject(appSettings)
                     .environmentObject(entitlementManager)
-                    .modelContainer(modelContainer)  // Bu satırı ekleyin
+                    .modelContainer(modelContainer)
+                    // YENİ: Onboarding için de ekleyin
+                    .task {
+                        await setupNotificationManager()
+                    }
             }
         }
         .modelContainer(modelContainer)
         .onChange(of: scenePhase) { oldPhase, newPhase in
             if newPhase == .background {
-                // Uygulama arka plana atıldığında, bütçe yenileme görevini zamanla
                 scheduleBudgetRenewalTask()
             }
         }
     }
-
-    private func deleteAllData() {
-        // DÜZELTME: Doğru property adı kullanılıyor.
+    
+    // YENİ: NotificationManager setup fonksiyonu
+    @MainActor
+    private func setupNotificationManager() async {
+        let context = modelContainer.mainContext
+        NotificationManager.shared.configure(
+            modelContext: context,
+            appSettings: appSettings
+        )
         
+        // İzin iste ve genel hatırlatıcıları kur
+        NotificationManager.shared.requestAuthorization { granted in
+            if granted && self.appSettings.masterNotificationsEnabled {
+                NotificationManager.shared.scheduleGenericReminders()
+            }
+        }
+    }
+    // Diğer fonksiyonlar aynı kalacak...
+    private func deleteAllData() {
         Task {
             await MainActor.run {
                 let context = modelContainer.mainContext
                 do {
-                    // DÜZELTME: Silinen modellerle ilgili satırlar kaldırıldı.
                     try context.delete(model: Islem.self)
                     try context.delete(model: Butce.self)
                     let userCreatedCategoriesPredicate = #Predicate<Kategori> { $0.localizationKey == nil }
@@ -107,20 +152,16 @@ struct WalleoApp: App {
                 Logger.log("Arka plan görevi zaman aşımına uğradı.", log: Logger.service, type: .error)
             }
 
-            // --- DÜZELTME: GÜVENLİ VERİTABANI BAĞLANTISI ---
-            // Arka plan görevi için ana konteynırdan yeni ve bağımsız bir context oluşturuyoruz.
-            let backgroundContext = ModelContext(modelContainer)
+            let backgroundContext = ModelContext(self.modelContainer)
             let service = BudgetRenewalService(modelContext: backgroundContext)
-            // --- DÜZELTME SONU ---
             
             Task {
                 await service.runDailyChecks()
                 
-                // Değişiklikleri kaydetmeye çalış
                 do {
                     try backgroundContext.save()
                     task.setTaskCompleted(success: true)
-                    Logger.log("Arka plan görevi TAMAMLANDI ve değişiklikler kaydedildi.", log: Logger.service, type: .info)
+                    Logger.log("Arka plan görevi TAMAMLANDI ve değişiklikler kaydedildi.", log: Logger.service)
                 } catch {
                     task.setTaskCompleted(success: false)
                     Logger.log("Arka plan context'i kaydedilirken hata: \(error)", log: Logger.service, type: .error)
@@ -131,10 +172,8 @@ struct WalleoApp: App {
         }
     }
 
-    /// Arka plan görevinin bir sonraki sefer için çalışmasını iOS'tan talep eder.
     private func scheduleBudgetRenewalTask() {
         let request = BGAppRefreshTaskRequest(identifier: budgetRenewalTaskID)
-        // Görevin en erken ne zaman çalışabileceğini belirtiyoruz (örn: 3 saat sonra)
         request.earliestBeginDate = Calendar.current.date(byAdding: .hour, value: 3, to: Date())
         
         do {

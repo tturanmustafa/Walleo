@@ -68,8 +68,11 @@ struct BildirimAyarlariView: View {
             .disabled(!appSettings.masterNotificationsEnabled)
             
             Section(header: Text(LocalizedStringKey("settings.notifications.credit_card_section"))) {
-                // TODO: AppSettings'e kredi kartı için yeni bir @AppStorage eklenmeli
-                Toggle(LocalizedStringKey("settings.notifications.credit_card_toggle"), isOn: .constant(true))
+                Toggle(LocalizedStringKey("settings.notifications.credit_card_toggle"), isOn: $appSettings.creditCardRemindersEnabled)
+                
+                if appSettings.creditCardRemindersEnabled {
+                    Stepper(creditCardStepperLabel, value: $appSettings.creditCardReminderDays, in: 1...10)
+                }
             }
             .disabled(!appSettings.masterNotificationsEnabled)
         }
@@ -98,6 +101,12 @@ struct BildirimAyarlariView: View {
                 }
             }
         )
+    }
+    
+    private var creditCardStepperLabel: String {
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        let formatString = languageBundle.localizedString(forKey: "settings.notifications.credit_card_stepper", value: "%d days before due date", table: nil)
+        return String(format: formatString, appSettings.creditCardReminderDays)
     }
 }
 
