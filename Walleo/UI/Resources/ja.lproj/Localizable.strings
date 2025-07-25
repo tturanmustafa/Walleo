@@ -1049,3 +1049,14 @@
 
 "alert.system_category.title" = "システムカテゴリ";
 "alert.system_category.message" = "これはシステムカテゴリであり、削除できません。";
+"notification.loan.due.title" = "ローン返済期日";
+"notification.loan.due.body" = "ローン「%@」の%@の返済が近づいています。";
+"notification.loan.reminder.title" = "ローン返済のリマインダー";
+"notification.loan.reminder.body_line1" = "ローン「%@」の返済";
+"notification.loan.reminder.body_line2" = "金額: %@";
+"notification.loan.reminder.body_line3" = "支払期日: %@";
+"notification.credit_card.due.title" = "クレジットカード支払期日";
+"notification.credit_card.due.body" = "カード「%@」の支払期日%@が近づいています。";
+"notification.budget.warning.title" = "予算の警告";
+"notification.budget.warning.body" = "予算「%2$@」の%1$d%%を使用しました！";
+"settings.notifications.credit_card_stepper" = "期日の%d日前";

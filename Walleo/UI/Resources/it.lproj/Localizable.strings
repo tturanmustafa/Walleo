@@ -1051,3 +1051,14 @@
 
 "alert.system_category.title" = "Categoria di Sistema";
 "alert.system_category.message" = "Questa è una categoria di sistema e non può essere eliminata.";
+"notification.loan.due.title" = "Pagamento Prestito in Scadenza";
+"notification.loan.due.body" = "Il pagamento di %@ per il prestito '%@' è in avvicinamento.";
+"notification.loan.reminder.title" = "Promemoria Pagamento Prestito";
+"notification.loan.reminder.body_line1" = "Pagamento prestito '%@'";
+"notification.loan.reminder.body_line2" = "Importo: %@";
+"notification.loan.reminder.body_line3" = "Data di scadenza: %@";
+"notification.credit_card.due.title" = "Pagamento Carta di Credito in Scadenza";
+"notification.credit_card.due.body" = "La data di scadenza del pagamento della carta '%@' (%@) è in avvicinamento.";
+"notification.budget.warning.title" = "Avviso Budget";
+"notification.budget.warning.body" = "Hai speso il %d%% del tuo budget '%@'!";
+"settings.notifications.credit_card_stepper" = "%d giorni prima della scadenza";

@@ -95,6 +95,17 @@ class BudgetRenewalService {
             await sendPreRenewalNotifications(for: bugun)
         }
     }
+    
+    private func checkDailyNotifications() async {
+        // Kredi taksitlerini kontrol et
+        NotificationManager.shared.checkLoanInstallments()
+        
+        // Kredi kartı ödeme tarihlerini kontrol et
+        NotificationManager.shared.checkCreditCardDueDates()
+        
+        // Badge sayısını güncelle
+        NotificationManager.shared.updateBadgeCount()
+    }
 
     // MARK: - Yenileme Fonksiyonları
 

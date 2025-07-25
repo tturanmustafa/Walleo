@@ -1049,3 +1049,14 @@
 
 "alert.system_category.title" = "หมวดหมู่ระบบ";
 "alert.system_category.message" = "นี่เป็นหมวดหมู่ของระบบและไม่สามารถลบได้";
+"notification.loan.due.title" = "ถึงกำหนดชำระเงินกู้";
+"notification.loan.due.body" = "การชำระเงินกู้ %@ จำนวน %@ ใกล้ถึงกำหนดแล้ว";
+"notification.loan.reminder.title" = "การแจ้งเตือนชำระเงินกู้";
+"notification.loan.reminder.body_line1" = "การชำระเงินกู้ %@";
+"notification.loan.reminder.body_line2" = "จำนวน: %@";
+"notification.loan.reminder.body_line3" = "วันครบกำหนด: %@";
+"notification.credit_card.due.title" = "ถึงกำหนดชำระบัตรเครดิต";
+"notification.credit_card.due.body" = "วันครบกำหนดชำระบัตร %@ วันที่ %@ ใกล้เข้ามาแล้ว";
+"notification.budget.warning.title" = "คำเตือนงบประมาณ";
+"notification.budget.warning.body" = "คุณใช้ไปแล้ว %d%% ของงบประมาณ %@!";
+"settings.notifications.credit_card_stepper" = "%d วันก่อนวันครบกำหนด";

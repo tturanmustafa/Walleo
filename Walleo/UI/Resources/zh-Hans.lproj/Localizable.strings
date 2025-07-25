@@ -1049,3 +1049,14 @@
 
 "alert.system_category.title" = "系统类别";
 "alert.system_category.message" = "这是系统类别，无法删除。";
+"notification.loan.due.title" = "贷款还款到期";
+"notification.loan.due.body" = "您的贷款“%@”有一笔%@的还款即将到期。";
+"notification.loan.reminder.title" = "贷款还款提醒";
+"notification.loan.reminder.body_line1" = "贷款“%@”还款";
+"notification.loan.reminder.body_line2" = "金额: %@";
+"notification.loan.reminder.body_line3" = "到期日: %@";
+"notification.credit_card.due.title" = "信用卡还款到期";
+"notification.credit_card.due.body" = "您的“%@”卡还款日%@即将到来。";
+"notification.budget.warning.title" = "预算警告";
+"notification.budget.warning.body" = "您已使用了预算“%2$@”的%1$d%%！";
+"settings.notifications.credit_card_stepper" = "到期前%d天";

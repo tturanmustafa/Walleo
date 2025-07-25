@@ -1049,3 +1049,14 @@
 
 "alert.system_category.title" = "Kategori Sistem";
 "alert.system_category.message" = "Ini adalah kategori sistem dan tidak boleh dipadamkan.";
+"notification.loan.due.title" = "Bayaran Pinjaman Perlu Dibayar";
+"notification.loan.due.body" = "Bayaran pinjaman %@ sebanyak %@ akan tiba.";
+"notification.loan.reminder.title" = "Peringatan Bayaran Pinjaman";
+"notification.loan.reminder.body_line1" = "Bayaran pinjaman %@";
+"notification.loan.reminder.body_line2" = "Jumlah: %@";
+"notification.loan.reminder.body_line3" = "Tarikh akhir: %@";
+"notification.credit_card.due.title" = "Bayaran Kad Kredit Perlu Dibayar";
+"notification.credit_card.due.body" = "Tarikh akhir bayaran kad %@ pada %@ akan tiba.";
+"notification.budget.warning.title" = "Amaran Bajet";
+"notification.budget.warning.body" = "Anda telah membelanjakan %d%% daripada bajet %@ anda!";
+"settings.notifications.credit_card_stepper" = "%d hari sebelum tarikh akhir";

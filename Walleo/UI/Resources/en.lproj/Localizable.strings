@@ -1096,3 +1096,15 @@
 
 "alert.system_category.title" = "System Category";
 "alert.system_category.message" = "This is a system category and cannot be deleted.";
+
+"notification.loan.due.title" = "Loan Payment Due";
+"notification.loan.due.body" = "%@ loan payment of %@ is approaching.";
+"notification.loan.reminder.title" = "Loan Payment Reminder";
+"notification.loan.reminder.body_line1" = "%@ loan payment";
+"notification.loan.reminder.body_line2" = "Amount: %@";
+"notification.loan.reminder.body_line3" = "Due date: %@";
+"notification.credit_card.due.title" = "Credit Card Payment Due";
+"notification.credit_card.due.body" = "%@ card payment due date %@ is approaching.";
+"notification.budget.warning.title" = "Budget Warning";
+"notification.budget.warning.body" = "You've spent %d%% of your %@ budget!";
+"settings.notifications.credit_card_stepper" = "%d days before due date";

@@ -1051,3 +1051,14 @@
 
 "alert.system_category.title" = "Categoría del Sistema";
 "alert.system_category.message" = "Esta es una categoría del sistema y no se puede eliminar.";
+"notification.loan.due.title" = "Pago de Préstamo Próximo";
+"notification.loan.due.body" = "El pago de %@ para su préstamo '%@' está próximo a vencer.";
+"notification.loan.reminder.title" = "Recordatorio de Pago de Préstamo";
+"notification.loan.reminder.body_line1" = "Pago del préstamo '%@'";
+"notification.loan.reminder.body_line2" = "Importe: %@";
+"notification.loan.reminder.body_line3" = "Fecha de vencimiento: %@";
+"notification.credit_card.due.title" = "Vencimiento de Pago de Tarjeta de Crédito";
+"notification.credit_card.due.body" = "La fecha de vencimiento del pago de su tarjeta '%@' es el %@.";
+"notification.budget.warning.title" = "Alerta de Presupuesto";
+"notification.budget.warning.body" = "¡Ha gastado el %d%% de su presupuesto '%@'!";
+"settings.notifications.credit_card_stepper" = "%d días antes de la fecha de vencimiento";

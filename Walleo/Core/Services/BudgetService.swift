@@ -24,7 +24,7 @@ class BudgetService {
                 // budget.kategoriler bir optional array olduğu için güvenli bir şekilde kontrol ediyoruz.
                 budget.kategoriler?.contains(where: { $0.id == categoryID }) ?? false
             }
-
+            
             guard !relevantBudgets.isEmpty else { return }
             
             // 3. ADIM: Bu ayki TÜM gider işlemlerini TEK BİR BASİT SORGUDAYLA çek.
@@ -66,9 +66,23 @@ class BudgetService {
         if spendingPercentage >= 1.0 {
             let notification = Bildirim(tur: .butceLimitiAsildi, hedefID: budget.id, ilgiliIsim: budget.isim, tutar1: budget.limitTutar, tutar2: totalSpent - budget.limitTutar)
             context.insert(notification)
+            
+            // YENİ: Local notification ekle
+            NotificationManager.shared.scheduleBudgetNotification(
+                budgetName: budget.isim,
+                percentage: spendingPercentage,
+                notificationID: "budget-\(budget.id)-exceeded"
+            )
         } else if spendingPercentage >= settings.budgetAlertThreshold {
             let notification = Bildirim(tur: .butceLimitiYaklasti, hedefID: budget.id, ilgiliIsim: budget.isim, tutar1: budget.limitTutar, tutar2: spendingPercentage)
             context.insert(notification)
+            
+            // YENİ: Local notification ekle
+            NotificationManager.shared.scheduleBudgetNotification(
+                budgetName: budget.isim,
+                percentage: spendingPercentage,
+                notificationID: "budget-\(budget.id)-threshold"
+            )
         }
     }
 }

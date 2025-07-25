@@ -1049,3 +1049,14 @@
 
 "alert.system_category.title" = "Danh mục Hệ thống";
 "alert.system_category.message" = "Đây là danh mục hệ thống và không thể xóa.";
+"notification.loan.due.title" = "Đến Hạn Thanh Toán Khoản Vay";
+"notification.loan.due.body" = "Khoản thanh toán %@ cho khoản vay '%@' sắp đến hạn.";
+"notification.loan.reminder.title" = "Nhắc Nhở Thanh Toán Khoản Vay";
+"notification.loan.reminder.body_line1" = "Thanh toán khoản vay '%@'";
+"notification.loan.reminder.body_line2" = "Số tiền: %@";
+"notification.loan.reminder.body_line3" = "Ngày đến hạn: %@";
+"notification.credit_card.due.title" = "Đến Hạn Thanh Toán Thẻ Tín Dụng";
+"notification.credit_card.due.body" = "Ngày đến hạn thanh toán thẻ '%@' vào %@ sắp đến.";
+"notification.budget.warning.title" = "Cảnh Báo Ngân Sách";
+"notification.budget.warning.body" = "Bạn đã chi %d%% ngân sách '%@' của mình!";
+"settings.notifications.credit_card_stepper" = "%d ngày trước hạn";

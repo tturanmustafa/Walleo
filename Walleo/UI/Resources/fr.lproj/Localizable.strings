@@ -1051,3 +1051,14 @@
 
 "alert.system_category.title" = "Catégorie Système";
 "alert.system_category.message" = "Il s'agit d'une catégorie système et elle ne peut pas être supprimée.";
+"notification.loan.due.title" = "Paiement de prêt dû";
+"notification.loan.due.body" = "Le paiement de %@ pour votre prêt '%@' approche.";
+"notification.loan.reminder.title" = "Rappel de paiement de prêt";
+"notification.loan.reminder.body_line1" = "Paiement du prêt '%@'";
+"notification.loan.reminder.body_line2" = "Montant : %@";
+"notification.loan.reminder.body_line3" = "Date d'échéance : %@";
+"notification.credit_card.due.title" = "Paiement de carte de crédit dû";
+"notification.credit_card.due.body" = "La date d'échéance du paiement de votre carte '%@' approche : %@.";
+"notification.budget.warning.title" = "Alerte Budget";
+"notification.budget.warning.body" = "Vous avez dépensé %d%% de votre budget '%@' !";
+"settings.notifications.credit_card_stepper" = "%d jours avant l'échéance";

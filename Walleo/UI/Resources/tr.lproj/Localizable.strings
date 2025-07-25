@@ -1098,3 +1098,15 @@
 
 "alert.system_category.title" = "Sistem Kategorisi";
 "alert.system_category.message" = "Bu bir sistem kategorisidir ve silinemez.";
+
+"notification.loan.due.title" = "Kredi Taksit Ödemesi";
+"notification.loan.due.body" = "%@ kredisi için %@ tutarında taksit ödemesi yaklaşıyor.";
+"notification.loan.reminder.title" = "Kredi Taksit Hatırlatıcısı";
+"notification.loan.reminder.body_line1" = "%@ kredisi taksit ödemesi";
+"notification.loan.reminder.body_line2" = "Tutar: %@";
+"notification.loan.reminder.body_line3" = "Ödeme tarihi: %@";
+"notification.credit_card.due.title" = "Kredi Kartı Ödeme Günü";
+"notification.credit_card.due.body" = "%@ kartının son ödeme tarihi %@ yaklaşıyor.";
+"notification.budget.warning.title" = "Bütçe Uyarısı";
+"notification.budget.warning.body" = "%@ bütçenizin %%%d'ini harcadınız!";
+"settings.notifications.credit_card_stepper" = "Vadeden %d gün önce";
