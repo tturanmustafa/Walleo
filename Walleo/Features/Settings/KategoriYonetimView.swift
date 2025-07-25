@@ -7,6 +7,7 @@ struct KategoriYonetimView: View {
     @Query(sort: \Kategori.isim) private var kategoriler: [Kategori]
     @State private var yeniKategoriEkleGoster = false
     @State private var silinecekKategori: Kategori?
+    @State private var sistemKategoriUyarisi = false  // YENİ EKLE
 
     private var gelirKategorileri: [Kategori] {
         kategoriler.filter { $0.tur == .gelir }
@@ -21,12 +22,15 @@ struct KategoriYonetimView: View {
                 ForEach(gelirKategorileri) { kategori in
                     kategoriSatiri(kategori: kategori)
                         .swipeActions(allowsFullSwipe: false) {
-                            if kategori.isim != "Kredi Ödemesi" {
-                                Button(role: .destructive) {
+                            Button(role: .destructive) {
+                                // Sistem kategorisi kontrolü
+                                if kategori.localizationKey != nil {
+                                    sistemKategoriUyarisi = true
+                                } else {
                                     silinecekKategori = kategori
-                                } label: {
-                                    Label("common.delete", systemImage: "trash")
                                 }
+                            } label: {
+                                Label("common.delete", systemImage: "trash")
                             }
                         }
                 }
@@ -36,12 +40,15 @@ struct KategoriYonetimView: View {
                 ForEach(giderKategorileri) { kategori in
                     kategoriSatiri(kategori: kategori)
                         .swipeActions(allowsFullSwipe: false) {
-                            if kategori.isim != "Kredi Ödemesi" {
-                                Button(role: .destructive) {
+                            Button(role: .destructive) {
+                                // Sistem kategorisi kontrolü
+                                if kategori.localizationKey != nil {
+                                    sistemKategoriUyarisi = true
+                                } else {
                                     silinecekKategori = kategori
-                                } label: {
-                                    Label("common.delete", systemImage: "trash")
                                 }
+                            } label: {
+                                Label("common.delete", systemImage: "trash")
                             }
                         }
                 }
@@ -65,28 +72,34 @@ struct KategoriYonetimView: View {
             presenting: silinecekKategori
         ) { kategori in
             Button(role: .destructive) {
-                if kategori.isim != "Kredi Ödemesi" {
-                    modelContext.delete(kategori)
-                    try? modelContext.save()
-                }
+                modelContext.delete(kategori)
+                try? modelContext.save()
             } label: { Text("common.delete") }
         } message: { kategori in
             let dilKodu = appSettings.languageCode
             guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
                   let languageBundle = Bundle(path: path) else {
-                return Text(kategori.isim) // Fallback
+                return Text(kategori.isim)
             }
 
             let kategoriAdi = languageBundle.localizedString(forKey: kategori.localizationKey ?? kategori.isim, value: kategori.isim, table: nil)
             let formatString = languageBundle.localizedString(forKey: "alert.delete_category.message_format", value: "", table: nil)
-            // GÜNCELLENDİ: 'return' eklendi.
             return Text(String(format: formatString, kategoriAdi))
+        }
+        // YENİ ALERT EKLE
+        .alert(
+            LocalizedStringKey("alert.system_category.title"),
+            isPresented: $sistemKategoriUyarisi
+        ) {
+            Button("common.ok", role: .cancel) { }
+        } message: {
+            Text(LocalizedStringKey("alert.system_category.message"))
         }
     }
     
     @ViewBuilder
     private func kategoriSatiri(kategori: Kategori) -> some View {
-        let isSystemCategory = kategori.isim == "Kredi Ödemesi"
+        let isSystemCategory = kategori.localizationKey != nil
         
         HStack {
             Image(systemName: kategori.ikonAdi)
@@ -96,13 +109,12 @@ struct KategoriYonetimView: View {
                 .cornerRadius(6)
             Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim))
         }
-        .opacity(isSystemCategory ? 0.5 : 1.0)
+        .opacity(isSystemCategory ? 0.7 : 1.0)
         .overlay(alignment: .trailing) {
-            if !isSystemCategory {
-                NavigationLink(destination: KategoriDuzenleView(kategori: kategori)) {
-                    EmptyView()
-                }.opacity(0)
-            }
+            // Sistem kategorileri için de NavigationLink aktif
+            NavigationLink(destination: KategoriDuzenleView(kategori: kategori)) {
+                EmptyView()
+            }.opacity(0)
         }
     }
 }

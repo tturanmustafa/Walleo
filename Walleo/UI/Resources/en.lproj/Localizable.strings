@@ -1093,3 +1093,6 @@
 "reports.category.busiest_hours" = "Busiest Hours";
 "search.placeholder" = "Search transactions, categories or amounts...";
 "paywall.purchase_button_regular" = "Start Premium";
+
+"alert.system_category.title" = "System Category";
+"alert.system_category.message" = "This is a system category and cannot be deleted.";

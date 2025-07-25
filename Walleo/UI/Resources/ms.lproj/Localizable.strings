@@ -1046,3 +1046,6 @@
 "reports.category.busiest_hours" = "Waktu Paling Sibuk";
 "search.placeholder" = "Cari urus niaga, kategori atau amaun...";
 "paywall.purchase_button_regular" = "Mulakan Premium";
+
+"alert.system_category.title" = "Kategori Sistem";
+"alert.system_category.message" = "Ini adalah kategori sistem dan tidak boleh dipadamkan.";

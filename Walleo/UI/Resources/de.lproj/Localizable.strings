@@ -1047,3 +1047,6 @@
 "reports.category.busiest_hours" = "Stoßzeiten";
 "search.placeholder" = "Transaktionen, Kategorien oder Beträge suchen...";
 "paywall.purchase_button_regular" = "Premium Starten";
+
+"alert.system_category.title" = "Systemkategorie";
+"alert.system_category.message" = "Dies ist eine Systemkategorie und kann nicht gelöscht werden.";

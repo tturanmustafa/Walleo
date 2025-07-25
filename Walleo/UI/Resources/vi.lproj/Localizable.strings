@@ -1046,3 +1046,6 @@
 "reports.category.busiest_hours" = "Giờ Bận rộn nhất";
 "search.placeholder" = "Tìm kiếm giao dịch, danh mục hoặc số tiền...";
 "paywall.purchase_button_regular" = "Bắt đầu Premium";
+
+"alert.system_category.title" = "Danh mục Hệ thống";
+"alert.system_category.message" = "Đây là danh mục hệ thống và không thể xóa.";

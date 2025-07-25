@@ -1046,3 +1046,6 @@
 "reports.category.busiest_hours" = "सबसे व्यस्त घंटे";
 "search.placeholder" = "लेन-देन, श्रेणियाँ या राशियाँ खोजें...";
 "paywall.purchase_button_regular" = "प्रीमियम शुरू करें";
+
+"alert.system_category.title" = "सिस्टम श्रेणी";
+"alert.system_category.message" = "यह एक सिस्टम श्रेणी है और इसे हटाया नहीं जा सकता।";
