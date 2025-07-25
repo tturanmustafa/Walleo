@@ -305,12 +305,21 @@ struct VeriYonetimiBolumu: View {
 
 // MARK: - AyarlarView+BilgiBolumu.swift
 struct BilgiBolumu: View {
+    // Versiyon ve build numarasını Bundle'dan al
+    private var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+    }
+    
+    private var buildNumber: String {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
+    }
+    
     var body: some View {
         Section(LocalizedStringKey("settings.section_info")) {
             HStack {
                 Text(LocalizedStringKey("settings.version"))
                 Spacer()
-                Text("1.0.0")
+                Text("\(appVersion) (\(buildNumber))")
                     .foregroundColor(.secondary)
             }
         }
