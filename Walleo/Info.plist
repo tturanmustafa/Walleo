@@ -2,20 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.walleo.bgtask.renewBudgets</string>
+	</array>
+	<key>CFBundleURLName</key>
+	<string>com.mustafamt.walleo</string>
+	<key>CFBundleURLSchemes</key>
+	<array>
+		<string>walleo</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
 		<string>processing</string>
 	</array>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>com.walleo.bgtask.renewBudgets</string>
-	</array>
-    <key>CFBundleURLSchemes</key>
-    <array>
-        <string>walleo</string>
-    </array>
-    <key>CFBundleURLName</key>
-    <string>com.mustafamt.walleo</string>
 </dict>
 </plist>

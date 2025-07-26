@@ -1060,3 +1060,127 @@
 "notification.budget.warning.title" = "बजट चेतावनी";
 "notification.budget.warning.body" = "आपने अपने %@ बजट का %d%% खर्च कर दिया है!";
 "settings.notifications.credit_card_stepper" = "नियत तारीख से %d दिन पहले";
+
+// सामान्य
+"settings.how_it_works" = "यह कैसे काम करता है";
+"how_it_works.title" = "यह कैसे काम करता है";
+"how_it_works.tips" = "टिप्स";
+"how_it_works.used" = "उपयोग किया गया";
+"how_it_works.premium_feature" = "प्रीमियम सुविधा";
+
+// श्रेणियाँ
+"how_it_works.category.quick_start" = "त्वरित शुरुआत";
+"how_it_works.category.accounts" = "खाते";
+"how_it_works.category.transactions" = "लेनदेन";
+"how_it_works.category.budgets" = "बजट";
+"how_it_works.category.reports" = "रिपोर्ट";
+"how_it_works.category.advanced" = "उन्नत";
+
+// त्वरित शुरुआत
+"how_it_works.quick_start.first_steps.title" = "पहले कदम";
+"how_it_works.quick_start.first_steps.summary" = "Walleo के साथ शुरुआत करने का सबसे आसान तरीका";
+"how_it_works.quick_start.first_steps.step1" = "खाते टैब से अपना पहला वॉलेट खाता बनाएं";
+"how_it_works.quick_start.first_steps.step2" = "होम स्क्रीन पर + बटन दबाकर अपनी पहली आय/व्यय जोड़ें";
+"how_it_works.quick_start.first_steps.step3" = "लेनदेन नाम टाइप करते समय स्वचालित श्रेणी सुझावों का उपयोग करें";
+"how_it_works.quick_start.first_steps.step4" = "डैशबोर्ड टैब से अपनी वित्तीय स्थिति देखें";
+"how_it_works.quick_start.first_steps.tip1" = "प्रारंभिक शेष सही दर्ज करना महत्वपूर्ण है";
+"how_it_works.quick_start.first_steps.tip2" = "नियमित लेनदेन प्रविष्टि के लिए दैनिक अनुस्मारक सक्षम करें";
+
+"how_it_works.quick_start.navigation.title" = "ऐप में नेविगेट करना";
+"how_it_works.quick_start.navigation.summary" = "5 मुख्य टैब के साथ आसान नेविगेशन";
+"how_it_works.quick_start.navigation.step1" = "डैशबोर्ड: अपना वित्तीय सारांश देखें";
+"how_it_works.quick_start.navigation.step2" = "खाते: अपने वॉलेट, कार्ड और ऋण प्रबंधित करें";
+"how_it_works.quick_start.navigation.step3" = "कैलेंडर: कैलेंडर दृश्य में अपने लेनदेन की समीक्षा करें";
+"how_it_works.quick_start.navigation.step4" = "अधिक: रिपोर्ट, बजट और विस्तृत विश्लेषण तक पहुंचें";
+
+// खाते
+"how_it_works.accounts.wallet.title" = "वॉलेट खाते";
+"how_it_works.accounts.wallet.summary" = "अपनी नकदी को ट्रैक करें";
+"how_it_works.accounts.wallet.step1" = "खाते टैब में + बटन दबाएं";
+"how_it_works.accounts.wallet.step2" = "वॉलेट प्रकार चुनें और नाम, आइकन, रंग सेट करें";
+"how_it_works.accounts.wallet.step3" = "प्रारंभिक शेष दर्ज करके खाता बनाएं";
+
+"how_it_works.accounts.credit_card.title" = "क्रेडिट कार्ड";
+"how_it_works.accounts.credit_card.summary" = "सीमा और देय तिथि ट्रैकिंग के साथ अपने कार्ड प्रबंधित करें";
+"how_it_works.accounts.credit_card.step1" = "क्रेडिट कार्ड प्रकार चुनें";
+"how_it_works.accounts.credit_card.step2" = "कार्ड सीमा और विवरण तिथि दर्ज करें";
+"how_it_works.accounts.credit_card.step3" = "भुगतान देय तिथि की गणना करें (विवरण + दिन)";
+"how_it_works.accounts.credit_card.step4" = "अपनी किस्त खरीदारी को आसानी से ट्रैक करें";
+"how_it_works.accounts.credit_card.tip1" = "सूचनाएं सक्षम होने पर आपको भुगतान देय अनुस्मारक प्राप्त होंगे";
+
+"how_it_works.accounts.loan.title" = "ऋण";
+"how_it_works.accounts.loan.summary" = "ऋण किस्तों की स्वचालित ट्रैकिंग";
+"how_it_works.accounts.loan.step1" = "ऋण प्रकार चुनें और विवरण दर्ज करें";
+"how_it_works.accounts.loan.step2" = "ब्याज दर और किस्तों की संख्या निर्दिष्ट करें";
+"how_it_works.accounts.loan.step3" = "सिस्टम स्वचालित भुगतान अनुसूची बनाता है";
+
+// लेनदेन
+"how_it_works.transactions.add.title" = "लेनदेन जोड़ना";
+"how_it_works.transactions.add.summary" = "अपनी आय और व्यय तेजी से रिकॉर्ड करें";
+"how_it_works.transactions.add.step1" = "होम स्क्रीन पर + बटन दबाएं";
+"how_it_works.transactions.add.step2" = "आय या व्यय चुनें";
+"how_it_works.transactions.add.step3" = "लेनदेन नाम टाइप करें (स्वचालित श्रेणी सुझाव प्राप्त करें)";
+"how_it_works.transactions.add.step4" = "राशि, श्रेणी और खाता चुनकर सहेजें";
+
+"how_it_works.transactions.installment.title" = "किस्त लेनदेन";
+"how_it_works.transactions.installment.summary" = "क्रेडिट कार्ड किस्त खरीदारी";
+"how_it_works.transactions.installment.step1" = "व्यय जोड़ते समय क्रेडिट कार्ड खाता चुनें";
+"how_it_works.transactions.installment.step2" = "किस्त लेनदेन टॉगल सक्षम करें";
+"how_it_works.transactions.installment.step3" = "किस्तों की संख्या सेट करें (2-36 महीने)";
+"how_it_works.transactions.installment.tip1" = "खाते में केवल वर्तमान माह की किस्त दिखाई देती है";
+
+"how_it_works.transactions.recurring.title" = "आवर्ती लेनदेन";
+"how_it_works.transactions.recurring.summary" = "अपनी नियमित आय और व्यय को स्वचालित करें";
+"how_it_works.transactions.recurring.step1" = "लेनदेन जोड़ते समय दोहराने का विकल्प चुनें";
+"how_it_works.transactions.recurring.step2" = "मासिक, त्रैमासिक, अर्धवार्षिक या वार्षिक चुनें";
+"how_it_works.transactions.recurring.step3" = "स्वचालित समाप्ति के लिए समाप्ति तिथि सेट करें";
+
+// बजट
+"how_it_works.budgets.create.title" = "बजट बनाना";
+"how_it_works.budgets.create.summary" = "श्रेणी-विशिष्ट व्यय सीमाएं";
+"how_it_works.budgets.create.step1" = "अधिक मेनू से बजट में जाएं";
+"how_it_works.budgets.create.step2" = "नया बजट बनाएं और इसे नाम दें";
+"how_it_works.budgets.create.step3" = "सीमा राशि और श्रेणियां चुनें";
+"how_it_works.budgets.create.step4" = "स्वचालित नवीनीकरण और रोलओवर विकल्प सेट करें";
+
+"how_it_works.budgets.rollover.title" = "बजट रोलओवर";
+"how_it_works.budgets.rollover.summary" = "अप्रयुक्त बजट अगले महीने में स्थानांतरित हो जाता है";
+"how_it_works.budgets.rollover.step1" = "बजट बनाते समय 'रोलओवर' विकल्प सक्षम करें";
+"how_it_works.budgets.rollover.step2" = "शेष राशि महीने के अंत में स्वचालित रूप से गणना की जाती है";
+"how_it_works.budgets.rollover.step3" = "नए महीने में सीमा + रोलओवर राशि उपलब्ध";
+"how_it_works.budgets.rollover.tip1" = "आप बजट विवरण में रोलओवर इतिहास देख सकते हैं";
+
+// रिपोर्ट
+"how_it_works.reports.basic.title" = "मूल रिपोर्ट";
+"how_it_works.reports.basic.summary" = "साप्ताहिक और मासिक वित्तीय सारांश";
+"how_it_works.reports.basic.step1" = "अधिक मेनू से रिपोर्ट चुनें";
+"how_it_works.reports.basic.step2" = "साप्ताहिक या मासिक दृश्य चुनें";
+"how_it_works.reports.basic.step3" = "चार्ट और सांख्यिकी के साथ व्यय वितरण की समीक्षा करें";
+
+"how_it_works.reports.detailed.title" = "विस्तृत रिपोर्ट";
+"how_it_works.reports.detailed.summary" = "उन्नत विश्लेषण और तुलना";
+"how_it_works.reports.detailed.step1" = "विस्तृत रिपोर्ट एक प्रीमियम सुविधा है";
+"how_it_works.reports.detailed.step2" = "पिछली अवधि के साथ तुलना करें";
+"how_it_works.reports.detailed.step3" = "विस्तृत श्रेणी-आधारित विश्लेषण की समीक्षा करें";
+"how_it_works.reports.detailed.step4" = "PDF के रूप में निर्यात और साझा करें";
+
+// उन्नत सुविधाएं
+"how_it_works.advanced.categories.title" = "श्रेणी प्रबंधन";
+"how_it_works.advanced.categories.summary" = "अपनी खुद की श्रेणियां बनाएं";
+"how_it_works.advanced.categories.step1" = "सेटिंग्स > श्रेणी प्रबंधन में जाएं";
+"how_it_works.advanced.categories.step2" = "नई श्रेणी जोड़ें (आप असीमित श्रेणियां जोड़ सकते हैं)";
+"how_it_works.advanced.categories.step3" = "आइकन और रंग चयन के साथ कस्टमाइज़ करें";
+"how_it_works.advanced.categories.tip1" = "सिस्टम श्रेणियां 13 भाषाओं में स्वचालित रूप से अनुवादित होती हैं";
+
+"how_it_works.advanced.export.title" = "डेटा निर्यात";
+"how_it_works.advanced.export.summary" = "अपना डेटा CSV/ZIP प्रारूप में निर्यात करें";
+"how_it_works.advanced.export.step1" = "सेटिंग्स > डेटा प्रबंधन में जाएं";
+"how_it_works.advanced.export.step2" = "डेटा निर्यात करें पर टैप करें (प्रीमियम)";
+"how_it_works.advanced.export.step3" = "ZIP फ़ाइल बनाई जाती है और साझा की जा सकती है";
+
+"how_it_works.advanced.notifications.title" = "सूचनाएं";
+"how_it_works.advanced.notifications.summary" = "स्मार्ट अनुस्मारक और अलर्ट";
+"how_it_works.advanced.notifications.step1" = "सेटिंग्स > सूचनाएं में जाएं";
+"how_it_works.advanced.notifications.step2" = "मुख्य सूचनाएं सक्षम करें";
+"how_it_works.advanced.notifications.step3" = "बजट अलर्ट के लिए सीमा सेट करें (80-95%)";
+"how_it_works.advanced.notifications.step4" = "ऋण और कार्ड भुगतान अनुस्मारक के लिए दिन सेट करें";

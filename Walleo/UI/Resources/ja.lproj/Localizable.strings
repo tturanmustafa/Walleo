@@ -1060,3 +1060,129 @@
 "notification.budget.warning.title" = "予算の警告";
 "notification.budget.warning.body" = "予算「%2$@」の%1$d%%を使用しました！";
 "settings.notifications.credit_card_stepper" = "期日の%d日前";
+
+// 日本語 (ja.lproj/Localizable.strings)
+
+// 全般
+"settings.how_it_works" = "使い方";
+"how_it_works.title" = "使い方";
+"how_it_works.tips" = "ヒント";
+"how_it_works.used" = "使用済み";
+"how_it_works.premium_feature" = "プレミアム機能";
+
+// カテゴリー
+"how_it_works.category.quick_start" = "クイックスタート";
+"how_it_works.category.accounts" = "口座";
+"how_it_works.category.transactions" = "取引";
+"how_it_works.category.budgets" = "予算";
+"how_it_works.category.reports" = "レポート";
+"how_it_works.category.advanced" = "高度な設定";
+
+// クイックスタート
+"how_it_works.quick_start.first_steps.title" = "最初のステップ";
+"how_it_works.quick_start.first_steps.summary" = "Walleoを最も簡単に始める方法";
+"how_it_works.quick_start.first_steps.step1" = "「口座」タブから最初のウォレット口座を作成します";
+"how_it_works.quick_start.first_steps.step2" = "ホーム画面の「+」ボタンをタップして最初の収入/支出を追加します";
+"how_it_works.quick_start.first_steps.step3" = "取引名を入力中に自動カテゴリー提案を使用します";
+"how_it_works.quick_start.first_steps.step4" = "「ダッシュボード」タブから財務状況を確認します";
+"how_it_works.quick_start.first_steps.tip1" = "開始残高を正しく入力することが重要です";
+"how_it_works.quick_start.first_steps.tip2" = "定期的な取引入力のために毎日のリマインダーを有効にしましょう";
+
+"how_it_works.quick_start.navigation.title" = "アプリの操作";
+"how_it_works.quick_start.navigation.summary" = "5つのメインタブで簡単な操作";
+"how_it_works.quick_start.navigation.step1" = "ダッシュボード：財務概要を表示";
+"how_it_works.quick_start.navigation.step2" = "口座：ウォレット、カード、ローンを管理";
+"how_it_works.quick_start.navigation.step3" = "カレンダー：カレンダービューで取引を確認";
+"how_it_works.quick_start.navigation.step4" = "その他：レポート、予算、詳細な分析にアクセス";
+
+// 口座
+"how_it_works.accounts.wallet.title" = "ウォレット口座";
+"how_it_works.accounts.wallet.summary" = "現金を追跡";
+"how_it_works.accounts.wallet.step1" = "「口座」タブの「+」ボタンをタップします";
+"how_it_works.accounts.wallet.step2" = "ウォレットの種類を選択し、名前、アイコン、色を設定します";
+"how_it_works.accounts.wallet.step3" = "開始残高を入力して口座を作成します";
+
+"how_it_works.accounts.credit_card.title" = "クレジットカード";
+"how_it_works.accounts.credit_card.summary" = "限度額と支払期日の追跡でカードを管理";
+"how_it_works.accounts.credit_card.step1" = "クレジットカードの種類を選択します";
+"how_it_works.accounts.credit_card.step2" = "カードの限度額と締め日を入力します";
+"how_it_works.accounts.credit_card.step3" = "支払期日を計算します（締め日 + 日数）";
+"how_it_works.accounts.credit_card.step4" = "分割払いの購入を簡単に追跡";
+"how_it_works.accounts.credit_card.tip1" = "通知を有効にすると、支払期日のリマインダーが届きます";
+
+"how_it_works.accounts.loan.title" = "ローン";
+"how_it_works.accounts.loan.summary" = "ローン返済の自動追跡";
+"how_it_works.accounts.loan.step1" = "ローンの種類を選択して詳細を入力します";
+"how_it_works.accounts.loan.step2" = "金利と分割回数を指定します";
+"how_it_works.accounts.loan.step3" = "システムが自動で返済スケジュールを作成します";
+
+// 取引
+"how_it_works.transactions.add.title" = "取引の追加";
+"how_it_works.transactions.add.summary" = "収入と支出を素早く記録";
+"how_it_works.transactions.add.step1" = "ホーム画面の「+」ボタンをタップします";
+"how_it_works.transactions.add.step2" = "収入または支出を選択します";
+"how_it_works.transactions.add.step3" = "取引名を入力します（自動カテゴリー提案が表示されます）";
+"how_it_works.transactions.add.step4" = "金額、カテゴリー、口座を選択して保存します";
+
+"how_it_works.transactions.installment.title" = "分割払いの取引";
+"how_it_works.transactions.installment.summary" = "クレジットカードの分割払い購入";
+"how_it_works.transactions.installment.step1" = "支出を追加する際にクレジットカード口座を選択します";
+"how_it_works.transactions.installment.step2" = "分割払いの取引トグルを有効にします";
+"how_it_works.transactions.installment.step3" = "分割回数を設定します（2〜36ヶ月）";
+"how_it_works.transactions.installment.tip1" = "当月分の分割払い額のみが口座に反映されます";
+
+"how_it_works.transactions.recurring.title" = "繰り返し取引";
+"how_it_works.transactions.recurring.summary" = "定期的な収入と支出を自動化";
+"how_it_works.transactions.recurring.step1" = "取引追加時に繰り返しオプションを選択します";
+"how_it_works.transactions.recurring.step2" = "毎月、四半期、半年、毎年から選択します";
+"how_it_works.transactions.recurring.step3" = "自動終了のための終了日を設定します";
+
+// 予算
+"how_it_works.budgets.create.title" = "予算の作成";
+"how_it_works.budgets.create.summary" = "カテゴリー別の支出上限";
+"how_it_works.budgets.create.step1" = "「その他」メニューから「予算」に移動します";
+"how_it_works.budgets.create.step2" = "新しい予算を作成し、名前を付けます";
+"how_it_works.budgets.create.step3" = "上限額とカテゴリーを選択します";
+"how_it_works.budgets.create.step4" = "自動更新と繰越オプションを設定します";
+
+"how_it_works.budgets.rollover.title" = "予算の繰越";
+"how_it_works.budgets.rollover.summary" = "未使用の予算を翌月に繰り越します";
+"how_it_works.budgets.rollover.step1" = "予算作成時に「繰越」オプションを有効にします";
+"how_it_works.budgets.rollover.step2" = "月末に残額が自動計算されます";
+"how_it_works.budgets.rollover.step3" = "新しい月には上限額＋繰越額が利用可能になります";
+"how_it_works.budgets.rollover.tip1" = "予算詳細で繰越履歴を確認できます";
+
+// レポート
+"how_it_works.reports.basic.title" = "基本レポート";
+"how_it_works.reports.basic.summary" = "週次および月次の財務概要";
+"how_it_works.reports.basic.step1" = "「その他」メニューから「レポート」を選択します";
+"how_it_works.reports.basic.step2" = "週次または月次ビューを選択します";
+"how_it_works.reports.basic.step3" = "チャートと統計で支出分布を確認します";
+
+"how_it_works.reports.detailed.title" = "詳細レポート";
+"how_it_works.reports.detailed.summary" = "高度な分析と比較";
+"how_it_works.reports.detailed.step1" = "詳細レポートはプレミアム機能です";
+"how_it_works.reports.detailed.step2" = "前の期間と比較します";
+"how_it_works.reports.detailed.step3" = "カテゴリー別の詳細な分析を確認します";
+"how_it_works.reports.detailed.step4" = "PDFとしてエクスポートして共有します";
+
+// 高度な設定
+"how_it_works.advanced.categories.title" = "カテゴリー管理";
+"how_it_works.advanced.categories.summary" = "独自のカテゴリーを作成";
+"how_it_works.advanced.categories.step1" = "「設定」>「カテゴリー管理」に移動します";
+"how_it_works.advanced.categories.step2" = "新しいカテゴリーを追加します（無制限に追加可能）";
+"how_it_works.advanced.categories.step3" = "アイコンと色の選択でカスタマイズします";
+"how_it_works.advanced.categories.tip1" = "システムのカテゴリーは13言語に自動翻訳されます";
+
+"how_it_works.advanced.export.title" = "データのエクスポート";
+"how_it_works.advanced.export.summary" = "データをCSV/ZIP形式でエクスポート";
+"how_it_works.advanced.export.step1" = "「設定」>「データ管理」に移動します";
+"how_it_works.advanced.export.step2" = "「データのエクスポート」（プレミアム）をタップします";
+"how_it_works.advanced.export.step3" = "ZIPファイルが作成され、共有できます";
+
+"how_it_works.advanced.notifications.title" = "通知";
+"how_it_works.advanced.notifications.summary" = "スマートなリマインダーとアラート";
+"how_it_works.advanced.notifications.step1" = "「設定」>「通知」に移動します";
+"how_it_works.advanced.notifications.step2" = "メイン通知を有効にします";
+"how_it_works.advanced.notifications.step3" = "予算アラートのしきい値を設定します（80-95%）";
+"how_it_works.advanced.notifications.step4" = "ローンとカードの支払いリマインダーの日数を設定します";

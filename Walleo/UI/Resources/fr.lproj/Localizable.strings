@@ -1062,3 +1062,127 @@
 "notification.budget.warning.title" = "Alerte Budget";
 "notification.budget.warning.body" = "Vous avez dépensé %d%% de votre budget '%@' !";
 "settings.notifications.credit_card_stepper" = "%d jours avant l'échéance";
+
+// Général
+"settings.how_it_works" = "Comment ça marche";
+"how_it_works.title" = "Comment ça marche";
+"how_it_works.tips" = "Conseils";
+"how_it_works.used" = "Utilisé";
+"how_it_works.premium_feature" = "Fonctionnalité premium";
+
+// Catégories
+"how_it_works.category.quick_start" = "Démarrage rapide";
+"how_it_works.category.accounts" = "Comptes";
+"how_it_works.category.transactions" = "Transactions";
+"how_it_works.category.budgets" = "Budgets";
+"how_it_works.category.reports" = "Rapports";
+"how_it_works.category.advanced" = "Avancé";
+
+// Démarrage rapide
+"how_it_works.quick_start.first_steps.title" = "Premiers pas";
+"how_it_works.quick_start.first_steps.summary" = "La façon la plus simple de commencer avec Walleo";
+"how_it_works.quick_start.first_steps.step1" = "Créez votre premier compte portefeuille depuis l'onglet Comptes";
+"how_it_works.quick_start.first_steps.step2" = "Ajoutez votre premier revenu/dépense en appuyant sur le bouton + sur l'écran d'accueil";
+"how_it_works.quick_start.first_steps.step3" = "Utilisez les suggestions de catégories automatiques lors de la saisie du nom de transaction";
+"how_it_works.quick_start.first_steps.step4" = "Visualisez votre situation financière depuis l'onglet Tableau de bord";
+"how_it_works.quick_start.first_steps.tip1" = "Il est important de saisir correctement le solde initial";
+"how_it_works.quick_start.first_steps.tip2" = "Activez les rappels quotidiens pour saisir régulièrement les transactions";
+
+"how_it_works.quick_start.navigation.title" = "Navigation dans l'app";
+"how_it_works.quick_start.navigation.summary" = "Navigation facile avec 5 onglets principaux";
+"how_it_works.quick_start.navigation.step1" = "Tableau de bord : Visualisez votre résumé financier";
+"how_it_works.quick_start.navigation.step2" = "Comptes : Gérez vos portefeuilles, cartes et prêts";
+"how_it_works.quick_start.navigation.step3" = "Calendrier : Consultez vos transactions en vue calendrier";
+"how_it_works.quick_start.navigation.step4" = "Plus : Accédez aux rapports, budgets et analyses détaillées";
+
+// Comptes
+"how_it_works.accounts.wallet.title" = "Comptes portefeuille";
+"how_it_works.accounts.wallet.summary" = "Suivez votre argent liquide";
+"how_it_works.accounts.wallet.step1" = "Appuyez sur le bouton + dans l'onglet Comptes";
+"how_it_works.accounts.wallet.step2" = "Sélectionnez le type de portefeuille et définissez nom, icône, couleur";
+"how_it_works.accounts.wallet.step3" = "Créez le compte en saisissant le solde initial";
+
+"how_it_works.accounts.credit_card.title" = "Cartes de crédit";
+"how_it_works.accounts.credit_card.summary" = "Gérez vos cartes avec suivi de limite et d'échéance";
+"how_it_works.accounts.credit_card.step1" = "Sélectionnez le type carte de crédit";
+"how_it_works.accounts.credit_card.step2" = "Saisissez la limite de carte et la date de relevé";
+"how_it_works.accounts.credit_card.step3" = "Calculez la date d'échéance (relevé + jours)";
+"how_it_works.accounts.credit_card.step4" = "Suivez facilement vos achats en plusieurs fois";
+"how_it_works.accounts.credit_card.tip1" = "Vous recevrez des rappels d'échéance lorsque les notifications sont activées";
+
+"how_it_works.accounts.loan.title" = "Prêts";
+"how_it_works.accounts.loan.summary" = "Suivi automatique des mensualités de prêt";
+"how_it_works.accounts.loan.step1" = "Sélectionnez le type de prêt et saisissez les détails";
+"how_it_works.accounts.loan.step2" = "Spécifiez le taux d'intérêt et le nombre de mensualités";
+"how_it_works.accounts.loan.step3" = "Le système crée automatiquement le calendrier de paiement";
+
+// Transactions
+"how_it_works.transactions.add.title" = "Ajouter des transactions";
+"how_it_works.transactions.add.summary" = "Enregistrez rapidement vos revenus et dépenses";
+"how_it_works.transactions.add.step1" = "Appuyez sur le bouton + sur l'écran d'accueil";
+"how_it_works.transactions.add.step2" = "Sélectionnez revenu ou dépense";
+"how_it_works.transactions.add.step3" = "Saisissez le nom de transaction (obtenez des suggestions de catégories automatiques)";
+"how_it_works.transactions.add.step4" = "Enregistrez en sélectionnant montant, catégorie et compte";
+
+"how_it_works.transactions.installment.title" = "Transactions en plusieurs fois";
+"how_it_works.transactions.installment.summary" = "Achats en plusieurs fois par carte de crédit";
+"how_it_works.transactions.installment.step1" = "Sélectionnez le compte carte de crédit lors de l'ajout d'une dépense";
+"how_it_works.transactions.installment.step2" = "Activez le bouton transaction en plusieurs fois";
+"how_it_works.transactions.installment.step3" = "Définissez le nombre de mensualités (2-36 mois)";
+"how_it_works.transactions.installment.tip1" = "Seule la mensualité du mois en cours est reflétée dans le compte";
+
+"how_it_works.transactions.recurring.title" = "Transactions récurrentes";
+"how_it_works.transactions.recurring.summary" = "Automatisez vos revenus et dépenses réguliers";
+"how_it_works.transactions.recurring.step1" = "Sélectionnez l'option de répétition lors de l'ajout d'une transaction";
+"how_it_works.transactions.recurring.step2" = "Choisissez mensuel, trimestriel, semestriel ou annuel";
+"how_it_works.transactions.recurring.step3" = "Définissez une date de fin pour l'arrêt automatique";
+
+// Budgets
+"how_it_works.budgets.create.title" = "Créer des budgets";
+"how_it_works.budgets.create.summary" = "Limites de dépenses spécifiques aux catégories";
+"how_it_works.budgets.create.step1" = "Allez dans Budgets depuis le menu Plus";
+"how_it_works.budgets.create.step2" = "Créez un nouveau budget et donnez-lui un nom";
+"how_it_works.budgets.create.step3" = "Sélectionnez le montant limite et les catégories";
+"how_it_works.budgets.create.step4" = "Définissez les options de renouvellement automatique et de report";
+
+"how_it_works.budgets.rollover.title" = "Report de budget";
+"how_it_works.budgets.rollover.summary" = "Le budget non utilisé est transféré au mois suivant";
+"how_it_works.budgets.rollover.step1" = "Activez l'option 'Report' lors de la création du budget";
+"how_it_works.budgets.rollover.step2" = "Le montant restant est calculé automatiquement en fin de mois";
+"how_it_works.budgets.rollover.step3" = "Limite + montant reporté disponible le nouveau mois";
+"how_it_works.budgets.rollover.tip1" = "Vous pouvez consulter l'historique des reports dans les détails du budget";
+
+// Rapports
+"how_it_works.reports.basic.title" = "Rapports de base";
+"how_it_works.reports.basic.summary" = "Résumé financier hebdomadaire et mensuel";
+"how_it_works.reports.basic.step1" = "Sélectionnez Rapports depuis le menu Plus";
+"how_it_works.reports.basic.step2" = "Choisissez la vue hebdomadaire ou mensuelle";
+"how_it_works.reports.basic.step3" = "Examinez la répartition des dépenses avec graphiques et statistiques";
+
+"how_it_works.reports.detailed.title" = "Rapports détaillés";
+"how_it_works.reports.detailed.summary" = "Analyses avancées et comparaisons";
+"how_it_works.reports.detailed.step1" = "Les rapports détaillés sont une fonctionnalité Premium";
+"how_it_works.reports.detailed.step2" = "Comparez avec les périodes précédentes";
+"how_it_works.reports.detailed.step3" = "Examinez les analyses détaillées par catégorie";
+"how_it_works.reports.detailed.step4" = "Exportez et partagez en PDF";
+
+// Fonctionnalités avancées
+"how_it_works.advanced.categories.title" = "Gestion des catégories";
+"how_it_works.advanced.categories.summary" = "Créez vos propres catégories";
+"how_it_works.advanced.categories.step1" = "Allez dans Paramètres > Gestion des catégories";
+"how_it_works.advanced.categories.step2" = "Ajoutez une nouvelle catégorie (Vous pouvez ajouter un nombre illimité de catégories)";
+"how_it_works.advanced.categories.step3" = "Personnalisez avec sélection d'icône et couleur";
+"how_it_works.advanced.categories.tip1" = "Les catégories système sont automatiquement traduites en 13 langues";
+
+"how_it_works.advanced.export.title" = "Export de données";
+"how_it_works.advanced.export.summary" = "Exportez vos données au format CSV/ZIP";
+"how_it_works.advanced.export.step1" = "Allez dans Paramètres > Gestion des données";
+"how_it_works.advanced.export.step2" = "Appuyez sur Exporter les données (Premium)";
+"how_it_works.advanced.export.step3" = "Le fichier ZIP est créé et peut être partagé";
+
+"how_it_works.advanced.notifications.title" = "Notifications";
+"how_it_works.advanced.notifications.summary" = "Rappels et alertes intelligents";
+"how_it_works.advanced.notifications.step1" = "Allez dans Paramètres > Notifications";
+"how_it_works.advanced.notifications.step2" = "Activez les notifications principales";
+"how_it_works.advanced.notifications.step3" = "Définissez le seuil pour les alertes de budget (80-95%)";
+"how_it_works.advanced.notifications.step4" = "Définissez les jours pour les rappels de paiement de prêt et carte";

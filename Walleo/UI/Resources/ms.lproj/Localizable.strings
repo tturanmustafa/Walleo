@@ -1060,3 +1060,129 @@
 "notification.budget.warning.title" = "Amaran Bajet";
 "notification.budget.warning.body" = "Anda telah membelanjakan %d%% daripada bajet %@ anda!";
 "settings.notifications.credit_card_stepper" = "%d hari sebelum tarikh akhir";
+
+// Bahasa Melayu (ms.lproj/Localizable.strings)
+
+// Umum
+"settings.how_it_works" = "Cara Ia Berfungsi";
+"how_it_works.title" = "Cara Ia Berfungsi";
+"how_it_works.tips" = "Petua";
+"how_it_works.used" = "Telah Digunakan";
+"how_it_works.premium_feature" = "Ciri premium";
+
+// Kategori
+"how_it_works.category.quick_start" = "Mula Pantas";
+"how_it_works.category.accounts" = "Akaun";
+"how_it_works.category.transactions" = "Urus Niaga";
+"how_it_works.category.budgets" = "Bajet";
+"how_it_works.category.reports" = "Laporan";
+"how_it_works.category.advanced" = "Lanjutan";
+
+// Mula Pantas
+"how_it_works.quick_start.first_steps.title" = "Langkah Pertama";
+"how_it_works.quick_start.first_steps.summary" = "Cara termudah untuk bermula dengan Walleo";
+"how_it_works.quick_start.first_steps.step1" = "Cipta akaun dompet pertama anda dari tab Akaun";
+"how_it_works.quick_start.first_steps.step2" = "Tambah pendapatan/perbelanjaan pertama anda dengan mengetik butang + pada skrin utama";
+"how_it_works.quick_start.first_steps.step3" = "Gunakan cadangan kategori automatik semasa menaip nama urus niaga";
+"how_it_works.quick_start.first_steps.step4" = "Lihat status kewangan anda dari tab Papan Pemuka";
+"how_it_works.quick_start.first_steps.tip1" = "Penting untuk memasukkan baki permulaan dengan betul";
+"how_it_works.quick_start.first_steps.tip2" = "Dayakan peringatan harian untuk kemasukan urus niaga secara berkala";
+
+"how_it_works.quick_start.navigation.title" = "Navigasi dalam Aplikasi";
+"how_it_works.quick_start.navigation.summary" = "Navigasi mudah dengan 5 tab utama";
+"how_it_works.quick_start.navigation.step1" = "Papan Pemuka: Lihat ringkasan kewangan anda";
+"how_it_works.quick_start.navigation.step2" = "Akaun: Urus dompet, kad dan pinjaman anda";
+"how_it_works.quick_start.navigation.step3" = "Kalendar: Semak urus niaga anda dalam paparan kalendar";
+"how_it_works.quick_start.navigation.step4" = "Lagi: Akses laporan, bajet dan analisis terperinci";
+
+// Akaun
+"how_it_works.accounts.wallet.title" = "Akaun Dompet";
+"how_it_works.accounts.wallet.summary" = "Jejaki wang tunai anda";
+"how_it_works.accounts.wallet.step1" = "Ketik butang + dalam tab Akaun";
+"how_it_works.accounts.wallet.step2" = "Pilih jenis dompet dan tetapkan nama, ikon, warna";
+"how_it_works.accounts.wallet.step3" = "Cipta akaun dengan memasukkan baki permulaan";
+
+"how_it_works.accounts.credit_card.title" = "Kad Kredit";
+"how_it_works.accounts.credit_card.summary" = "Urus kad anda dengan penjejakan had dan tarikh akhir";
+"how_it_works.accounts.credit_card.step1" = "Pilih jenis kad kredit";
+"how_it_works.accounts.credit_card.step2" = "Masukkan had kad dan tarikh penyata";
+"how_it_works.accounts.credit_card.step3" = "Kira tarikh akhir pembayaran (penyata + hari)";
+"how_it_works.accounts.credit_card.step4" = "Jejaki pembelian ansuran anda dengan mudah";
+"how_it_works.accounts.credit_card.tip1" = "Anda akan menerima peringatan tarikh akhir pembayaran apabila pemberitahuan didayakan";
+
+"how_it_works.accounts.loan.title" = "Pinjaman";
+"how_it_works.accounts.loan.summary" = "Penjejakan ansuran pinjaman secara automatik";
+"how_it_works.accounts.loan.step1" = "Pilih jenis pinjaman dan masukkan butiran";
+"how_it_works.accounts.loan.step2" = "Nyatakan kadar faedah dan bilangan ansuran";
+"how_it_works.accounts.loan.step3" = "Sistem mencipta jadual pembayaran automatik";
+
+// Urus Niaga
+"how_it_works.transactions.add.title" = "Menambah Urus Niaga";
+"how_it_works.transactions.add.summary" = "Catat pendapatan dan perbelanjaan anda dengan pantas";
+"how_it_works.transactions.add.step1" = "Ketik butang + pada skrin utama";
+"how_it_works.transactions.add.step2" = "Pilih pendapatan atau perbelanjaan";
+"how_it_works.transactions.add.step3" = "Taip nama urus niaga (dapatkan cadangan kategori automatik)";
+"how_it_works.transactions.add.step4" = "Simpan dengan memilih jumlah, kategori dan akaun";
+
+"how_it_works.transactions.installment.title" = "Urus Niaga Ansuran";
+"how_it_works.transactions.installment.summary" = "Pembelian ansuran kad kredit";
+"how_it_works.transactions.installment.step1" = "Pilih akaun kad kredit semasa menambah perbelanjaan";
+"how_it_works.transactions.installment.step2" = "Dayakan togol urus niaga ansuran";
+"how_it_works.transactions.installment.step3" = "Tetapkan bilangan ansuran (2-36 bulan)";
+"how_it_works.transactions.installment.tip1" = "Hanya ansuran bulan semasa ditunjukkan dalam akaun";
+
+"how_it_works.transactions.recurring.title" = "Urus Niaga Berulang";
+"how_it_works.transactions.recurring.summary" = "Automasikan pendapatan dan perbelanjaan tetap anda";
+"how_it_works.transactions.recurring.step1" = "Pilih pilihan ulangan semasa menambah urus niaga";
+"how_it_works.transactions.recurring.step2" = "Pilih bulanan, suku tahunan, setengah tahunan atau tahunan";
+"how_it_works.transactions.recurring.step3" = "Tetapkan tarikh tamat untuk penamatan automatik";
+
+// Bajet
+"how_it_works.budgets.create.title" = "Mencipta Bajet";
+"how_it_works.budgets.create.summary" = "Had perbelanjaan khusus kategori";
+"how_it_works.budgets.create.step1" = "Pergi ke Bajet dari menu Lagi";
+"how_it_works.budgets.create.step2" = "Cipta bajet baru dan berikan nama";
+"how_it_works.budgets.create.step3" = "Pilih jumlah had dan kategori";
+"how_it_works.budgets.create.step4" = "Tetapkan pilihan pembaharuan automatik dan bawa ke hadapan";
+
+"how_it_works.budgets.rollover.title" = "Bajet Bawa ke Hadapan";
+"how_it_works.budgets.rollover.summary" = "Bajet yang tidak digunakan dipindahkan ke bulan berikutnya";
+"how_it_works.budgets.rollover.step1" = "Dayakan pilihan 'Bawa ke Hadapan' semasa mencipta bajet";
+"how_it_works.budgets.rollover.step2" = "Baki dikira secara automatik pada akhir bulan";
+"how_it_works.budgets.rollover.step3" = "Had + jumlah bawa ke hadapan tersedia pada bulan baru";
+"how_it_works.budgets.rollover.tip1" = "Anda boleh melihat sejarah bawa ke hadapan dalam butiran bajet";
+
+// Laporan
+"how_it_works.reports.basic.title" = "Laporan Asas";
+"how_it_works.reports.basic.summary" = "Ringkasan kewangan mingguan dan bulanan";
+"how_it_works.reports.basic.step1" = "Pilih Laporan dari menu Lagi";
+"how_it_works.reports.basic.step2" = "Pilih paparan mingguan atau bulanan";
+"how_it_works.reports.basic.step3" = "Semak taburan perbelanjaan dengan carta dan statistik";
+
+"how_it_works.reports.detailed.title" = "Laporan Terperinci";
+"how_it_works.reports.detailed.summary" = "Analisis dan perbandingan lanjutan";
+"how_it_works.reports.detailed.step1" = "Laporan terperinci adalah ciri Premium";
+"how_it_works.reports.detailed.step2" = "Bandingkan dengan tempoh sebelumnya";
+"how_it_works.reports.detailed.step3" = "Semak analisis terperinci berasaskan kategori";
+"how_it_works.reports.detailed.step4" = "Eksport dan kongsi sebagai PDF";
+
+// Ciri Lanjutan
+"how_it_works.advanced.categories.title" = "Pengurusan Kategori";
+"how_it_works.advanced.categories.summary" = "Cipta kategori anda sendiri";
+"how_it_works.advanced.categories.step1" = "Pergi ke Tetapan > Pengurusan Kategori";
+"how_it_works.advanced.categories.step2" = "Tambah kategori baru (Anda boleh menambah kategori tanpa had)";
+"how_it_works.advanced.categories.step3" = "Sesuaikan dengan pilihan ikon dan warna";
+"how_it_works.advanced.categories.tip1" = "Kategori sistem diterjemahkan secara automatik dalam 13 bahasa";
+
+"how_it_works.advanced.export.title" = "Eksport Data";
+"how_it_works.advanced.export.summary" = "Eksport data anda dalam format CSV/ZIP";
+"how_it_works.advanced.export.step1" = "Pergi ke Tetapan > Pengurusan Data";
+"how_it_works.advanced.export.step2" = "Ketik Eksport Data (Premium)";
+"how_it_works.advanced.export.step3" = "Fail ZIP dicipta dan boleh dikongsi";
+
+"how_it_works.advanced.notifications.title" = "Pemberitahuan";
+"how_it_works.advanced.notifications.summary" = "Peringatan dan amaran pintar";
+"how_it_works.advanced.notifications.step1" = "Pergi ke Tetapan > Pemberitahuan";
+"how_it_works.advanced.notifications.step2" = "Dayakan pemberitahuan utama";
+"how_it_works.advanced.notifications.step3" = "Tetapkan ambang untuk amaran bajet (80-95%)";
+"how_it_works.advanced.notifications.step4" = "Tetapkan hari untuk peringatan pembayaran pinjaman dan kad";

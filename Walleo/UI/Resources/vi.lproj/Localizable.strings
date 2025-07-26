@@ -1060,3 +1060,129 @@
 "notification.budget.warning.title" = "Cảnh Báo Ngân Sách";
 "notification.budget.warning.body" = "Bạn đã chi %d%% ngân sách '%@' của mình!";
 "settings.notifications.credit_card_stepper" = "%d ngày trước hạn";
+
+// Tiếng Việt (vi.lproj/Localizable.strings)
+
+// Chung
+"settings.how_it_works" = "Cách hoạt động";
+"how_it_works.title" = "Cách hoạt động";
+"how_it_works.tips" = "Mẹo";
+"how_it_works.used" = "Đã dùng";
+"how_it_works.premium_feature" = "Tính năng cao cấp";
+
+// Hạng mục
+"how_it_works.category.quick_start" = "Bắt đầu nhanh";
+"how_it_works.category.accounts" = "Tài khoản";
+"how_it_works.category.transactions" = "Giao dịch";
+"how_it_works.category.budgets" = "Ngân sách";
+"how_it_works.category.reports" = "Báo cáo";
+"how_it_works.category.advanced" = "Nâng cao";
+
+// Bắt đầu nhanh
+"how_it_works.quick_start.first_steps.title" = "Các bước đầu tiên";
+"how_it_works.quick_start.first_steps.summary" = "Cách dễ nhất để bắt đầu với Walleo";
+"how_it_works.quick_start.first_steps.step1" = "Tạo tài khoản ví đầu tiên của bạn từ tab Tài khoản";
+"how_it_works.quick_start.first_steps.step2" = "Thêm thu nhập/chi tiêu đầu tiên bằng cách nhấn vào nút + trên màn hình chính";
+"how_it_works.quick_start.first_steps.step3" = "Sử dụng gợi ý hạng mục tự động khi nhập tên giao dịch";
+"how_it_works.quick_start.first_steps.step4" = "Xem tình hình tài chính của bạn từ tab Bảng điều khiển";
+"how_it_works.quick_start.first_steps.tip1" = "Điều quan trọng là phải nhập đúng số dư ban đầu";
+"how_it_works.quick_start.first_steps.tip2" = "Bật lời nhắc hàng ngày để nhập giao dịch thường xuyên";
+
+"how_it_works.quick_start.navigation.title" = "Điều hướng trong ứng dụng";
+"how_it_works.quick_start.navigation.summary" = "Điều hướng dễ dàng với 5 tab chính";
+"how_it_works.quick_start.navigation.step1" = "Bảng điều khiển: Xem tóm tắt tài chính của bạn";
+"how_it_works.quick_start.navigation.step2" = "Tài khoản: Quản lý ví, thẻ và các khoản vay";
+"how_it_works.quick_start.navigation.step3" = "Lịch: Xem lại các giao dịch của bạn trong chế độ xem lịch";
+"how_it_works.quick_start.navigation.step4" = "Thêm: Truy cập báo cáo, ngân sách và phân tích chi tiết";
+
+// Tài khoản
+"how_it_works.accounts.wallet.title" = "Tài khoản ví";
+"how_it_works.accounts.wallet.summary" = "Theo dõi tiền mặt của bạn";
+"how_it_works.accounts.wallet.step1" = "Nhấn vào nút + trong tab Tài khoản";
+"how_it_works.accounts.wallet.step2" = "Chọn loại ví và đặt tên, biểu tượng, màu sắc";
+"how_it_works.accounts.wallet.step3" = "Tạo tài khoản bằng cách nhập số dư ban đầu";
+
+"how_it_works.accounts.credit_card.title" = "Thẻ tín dụng";
+"how_it_works.accounts.credit_card.summary" = "Quản lý thẻ của bạn với việc theo dõi hạn mức và ngày đến hạn";
+"how_it_works.accounts.credit_card.step1" = "Chọn loại thẻ tín dụng";
+"how_it_works.accounts.credit_card.step2" = "Nhập hạn mức thẻ và ngày sao kê";
+"how_it_works.accounts.credit_card.step3" = "Tính ngày đến hạn thanh toán (sao kê + số ngày)";
+"how_it_works.accounts.credit_card.step4" = "Dễ dàng theo dõi các giao dịch mua trả góp";
+"how_it_works.accounts.credit_card.tip1" = "Bạn sẽ nhận được lời nhắc đến hạn thanh toán khi bật thông báo";
+
+"how_it_works.accounts.loan.title" = "Các khoản vay";
+"how_it_works.accounts.loan.summary" = "Tự động theo dõi các kỳ trả góp khoản vay";
+"how_it_works.accounts.loan.step1" = "Chọn loại khoản vay và nhập chi tiết";
+"how_it_works.accounts.loan.step2" = "Chỉ định lãi suất và số kỳ trả góp";
+"how_it_works.accounts.loan.step3" = "Hệ thống tự động tạo lịch thanh toán";
+
+// Giao dịch
+"how_it_works.transactions.add.title" = "Thêm giao dịch";
+"how_it_works.transactions.add.summary" = "Ghi lại nhanh chóng các khoản thu nhập và chi tiêu";
+"how_it_works.transactions.add.step1" = "Nhấn vào nút + trên màn hình chính";
+"how_it_works.transactions.add.step2" = "Chọn thu nhập hoặc chi tiêu";
+"how_it_works.transactions.add.step3" = "Nhập tên giao dịch (nhận gợi ý hạng mục tự động)";
+"how_it_works.transactions.add.step4" = "Lưu bằng cách chọn số tiền, hạng mục và tài khoản";
+
+"how_it_works.transactions.installment.title" = "Giao dịch trả góp";
+"how_it_works.transactions.installment.summary" = "Mua hàng trả góp bằng thẻ tín dụng";
+"how_it_works.transactions.installment.step1" = "Chọn tài khoản thẻ tín dụng khi thêm chi tiêu";
+"how_it_works.transactions.installment.step2" = "Bật nút chuyển đổi giao dịch trả góp";
+"how_it_works.transactions.installment.step3" = "Đặt số kỳ trả góp (2-36 tháng)";
+"how_it_works.transactions.installment.tip1" = "Chỉ kỳ trả góp của tháng hiện tại được phản ánh trong tài khoản";
+
+"how_it_works.transactions.recurring.title" = "Giao dịch định kỳ";
+"how_it_works.transactions.recurring.summary" = "Tự động hóa các khoản thu nhập và chi tiêu thường xuyên của bạn";
+"how_it_works.transactions.recurring.step1" = "Chọn tùy chọn lặp lại khi thêm giao dịch";
+"how_it_works.transactions.recurring.step2" = "Chọn hàng tháng, hàng quý, nửa năm hoặc hàng năm";
+"how_it_works.transactions.recurring.step3" = "Đặt ngày kết thúc để tự động chấm dứt";
+
+// Ngân sách
+"how_it_works.budgets.create.title" = "Tạo ngân sách";
+"how_it_works.budgets.create.summary" = "Giới hạn chi tiêu theo từng hạng mục";
+"how_it_works.budgets.create.step1" = "Đi tới Ngân sách từ menu Thêm";
+"how_it_works.budgets.create.step2" = "Tạo ngân sách mới và đặt tên";
+"how_it_works.budgets.create.step3" = "Chọn số tiền giới hạn và các hạng mục";
+"how_it_works.budgets.create.step4" = "Đặt tùy chọn tự động gia hạn và chuyển tiếp";
+
+"how_it_works.budgets.rollover.title" = "Chuyển tiếp ngân sách";
+"how_it_works.budgets.rollover.summary" = "Ngân sách chưa sử dụng được chuyển sang tháng tiếp theo";
+"how_it_works.budgets.rollover.step1" = "Bật tùy chọn 'Chuyển tiếp' khi tạo ngân sách";
+"how_it_works.budgets.rollover.step2" = "Số tiền còn lại được tính toán tự động vào cuối tháng";
+"how_it_works.budgets.rollover.step3" = "Hạn mức + số tiền chuyển tiếp có sẵn trong tháng mới";
+"how_it_works.budgets.rollover.tip1" = "Bạn có thể xem lịch sử chuyển tiếp trong chi tiết ngân sách";
+
+// Báo cáo
+"how_it_works.reports.basic.title" = "Báo cáo cơ bản";
+"how_it_works.reports.basic.summary" = "Tóm tắt tài chính hàng tuần và hàng tháng";
+"how_it_works.reports.basic.step1" = "Chọn Báo cáo từ menu Thêm";
+"how_it_works.reports.basic.step2" = "Chọn chế độ xem hàng tuần hoặc hàng tháng";
+"how_it_works.reports.basic.step3" = "Xem lại phân bổ chi tiêu bằng biểu đồ và thống kê";
+
+"how_it_works.reports.detailed.title" = "Báo cáo chi tiết";
+"how_it_works.reports.detailed.summary" = "Phân tích và so sánh nâng cao";
+"how_it_works.reports.detailed.step1" = "Báo cáo chi tiết là một tính năng Cao cấp";
+"how_it_works.reports.detailed.step2" = "So sánh với các kỳ trước";
+"how_it_works.reports.detailed.step3" = "Xem lại các phân tích chi tiết dựa trên hạng mục";
+"how_it_works.reports.detailed.step4" = "Xuất và chia sẻ dưới dạng PDF";
+
+// Tính năng nâng cao
+"how_it_works.advanced.categories.title" = "Quản lý hạng mục";
+"how_it_works.advanced.categories.summary" = "Tạo hạng mục của riêng bạn";
+"how_it_works.advanced.categories.step1" = "Đi tới Cài đặt > Quản lý hạng mục";
+"how_it_works.advanced.categories.step2" = "Thêm hạng mục mới (Bạn có thể thêm không giới hạn)";
+"how_it_works.advanced.categories.step3" = "Tùy chỉnh bằng cách chọn biểu tượng và màu sắc";
+"how_it_works.advanced.categories.tip1" = "Các hạng mục hệ thống được tự động dịch sang 13 ngôn ngữ";
+
+"how_it_works.advanced.export.title" = "Xuất dữ liệu";
+"how_it_works.advanced.export.summary" = "Xuất dữ liệu của bạn ở định dạng CSV/ZIP";
+"how_it_works.advanced.export.step1" = "Đi tới Cài đặt > Quản lý dữ liệu";
+"how_it_works.advanced.export.step2" = "Nhấn vào Xuất dữ liệu (Cao cấp)";
+"how_it_works.advanced.export.step3" = "Tệp ZIP được tạo và có thể được chia sẻ";
+
+"how_it_works.advanced.notifications.title" = "Thông báo";
+"how_it_works.advanced.notifications.summary" = "Lời nhắc và cảnh báo thông minh";
+"how_it_works.advanced.notifications.step1" = "Đi tới Cài đặt > Thông báo";
+"how_it_works.advanced.notifications.step2" = "Bật thông báo chính";
+"how_it_works.advanced.notifications.step3" = "Đặt ngưỡng cho cảnh báo ngân sách (80-95%)";
+"how_it_works.advanced.notifications.step4" = "Đặt số ngày cho lời nhắc thanh toán khoản vay và thẻ";
