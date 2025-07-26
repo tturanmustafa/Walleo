@@ -1060,3 +1060,129 @@
 "notification.budget.warning.title" = "Peringatan Anggaran";
 "notification.budget.warning.body" = "Anda telah menghabiskan %d%% dari anggaran %@ Anda!";
 "settings.notifications.credit_card_stepper" = "%d hari sebelum tanggal jatuh tempo";
+
+// Bahasa Indonesia (id.lproj/Localizable.strings)
+
+// Umum
+"settings.how_it_works" = "Cara Kerja";
+"how_it_works.title" = "Cara Kerja";
+"how_it_works.tips" = "Tips";
+"how_it_works.used" = "Digunakan";
+"how_it_works.premium_feature" = "Fitur premium";
+
+// Kategori
+"how_it_works.category.quick_start" = "Mulai Cepat";
+"how_it_works.category.accounts" = "Akun";
+"how_it_works.category.transactions" = "Transaksi";
+"how_it_works.category.budgets" = "Anggaran";
+"how_it_works.category.reports" = "Laporan";
+"how_it_works.category.advanced" = "Lanjutan";
+
+// Mulai Cepat
+"how_it_works.quick_start.first_steps.title" = "Langkah Pertama";
+"how_it_works.quick_start.first_steps.summary" = "Cara termudah untuk memulai dengan Walleo";
+"how_it_works.quick_start.first_steps.step1" = "Buat akun dompet pertama Anda dari tab Akun";
+"how_it_works.quick_start.first_steps.step2" = "Tambahkan pemasukan/pengeluaran pertama Anda dengan mengetuk tombol + di layar utama";
+"how_it_works.quick_start.first_steps.step3" = "Gunakan saran kategori otomatis saat mengetik nama transaksi";
+"how_it_works.quick_start.first_steps.step4" = "Lihat status keuangan Anda dari tab Dasbor";
+"how_it_works.quick_start.first_steps.tip1" = "Penting untuk memasukkan saldo awal dengan benar";
+"how_it_works.quick_start.first_steps.tip2" = "Aktifkan pengingat harian untuk pencatatan transaksi secara teratur";
+
+"how_it_works.quick_start.navigation.title" = "Navigasi Aplikasi";
+"how_it_works.quick_start.navigation.summary" = "Navigasi mudah dengan 5 tab utama";
+"how_it_works.quick_start.navigation.step1" = "Dasbor: Lihat ringkasan keuangan Anda";
+"how_it_works.quick_start.navigation.step2" = "Akun: Kelola dompet, kartu, dan pinjaman Anda";
+"how_it_works.quick_start.navigation.step3" = "Kalender: Tinjau transaksi Anda dalam tampilan kalender";
+"how_it_works.quick_start.navigation.step4" = "Lainnya: Akses laporan, anggaran, dan analisis terperinci";
+
+// Akun
+"how_it_works.accounts.wallet.title" = "Akun Dompet";
+"how_it_works.accounts.wallet.summary" = "Lacak uang tunai Anda";
+"how_it_works.accounts.wallet.step1" = "Ketuk tombol + di tab Akun";
+"how_it_works.accounts.wallet.step2" = "Pilih jenis dompet dan atur nama, ikon, warna";
+"how_it_works.accounts.wallet.step3" = "Buat akun dengan memasukkan saldo awal";
+
+"how_it_works.accounts.credit_card.title" = "Kartu Kredit";
+"how_it_works.accounts.credit_card.summary" = "Kelola kartu Anda dengan pelacakan limit dan tanggal jatuh tempo";
+"how_it_works.accounts.credit_card.step1" = "Pilih jenis kartu kredit";
+"how_it_works.accounts.credit_card.step2" = "Masukkan limit kartu dan tanggal cetak tagihan";
+"how_it_works.accounts.credit_card.step3" = "Hitung tanggal jatuh tempo pembayaran (tagihan + hari)";
+"how_it_works.accounts.credit_card.step4" = "Lacak pembelian cicilan Anda dengan mudah";
+"how_it_works.accounts.credit_card.tip1" = "Anda akan menerima pengingat jatuh tempo pembayaran jika notifikasi diaktifkan";
+
+"how_it_works.accounts.loan.title" = "Pinjaman";
+"how_it_works.accounts.loan.summary" = "Pelacakan cicilan pinjaman otomatis";
+"how_it_works.accounts.loan.step1" = "Pilih jenis pinjaman dan masukkan detail";
+"how_it_works.accounts.loan.step2" = "Tentukan suku bunga dan jumlah cicilan";
+"how_it_works.accounts.loan.step3" = "Sistem membuat jadwal pembayaran otomatis";
+
+// Transaksi
+"how_it_works.transactions.add.title" = "Menambah Transaksi";
+"how_it_works.transactions.add.summary" = "Catat pemasukan dan pengeluaran Anda dengan cepat";
+"how_it_works.transactions.add.step1" = "Ketuk tombol + di layar utama";
+"how_it_works.transactions.add.step2" = "Pilih pemasukan atau pengeluaran";
+"how_it_works.transactions.add.step3" = "Ketik nama transaksi (dapatkan saran kategori otomatis)";
+"how_it_works.transactions.add.step4" = "Simpan dengan memilih jumlah, kategori, dan akun";
+
+"how_it_works.transactions.installment.title" = "Transaksi Cicilan";
+"how_it_works.transactions.installment.summary" = "Pembelian cicilan kartu kredit";
+"how_it_works.transactions.installment.step1" = "Pilih akun kartu kredit saat menambahkan pengeluaran";
+"how_it_works.transactions.installment.step2" = "Aktifkan sakelar transaksi cicilan";
+"how_it_works.transactions.installment.step3" = "Atur jumlah cicilan (2-36 bulan)";
+"how_it_works.transactions.installment.tip1" = "Hanya cicilan bulan ini yang tercermin di akun";
+
+"how_it_works.transactions.recurring.title" = "Transaksi Berulang";
+"how_it_works.transactions.recurring.summary" = "Otomatiskan pemasukan dan pengeluaran rutin Anda";
+"how_it_works.transactions.recurring.step1" = "Pilih opsi ulangi saat menambahkan transaksi";
+"how_it_works.transactions.recurring.step2" = "Pilih bulanan, triwulanan, semesteran, atau tahunan";
+"how_it_works.transactions.recurring.step3" = "Atur tanggal akhir untuk penghentian otomatis";
+
+// Anggaran
+"how_it_works.budgets.create.title" = "Membuat Anggaran";
+"how_it_works.budgets.create.summary" = "Batas pengeluaran khusus kategori";
+"how_it_works.budgets.create.step1" = "Buka Anggaran dari menu Lainnya";
+"how_it_works.budgets.create.step2" = "Buat anggaran baru dan beri nama";
+"how_it_works.budgets.create.step3" = "Pilih jumlah limit dan kategori";
+"how_it_works.budgets.create.step4" = "Atur opsi perpanjangan otomatis dan pengalihan (rollover)";
+
+"how_it_works.budgets.rollover.title" = "Pengalihan Anggaran";
+"how_it_works.budgets.rollover.summary" = "Sisa anggaran yang tidak terpakai ditransfer ke bulan berikutnya";
+"how_it_works.budgets.rollover.step1" = "Aktifkan opsi 'Pengalihan' saat membuat anggaran";
+"how_it_works.budgets.rollover.step2" = "Jumlah sisa dihitung secara otomatis di akhir bulan";
+"how_it_works.budgets.rollover.step3" = "Limit + jumlah pengalihan tersedia di bulan baru";
+"how_it_works.budgets.rollover.tip1" = "Anda dapat melihat riwayat pengalihan di detail anggaran";
+
+// Laporan
+"how_it_works.reports.basic.title" = "Laporan Dasar";
+"how_it_works.reports.basic.summary" = "Ringkasan keuangan mingguan dan bulanan";
+"how_it_works.reports.basic.step1" = "Pilih Laporan dari menu Lainnya";
+"how_it_works.reports.basic.step2" = "Pilih tampilan mingguan atau bulanan";
+"how_it_works.reports.basic.step3" = "Tinjau distribusi pengeluaran dengan bagan dan statistik";
+
+"how_it_works.reports.detailed.title" = "Laporan Terperinci";
+"how_it_works.reports.detailed.summary" = "Analisis dan perbandingan lanjutan";
+"how_it_works.reports.detailed.step1" = "Laporan terperinci adalah fitur Premium";
+"how_it_works.reports.detailed.step2" = "Bandingkan dengan periode sebelumnya";
+"how_it_works.reports.detailed.step3" = "Tinjau analisis berbasis kategori yang terperinci";
+"how_it_works.reports.detailed.step4" = "Ekspor dan bagikan sebagai PDF";
+
+// Fitur Lanjutan
+"how_it_works.advanced.categories.title" = "Manajemen Kategori";
+"how_it_works.advanced.categories.summary" = "Buat kategori Anda sendiri";
+"how_it_works.advanced.categories.step1" = "Buka Pengaturan > Manajemen Kategori";
+"how_it_works.advanced.categories.step2" = "Tambahkan kategori baru (Anda dapat menambahkan kategori tanpa batas)";
+"how_it_works.advanced.categories.step3" = "Sesuaikan dengan pilihan ikon dan warna";
+"how_it_works.advanced.categories.tip1" = "Kategori sistem diterjemahkan secara otomatis ke dalam 13 bahasa";
+
+"how_it_works.advanced.export.title" = "Ekspor Data";
+"how_it_works.advanced.export.summary" = "Ekspor data Anda dalam format CSV/ZIP";
+"how_it_works.advanced.export.step1" = "Buka Pengaturan > Manajemen Data";
+"how_it_works.advanced.export.step2" = "Ketuk Ekspor Data (Premium)";
+"how_it_works.advanced.export.step3" = "File ZIP dibuat dan dapat dibagikan";
+
+"how_it_works.advanced.notifications.title" = "Notifikasi";
+"how_it_works.advanced.notifications.summary" = "Pengingat dan peringatan cerdas";
+"how_it_works.advanced.notifications.step1" = "Buka Pengaturan > Notifikasi";
+"how_it_works.advanced.notifications.step2" = "Aktifkan notifikasi utama";
+"how_it_works.advanced.notifications.step3" = "Atur ambang batas untuk peringatan anggaran (80-95%)";
+"how_it_works.advanced.notifications.step4" = "Atur hari untuk pengingat pembayaran pinjaman dan kartu";

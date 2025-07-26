@@ -24,6 +24,16 @@ struct AyarlarView: View {
 
     var body: some View {
         Form {
+            Section {
+                NavigationLink(destination: HowItWorksView()) {
+                    HStack {
+                        AyarIkonu(iconName: "questionmark.circle.fill", color: .mint)
+                        Text(LocalizedStringKey("settings.how_it_works"))
+                    }
+                }
+                .padding(.vertical, 4)
+            }
+            
             GenelAyarlarBolumu(
                 seciliDilKodu: $seciliDilKodu,
                 cloudKitToggleAcik: $cloudKitToggleAcik,
@@ -38,6 +48,7 @@ struct AyarlarView: View {
                 showingDeleteConfirmationAlert: $showingDeleteConfirmationAlert,
                 showPaywall: $showPaywall
             )
+            
             
             BilgiBolumu()
         }

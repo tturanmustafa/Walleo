@@ -1108,3 +1108,129 @@
 "notification.budget.warning.title" = "Budget Warning";
 "notification.budget.warning.body" = "You've spent %d%% of your %@ budget!";
 "settings.notifications.credit_card_stepper" = "%d days before due date";
+
+// ENGLISH (en.lproj/Localizable.strings)
+
+// General
+"settings.how_it_works" = "How It Works";
+"how_it_works.title" = "How It Works";
+"how_it_works.tips" = "Tips";
+"how_it_works.used" = "Used";
+"how_it_works.premium_feature" = "Premium feature";
+
+// Categories
+"how_it_works.category.quick_start" = "Quick Start";
+"how_it_works.category.accounts" = "Accounts";
+"how_it_works.category.transactions" = "Transactions";
+"how_it_works.category.budgets" = "Budgets";
+"how_it_works.category.reports" = "Reports";
+"how_it_works.category.advanced" = "Advanced";
+
+// Quick Start
+"how_it_works.quick_start.first_steps.title" = "First Steps";
+"how_it_works.quick_start.first_steps.summary" = "The easiest way to get started with Walleo";
+"how_it_works.quick_start.first_steps.step1" = "Create your first wallet account from the Accounts tab";
+"how_it_works.quick_start.first_steps.step2" = "Add your first income/expense by tapping the + button on the home screen";
+"how_it_works.quick_start.first_steps.step3" = "Use automatic category suggestions while typing the transaction name";
+"how_it_works.quick_start.first_steps.step4" = "View your financial status from the Dashboard tab";
+"how_it_works.quick_start.first_steps.tip1" = "It's important to enter the starting balance correctly";
+"how_it_works.quick_start.first_steps.tip2" = "Enable daily reminders for regular transaction entry";
+
+"how_it_works.quick_start.navigation.title" = "Navigating the App";
+"how_it_works.quick_start.navigation.summary" = "Easy navigation with 5 main tabs";
+"how_it_works.quick_start.navigation.step1" = "Dashboard: View your financial summary";
+"how_it_works.quick_start.navigation.step2" = "Accounts: Manage your wallets, cards and loans";
+"how_it_works.quick_start.navigation.step3" = "Calendar: Review your transactions in calendar view";
+"how_it_works.quick_start.navigation.step4" = "More: Access reports, budgets and detailed analyses";
+
+// Accounts
+"how_it_works.accounts.wallet.title" = "Wallet Accounts";
+"how_it_works.accounts.wallet.summary" = "Track your cash money";
+"how_it_works.accounts.wallet.step1" = "Tap the + button in the Accounts tab";
+"how_it_works.accounts.wallet.step2" = "Select wallet type and set name, icon, color";
+"how_it_works.accounts.wallet.step3" = "Create the account by entering the starting balance";
+
+"how_it_works.accounts.credit_card.title" = "Credit Cards";
+"how_it_works.accounts.credit_card.summary" = "Manage your cards with limit and due date tracking";
+"how_it_works.accounts.credit_card.step1" = "Select credit card type";
+"how_it_works.accounts.credit_card.step2" = "Enter card limit and statement date";
+"how_it_works.accounts.credit_card.step3" = "Calculate payment due date (statement + days)";
+"how_it_works.accounts.credit_card.step4" = "Easily track your installment purchases";
+"how_it_works.accounts.credit_card.tip1" = "You'll receive payment due reminders when notifications are enabled";
+
+"how_it_works.accounts.loan.title" = "Loans";
+"how_it_works.accounts.loan.summary" = "Automatic tracking of loan installments";
+"how_it_works.accounts.loan.step1" = "Select loan type and enter details";
+"how_it_works.accounts.loan.step2" = "Specify interest rate and number of installments";
+"how_it_works.accounts.loan.step3" = "System creates automatic payment schedule";
+
+// Transactions
+"how_it_works.transactions.add.title" = "Adding Transactions";
+"how_it_works.transactions.add.summary" = "Quickly record your income and expenses";
+"how_it_works.transactions.add.step1" = "Tap the + button on the home screen";
+"how_it_works.transactions.add.step2" = "Select income or expense";
+"how_it_works.transactions.add.step3" = "Type transaction name (get automatic category suggestions)";
+"how_it_works.transactions.add.step4" = "Save by selecting amount, category and account";
+
+"how_it_works.transactions.installment.title" = "Installment Transactions";
+"how_it_works.transactions.installment.summary" = "Credit card installment purchases";
+"how_it_works.transactions.installment.step1" = "Select credit card account when adding expense";
+"how_it_works.transactions.installment.step2" = "Enable the installment transaction toggle";
+"how_it_works.transactions.installment.step3" = "Set the number of installments (2-36 months)";
+"how_it_works.transactions.installment.tip1" = "Only the current month's installment is reflected in the account";
+
+"how_it_works.transactions.recurring.title" = "Recurring Transactions";
+"how_it_works.transactions.recurring.summary" = "Automate your regular income and expenses";
+"how_it_works.transactions.recurring.step1" = "Select repeat option when adding transaction";
+"how_it_works.transactions.recurring.step2" = "Choose monthly, quarterly, semi-annually or yearly";
+"how_it_works.transactions.recurring.step3" = "Set end date for automatic termination";
+
+// Budgets
+"how_it_works.budgets.create.title" = "Creating Budgets";
+"how_it_works.budgets.create.summary" = "Category-specific spending limits";
+"how_it_works.budgets.create.step1" = "Go to Budgets from the More menu";
+"how_it_works.budgets.create.step2" = "Create new budget and give it a name";
+"how_it_works.budgets.create.step3" = "Select limit amount and categories";
+"how_it_works.budgets.create.step4" = "Set auto-renewal and rollover options";
+
+"how_it_works.budgets.rollover.title" = "Budget Rollover";
+"how_it_works.budgets.rollover.summary" = "Unused budget transfers to the next month";
+"how_it_works.budgets.rollover.step1" = "Enable 'Rollover' option when creating budget";
+"how_it_works.budgets.rollover.step2" = "Remaining amount is calculated automatically at month end";
+"how_it_works.budgets.rollover.step3" = "Limit + rollover amount available in the new month";
+"how_it_works.budgets.rollover.tip1" = "You can view rollover history in budget details";
+
+// Reports
+"how_it_works.reports.basic.title" = "Basic Reports";
+"how_it_works.reports.basic.summary" = "Weekly and monthly financial summary";
+"how_it_works.reports.basic.step1" = "Select Reports from the More menu";
+"how_it_works.reports.basic.step2" = "Choose weekly or monthly view";
+"how_it_works.reports.basic.step3" = "Review spending distribution with charts and statistics";
+
+"how_it_works.reports.detailed.title" = "Detailed Reports";
+"how_it_works.reports.detailed.summary" = "Advanced analysis and comparisons";
+"how_it_works.reports.detailed.step1" = "Detailed reports are a Premium feature";
+"how_it_works.reports.detailed.step2" = "Compare with previous periods";
+"how_it_works.reports.detailed.step3" = "Review detailed category-based analyses";
+"how_it_works.reports.detailed.step4" = "Export and share as PDF";
+
+// Advanced Features
+"how_it_works.advanced.categories.title" = "Category Management";
+"how_it_works.advanced.categories.summary" = "Create your own categories";
+"how_it_works.advanced.categories.step1" = "Go to Settings > Category Management";
+"how_it_works.advanced.categories.step2" = "Add new category (You can add unlimited categories)";
+"how_it_works.advanced.categories.step3" = "Customize with icon and color selection";
+"how_it_works.advanced.categories.tip1" = "System categories are automatically translated in 13 languages";
+
+"how_it_works.advanced.export.title" = "Data Export";
+"how_it_works.advanced.export.summary" = "Export your data in CSV/ZIP format";
+"how_it_works.advanced.export.step1" = "Go to Settings > Data Management";
+"how_it_works.advanced.export.step2" = "Tap Export Data (Premium)";
+"how_it_works.advanced.export.step3" = "ZIP file is created and can be shared";
+
+"how_it_works.advanced.notifications.title" = "Notifications";
+"how_it_works.advanced.notifications.summary" = "Smart reminders and alerts";
+"how_it_works.advanced.notifications.step1" = "Go to Settings > Notifications";
+"how_it_works.advanced.notifications.step2" = "Enable main notifications";
+"how_it_works.advanced.notifications.step3" = "Set threshold for budget alerts (80-95%)";
+"how_it_works.advanced.notifications.step4" = "Set days for loan and card payment reminders";

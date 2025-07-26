@@ -1060,3 +1060,129 @@
 "notification.budget.warning.title" = "คำเตือนงบประมาณ";
 "notification.budget.warning.body" = "คุณใช้ไปแล้ว %d%% ของงบประมาณ %@!";
 "settings.notifications.credit_card_stepper" = "%d วันก่อนวันครบกำหนด";
+
+// ภาษาไทย (th.lproj/Localizable.strings)
+
+// ทั่วไป
+"settings.how_it_works" = "วิธีการทำงาน";
+"how_it_works.title" = "วิธีการทำงาน";
+"how_it_works.tips" = "เคล็ดลับ";
+"how_it_works.used" = "ใช้ไปแล้ว";
+"how_it_works.premium_feature" = "ฟีเจอร์พรีเมียม";
+
+// หมวดหมู่
+"how_it_works.category.quick_start" = "เริ่มต้นใช้งาน";
+"how_it_works.category.accounts" = "บัญชี";
+"how_it_works.category.transactions" = "ธุรกรรม";
+"how_it_works.category.budgets" = "งบประมาณ";
+"how_it_works.category.reports" = "รายงาน";
+"how_it_works.category.advanced" = "ขั้นสูง";
+
+// เริ่มต้นใช้งาน
+"how_it_works.quick_start.first_steps.title" = "ขั้นตอนแรก";
+"how_it_works.quick_start.first_steps.summary" = "วิธีที่ง่ายที่สุดในการเริ่มต้นกับ Walleo";
+"how_it_works.quick_start.first_steps.step1" = "สร้างบัญชีวอลเล็ตแรกของคุณจากแท็บบัญชี";
+"how_it_works.quick_start.first_steps.step2" = "เพิ่มรายรับ/รายจ่ายแรกโดยแตะปุ่ม + บนหน้าจอหลัก";
+"how_it_works.quick_start.first_steps.step3" = "ใช้คำแนะนำหมวดหมู่อัตโนมัติขณะพิมพ์ชื่อธุรกรรม";
+"how_it_works.quick_start.first_steps.step4" = "ดูสถานะทางการเงินของคุณจากแท็บแดชบอร์ด";
+"how_it_works.quick_start.first_steps.tip1" = "การป้อนยอดเงินเริ่มต้นให้ถูกต้องเป็นสิ่งสำคัญ";
+"how_it_works.quick_start.first_steps.tip2" = "เปิดใช้งานการแจ้งเตือนรายวันเพื่อการบันทึกธุรกรรมอย่างสม่ำเสมอ";
+
+"how_it_works.quick_start.navigation.title" = "การนำทางในแอป";
+"how_it_works.quick_start.navigation.summary" = "นำทางง่ายด้วย 5 แท็บหลัก";
+"how_it_works.quick_start.navigation.step1" = "แดชบอร์ด: ดูสรุปการเงินของคุณ";
+"how_it_works.quick_start.navigation.step2" = "บัญชี: จัดการวอลเล็ต บัตร และสินเชื่อของคุณ";
+"how_it_works.quick_start.navigation.step3" = "ปฏิทิน: ตรวจสอบธุรกรรมของคุณในมุมมองปฏิทิน";
+"how_it_works.quick_start.navigation.step4" = "เพิ่มเติม: เข้าถึงรายงาน งบประมาณ และการวิเคราะห์โดยละเอียด";
+
+// บัญชี
+"how_it_works.accounts.wallet.title" = "บัญชีวอลเล็ต";
+"how_it_works.accounts.wallet.summary" = "ติดตามเงินสดของคุณ";
+"how_it_works.accounts.wallet.step1" = "แตะปุ่ม + ในแท็บบัญชี";
+"how_it_works.accounts.wallet.step2" = "เลือกประเภทวอลเล็ตและตั้งชื่อ ไอคอน สี";
+"how_it_works.accounts.wallet.step3" = "สร้างบัญชีโดยการป้อนยอดเงินเริ่มต้น";
+
+"how_it_works.accounts.credit_card.title" = "บัตรเครดิต";
+"how_it_works.accounts.credit_card.summary" = "จัดการบัตรของคุณด้วยการติดตามวงเงินและวันครบกำหนด";
+"how_it_works.accounts.credit_card.step1" = "เลือกประเภทบัตรเครดิต";
+"how_it_works.accounts.credit_card.step2" = "ป้อนวงเงินบัตรและวันสรุปยอด";
+"how_it_works.accounts.credit_card.step3" = "คำนวณวันครบกำหนดชำระ (วันสรุปยอด + จำนวนวัน)";
+"how_it_works.accounts.credit_card.step4" = "ติดตามการซื้อแบบผ่อนชำระของคุณได้อย่างง่ายดาย";
+"how_it_works.accounts.credit_card.tip1" = "คุณจะได้รับการแจ้งเตือนวันครบกำหนดชำระเมื่อเปิดใช้งานการแจ้งเตือน";
+
+"how_it_works.accounts.loan.title" = "สินเชื่อ";
+"how_it_works.accounts.loan.summary" = "การติดตามค่างวดสินเชื่ออัตโนมัติ";
+"how_it_works.accounts.loan.step1" = "เลือกประเภทสินเชื่อและป้อนรายละเอียด";
+"how_it_works.accounts.loan.step2" = "ระบุอัตราดอกเบี้ยและจำนวนงวด";
+"how_it_works.accounts.loan.step3" = "ระบบจะสร้างกำหนดการชำระเงินอัตโนมัติ";
+
+// ธุรกรรม
+"how_it_works.transactions.add.title" = "การเพิ่มธุรกรรม";
+"how_it_works.transactions.add.summary" = "บันทึกรายรับและรายจ่ายของคุณอย่างรวดเร็ว";
+"how_it_works.transactions.add.step1" = "แตะปุ่ม + บนหน้าจอหลัก";
+"how_it_works.transactions.add.step2" = "เลือกรายรับหรือรายจ่าย";
+"how_it_works.transactions.add.step3" = "พิมพ์ชื่อธุรกรรม (รับคำแนะนำหมวดหมู่อัตโนมัติ)";
+"how_it_works.transactions.add.step4" = "บันทึกโดยเลือกจำนวนเงิน หมวดหมู่ และบัญชี";
+
+"how_it_works.transactions.installment.title" = "ธุรกรรมแบบผ่อนชำระ";
+"how_it_works.transactions.installment.summary" = "การซื้อสินค้าแบบผ่อนชำระผ่านบัตรเครดิต";
+"how_it_works.transactions.installment.step1" = "เลือกบัญชีบัตรเครดิตเมื่อเพิ่มรายจ่าย";
+"how_it_works.transactions.installment.step2" = "เปิดใช้งานสวิตช์ธุรกรรมแบบผ่อนชำระ";
+"how_it_works.transactions.installment.step3" = "ตั้งค่าจำนวนงวด (2-36 เดือน)";
+"how_it_works.transactions.installment.tip1" = "เฉพาะค่างวดของเดือนปัจจุบันเท่านั้นที่จะแสดงในบัญชี";
+
+"how_it_works.transactions.recurring.title" = "ธุรกรรมที่เกิดซ้ำ";
+"how_it_works.transactions.recurring.summary" = "ทำรายรับและรายจ่ายประจำของคุณให้เป็นอัตโนมัติ";
+"how_it_works.transactions.recurring.step1" = "เลือกตัวเลือกการทำซ้ำเมื่อเพิ่มธุรกรรม";
+"how_it_works.transactions.recurring.step2" = "เลือกรายเดือน รายไตรมาส รายครึ่งปี หรือรายปี";
+"how_it_works.transactions.recurring.step3" = "ตั้งค่าวันที่สิ้นสุดเพื่อการยุติอัตโนมัติ";
+
+// งบประมาณ
+"how_it_works.budgets.create.title" = "การสร้างงบประมาณ";
+"how_it_works.budgets.create.summary" = "จำกัดการใช้จ่ายตามหมวดหมู่";
+"how_it_works.budgets.create.step1" = "ไปที่งบประมาณจากเมนูเพิ่มเติม";
+"how_it_works.budgets.create.step2" = "สร้างงบประมาณใหม่และตั้งชื่อ";
+"how_it_works.budgets.create.step3" = "เลือกจำนวนเงินจำกัดและหมวดหมู่";
+"how_it_works.budgets.create.step4" = "ตั้งค่าตัวเลือกการต่ออายุอัตโนมัติและการยกยอด";
+
+"how_it_works.budgets.rollover.title" = "การยกยอดงบประมาณ";
+"how_it_works.budgets.rollover.summary" = "งบประมาณที่ไม่ได้ใช้จะถูกโอนไปยังเดือนถัดไป";
+"how_it_works.budgets.rollover.step1" = "เปิดใช้งานตัวเลือก 'ยกยอด' เมื่อสร้างงบประมาณ";
+"how_it_works.budgets.rollover.step2" = "จำนวนเงินที่เหลือจะถูกคำนวณโดยอัตโนมัติเมื่อสิ้นเดือน";
+"how_it_works.budgets.rollover.step3" = "วงเงิน + จำนวนเงินยกยอดที่ใช้ได้ในเดือนใหม่";
+"how_it_works.budgets.rollover.tip1" = "คุณสามารถดูประวัติการยกยอดได้ในรายละเอียดงบประมาณ";
+
+// รายงาน
+"how_it_works.reports.basic.title" = "รายงานพื้นฐาน";
+"how_it_works.reports.basic.summary" = "สรุปการเงินรายสัปดาห์และรายเดือน";
+"how_it_works.reports.basic.step1" = "เลือกรายงานจากเมนูเพิ่มเติม";
+"how_it_works.reports.basic.step2" = "เลือกมุมมองรายสัปดาห์หรือรายเดือน";
+"how_it_works.reports.basic.step3" = "ตรวจสอบการกระจายการใช้จ่ายด้วยแผนภูมิและสถิติ";
+
+"how_it_works.reports.detailed.title" = "รายงานโดยละเอียด";
+"how_it_works.reports.detailed.summary" = "การวิเคราะห์และการเปรียบเทียบขั้นสูง";
+"how_it_works.reports.detailed.step1" = "รายงานโดยละเอียดเป็นฟีเจอร์พรีเมียม";
+"how_it_works.reports.detailed.step2" = "เปรียบเทียบกับช่วงเวลาก่อนหน้า";
+"how_it_works.reports.detailed.step3" = "ตรวจสอบการวิเคราะห์ตามหมวดหมู่โดยละเอียด";
+"how_it_works.reports.detailed.step4" = "ส่งออกและแชร์เป็น PDF";
+
+// ฟีเจอร์ขั้นสูง
+"how_it_works.advanced.categories.title" = "การจัดการหมวดหมู่";
+"how_it_works.advanced.categories.summary" = "สร้างหมวดหมู่ของคุณเอง";
+"how_it_works.advanced.categories.step1" = "ไปที่การตั้งค่า > การจัดการหมวดหมู่";
+"how_it_works.advanced.categories.step2" = "เพิ่มหมวดหมู่ใหม่ (คุณสามารถเพิ่มหมวดหมู่ได้ไม่จำกัด)";
+"how_it_works.advanced.categories.step3" = "ปรับแต่งด้วยการเลือกไอคอนและสี";
+"how_it_works.advanced.categories.tip1" = "หมวดหมู่ของระบบจะถูกแปลเป็น 13 ภาษาโดยอัตโนมัติ";
+
+"how_it_works.advanced.export.title" = "การส่งออกข้อมูล";
+"how_it_works.advanced.export.summary" = "ส่งออกข้อมูลของคุณในรูปแบบ CSV/ZIP";
+"how_it_works.advanced.export.step1" = "ไปที่การตั้งค่า > การจัดการข้อมูล";
+"how_it_works.advanced.export.step2" = "แตะส่งออกข้อมูล (พรีเมียม)";
+"how_it_works.advanced.export.step3" = "ไฟล์ ZIP จะถูกสร้างขึ้นและสามารถแชร์ได้";
+
+"how_it_works.advanced.notifications.title" = "การแจ้งเตือน";
+"how_it_works.advanced.notifications.summary" = "การแจ้งเตือนและคำเตือนอัจฉริยะ";
+"how_it_works.advanced.notifications.step1" = "ไปที่การตั้งค่า > การแจ้งเตือน";
+"how_it_works.advanced.notifications.step2" = "เปิดใช้งานการแจ้งเตือนหลัก";
+"how_it_works.advanced.notifications.step3" = "ตั้งค่าเกณฑ์สำหรับการแจ้งเตือนงบประมาณ (80-95%)";
+"how_it_works.advanced.notifications.step4" = "ตั้งค่าวันสำหรับการแจ้งเตือนการชำระเงินสินเชื่อและบัตร";

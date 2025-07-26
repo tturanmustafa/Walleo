@@ -308,7 +308,6 @@
 				INFOPLIST_FILE = Walleo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Walleo;
 				INFOPLIST_KEY_NSContactsUsageDescription = "Aile hesabına üye eklemek için kişilerinize erişim gerekiyor.";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Aile hesabına üye eklemek için diğer kullanıcıları bulmanız gerekiyor.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -344,7 +343,6 @@
 				INFOPLIST_FILE = Walleo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Walleo;
 				INFOPLIST_KEY_NSContactsUsageDescription = "Aile hesabına üye eklemek için kişilerinize erişim gerekiyor.";
-				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Aile hesabına üye eklemek için diğer kullanıcıları bulmanız gerekiyor.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

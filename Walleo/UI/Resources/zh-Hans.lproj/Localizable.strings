@@ -1060,3 +1060,127 @@
 "notification.budget.warning.title" = "预算警告";
 "notification.budget.warning.body" = "您已使用了预算“%2$@”的%1$d%%！";
 "settings.notifications.credit_card_stepper" = "到期前%d天";
+
+// 通用
+"settings.how_it_works" = "使用方法";
+"how_it_works.title" = "使用方法";
+"how_it_works.tips" = "提示";
+"how_it_works.used" = "已使用";
+"how_it_works.premium_feature" = "高级功能";
+
+// 分类
+"how_it_works.category.quick_start" = "快速开始";
+"how_it_works.category.accounts" = "账户";
+"how_it_works.category.transactions" = "交易";
+"how_it_works.category.budgets" = "预算";
+"how_it_works.category.reports" = "报表";
+"how_it_works.category.advanced" = "高级";
+
+// 快速开始
+"how_it_works.quick_start.first_steps.title" = "第一步";
+"how_it_works.quick_start.first_steps.summary" = "开始使用Walleo的最简单方法";
+"how_it_works.quick_start.first_steps.step1" = "从账户标签创建您的第一个钱包账户";
+"how_it_works.quick_start.first_steps.step2" = "点击主屏幕上的+按钮添加您的第一笔收入/支出";
+"how_it_works.quick_start.first_steps.step3" = "输入交易名称时使用自动分类建议";
+"how_it_works.quick_start.first_steps.step4" = "从仪表板标签查看您的财务状况";
+"how_it_works.quick_start.first_steps.tip1" = "正确输入起始余额很重要";
+"how_it_works.quick_start.first_steps.tip2" = "开启每日提醒以定期记录交易";
+
+"how_it_works.quick_start.navigation.title" = "应用导航";
+"how_it_works.quick_start.navigation.summary" = "5个主要标签轻松导航";
+"how_it_works.quick_start.navigation.step1" = "仪表板：查看您的财务摘要";
+"how_it_works.quick_start.navigation.step2" = "账户：管理您的钱包、卡片和贷款";
+"how_it_works.quick_start.navigation.step3" = "日历：在日历视图中查看您的交易";
+"how_it_works.quick_start.navigation.step4" = "更多：访问报表、预算和详细分析";
+
+// 账户
+"how_it_works.accounts.wallet.title" = "钱包账户";
+"how_it_works.accounts.wallet.summary" = "追踪您的现金";
+"how_it_works.accounts.wallet.step1" = "点击账户标签中的+按钮";
+"how_it_works.accounts.wallet.step2" = "选择钱包类型并设置名称、图标、颜色";
+"how_it_works.accounts.wallet.step3" = "输入起始余额创建账户";
+
+"how_it_works.accounts.credit_card.title" = "信用卡";
+"how_it_works.accounts.credit_card.summary" = "通过限额和到期日追踪管理您的卡片";
+"how_it_works.accounts.credit_card.step1" = "选择信用卡类型";
+"how_it_works.accounts.credit_card.step2" = "输入卡片限额和账单日";
+"how_it_works.accounts.credit_card.step3" = "计算还款到期日（账单日+天数）";
+"how_it_works.accounts.credit_card.step4" = "轻松追踪您的分期付款";
+"how_it_works.accounts.credit_card.tip1" = "启用通知后您将收到还款到期提醒";
+
+"how_it_works.accounts.loan.title" = "贷款";
+"how_it_works.accounts.loan.summary" = "自动追踪贷款分期";
+"how_it_works.accounts.loan.step1" = "选择贷款类型并输入详情";
+"how_it_works.accounts.loan.step2" = "指定利率和分期数";
+"how_it_works.accounts.loan.step3" = "系统自动创建付款计划";
+
+// 交易
+"how_it_works.transactions.add.title" = "添加交易";
+"how_it_works.transactions.add.summary" = "快速记录您的收入和支出";
+"how_it_works.transactions.add.step1" = "点击主屏幕上的+按钮";
+"how_it_works.transactions.add.step2" = "选择收入或支出";
+"how_it_works.transactions.add.step3" = "输入交易名称（获取自动分类建议）";
+"how_it_works.transactions.add.step4" = "选择金额、分类和账户后保存";
+
+"how_it_works.transactions.installment.title" = "分期交易";
+"how_it_works.transactions.installment.summary" = "信用卡分期付款";
+"how_it_works.transactions.installment.step1" = "添加支出时选择信用卡账户";
+"how_it_works.transactions.installment.step2" = "启用分期交易开关";
+"how_it_works.transactions.installment.step3" = "设置分期数（2-36个月）";
+"how_it_works.transactions.installment.tip1" = "账户中只反映当月的分期金额";
+
+"how_it_works.transactions.recurring.title" = "定期交易";
+"how_it_works.transactions.recurring.summary" = "自动化您的定期收入和支出";
+"how_it_works.transactions.recurring.step1" = "添加交易时选择重复选项";
+"how_it_works.transactions.recurring.step2" = "选择每月、每季度、每半年或每年";
+"how_it_works.transactions.recurring.step3" = "设置结束日期以自动终止";
+
+// 预算
+"how_it_works.budgets.create.title" = "创建预算";
+"how_it_works.budgets.create.summary" = "特定分类的支出限额";
+"how_it_works.budgets.create.step1" = "从更多菜单进入预算";
+"how_it_works.budgets.create.step2" = "创建新预算并命名";
+"how_it_works.budgets.create.step3" = "选择限额金额和分类";
+"how_it_works.budgets.create.step4" = "设置自动续期和结转选项";
+
+"how_it_works.budgets.rollover.title" = "预算结转";
+"how_it_works.budgets.rollover.summary" = "未使用的预算转入下个月";
+"how_it_works.budgets.rollover.step1" = "创建预算时启用'结转'选项";
+"how_it_works.budgets.rollover.step2" = "月末自动计算剩余金额";
+"how_it_works.budgets.rollover.step3" = "新月可用限额+结转金额";
+"how_it_works.budgets.rollover.tip1" = "您可以在预算详情中查看结转历史";
+
+// 报表
+"how_it_works.reports.basic.title" = "基础报表";
+"how_it_works.reports.basic.summary" = "每周和每月财务摘要";
+"how_it_works.reports.basic.step1" = "从更多菜单选择报表";
+"how_it_works.reports.basic.step2" = "选择周视图或月视图";
+"how_it_works.reports.basic.step3" = "通过图表和统计查看支出分布";
+
+"how_it_works.reports.detailed.title" = "详细报表";
+"how_it_works.reports.detailed.summary" = "高级分析和比较";
+"how_it_works.reports.detailed.step1" = "详细报表是高级功能";
+"how_it_works.reports.detailed.step2" = "与之前期间比较";
+"how_it_works.reports.detailed.step3" = "查看基于分类的详细分析";
+"how_it_works.reports.detailed.step4" = "导出并分享为PDF";
+
+// 高级功能
+"how_it_works.advanced.categories.title" = "分类管理";
+"how_it_works.advanced.categories.summary" = "创建您自己的分类";
+"how_it_works.advanced.categories.step1" = "进入设置 > 分类管理";
+"how_it_works.advanced.categories.step2" = "添加新分类（您可以添加无限分类）";
+"how_it_works.advanced.categories.step3" = "选择图标和颜色进行自定义";
+"how_it_works.advanced.categories.tip1" = "系统分类自动翻译为13种语言";
+
+"how_it_works.advanced.export.title" = "数据导出";
+"how_it_works.advanced.export.summary" = "以CSV/ZIP格式导出您的数据";
+"how_it_works.advanced.export.step1" = "进入设置 > 数据管理";
+"how_it_works.advanced.export.step2" = "点击导出数据（高级）";
+"how_it_works.advanced.export.step3" = "创建ZIP文件并可以分享";
+
+"how_it_works.advanced.notifications.title" = "通知";
+"how_it_works.advanced.notifications.summary" = "智能提醒和警报";
+"how_it_works.advanced.notifications.step1" = "进入设置 > 通知";
+"how_it_works.advanced.notifications.step2" = "启用主要通知";
+"how_it_works.advanced.notifications.step3" = "设置预算警报阈值（80-95%）";
+"how_it_works.advanced.notifications.step4" = "设置贷款和卡片付款提醒天数";

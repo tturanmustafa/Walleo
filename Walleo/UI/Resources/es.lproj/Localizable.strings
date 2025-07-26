@@ -1062,3 +1062,129 @@
 "notification.budget.warning.title" = "Alerta de Presupuesto";
 "notification.budget.warning.body" = "¡Ha gastado el %d%% de su presupuesto '%@'!";
 "settings.notifications.credit_card_stepper" = "%d días antes de la fecha de vencimiento";
+
+// Español (es.lproj/Localizable.strings)
+
+// General
+"settings.how_it_works" = "Cómo funciona";
+"how_it_works.title" = "Cómo funciona";
+"how_it_works.tips" = "Consejos";
+"how_it_works.used" = "Usado";
+"how_it_works.premium_feature" = "Función prémium";
+
+// Categorías
+"how_it_works.category.quick_start" = "Inicio rápido";
+"how_it_works.category.accounts" = "Cuentas";
+"how_it_works.category.transactions" = "Transacciones";
+"how_it_works.category.budgets" = "Presupuestos";
+"how_it_works.category.reports" = "Informes";
+"how_it_works.category.advanced" = "Avanzado";
+
+// Inicio rápido
+"how_it_works.quick_start.first_steps.title" = "Primeros pasos";
+"how_it_works.quick_start.first_steps.summary" = "La forma más fácil de empezar con Walleo";
+"how_it_works.quick_start.first_steps.step1" = "Crea tu primera cuenta de monedero desde la pestaña Cuentas";
+"how_it_works.quick_start.first_steps.step2" = "Añade tu primer ingreso/gasto tocando el botón + en la pantalla de inicio";
+"how_it_works.quick_start.first_steps.step3" = "Usa sugerencias automáticas de categoría al escribir el nombre de la transacción";
+"how_it_works.quick_start.first_steps.step4" = "Consulta tu estado financiero desde la pestaña Panel";
+"how_it_works.quick_start.first_steps.tip1" = "Es importante introducir correctamente el saldo inicial";
+"how_it_works.quick_start.first_steps.tip2" = "Activa los recordatorios diarios para registrar transacciones regularmente";
+
+"how_it_works.quick_start.navigation.title" = "Navegación en la app";
+"how_it_works.quick_start.navigation.summary" = "Navegación sencilla con 5 pestañas principales";
+"how_it_works.quick_start.navigation.step1" = "Panel: Consulta tu resumen financiero";
+"how_it_works.quick_start.navigation.step2" = "Cuentas: Gestiona tus monederos, tarjetas y préstamos";
+"how_it_works.quick_start.navigation.step3" = "Calendario: Revisa tus transacciones en la vista de calendario";
+"how_it_works.quick_start.navigation.step4" = "Más: Accede a informes, presupuestos y análisis detallados";
+
+// Cuentas
+"how_it_works.accounts.wallet.title" = "Cuentas de monedero";
+"how_it_works.accounts.wallet.summary" = "Haz un seguimiento de tu dinero en efectivo";
+"how_it_works.accounts.wallet.step1" = "Toca el botón + en la pestaña Cuentas";
+"how_it_works.accounts.wallet.step2" = "Selecciona el tipo de monedero y define nombre, icono y color";
+"how_it_works.accounts.wallet.step3" = "Crea la cuenta introduciendo el saldo inicial";
+
+"how_it_works.accounts.credit_card.title" = "Tarjetas de crédito";
+"how_it_works.accounts.credit_card.summary" = "Gestiona tus tarjetas con seguimiento de límite y fecha de vencimiento";
+"how_it_works.accounts.credit_card.step1" = "Selecciona el tipo de tarjeta de crédito";
+"how_it_works.accounts.credit_card.step2" = "Introduce el límite de la tarjeta y la fecha de cierre de facturación";
+"how_it_works.accounts.credit_card.step3" = "Calcula la fecha de vencimiento del pago (cierre + días)";
+"how_it_works.accounts.credit_card.step4" = "Haz un seguimiento fácil de tus compras a plazos";
+"how_it_works.accounts.credit_card.tip1" = "Recibirás recordatorios de pago si las notificaciones están activadas";
+
+"how_it_works.accounts.loan.title" = "Préstamos";
+"how_it_works.accounts.loan.summary" = "Seguimiento automático de las cuotas del préstamo";
+"how_it_works.accounts.loan.step1" = "Selecciona el tipo de préstamo e introduce los detalles";
+"how_it_works.accounts.loan.step2" = "Especifica el tipo de interés y el número de cuotas";
+"how_it_works.accounts.loan.step3" = "El sistema crea un plan de pagos automático";
+
+// Transacciones
+"how_it_works.transactions.add.title" = "Añadir transacciones";
+"how_it_works.transactions.add.summary" = "Registra rápidamente tus ingresos y gastos";
+"how_it_works.transactions.add.step1" = "Toca el botón + en la pantalla de inicio";
+"how_it_works.transactions.add.step2" = "Selecciona ingreso o gasto";
+"how_it_works.transactions.add.step3" = "Escribe el nombre de la transacción (obtén sugerencias de categoría automáticas)";
+"how_it_works.transactions.add.step4" = "Guarda seleccionando importe, categoría y cuenta";
+
+"how_it_works.transactions.installment.title" = "Transacciones a plazos";
+"how_it_works.transactions.installment.summary" = "Compras a plazos con tarjeta de crédito";
+"how_it_works.transactions.installment.step1" = "Selecciona la cuenta de la tarjeta de crédito al añadir un gasto";
+"how_it_works.transactions.installment.step2" = "Activa el interruptor de transacción a plazos";
+"how_it_works.transactions.installment.step3" = "Establece el número de plazos (2-36 meses)";
+"how_it_works.transactions.installment.tip1" = "Solo la cuota del mes actual se refleja en la cuenta";
+
+"how_it_works.transactions.recurring.title" = "Transacciones recurrentes";
+"how_it_works.transactions.recurring.summary" = "Automatiza tus ingresos y gastos periódicos";
+"how_it_works.transactions.recurring.step1" = "Selecciona la opción de repetición al añadir una transacción";
+"how_it_works.transactions.recurring.step2" = "Elige entre mensual, trimestral, semestral o anual";
+"how_it_works.transactions.recurring.step3" = "Establece una fecha de finalización para la terminación automática";
+
+// Presupuestos
+"how_it_works.budgets.create.title" = "Crear presupuestos";
+"how_it_works.budgets.create.summary" = "Límites de gasto por categoría";
+"how_it_works.budgets.create.step1" = "Ve a Presupuestos desde el menú Más";
+"how_it_works.budgets.create.step2" = "Crea un nuevo presupuesto y ponle un nombre";
+"how_it_works.budgets.create.step3" = "Selecciona el importe del límite y las categorías";
+"how_it_works.budgets.create.step4" = "Configura las opciones de renovación automática y acumulación";
+
+"how_it_works.budgets.rollover.title" = "Acumulación de presupuesto";
+"how_it_works.budgets.rollover.summary" = "El presupuesto no utilizado se transfiere al mes siguiente";
+"how_it_works.budgets.rollover.step1" = "Activa la opción 'Acumulación' al crear el presupuesto";
+"how_it_works.budgets.rollover.step2" = "El importe restante se calcula automáticamente al final del mes";
+"how_it_works.budgets.rollover.step3" = "Límite + importe acumulado disponible en el nuevo mes";
+"how_it_works.budgets.rollover.tip1" = "Puedes ver el historial de acumulación en los detalles del presupuesto";
+
+// Informes
+"how_it_works.reports.basic.title" = "Informes básicos";
+"how_it_works.reports.basic.summary" = "Resumen financiero semanal y mensual";
+"how_it_works.reports.basic.step1" = "Selecciona Informes en el menú Más";
+"how_it_works.reports.basic.step2" = "Elige la vista semanal o mensual";
+"how_it_works.reports.basic.step3" = "Revisa la distribución de gastos con gráficos y estadísticas";
+
+"how_it_works.reports.detailed.title" = "Informes detallados";
+"how_it_works.reports.detailed.summary" = "Análisis avanzados y comparaciones";
+"how_it_works.reports.detailed.step1" = "Los informes detallados son una función prémium";
+"how_it_works.reports.detailed.step2" = "Compara con períodos anteriores";
+"how_it_works.reports.detailed.step3" = "Revisa análisis detallados por categoría";
+"how_it_works.reports.detailed.step4" = "Exporta y comparte como PDF";
+
+// Funciones avanzadas
+"how_it_works.advanced.categories.title" = "Gestión de categorías";
+"how_it_works.advanced.categories.summary" = "Crea tus propias categorías";
+"how_it_works.advanced.categories.step1" = "Ve a Ajustes > Gestión de categorías";
+"how_it_works.advanced.categories.step2" = "Añade una nueva categoría (puedes añadir categorías ilimitadas)";
+"how_it_works.advanced.categories.step3" = "Personaliza con la selección de icono y color";
+"how_it_works.advanced.categories.tip1" = "Las categorías del sistema se traducen automáticamente a 13 idiomas";
+
+"how_it_works.advanced.export.title" = "Exportar datos";
+"how_it_works.advanced.export.summary" = "Exporta tus datos en formato CSV/ZIP";
+"how_it_works.advanced.export.step1" = "Ve a Ajustes > Gestión de datos";
+"how_it_works.advanced.export.step2" = "Toca Exportar datos (Prémium)";
+"how_it_works.advanced.export.step3" = "Se crea un archivo ZIP que se puede compartir";
+
+"how_it_works.advanced.notifications.title" = "Notificaciones";
+"how_it_works.advanced.notifications.summary" = "Recordatorios y alertas inteligentes";
+"how_it_works.advanced.notifications.step1" = "Ve a Ajustes > Notificaciones";
+"how_it_works.advanced.notifications.step2" = "Activa las notificaciones principales";
+"how_it_works.advanced.notifications.step3" = "Establece el umbral para las alertas de presupuesto (80-95%)";
+"how_it_works.advanced.notifications.step4" = "Establece los días para los recordatorios de pago de préstamos y tarjetas";

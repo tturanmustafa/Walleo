@@ -1110,3 +1110,135 @@
 "notification.budget.warning.title" = "Bütçe Uyarısı";
 "notification.budget.warning.body" = "%@ bütçenizin %%%d'ini harcadınız!";
 "settings.notifications.credit_card_stepper" = "Vadeden %d gün önce";
+
+// Localizable.strings dosyasına eklenecek key'ler
+
+// TÜRKÇE (tr.lproj/Localizable.strings)
+
+// Genel
+"settings.how_it_works" = "Nasıl Çalışır";
+"how_it_works.title" = "Nasıl Çalışır";
+"how_it_works.tips" = "İpuçları";
+"how_it_works.used" = "Kullanıldı";
+"how_it_works.premium_feature" = "Premium özellik";
+
+// Kategoriler
+"how_it_works.category.quick_start" = "Hızlı Başlangıç";
+"how_it_works.category.accounts" = "Hesaplar";
+"how_it_works.category.transactions" = "İşlemler";
+"how_it_works.category.budgets" = "Bütçeler";
+"how_it_works.category.reports" = "Raporlar";
+"how_it_works.category.advanced" = "Gelişmiş";
+
+// Hızlı Başlangıç
+"how_it_works.quick_start.first_steps.title" = "İlk Adımlar";
+"how_it_works.quick_start.first_steps.summary" = "Walleo'ya başlamanın en kolay yolu";
+"how_it_works.quick_start.first_steps.step1" = "Hesaplar sekmesinden ilk cüzdan hesabınızı oluşturun";
+"how_it_works.quick_start.first_steps.step2" = "Ana ekrandaki + butonuna basarak ilk gelir/gider işleminizi ekleyin";
+"how_it_works.quick_start.first_steps.step3" = "İşlem adını yazarken otomatik kategori önerilerini kullanın";
+"how_it_works.quick_start.first_steps.step4" = "Panel sekmesinden finansal durumunuzu görüntüleyin";
+"how_it_works.quick_start.first_steps.tip1" = "Başlangıç bakiyesini doğru girmek önemlidir";
+"how_it_works.quick_start.first_steps.tip2" = "Düzenli işlem girişi için günlük hatırlatıcıları açın";
+
+"how_it_works.quick_start.navigation.title" = "Uygulama İçinde Gezinme";
+"how_it_works.quick_start.navigation.summary" = "5 ana sekme ile kolay navigasyon";
+"how_it_works.quick_start.navigation.step1" = "Panel: Finansal özetinizi görüntüleyin";
+"how_it_works.quick_start.navigation.step2" = "Hesaplar: Cüzdan, kart ve kredilerinizi yönetin";
+"how_it_works.quick_start.navigation.step3" = "Takvim: İşlemlerinizi takvim görünümünde inceleyin";
+"how_it_works.quick_start.navigation.step4" = "Daha Fazla: Raporlar, bütçeler ve detaylı analizlere erişin";
+
+// Hesaplar
+"how_it_works.accounts.wallet.title" = "Cüzdan Hesapları";
+"how_it_works.accounts.wallet.summary" = "Nakit paranızı takip edin";
+"how_it_works.accounts.wallet.step1" = "Hesaplar sekmesinde + butonuna basın";
+"how_it_works.accounts.wallet.step2" = "Cüzdan tipini seçin ve isim, ikon, renk belirleyin";
+"how_it_works.accounts.wallet.step3" = "Başlangıç bakiyesini girerek hesabı oluşturun";
+
+"how_it_works.accounts.credit_card.title" = "Kredi Kartları";
+"how_it_works.accounts.credit_card.summary" = "Kartlarınızı limit ve vade takibiyle yönetin";
+"how_it_works.accounts.credit_card.step1" = "Kredi kartı tipini seçin";
+"how_it_works.accounts.credit_card.step2" = "Kart limitini ve kesim tarihini girin";
+"how_it_works.accounts.credit_card.step3" = "Son ödeme gününü hesaplatın (kesim + gün sayısı)";
+"how_it_works.accounts.credit_card.step4" = "Taksitli alışverişlarınızı kolayca takip edin";
+"how_it_works.accounts.credit_card.tip1" = "Bildirimler açık olduğunda son ödeme günü hatırlatması alırsınız";
+
+"how_it_works.accounts.loan.title" = "Krediler";
+"how_it_works.accounts.loan.summary" = "Kredi taksitlerinizi otomatik takip";
+"how_it_works.accounts.loan.step1" = "Kredi tipini seçin ve detayları girin";
+"how_it_works.accounts.loan.step2" = "Faiz oranı ve taksit sayısını belirtin";
+"how_it_works.accounts.loan.step3" = "Sistem otomatik ödeme planı oluşturur";
+
+// İşlemler
+"how_it_works.transactions.add.title" = "İşlem Ekleme";
+"how_it_works.transactions.add.summary" = "Gelir ve giderlerinizi hızlıca kaydedin";
+"how_it_works.transactions.add.step1" = "Ana ekrandaki + butonuna dokunun";
+"how_it_works.transactions.add.step2" = "Gelir veya gider seçin";
+"how_it_works.transactions.add.step3" = "İşlem adını yazın (otomatik kategori önerisi alın)";
+"how_it_works.transactions.add.step4" = "Tutar, kategori ve hesap seçerek kaydedin";
+
+"how_it_works.transactions.installment.title" = "Taksitli İşlemler";
+"how_it_works.transactions.installment.summary" = "Kredi kartına taksitli alışverişlar";
+"how_it_works.transactions.installment.step1" = "Gider işlemi eklerken kredi kartı hesabı seçin";
+"how_it_works.transactions.installment.step2" = "Taksitli işlem toggle'ını açın";
+"how_it_works.transactions.installment.step3" = "Taksit sayısını belirleyin (2-36 ay)";
+"how_it_works.transactions.installment.tip1" = "Her ay sadece o ayın taksiti hesaba yansır";
+
+"how_it_works.transactions.recurring.title" = "Tekrarlanan İşlemler";
+"how_it_works.transactions.recurring.summary" = "Düzenli gelir ve giderlerinizi otomatikleştirin";
+"how_it_works.transactions.recurring.step1" = "İşlem eklerken tekrar seçeneğini belirleyin";
+"how_it_works.transactions.recurring.step2" = "Aylık, 3 aylık, 6 aylık veya yıllık seçin";
+"how_it_works.transactions.recurring.step3" = "Bitiş tarihi belirleyerek otomatik sonlandırma sağlayın";
+
+// Bütçeler
+"how_it_works.budgets.create.title" = "Bütçe Oluşturma";
+"how_it_works.budgets.create.summary" = "Kategorilere özel harcama limitleri";
+"how_it_works.budgets.create.step1" = "Daha Fazla menüsünden Bütçeler'e girin";
+"how_it_works.budgets.create.step2" = "Yeni bütçe oluşturun ve isim verin";
+"how_it_works.budgets.create.step3" = "Limit tutarını ve kategorileri seçin";
+"how_it_works.budgets.create.step4" = "Otomatik yenileme ve devir seçeneklerini ayarlayın";
+
+"how_it_works.budgets.rollover.title" = "Bütçe Devri";
+"how_it_works.budgets.rollover.summary" = "Kullanılmayan bütçe sonraki aya aktarılır";
+"how_it_works.budgets.rollover.step1" = "Bütçe oluştururken 'Devir' seçeneğini açın";
+"how_it_works.budgets.rollover.step2" = "Ay sonunda artan tutar otomatik hesaplanır";
+"how_it_works.budgets.rollover.step3" = "Yeni ayda limit + devir tutarı kullanılabilir";
+"how_it_works.budgets.rollover.tip1" = "Devir geçmişini bütçe detayında görebilirsiniz";
+
+// Raporlar
+"how_it_works.reports.basic.title" = "Temel Raporlar";
+"how_it_works.reports.basic.summary" = "Haftalık ve aylık finansal özet";
+"how_it_works.reports.basic.step1" = "Daha Fazla menüsünden Raporlar'ı seçin";
+"how_it_works.reports.basic.step2" = "Haftalık veya aylık görünümü seçin";
+"how_it_works.reports.basic.step3" = "Grafik ve istatistiklerle harcama dağılımını inceleyin";
+
+"how_it_works.reports.detailed.title" = "Detaylı Raporlar";
+"how_it_works.reports.detailed.summary" = "Gelişmiş analiz ve karşılaştırmalar";
+"how_it_works.reports.detailed.step1" = "Detaylı raporlar Premium özelliğidir";
+"how_it_works.reports.detailed.step2" = "Önceki dönemlerle karşılaştırma yapın";
+"how_it_works.reports.detailed.step3" = "Kategori bazlı detaylı analizleri inceleyin";
+"how_it_works.reports.detailed.step4" = "PDF olarak dışa aktarın ve paylaşın";
+
+// Gelişmiş Özellikler
+"how_it_works.advanced.categories.title" = "Kategori Yönetimi";
+"how_it_works.advanced.categories.summary" = "Kendi kategorilerinizi oluşturun";
+"how_it_works.advanced.categories.step1" = "Ayarlar > Kategori Yönetimi'ne gidin";
+"how_it_works.advanced.categories.step2" = "Yeni kategori ekleyin (Sınırsız sayıda kategori ekleyebilirsiniz)";
+"how_it_works.advanced.categories.step3" = "İkon ve renk seçerek özelleştirin";
+"how_it_works.advanced.categories.tip1" = "Sistem kategorileri 13 dilde otomatik çevrilir";
+
+"how_it_works.advanced.export.title" = "Veri Dışa Aktarma";
+"how_it_works.advanced.export.summary" = "Verilerinizi CSV/ZIP formatında dışa aktarın";
+"how_it_works.advanced.export.step1" = "Ayarlar > Veri Yönetimi'ne gidin";
+"how_it_works.advanced.export.step2" = "Veri Dışa Aktar'a dokunun (Premium)";
+"how_it_works.advanced.export.step3" = "ZIP dosyası oluşturulur ve paylaşılabilir";
+
+"how_it_works.advanced.notifications.title" = "Bildirimler";
+"how_it_works.advanced.notifications.summary" = "Akıllı hatırlatıcılar ve uyarılar";
+"how_it_works.advanced.notifications.step1" = "Ayarlar > Bildirimler'e gidin";
+"how_it_works.advanced.notifications.step2" = "Ana bildirimleri açın";
+"how_it_works.advanced.notifications.step3" = "Bütçe uyarıları için eşik belirleyin (%80-95)";
+"how_it_works.advanced.notifications.step4" = "Kredi ve kart ödemeleri için gün sayısı ayarlayın";
+
+
+
+// ... (İngilizce çevirilerin devamı aynı mantıkla eklenecek)
