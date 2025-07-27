@@ -195,9 +195,18 @@ struct OnboardingView: View {
     
     private func seedInitialData() {
         do {
+            // GÜVENLİK 1: Transaction başlat
+            try modelContext.save() // Pending değişiklikleri kaydet
+            
             // Önce metadata kontrolü yap
             let metadataDescriptor = FetchDescriptor<AppMetadata>()
             let existingMetadata = try modelContext.fetch(metadataDescriptor).first
+            
+            // GÜVENLİK 2: Metadata varsa ve işaretliyse, hiçbir şey yapma
+            if existingMetadata?.defaultCategoriesAdded == true {
+                Logger.log("Sistem kategorileri zaten eklenmiş, işlem iptal edildi", log: Logger.data)
+                return
+            }
             
             // Mevcut kategorileri kontrol et
             let categoryDescriptor = FetchDescriptor<Kategori>()
@@ -229,10 +238,26 @@ struct OnboardingView: View {
                 }
             }
             
+            // GÜVENLİK 3: Ekleme öncesi tekrar kontrol
+            let totalSystemCategoriesNeeded = systemCategories.count
+            let existingSystemCategoriesCount = existingSystemKeys.count
+            
+            if existingSystemCategoriesCount >= totalSystemCategoriesNeeded {
+                Logger.log("Tüm sistem kategorileri mevcut, ekleme yapılmadı", log: Logger.data)
+                // Metadata'yı güncelle
+                if let metadata = existingMetadata {
+                    metadata.defaultCategoriesAdded = true
+                } else {
+                    let newMetadata = AppMetadata(defaultCategoriesAdded: true)
+                    modelContext.insert(newMetadata)
+                }
+                try modelContext.save()
+                return
+            }
+            
             // Eksik sistem kategorilerini ekle
             var kategorilerEklendi = false
             for systemCat in systemCategories {
-                // SADECE localizationKey kontrolü yap, isim kontrolü YAPMA
                 if !existingSystemKeys.contains(systemCat.localizationKey) {
                     let newCategory = Kategori(
                         isim: systemCat.isim,
@@ -251,7 +276,7 @@ struct OnboardingView: View {
             if existingMetadata == nil {
                 let newMetadata = AppMetadata(defaultCategoriesAdded: true)
                 modelContext.insert(newMetadata)
-            } else if !existingMetadata!.defaultCategoriesAdded {
+            } else {
                 existingMetadata!.defaultCategoriesAdded = true
             }
             

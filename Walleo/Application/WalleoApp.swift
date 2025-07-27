@@ -84,7 +84,6 @@ struct WalleoApp: App {
                     // YENİ: NotificationManager'ı burada başlatın
                     .task {
                         await setupNotificationManager()
-                        await cleanupDuplicateSystemCategories()
                     }
             } else {
                 OnboardingView()
@@ -182,54 +181,6 @@ struct WalleoApp: App {
             Logger.log("Bütçe yenileme görevi başarıyla zamanlandı.", log: Logger.service)
         } catch {
             Logger.log("Bütçe yenileme görevi zamanlanamadı: \(error)", log: Logger.service, type: .error)
-        }
-    }
-    
-    // WalleoApp.swift içine ekleyin
-
-    private func cleanupDuplicateSystemCategories() async {
-        await MainActor.run {
-            let context = modelContainer.mainContext
-            do {
-                let allCategories = try context.fetch(FetchDescriptor<Kategori>())
-                
-                // SADECE sistem kategorilerini localizationKey'e göre grupla
-                var systemCategoryGroups: [String: [Kategori]] = [:]
-                
-                for category in allCategories {
-                    // SADECE localizationKey'i olan (sistem) kategorilerini kontrol et
-                    if let locKey = category.localizationKey {
-                        systemCategoryGroups[locKey, default: []].append(category)
-                    }
-                }
-                
-                // Her grup için sadece ilkini bırak, diğerlerini sil
-                var deletedCount = 0
-                for (locKey, categories) in systemCategoryGroups {
-                    if categories.count > 1 {
-                        Logger.log("Duplicate sistem kategorisi bulundu: \(locKey) (\(categories.count) adet)", log: Logger.data)
-                        
-                        // En eski olanı bul (olusturmaTarihi'ne göre)
-                        let sortedCategories = categories.sorted { $0.olusturmaTarihi < $1.olusturmaTarihi }
-                        
-                        // İlki hariç diğerlerini sil
-                        for i in 1..<sortedCategories.count {
-                            context.delete(sortedCategories[i])
-                            deletedCount += 1
-                        }
-                    }
-                }
-                
-                if deletedCount > 0 {
-                    try context.save()
-                    Logger.log("Duplicate sistem kategorisi temizliği tamamlandı. \(deletedCount) kategori silindi.", log: Logger.data)
-                } else {
-                    Logger.log("Duplicate sistem kategorisi bulunamadı.", log: Logger.data)
-                }
-                
-            } catch {
-                Logger.log("Duplicate sistem kategorisi temizleme hatası: \(error)", log: Logger.data, type: .error)
-            }
         }
     }
 }
