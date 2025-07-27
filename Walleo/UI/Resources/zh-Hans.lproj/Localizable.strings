@@ -1184,3 +1184,7 @@
 "how_it_works.advanced.notifications.step2" = "启用主要通知";
 "how_it_works.advanced.notifications.step3" = "设置预算警报阈值（80-95%）";
 "how_it_works.advanced.notifications.step4" = "设置贷款和卡片付款提醒天数";
+
+/* Balance Info */
+"accounts.balance_info.title" = "关于当前余额";
+"accounts.balance_info.message" = "根据今天及之前的交易计算得出。";

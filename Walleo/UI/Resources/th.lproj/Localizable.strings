@@ -1186,3 +1186,7 @@
 "how_it_works.advanced.notifications.step2" = "เปิดใช้งานการแจ้งเตือนหลัก";
 "how_it_works.advanced.notifications.step3" = "ตั้งค่าเกณฑ์สำหรับการแจ้งเตือนงบประมาณ (80-95%)";
 "how_it_works.advanced.notifications.step4" = "ตั้งค่าวันสำหรับการแจ้งเตือนการชำระเงินสินเชื่อและบัตร";
+
+/* Balance Info */
+"accounts.balance_info.title" = "เกี่ยวกับยอดเงินปัจจุบัน";
+"accounts.balance_info.message" = "คำนวณจากธุรกรรมของวันนี้และวันก่อนหน้า";

@@ -1186,3 +1186,7 @@
 "how_it_works.advanced.notifications.step2" = "Activez les notifications principales";
 "how_it_works.advanced.notifications.step3" = "Définissez le seuil pour les alertes de budget (80-95%)";
 "how_it_works.advanced.notifications.step4" = "Définissez les jours pour les rappels de paiement de prêt et carte";
+
+/* Balance Info */
+"accounts.balance_info.title" = "À propos du solde actuel";
+"accounts.balance_info.message" = "Calculé en fonction des transactions d'aujourd'hui et antérieures.";

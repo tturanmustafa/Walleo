@@ -1234,3 +1234,7 @@
 "how_it_works.advanced.notifications.step2" = "Enable main notifications";
 "how_it_works.advanced.notifications.step3" = "Set threshold for budget alerts (80-95%)";
 "how_it_works.advanced.notifications.step4" = "Set days for loan and card payment reminders";
+
+/* Balance Info */
+"accounts.balance_info.title" = "About Current Balance";
+"accounts.balance_info.message" = "Calculated based on transactions from today and earlier.";

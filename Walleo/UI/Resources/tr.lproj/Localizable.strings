@@ -1239,6 +1239,6 @@
 "how_it_works.advanced.notifications.step3" = "Bütçe uyarıları için eşik belirleyin (%80-95)";
 "how_it_works.advanced.notifications.step4" = "Kredi ve kart ödemeleri için gün sayısı ayarlayın";
 
-
-
-// ... (İngilizce çevirilerin devamı aynı mantıkla eklenecek)
+/* Balance Info */
+"accounts.balance_info.title" = "Güncel Bakiye Hakkında";
+"accounts.balance_info.message" = "Bugün ve öncesine ait işlemler baz alınarak hesaplanmaktadır.";

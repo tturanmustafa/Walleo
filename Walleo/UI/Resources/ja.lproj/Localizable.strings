@@ -1186,3 +1186,7 @@
 "how_it_works.advanced.notifications.step2" = "メイン通知を有効にします";
 "how_it_works.advanced.notifications.step3" = "予算アラートのしきい値を設定します（80-95%）";
 "how_it_works.advanced.notifications.step4" = "ローンとカードの支払いリマインダーの日数を設定します";
+
+/* Balance Info */
+"accounts.balance_info.title" = "現在の残高について";
+"accounts.balance_info.message" = "本日およびそれ以前の取引に基づいて計算されます。";

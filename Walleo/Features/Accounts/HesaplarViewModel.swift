@@ -75,33 +75,73 @@ class HesaplarViewModel {
     }
     
     // hesaplamalariYap() ve diğer fonksiyonlar aynı kalacak...
+    // HesaplarViewModel.swift içindeki hesaplamalariYap() fonksiyonunu güncelle
+
     func hesaplamalariYap() async {
-        // Mevcut kod aynı kalacak
         do {
             let hesaplar = try modelContext.fetch(FetchDescriptor<Hesap>(sortBy: [SortDescriptor(\.olusturmaTarihi)]))
             let islemler = try modelContext.fetch(FetchDescriptor<Islem>())
             let transferler = try modelContext.fetch(FetchDescriptor<Transfer>())
             
+            // YENİ: BUGÜNÜN TARİHİNİ AL (yarının başlangıcı = bugünün sonu)
+            let bugun = Calendar.current.startOfDay(for: Date())
+            let yarin = Calendar.current.date(byAdding: .day, value: 1, to: bugun)!
+            
             // İşlem bazlı değişimler
             var netDegisimler: [UUID: Double] = [:]
             for islem in islemler {
                 guard let hesapID = islem.hesap?.id else { continue }
-                let tutarDegisimi = islem.tur == .gelir ? islem.tutar : -islem.tutar
-                netDegisimler[hesapID, default: 0] += tutarDegisimi
+                
+                // YENİ: Sadece cüzdan hesapları için tarih kontrolü yap
+                if let hesap = hesaplar.first(where: { $0.id == hesapID }) {
+                    if case .cuzdan = hesap.detay {
+                        // Cüzdan ise, sadece bugün ve öncesi işlemleri dahil et
+                        if islem.tarih < yarin {
+                            let tutarDegisimi = islem.tur == .gelir ? islem.tutar : -islem.tutar
+                            netDegisimler[hesapID, default: 0] += tutarDegisimi
+                        }
+                    } else {
+                        // Cüzdan değilse (kredi kartı vb.), tüm işlemleri dahil et
+                        let tutarDegisimi = islem.tur == .gelir ? islem.tutar : -islem.tutar
+                        netDegisimler[hesapID, default: 0] += tutarDegisimi
+                    }
+                }
             }
             
             // Transfer bazlı değişimler
             var transferDegisimleri: [UUID: Double] = [:]
             for transfer in transferler {
+                // YENİ: Transfer tarih kontrolü - sadece cüzdanlar için
                 if let kaynakID = transfer.kaynakHesap?.id {
-                    transferDegisimleri[kaynakID, default: 0] -= transfer.tutar
+                    if let kaynakHesap = hesaplar.first(where: { $0.id == kaynakID }) {
+                        if case .cuzdan = kaynakHesap.detay {
+                            // Cüzdan ise tarih kontrolü yap
+                            if transfer.tarih < yarin {
+                                transferDegisimleri[kaynakID, default: 0] -= transfer.tutar
+                            }
+                        } else {
+                            // Cüzdan değilse direkt ekle
+                            transferDegisimleri[kaynakID, default: 0] -= transfer.tutar
+                        }
+                    }
                 }
+                
                 if let hedefID = transfer.hedefHesap?.id {
-                    transferDegisimleri[hedefID, default: 0] += transfer.tutar
+                    if let hedefHesap = hesaplar.first(where: { $0.id == hedefID }) {
+                        if case .cuzdan = hedefHesap.detay {
+                            // Cüzdan ise tarih kontrolü yap
+                            if transfer.tarih < yarin {
+                                transferDegisimleri[hedefID, default: 0] += transfer.tutar
+                            }
+                        } else {
+                            // Cüzdan değilse direkt ekle
+                            transferDegisimleri[hedefID, default: 0] += transfer.tutar
+                        }
+                    }
                 }
             }
             
-            // Her seferinde listeleri temizle
+            // Geri kalan kod aynı kalacak...
             var yeniCuzdanlar: [GosterilecekHesap] = []
             var yeniKrediKartlari: [GosterilecekHesap] = []
             var yeniKrediler: [GosterilecekHesap] = []
@@ -119,7 +159,7 @@ class HesaplarViewModel {
                     yeniCuzdanlar.append(gosterilecekHesap)
                     
                 case .krediKarti(let limit, _, _):
-                    // Kredi kartı için özel hesaplama
+                    // Kredi kartı hesaplaması aynı kalacak - tüm işlemler dahil
                     let initialBorc = abs(hesap.baslangicBakiyesi)
                     let harcamalar = islemler
                         .filter { $0.hesap?.id == hesap.id && $0.tur == .gider }
@@ -148,7 +188,6 @@ class HesaplarViewModel {
                 }
             }
             
-            // Yeni listeleri ata
             self.cuzdanHesaplari = yeniCuzdanlar
             self.krediKartiHesaplari = yeniKrediKartlari
             self.krediHesaplari = yeniKrediler

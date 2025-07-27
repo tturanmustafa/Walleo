@@ -9,6 +9,7 @@ struct HesaplarView: View {
     @EnvironmentObject var entitlementManager: EntitlementManager // YENİ: EntitlementManager eklendi
 
     @State private var viewModel: HesaplarViewModel
+    @State private var dayChangeTimer: Timer? // YENİ
 
     enum SheetTuru: Identifiable {
         case cuzdanEkle, krediKartiEkle, krediEkle
@@ -65,6 +66,11 @@ struct HesaplarView: View {
         .onAppear {
             viewModel.modelContext = self.modelContext
             Task { await viewModel.hesaplamalariYap() }
+            setupDayChangeTimer() // YENİ
+        }
+        .onDisappear {
+            dayChangeTimer?.invalidate() // YENİ
+            dayChangeTimer = nil
         }
         .sheet(item: $gosterilecekSheet, onDismiss: {
             Task { await viewModel.hesaplamalariYap() }
@@ -245,6 +251,30 @@ struct HesaplarView: View {
             KrediKartiDetayView(kartHesabi: hesap, modelContext: self.modelContext)
         case .cuzdan:
             CuzdanDetayView(hesap: hesap)
+        }
+    }
+    private func setupDayChangeTimer() {
+        // Önce mevcut timer'ı temizle
+        dayChangeTimer?.invalidate()
+        
+        // Şu anki tarih ve yarının başlangıcını hesapla
+        let now = Date()
+        let calendar = Calendar.current
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: now)!
+        let midnightTomorrow = calendar.startOfDay(for: tomorrow)
+        
+        // Gece yarısına kadar olan süreyi hesapla
+        let timeInterval = midnightTomorrow.timeIntervalSince(now)
+        
+        // Timer'ı kur
+        dayChangeTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { _ in
+            Task { @MainActor in
+                // Gün değişti, verileri güncelle
+                await self.viewModel.hesaplamalariYap()
+                
+                // Bir sonraki gün değişimi için timer'ı yeniden kur
+                self.setupDayChangeTimer()
+            }
         }
     }
 }

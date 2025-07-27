@@ -1188,3 +1188,7 @@
 "how_it_works.advanced.notifications.step2" = "Abilita le notifiche principali";
 "how_it_works.advanced.notifications.step3" = "Imposta la soglia per gli avvisi di budget (80-95%)";
 "how_it_works.advanced.notifications.step4" = "Imposta i giorni per i promemoria di pagamento di prestiti e carte";
+
+/* Balance Info */
+"accounts.balance_info.title" = "Informazioni sul saldo attuale";
+"accounts.balance_info.message" = "Calcolato in base alle transazioni di oggi e dei giorni precedenti.";

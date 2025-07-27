@@ -1186,3 +1186,7 @@
 "how_it_works.advanced.notifications.step2" = "Bật thông báo chính";
 "how_it_works.advanced.notifications.step3" = "Đặt ngưỡng cho cảnh báo ngân sách (80-95%)";
 "how_it_works.advanced.notifications.step4" = "Đặt số ngày cho lời nhắc thanh toán khoản vay và thẻ";
+
+/* Balance Info */
+"accounts.balance_info.title" = "Về số dư hiện tại";
+"accounts.balance_info.message" = "Được tính toán dựa trên các giao dịch của hôm nay và các ngày trước đó.";

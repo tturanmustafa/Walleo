@@ -1185,3 +1185,7 @@
 "how_it_works.advanced.notifications.step2" = "Aktivieren Sie Hauptbenachrichtigungen";
 "how_it_works.advanced.notifications.step3" = "Legen Sie Schwellenwert für Budgetwarnungen fest (80-95%)";
 "how_it_works.advanced.notifications.step4" = "Legen Sie Tage für Kredit- und Kartenzahlungserinnerungen fest";
+
+/* Balance Info */
+"accounts.balance_info.title" = "Info zum aktuellen Kontostand";
+"accounts.balance_info.message" = "Wird basierend auf Transaktionen von heute und früher berechnet.";
