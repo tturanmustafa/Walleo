@@ -1186,3 +1186,7 @@
 "how_it_works.advanced.notifications.step2" = "Dayakan pemberitahuan utama";
 "how_it_works.advanced.notifications.step3" = "Tetapkan ambang untuk amaran bajet (80-95%)";
 "how_it_works.advanced.notifications.step4" = "Tetapkan hari untuk peringatan pembayaran pinjaman dan kad";
+
+/* Balance Info */
+"accounts.balance_info.title" = "Mengenai Baki Semasa";
+"accounts.balance_info.message" = "Dikira berdasarkan urus niaga pada hari ini dan sebelumnya.";

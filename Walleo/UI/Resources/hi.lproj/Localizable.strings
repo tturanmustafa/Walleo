@@ -1184,3 +1184,7 @@
 "how_it_works.advanced.notifications.step2" = "मुख्य सूचनाएं सक्षम करें";
 "how_it_works.advanced.notifications.step3" = "बजट अलर्ट के लिए सीमा सेट करें (80-95%)";
 "how_it_works.advanced.notifications.step4" = "ऋण और कार्ड भुगतान अनुस्मारक के लिए दिन सेट करें";
+
+/* Balance Info */
+"accounts.balance_info.title" = "वर्तमान शेष के बारे में";
+"accounts.balance_info.message" = "आज और उससे पहले के लेन-देन के आधार पर गणना की जाती है।";

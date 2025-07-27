@@ -1186,3 +1186,7 @@
 "how_it_works.advanced.notifications.step2" = "Aktifkan notifikasi utama";
 "how_it_works.advanced.notifications.step3" = "Atur ambang batas untuk peringatan anggaran (80-95%)";
 "how_it_works.advanced.notifications.step4" = "Atur hari untuk pengingat pembayaran pinjaman dan kartu";
+
+/* Balance Info */
+"accounts.balance_info.title" = "Tentang Saldo Saat Ini";
+"accounts.balance_info.message" = "Dihitung berdasarkan transaksi hari ini dan sebelumnya.";

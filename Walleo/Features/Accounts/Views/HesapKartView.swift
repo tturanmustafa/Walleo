@@ -5,6 +5,7 @@ struct HesapKartView: View {
     @EnvironmentObject var appSettings: AppSettings
     var onEdit: () -> Void = {}
     var onDelete: () -> Void = {}
+    @State private var showingBalanceInfo = false // YENİ
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -49,19 +50,16 @@ struct HesapKartView: View {
     // Geri kalan yardımcı View'lar (cuzdanView, krediKartiView, krediView) aynı kalıyor.
     @ViewBuilder
     private func cuzdanView() -> some View {
-        // Tek bir satır yerine, iki satır göstermek için VStack kullanıyoruz.
         VStack(alignment: .leading, spacing: 10) {
             
-            // 1. Satır: Başlangıç Bakiyesi
+            // 1. Satır: Başlangıç Bakiyesi (aynı kalacak)
             HStack {
-                // Lokalizasyon anahtarı ile etiket
                 Text(LocalizedStringKey("accounts.card.initial_balance"))
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
                 Spacer()
                 
-                // Başlangıç bakiyesi verisi (hesap.baslangicBakiyesi)
                 Text(formatCurrency(
                     amount: gosterilecekHesap.hesap.baslangicBakiyesi,
                     currencyCode: appSettings.currencyCode,
@@ -72,16 +70,27 @@ struct HesapKartView: View {
                 .foregroundColor(.secondary)
             }
             
-            // 2. Satır: Güncel Bakiye
+            // 2. Satır: Güncel Bakiye - INFO BUTONU EKLENDİ
             HStack {
-                // Lokalizasyon anahtarı ile etiket
-                Text(LocalizedStringKey("accounts.card.current_balance"))
-                    .font(.headline)
-                    .fontWeight(.bold)
+                // YENİ: Başlık ve info butonu için HStack
+                HStack(spacing: 4) {
+                    Text(LocalizedStringKey("accounts.card.current_balance"))
+                        .font(.headline)
+                        .fontWeight(.bold)
+                    
+                    // YENİ: Info butonu
+                    Button(action: {
+                        showingBalanceInfo = true
+                    }) {
+                        Image(systemName: "info.circle")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                }
                 
                 Spacer()
                 
-                // Güncel bakiye verisi (gosterilecekHesap.guncelBakiye)
                 Text(formatCurrency(
                     amount: gosterilecekHesap.guncelBakiye,
                     currencyCode: appSettings.currencyCode,
@@ -90,6 +99,15 @@ struct HesapKartView: View {
                 .font(.title2.bold())
                 .foregroundColor(gosterilecekHesap.guncelBakiye < 0 ? .red : .primary)
             }
+        }
+        // YENİ: Alert ekle
+        .alert(
+            LocalizedStringKey("accounts.balance_info.title"),
+            isPresented: $showingBalanceInfo
+        ) {
+            Button("common.ok", role: .cancel) { }
+        } message: {
+            Text(LocalizedStringKey("accounts.balance_info.message"))
         }
     }
     

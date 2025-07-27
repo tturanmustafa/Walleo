@@ -1188,3 +1188,7 @@
 "how_it_works.advanced.notifications.step2" = "Activa las notificaciones principales";
 "how_it_works.advanced.notifications.step3" = "Establece el umbral para las alertas de presupuesto (80-95%)";
 "how_it_works.advanced.notifications.step4" = "Establece los días para los recordatorios de pago de préstamos y tarjetas";
+
+/* Balance Info */
+"accounts.balance_info.title" = "Sobre el saldo actual";
+"accounts.balance_info.message" = "Calculado según las transacciones de hoy y anteriores.";
