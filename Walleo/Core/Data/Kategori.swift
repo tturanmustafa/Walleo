@@ -11,6 +11,7 @@ class Kategori {
     var renkHex: String = ""
     var localizationKey: String?
     var turRawValue: String = IslemTuru.gider.rawValue
+    var olusturmaTarihi: Date = Date() // YENİ: Eğer yoksa ekleyin
 
     @Relationship(deleteRule: .nullify, inverse: \Islem.kategori)
     var islemler: [Islem]?
@@ -33,5 +34,6 @@ class Kategori {
         self.renkHex = renkHex
         self.localizationKey = localizationKey
         self.turRawValue = tur.rawValue
+        self.olusturmaTarihi = Date() // YENİ
     }
 }

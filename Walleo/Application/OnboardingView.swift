@@ -195,8 +195,9 @@ struct OnboardingView: View {
     
     private func seedInitialData() {
         do {
-            let descriptor = FetchDescriptor<AppMetadata>()
-            let metadata = try modelContext.fetch(descriptor).first
+            // Önce metadata kontrolü yap
+            let metadataDescriptor = FetchDescriptor<AppMetadata>()
+            let existingMetadata = try modelContext.fetch(metadataDescriptor).first
             
             // Mevcut kategorileri kontrol et
             let categoryDescriptor = FetchDescriptor<Kategori>()
@@ -220,13 +221,19 @@ struct OnboardingView: View {
                 ("Diğer", "ellipsis.circle.fill", .gider, "#30B0C7", "category.other")
             ]
             
-            // Eksik sistem kategorilerini ekle
-            for systemCat in systemCategories {
-                let exists = existingCategories.contains { cat in
-                    cat.localizationKey == systemCat.localizationKey
+            // Mevcut SISTEM kategorilerinin localizationKey'lerini topla
+            var existingSystemKeys = Set<String>()
+            for category in existingCategories {
+                if let locKey = category.localizationKey {
+                    existingSystemKeys.insert(locKey)
                 }
-                
-                if !exists {
+            }
+            
+            // Eksik sistem kategorilerini ekle
+            var kategorilerEklendi = false
+            for systemCat in systemCategories {
+                // SADECE localizationKey kontrolü yap, isim kontrolü YAPMA
+                if !existingSystemKeys.contains(systemCat.localizationKey) {
                     let newCategory = Kategori(
                         isim: systemCat.isim,
                         ikonAdi: systemCat.ikonAdi,
@@ -235,19 +242,24 @@ struct OnboardingView: View {
                         localizationKey: systemCat.localizationKey
                     )
                     modelContext.insert(newCategory)
-                    Logger.log("Eksik sistem kategorisi eklendi: \(systemCat.isim)", log: Logger.data)
+                    kategorilerEklendi = true
+                    Logger.log("Eksik sistem kategorisi eklendi: \(systemCat.isim) (\(systemCat.localizationKey))", log: Logger.data)
                 }
             }
             
             // Metadata'yı güncelle veya oluştur
-            if let metadataToUpdate = metadata {
-                metadataToUpdate.defaultCategoriesAdded = true
-            } else {
+            if existingMetadata == nil {
                 let newMetadata = AppMetadata(defaultCategoriesAdded: true)
                 modelContext.insert(newMetadata)
+            } else if !existingMetadata!.defaultCategoriesAdded {
+                existingMetadata!.defaultCategoriesAdded = true
             }
             
-            try modelContext.save()
+            // Sadece değişiklik varsa kaydet
+            if kategorilerEklendi || existingMetadata == nil {
+                try modelContext.save()
+                Logger.log("Initial data setup tamamlandı", log: Logger.data)
+            }
             
         } catch {
             Logger.log("Initial data setup error: \(error.localizedDescription)", log: Logger.data, type: .fault)
