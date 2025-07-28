@@ -1238,3 +1238,31 @@
 /* Balance Info */
 "accounts.balance_info.title" = "About Current Balance";
 "accounts.balance_info.message" = "Calculated based on transactions from today and earlier.";
+
+"paywall.auto_renewal_info" = "Subscription automatically renews unless canceled at least 24 hours before the end of the current period. You can manage your subscription in App Store settings.";
+// Subscription Info
+"paywall.subscription.monthly_title" = "Walleo Premium Monthly";
+"paywall.subscription.yearly_title" = "Walleo Premium Yearly";
+"paywall.subscription.default_title" = "Walleo Premium";
+"paywall.subscription.monthly_duration" = "1 Month";
+"paywall.subscription.yearly_duration" = "12 Months";
+"paywall.trial_info" = "3-day free trial, then subscription starts";
+// Trial info - dynamic
+"paywall.trial_info.days" = "%d-day free trial, then subscription starts";
+"paywall.trial_info.weeks" = "%d-week free trial, then subscription starts";
+"paywall.trial_info.months" = "%d-month free trial, then subscription starts";
+"paywall.trial_info.years" = "%d-year free trial, then subscription starts";
+// Purchase Button - Dynamic
+"paywall.purchase_button.trial_days" = "Try %d Days Free";
+"paywall.purchase_button.trial_weeks" = "Try %d Weeks Free";
+"paywall.purchase_button.trial_months" = "Try %d Months Free";
+"paywall.purchase_button.trial_generic" = "Try Free";
+"paywall.purchase_button_regular" = "Subscribe Now";
+// Onboarding Legal Links
+"onboarding.privacy_policy" = "Privacy Policy";
+"onboarding.terms_of_use" = "Terms of Use";
+// Settings Info Section
+"settings.privacy_policy" = "Privacy Policy";
+"settings.terms_of_use" = "Terms of Use";
+"settings.support" = "Support";
+"settings.rate_app" = "Rate App";

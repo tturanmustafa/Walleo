@@ -1188,3 +1188,33 @@
 /* Balance Info */
 "accounts.balance_info.title" = "关于当前余额";
 "accounts.balance_info.message" = "根据今天及之前的交易计算得出。";
+
+// Chinese (Simplified)
+
+"paywall.auto_renewal_info" = "除非在当前订阅期结束前至少24小时取消，否则订阅将自动续订。您可以在 App Store 设置中管理您的订阅。";
+// Subscription Info
+"paywall.subscription.monthly_title" = "Walleo 高级会员 月度";
+"paywall.subscription.yearly_title" = "Walleo 高级会员 年度";
+"paywall.subscription.default_title" = "Walleo 高级会员";
+"paywall.subscription.monthly_duration" = "1个月";
+"paywall.subscription.yearly_duration" = "12个月";
+"paywall.trial_info" = "3天免费试用，之后订阅开始";
+// Trial info - dynamic
+"paywall.trial_info.days" = "%d天免费试用，之后订阅开始";
+"paywall.trial_info.weeks" = "%d周免费试用，之后订阅开始";
+"paywall.trial_info.months" = "%d个月免费试用，之后订阅开始";
+"paywall.trial_info.years" = "%d年免费试用，之后订阅开始";
+// Purchase Button - Dynamic
+"paywall.purchase_button.trial_days" = "免费试用%d天";
+"paywall.purchase_button.trial_weeks" = "免费试用%d周";
+"paywall.purchase_button.trial_months" = "免费试用%d个月";
+"paywall.purchase_button.trial_generic" = "免费试用";
+"paywall.purchase_button_regular" = "立即订阅";
+// Onboarding Legal Links
+"onboarding.privacy_policy" = "隐私政策";
+"onboarding.terms_of_use" = "使用条款";
+// Settings Info Section
+"settings.privacy_policy" = "隐私政策";
+"settings.terms_of_use" = "使用条款";
+"settings.support" = "支持";
+"settings.rate_app" = "评价App";

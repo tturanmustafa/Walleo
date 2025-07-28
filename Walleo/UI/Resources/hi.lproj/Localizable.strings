@@ -1188,3 +1188,33 @@
 /* Balance Info */
 "accounts.balance_info.title" = "वर्तमान शेष के बारे में";
 "accounts.balance_info.message" = "आज और उससे पहले के लेन-देन के आधार पर गणना की जाती है।";
+
+// Hindi
+
+"paywall.auto_renewal_info" = "जब तक वर्तमान अवधि के अंत से कम से कम 24 घंटे पहले रद्द नहीं किया जाता, सदस्यता स्वचालित रूप से नवीनीकृत हो जाती है। आप अपनी सदस्यता को App Store सेटिंग्स में प्रबंधित कर सकते हैं।";
+// Subscription Info
+"paywall.subscription.monthly_title" = "Walleo प्रीमियम मासिक";
+"paywall.subscription.yearly_title" = "Walleo प्रीमियम वार्षिक";
+"paywall.subscription.default_title" = "Walleo प्रीमियम";
+"paywall.subscription.monthly_duration" = "1 महीना";
+"paywall.subscription.yearly_duration" = "12 महीने";
+"paywall.trial_info" = "3-दिन का मुफ़्त ट्रायल, फिर सदस्यता शुरू होती है";
+// Trial info - dynamic
+"paywall.trial_info.days" = "%d-दिन का मुफ़्त ट्रायल, फिर सदस्यता शुरू होती है";
+"paywall.trial_info.weeks" = "%d-सप्ताह का मुफ़्त ट्रायल, फिर सदस्यता शुरू होती है";
+"paywall.trial_info.months" = "%d-महीने का मुफ़्त ट्रायल, फिर सदस्यता शुरू होती है";
+"paywall.trial_info.years" = "%d-साल का मुफ़्त ट्रायल, फिर सदस्यता शुरू होती है";
+// Purchase Button - Dynamic
+"paywall.purchase_button.trial_days" = "%d दिन मुफ़्त में आज़माएँ";
+"paywall.purchase_button.trial_weeks" = "%d सप्ताह मुफ़्त में आज़माएँ";
+"paywall.purchase_button.trial_months" = "%d महीने मुफ़्त में आज़माएँ";
+"paywall.purchase_button.trial_generic" = "मुफ़्त में आज़माएँ";
+"paywall.purchase_button_regular" = "अभी सदस्यता लें";
+// Onboarding Legal Links
+"onboarding.privacy_policy" = "गोपनीयता नीति";
+"onboarding.terms_of_use" = "उपयोग की शर्तें";
+// Settings Info Section
+"settings.privacy_policy" = "गोपनीयता नीति";
+"settings.terms_of_use" = "उपयोग की शर्तें";
+"settings.support" = "समर्थन";
+"settings.rate_app" = "ऐप को रेट करें";

@@ -1190,3 +1190,33 @@
 /* Balance Info */
 "accounts.balance_info.title" = "Về số dư hiện tại";
 "accounts.balance_info.message" = "Được tính toán dựa trên các giao dịch của hôm nay và các ngày trước đó.";
+
+// Vietnamese
+
+"paywall.auto_renewal_info" = "Đăng ký sẽ tự động gia hạn trừ khi bị hủy ít nhất 24 giờ trước khi kết thúc giai đoạn hiện tại. Bạn có thể quản lý đăng ký của mình trong cài đặt App Store.";
+// Subscription Info
+"paywall.subscription.monthly_title" = "Walleo Premium Hàng tháng";
+"paywall.subscription.yearly_title" = "Walleo Premium Hàng năm";
+"paywall.subscription.default_title" = "Walleo Premium";
+"paywall.subscription.monthly_duration" = "1 tháng";
+"paywall.subscription.yearly_duration" = "12 tháng";
+"paywall.trial_info" = "Dùng thử miễn phí 3 ngày, sau đó đăng ký bắt đầu";
+// Trial info - dynamic
+"paywall.trial_info.days" = "Dùng thử miễn phí %d ngày, sau đó đăng ký bắt đầu";
+"paywall.trial_info.weeks" = "Dùng thử miễn phí %d tuần, sau đó đăng ký bắt đầu";
+"paywall.trial_info.months" = "Dùng thử miễn phí %d tháng, sau đó đăng ký bắt đầu";
+"paywall.trial_info.years" = "Dùng thử miễn phí %d năm, sau đó đăng ký bắt đầu";
+// Purchase Button - Dynamic
+"paywall.purchase_button.trial_days" = "Dùng thử miễn phí %d ngày";
+"paywall.purchase_button.trial_weeks" = "Dùng thử miễn phí %d tuần";
+"paywall.purchase_button.trial_months" = "Dùng thử miễn phí %d tháng";
+"paywall.purchase_button.trial_generic" = "Dùng thử miễn phí";
+"paywall.purchase_button_regular" = "Đăng ký ngay";
+// Onboarding Legal Links
+"onboarding.privacy_policy" = "Chính sách quyền riêng tư";
+"onboarding.terms_of_use" = "Điều khoản sử dụng";
+// Settings Info Section
+"settings.privacy_policy" = "Chính sách quyền riêng tư";
+"settings.terms_of_use" = "Điều khoản sử dụng";
+"settings.support" = "Hỗ trợ";
+"settings.rate_app" = "Đánh giá ứng dụng";

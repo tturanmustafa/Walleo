@@ -1,3 +1,4 @@
+// MARK: - Bundle Extension for Language Support
 import SwiftUI
 import RevenueCat
 
@@ -13,7 +14,7 @@ struct PaywallView: View {
     @State private var isPurchasing = false
     @State private var showError = false
     @State private var errorMessage = ""
-    @State private var isEligibleForIntro = false // YENİ EKLE
+    @State private var isEligibleForIntro = false
     
     // Animation States
     @State private var logoRotation: Double = 0
@@ -53,11 +54,20 @@ struct PaywallView: View {
                                 compactPackagesGrid(offerings)
                             }
                             
+                            // SUBSCRIPTION INFO - YENİ EKLENEN BÖLÜM
+                            if let package = selectedPackage {
+                                subscriptionInfoView(for: package)
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 8)
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(10)
+                            }
+                            
                             // CTA Button
                             compactPurchaseButton
                             
-                            // Minimal footer
-                            minimalFooter
+                            // Enhanced footer with links
+                            enhancedFooter
                         }
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
@@ -80,7 +90,6 @@ struct PaywallView: View {
             fetchOfferings()
         }
         .onChange(of: selectedPackage) { _, _ in
-            // YENİ EKLE: Paket değiştiğinde deneme hakkını yeniden kontrol et
             checkTrialEligibility()
         }
         .alert(LocalizedStringKey("paywall.error.purchase_failed"), isPresented: $showError) {
@@ -93,6 +102,144 @@ struct PaywallView: View {
                 dismiss()
             }
         }
+    }
+    
+    // MARK: - Subscription Info View (YENİ)
+    private func subscriptionInfoView(for package: Package) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            // Subscription Title
+            Text(subscriptionTitle(for: package))
+                .font(.caption)
+                .fontWeight(.semibold)
+            
+            // Subscription Duration & Price
+            HStack {
+                Text(subscriptionDuration(for: package))
+                Spacer()
+                Text(package.storeProduct.localizedPriceString)
+                    .fontWeight(.bold)
+            }
+            .font(.caption2)
+            
+            // Trial info if available
+            if isEligibleForIntro,
+               let introPrice = package.storeProduct.introductoryDiscount {
+                HStack(spacing: 4) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.caption2)
+                    Text(trialInfoText(for: introPrice))
+                        .font(.caption2)
+                }
+                .foregroundColor(.green)
+                .padding(.top, 2)
+            }
+        }
+    }
+    
+    // Helper functions for subscription info
+    private func subscriptionTitle(for package: Package) -> String {
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        switch package.packageType {
+        case .monthly:
+            return languageBundle.localizedString(forKey: "paywall.subscription.monthly_title", value: "", table: nil)
+        case .annual:
+            return languageBundle.localizedString(forKey: "paywall.subscription.yearly_title", value: "", table: nil)
+        default:
+            return languageBundle.localizedString(forKey: "paywall.subscription.default_title", value: "", table: nil)
+        }
+    }
+    
+    private func subscriptionDuration(for package: Package) -> String {
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        switch package.packageType {
+        case .monthly:
+            return languageBundle.localizedString(forKey: "paywall.subscription.monthly_duration", value: "", table: nil)
+        case .annual:
+            return languageBundle.localizedString(forKey: "paywall.subscription.yearly_duration", value: "", table: nil)
+        default:
+            return ""
+        }
+    }
+    
+    private func trialInfoText(for intro: StoreProductDiscount) -> String {
+        if intro.paymentMode == .freeTrial {
+            let period = intro.subscriptionPeriod
+            let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+            
+            switch period.unit {
+            case .day:
+                let format = languageBundle.localizedString(forKey: "paywall.trial_info.days", value: "", table: nil)
+                return String(format: format, period.value)
+            case .week:
+                let format = languageBundle.localizedString(forKey: "paywall.trial_info.weeks", value: "", table: nil)
+                return String(format: format, period.value)
+            case .month:
+                let format = languageBundle.localizedString(forKey: "paywall.trial_info.months", value: "", table: nil)
+                return String(format: format, period.value)
+            case .year:
+                let format = languageBundle.localizedString(forKey: "paywall.trial_info.years", value: "", table: nil)
+                return String(format: format, period.value)
+            @unknown default:
+                return ""
+            }
+        }
+        return ""
+    }
+    
+    // MARK: - Enhanced Footer (GÜNCELLENDİ)
+    private var enhancedFooter: some View {
+        VStack(spacing: 8) {
+            // Restore button
+            Button(LocalizedStringKey("paywall.restore")) {
+                restorePurchases()
+            }
+            .font(.caption)
+            .foregroundColor(.secondary)
+            
+            // Links with clear labels
+            HStack(spacing: 12) {
+                Link(destination: URL(string: "https://walleo.app/#privacy")!) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "lock.shield")
+                            .font(.caption2)
+                        Text(LocalizedStringKey("paywall.privacy"))
+                            .font(.caption2)
+                    }
+                }
+                
+                Text("•")
+                    .font(.caption2)
+                
+                Link(destination: URL(string: "https://walleo.app/#terms")!) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "doc.text")
+                            .font(.caption2)
+                        Text(LocalizedStringKey("paywall.terms"))
+                            .font(.caption2)
+                    }
+                }
+            }
+            .foregroundColor(.secondary)
+            
+            // Detailed subscription info
+            VStack(spacing: 4) {
+                Text(LocalizedStringKey("paywall.subscription_info"))
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true) // Metnin tam yüksekliğini al
+                
+                // Additional info about auto-renewal
+                Text(LocalizedStringKey("paywall.auto_renewal_info"))
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true) // Metnin tam yüksekliğini al
+                    .lineLimit(nil) // Sınırsız satır
+            }
+            .padding(.horizontal)
+        }
+        .padding(.bottom, 5)
     }
     
     // MARK: - Ultra Compact Header
@@ -163,11 +310,11 @@ struct PaywallView: View {
                 }
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            .frame(maxHeight: 270) // Yazılar büyüdüğü için yükseklik artırıldı
+            .frame(maxHeight: 250)
             
             // Smaller Page Indicator
             HStack(spacing: 6) {
-                ForEach(0..<4, id: \.self) { index in  // 5'ten 4'e değişti
+                ForEach(0..<4, id: \.self) { index in
                     Circle()
                         .fill(selectedFeatureIndex == index ? Color.accentColor : Color.gray.opacity(0.3))
                         .frame(width: selectedFeatureIndex == index ? 8 : 6,
@@ -185,7 +332,7 @@ struct PaywallView: View {
                 ForEach(packages, id: \.identifier) { package in
                     MiniPackageCard(
                         package: package,
-                        packages: packages, // Tüm paketleri gönder
+                        packages: packages,
                         isSelected: selectedPackage?.identifier == package.identifier,
                         onTap: {
                             withAnimation(.spring()) {
@@ -211,7 +358,7 @@ struct PaywallView: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                    .frame(height: 44) // Smaller height
+                    .frame(height: 44)
                 
                 if isPurchasing {
                     ProgressView()
@@ -221,7 +368,7 @@ struct PaywallView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "crown.fill")
                             .font(.system(size: 16))
-                        Text(LocalizedStringKey(purchaseButtonTextKey)) // DEĞIŞTI
+                        Text(purchaseButtonText)
                             .font(.system(size: 15, weight: .semibold))
                     }
                     .foregroundColor(.white)
@@ -232,43 +379,30 @@ struct PaywallView: View {
         .opacity(selectedPackage == nil ? 0.6 : 1)
     }
 
-    // YENİ EKLE: Buton metni için computed property
-    private var purchaseButtonTextKey: String {
-        if isEligibleForIntro && selectedPackage?.storeProduct.introductoryDiscount != nil {
-            return "paywall.purchase_button" // "Try 3 Days Free"
+    private var purchaseButtonText: String {
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        
+        if isEligibleForIntro,
+           let intro = selectedPackage?.storeProduct.introductoryDiscount,
+           intro.paymentMode == .freeTrial {
+            // Dinamik deneme süresi metni
+            let period = intro.subscriptionPeriod
+            switch period.unit {
+            case .day:
+                let format = languageBundle.localizedString(forKey: "paywall.purchase_button.trial_days", value: "", table: nil)
+                return String(format: format, period.value)
+            case .week:
+                let format = languageBundle.localizedString(forKey: "paywall.purchase_button.trial_weeks", value: "", table: nil)
+                return String(format: format, period.value)
+            case .month:
+                let format = languageBundle.localizedString(forKey: "paywall.purchase_button.trial_months", value: "", table: nil)
+                return String(format: format, period.value)
+            default:
+                return languageBundle.localizedString(forKey: "paywall.purchase_button.trial_generic", value: "", table: nil)
+            }
         } else {
-            return "paywall.purchase_button_regular" // Yeni localization key
+            return languageBundle.localizedString(forKey: "paywall.purchase_button_regular", value: "", table: nil)
         }
-    }
-    
-    // MARK: - Minimal Footer
-    private var minimalFooter: some View {
-        VStack(spacing: 6) {
-            Button(LocalizedStringKey("paywall.restore")) {
-                restorePurchases()
-            }
-            .font(.caption)
-            .foregroundColor(.secondary)
-            
-            HStack(spacing: 10) {
-                Link(LocalizedStringKey("paywall.privacy"),
-                     destination: URL(string: "https://walleo.app/#privacy")!)
-                
-                Text("•")
-                
-                Link(LocalizedStringKey("paywall.terms"),
-                     destination: URL(string: "https://walleo.app/#terms")!)
-            }
-            .font(.caption2)
-            .foregroundColor(.secondary)
-            
-            Text(LocalizedStringKey("paywall.subscription_info"))
-                .font(.caption2)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-        }
-        .padding(.bottom, 5)
     }
     
     // MARK: - Features Data
@@ -321,14 +455,12 @@ struct PaywallView: View {
         Purchases.shared.getOfferings { offerings, error in
             if let offerings = offerings {
                 self.offerings = offerings
-                // Önce yıllık paketi seç, yoksa ilk paketi seç
                 if let annualPackage = offerings.current?.availablePackages.first(where: { $0.packageType == .annual }) {
                     self.selectedPackage = annualPackage
                 } else if let firstPackage = offerings.current?.availablePackages.first {
                     self.selectedPackage = firstPackage
                 }
                 
-                // YENİ EKLE: Deneme hakkı kontrolü
                 self.checkTrialEligibility()
             } else if let error = error {
                 self.errorMessage = error.localizedDescription
@@ -338,11 +470,9 @@ struct PaywallView: View {
         }
     }
 
-    // YENİ EKLE: Deneme hakkı kontrol fonksiyonu
     private func checkTrialEligibility() {
         guard let selectedPackage = selectedPackage else { return }
         
-        // RevenueCat ile deneme hakkı kontrolü
         Purchases.shared.checkTrialOrIntroDiscountEligibility(productIdentifiers: [selectedPackage.storeProduct.productIdentifier]) { eligibility in
             if let status = eligibility[selectedPackage.storeProduct.productIdentifier] {
                 self.isEligibleForIntro = (status.status == .eligible)
@@ -379,7 +509,8 @@ struct PaywallView: View {
             } else if customerInfo?.entitlements["Premium"]?.isActive == true {
                 // Success - will auto dismiss
             } else {
-                errorMessage = NSLocalizedString("paywall.error.no_purchases", comment: "")
+                let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+                errorMessage = languageBundle.localizedString(forKey: "paywall.error.no_purchases", value: "", table: nil)
                 showError = true
             }
         }
@@ -395,7 +526,7 @@ struct PremiumFeature {
     let detailKey: String
 }
 
-// MARK: - Compact Feature Card (Smaller)
+// MARK: - Compact Feature Card
 struct CompactFeatureCard: View {
     let feature: PremiumFeature
     @State private var isAnimating = false
@@ -406,25 +537,25 @@ struct CompactFeatureCard: View {
             ZStack {
                 Circle()
                     .fill(feature.iconColor.opacity(0.15))
-                    .frame(width: 56, height: 56) // 50'den 56'ya
+                    .frame(width: 56, height: 56)
                 
                 Image(systemName: feature.icon)
-                    .font(.system(size: 28)) // 24'ten 28'e
+                    .font(.system(size: 28))
                     .foregroundColor(feature.iconColor)
             }
             
             // Compact Content
             VStack(spacing: 6) {
                 Text(LocalizedStringKey(feature.titleKey))
-                    .font(.system(size: 25, weight: .semibold)) // Biraz daha büyük
+                    .font(.system(size: 25, weight: .semibold))
                 
                 Text(LocalizedStringKey(feature.descriptionKey))
-                    .font(.system(size: 20, weight: .medium)) // Biraz daha büyük
+                    .font(.system(size: 20, weight: .medium))
                     .foregroundColor(.secondary)
                     .lineLimit(2)
                 
                 Text(LocalizedStringKey(feature.detailKey))
-                    .font(.system(size: 15)) // caption'dan biraz daha büyük
+                    .font(.system(size: 15))
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
@@ -436,10 +567,10 @@ struct CompactFeatureCard: View {
     }
 }
 
-// MARK: - Mini Package Card (Side by Side)
+// MARK: - Mini Package Card
 struct MiniPackageCard: View {
     let package: Package
-    let packages: [Package] // Yeni parametre
+    let packages: [Package]
     let isSelected: Bool
     let onTap: () -> Void
     @EnvironmentObject var appSettings: AppSettings
@@ -449,7 +580,6 @@ struct MiniPackageCard: View {
     }
     
     private var periodString: String {
-        // Uygulama dilini kullan
         let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
         
         switch package.packageType {
@@ -464,7 +594,6 @@ struct MiniPackageCard: View {
         }
     }
     
-    // Tasarruf yüzdesini hesapla
     private func calculateSavingsPercentage() -> String? {
         guard package.packageType == .annual,
               let monthlyPackage = packages.first(where: { $0.packageType == .monthly }),
@@ -477,28 +606,18 @@ struct MiniPackageCard: View {
         
         guard monthlyPrice > 0, annualPrice > 0 else { return nil }
         
-        // 12 aylık toplam maliyet
         let yearlyTotal = monthlyPrice * 12
-        
-        // Tasarruf
         let savings = yearlyTotal - annualPrice
-        
-        // Yüzde hesapla
         let percentage = (savings / yearlyTotal) * 100
-        
-        // 2 ondalık basamağa kes (yuvarlama değil)
         let truncated = floor(percentage * 100) / 100
         
-        // Locale ayarlarına göre formatla
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: appSettings.languageCode)
         formatter.numberStyle = .decimal
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = 2
         
-        // Gereksiz sıfırları kaldır (örn: 50.00 -> 50, 49.90 -> 49.9)
         if let formattedNumber = formatter.string(from: NSNumber(value: truncated)) {
-            // Uygulama dilini kullan
             let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
             let format = languageBundle.localizedString(forKey: "paywall.save_percent", value: "", table: nil)
             return String(format: format, formattedNumber)
