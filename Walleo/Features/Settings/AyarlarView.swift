@@ -3,6 +3,7 @@
 
 import SwiftUI
 import SwiftData
+import StoreKit
 
 struct AyarlarView: View {
     @EnvironmentObject var appSettings: AppSettings
@@ -315,6 +316,7 @@ struct VeriYonetimiBolumu: View {
 }
 
 // MARK: - AyarlarView+BilgiBolumu.swift
+// MARK: - AyarlarView+BilgiBolumu.swift
 struct BilgiBolumu: View {
     // Versiyon ve build numarasını Bundle'dan al
     private var appVersion: String {
@@ -327,16 +329,112 @@ struct BilgiBolumu: View {
     
     var body: some View {
         Section(LocalizedStringKey("settings.section_info")) {
+            // Privacy Policy
+            Link(destination: URL(string: "https://walleo.app/#privacy")!) {
+                HStack {
+                    AyarIkonu(iconName: "lock.shield.fill", color: .blue)
+                    Text(LocalizedStringKey("settings.privacy_policy"))
+                    Spacer()
+                    Image(systemName: "arrow.up.right.square")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .foregroundColor(.primary)
+            .padding(.vertical, 4)
+            
+            // Terms of Use
+            Link(destination: URL(string: "https://walleo.app/#terms")!) {
+                HStack {
+                    AyarIkonu(iconName: "doc.text.fill", color: .green)
+                    Text(LocalizedStringKey("settings.terms_of_use"))
+                    Spacer()
+                    Image(systemName: "arrow.up.right.square")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .foregroundColor(.primary)
+            .padding(.vertical, 4)
+            
+            // Support/Contact
+            Link(destination: URL(string: "https://walleo.app/#support")!) {
+                HStack {
+                    AyarIkonu(iconName: "questionmark.circle.fill", color: .orange)
+                    Text(LocalizedStringKey("settings.support"))
+                    Spacer()
+                    Image(systemName: "arrow.up.right.square")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .foregroundColor(.primary)
+            .padding(.vertical, 4)
+            
+            // Rate App - StoreKit kullanarak
+            RateAppButton()
+                .padding(.vertical, 4)
+            
+            // Version
             HStack {
+                AyarIkonu(iconName: "info.circle.fill", color: .gray)
                 Text(LocalizedStringKey("settings.version"))
                 Spacer()
                 Text("\(appVersion) (\(buildNumber))")
                     .foregroundColor(.secondary)
             }
+            .padding(.vertical, 4)
         }
     }
 }
 
+// Rate App için ayrı bir View - iOS sürümüne göre
+struct RateAppButton: View {
+    var body: some View {
+        if #available(iOS 16.0, *) {
+            ModernRateAppButton()
+        } else {
+            LegacyRateAppButton()
+        }
+    }
+}
+
+// iOS 16+ için modern yaklaşım
+@available(iOS 16.0, *)
+struct ModernRateAppButton: View {
+    @Environment(\.requestReview) var requestReview
+    
+    var body: some View {
+        Button(action: {
+            requestReview()
+        }) {
+            HStack {
+                AyarIkonu(iconName: "star.fill", color: .yellow)
+                Text(LocalizedStringKey("settings.rate_app"))
+                Spacer()
+            }
+        }
+        .foregroundColor(.primary)
+    }
+}
+
+// iOS 15 ve altı için eski yaklaşım
+struct LegacyRateAppButton: View {
+    var body: some View {
+        Button(action: {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                SKStoreReviewController.requestReview(in: windowScene)
+            }
+        }) {
+            HStack {
+                AyarIkonu(iconName: "star.fill", color: .yellow)
+                Text(LocalizedStringKey("settings.rate_app"))
+                Spacer()
+            }
+        }
+        .foregroundColor(.primary)
+    }
+}
 // MARK: - AyarIkonu.swift
 struct AyarIkonu: View {
     let iconName: String

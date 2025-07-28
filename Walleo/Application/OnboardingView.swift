@@ -1253,7 +1253,7 @@ struct PersonalizationWithSignInPage: View {
                             }
                         }
                         .padding(.horizontal, 30)
-                        .padding(.bottom, 200) // Sign in button için boşluk
+                        .padding(.bottom, 220) // Sign in button ve linkler için boşluk artırıldı
                     }
                 }
                 .scaleEffect(animateContent ? 1 : 0.9)
@@ -1268,8 +1268,8 @@ struct PersonalizationWithSignInPage: View {
                     )
                 )
                 
-                // Sabit Sign in with Apple bölümü
-                VStack(spacing: 15) {
+                // Sabit Sign in with Apple bölümü - GÜNCELLENDİ
+                VStack(spacing: 12) { // spacing azaltıldı
                     if isSigningIn {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle())
@@ -1289,14 +1289,46 @@ struct PersonalizationWithSignInPage: View {
                         .shadow(radius: 5)
                         .padding(.horizontal, 30)
                         
-                        Text(LocalizedStringKey("onboarding.privacy_notice"))
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 40)
+                        // Privacy Notice with Links - YENİ
+                        VStack(spacing: 8) {
+                            Text(LocalizedStringKey("onboarding.privacy_notice"))
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 40)
+                            
+                            // Terms and Privacy Links - YENİ
+                            HStack(spacing: 15) {
+                                Link(destination: URL(string: "https://walleo.app/#privacy")!) {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "lock.shield")
+                                            .font(.caption2)
+                                        Text(LocalizedStringKey("onboarding.privacy_policy"))
+                                            .font(.caption2)
+                                            .underline()
+                                    }
+                                }
+                                .foregroundColor(.accentColor)
+                                
+                                Text("•")
+                                    .font(.caption2)
+                                    .foregroundColor(.secondary)
+                                
+                                Link(destination: URL(string: "https://walleo.app/#terms")!) {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "doc.text")
+                                            .font(.caption2)
+                                        Text(LocalizedStringKey("onboarding.terms_of_use"))
+                                            .font(.caption2)
+                                            .underline()
+                                    }
+                                }
+                                .foregroundColor(.accentColor)
+                            }
+                        }
                     }
                 }
-                .padding(.top, 20)
+                .padding(.top, 15) // azaltıldı
                 .padding(.bottom, 10)
             }
         }

@@ -1190,3 +1190,33 @@
 /* Balance Info */
 "accounts.balance_info.title" = "Mengenai Baki Semasa";
 "accounts.balance_info.message" = "Dikira berdasarkan urus niaga pada hari ini dan sebelumnya.";
+
+// Malay
+
+"paywall.auto_renewal_info" = "Langganan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum tamat tempoh semasa. Anda boleh menguruskan langganan anda dalam tetapan App Store.";
+// Subscription Info
+"paywall.subscription.monthly_title" = "Walleo Premium Bulanan";
+"paywall.subscription.yearly_title" = "Walleo Premium Tahunan";
+"paywall.subscription.default_title" = "Walleo Premium";
+"paywall.subscription.monthly_duration" = "1 Bulan";
+"paywall.subscription.yearly_duration" = "12 Bulan";
+"paywall.trial_info" = "Percubaan percuma 3 hari, kemudian langganan bermula";
+// Trial info - dynamic
+"paywall.trial_info.days" = "Percubaan percuma %d hari, kemudian langganan bermula";
+"paywall.trial_info.weeks" = "Percubaan percuma %d minggu, kemudian langganan bermula";
+"paywall.trial_info.months" = "Percubaan percuma %d bulan, kemudian langganan bermula";
+"paywall.trial_info.years" = "Percubaan percuma %d tahun, kemudian langganan bermula";
+// Purchase Button - Dynamic
+"paywall.purchase_button.trial_days" = "Cuba %d Hari Percuma";
+"paywall.purchase_button.trial_weeks" = "Cuba %d Minggu Percuma";
+"paywall.purchase_button.trial_months" = "Cuba %d Bulan Percuma";
+"paywall.purchase_button.trial_generic" = "Cuba Percuma";
+"paywall.purchase_button_regular" = "Langgan Sekarang";
+// Onboarding Legal Links
+"onboarding.privacy_policy" = "Dasar Privasi";
+"onboarding.terms_of_use" = "Syarat Penggunaan";
+// Settings Info Section
+"settings.privacy_policy" = "Dasar Privasi";
+"settings.terms_of_use" = "Syarat Penggunaan";
+"settings.support" = "Sokongan";
+"settings.rate_app" = "Nilaikan Aplikasi";

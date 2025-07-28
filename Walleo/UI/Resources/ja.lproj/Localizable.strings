@@ -1190,3 +1190,33 @@
 /* Balance Info */
 "accounts.balance_info.title" = "現在の残高について";
 "accounts.balance_info.message" = "本日およびそれ以前の取引に基づいて計算されます。";
+
+// Japanese
+
+"paywall.auto_renewal_info" = "現在の期間が終了する24時間前までにキャンセルされない限り、サブスクリプションは自動的に更新されます。サブスクリプションはApp Storeの設定で管理できます。";
+// Subscription Info
+"paywall.subscription.monthly_title" = "Walleoプレミアム 月間";
+"paywall.subscription.yearly_title" = "Walleoプレミアム 年間";
+"paywall.subscription.default_title" = "Walleoプレミアム";
+"paywall.subscription.monthly_duration" = "1ヶ月";
+"paywall.subscription.yearly_duration" = "12ヶ月";
+"paywall.trial_info" = "3日間の無料トライアル、その後サブスクリプションが開始されます";
+// Trial info - dynamic
+"paywall.trial_info.days" = "%d日間の無料トライアル、その後サブスクリプションが開始されます";
+"paywall.trial_info.weeks" = "%d週間の無料トライアル、その後サブスクリプションが開始されます";
+"paywall.trial_info.months" = "%dヶ月間の無料トライアル、その後サブスクリプションが開始されます";
+"paywall.trial_info.years" = "%d年間の無料トライアル、その後サブスクリプションが開始されます";
+// Purchase Button - Dynamic
+"paywall.purchase_button.trial_days" = "%d日間無料で試す";
+"paywall.purchase_button.trial_weeks" = "%d週間無料で試す";
+"paywall.purchase_button.trial_months" = "%dヶ月間無料で試す";
+"paywall.purchase_button.trial_generic" = "無料で試す";
+"paywall.purchase_button_regular" = "今すぐ登録";
+// Onboarding Legal Links
+"onboarding.privacy_policy" = "プライバシーポリシー";
+"onboarding.terms_of_use" = "利用規約";
+// Settings Info Section
+"settings.privacy_policy" = "プライバシーポリシー";
+"settings.terms_of_use" = "利用規約";
+"settings.support" = "サポート";
+"settings.rate_app" = "アプリを評価";

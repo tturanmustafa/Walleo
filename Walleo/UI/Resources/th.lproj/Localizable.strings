@@ -1190,3 +1190,33 @@
 /* Balance Info */
 "accounts.balance_info.title" = "เกี่ยวกับยอดเงินปัจจุบัน";
 "accounts.balance_info.message" = "คำนวณจากธุรกรรมของวันนี้และวันก่อนหน้า";
+
+// Thai
+
+"paywall.auto_renewal_info" = "การสมัครสมาชิกจะต่ออายุโดยอัตโนมัติเว้นแต่จะยกเลิกอย่างน้อย 24 ชั่วโมงก่อนสิ้นสุดช่วงเวลาปัจจุบัน คุณสามารถจัดการการสมัครสมาชิกของคุณได้ในการตั้งค่า App Store";
+// Subscription Info
+"paywall.subscription.monthly_title" = "Walleo Premium รายเดือน";
+"paywall.subscription.yearly_title" = "Walleo Premium รายปี";
+"paywall.subscription.default_title" = "Walleo Premium";
+"paywall.subscription.monthly_duration" = "1 เดือน";
+"paywall.subscription.yearly_duration" = "12 เดือน";
+"paywall.trial_info" = "ทดลองใช้ฟรี 3 วัน จากนั้นการสมัครสมาชิกจะเริ่มขึ้น";
+// Trial info - dynamic
+"paywall.trial_info.days" = "ทดลองใช้ฟรี %d วัน จากนั้นการสมัครสมาชิกจะเริ่มขึ้น";
+"paywall.trial_info.weeks" = "ทดลองใช้ฟรี %d สัปดาห์ จากนั้นการสมัครสมาชิกจะเริ่มขึ้น";
+"paywall.trial_info.months" = "ทดลองใช้ฟรี %d เดือน จากนั้นการสมัครสมาชิกจะเริ่มขึ้น";
+"paywall.trial_info.years" = "ทดลองใช้ฟรี %d ปี จากนั้นการสมัครสมาชิกจะเริ่มขึ้น";
+// Purchase Button - Dynamic
+"paywall.purchase_button.trial_days" = "ทดลองใช้ฟรี %d วัน";
+"paywall.purchase_button.trial_weeks" = "ทดลองใช้ฟรี %d สัปดาห์";
+"paywall.purchase_button.trial_months" = "ทดลองใช้ฟรี %d เดือน";
+"paywall.purchase_button.trial_generic" = "ทดลองใช้ฟรี";
+"paywall.purchase_button_regular" = "สมัครสมาชิกทันที";
+// Onboarding Legal Links
+"onboarding.privacy_policy" = "นโยบายความเป็นส่วนตัว";
+"onboarding.terms_of_use" = "ข้อกำหนดการใช้งาน";
+// Settings Info Section
+"settings.privacy_policy" = "นโยบายความเป็นส่วนตัว";
+"settings.terms_of_use" = "ข้อกำหนดการใช้งาน";
+"settings.support" = "ฝ่ายสนับสนุน";
+"settings.rate_app" = "ให้คะแนนแอป";

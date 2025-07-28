@@ -1190,3 +1190,33 @@
 /* Balance Info */
 "accounts.balance_info.title" = "À propos du solde actuel";
 "accounts.balance_info.message" = "Calculé en fonction des transactions d'aujourd'hui et antérieures.";
+
+// French
+
+"paywall.auto_renewal_info" = "L'abonnement se renouvelle automatiquement sauf en cas d'annulation au moins 24 heures avant la fin de la période en cours. Vous pouvez gérer votre abonnement dans les réglages de l'App Store.";
+// Subscription Info
+"paywall.subscription.monthly_title" = "Walleo Premium Mensuel";
+"paywall.subscription.yearly_title" = "Walleo Premium Annuel";
+"paywall.subscription.default_title" = "Walleo Premium";
+"paywall.subscription.monthly_duration" = "1 mois";
+"paywall.subscription.yearly_duration" = "12 mois";
+"paywall.trial_info" = "3 jours d'essai gratuit, puis l'abonnement commence";
+// Trial info - dynamic
+"paywall.trial_info.days" = "Essai gratuit de %d jours, puis l'abonnement commence";
+"paywall.trial_info.weeks" = "Essai gratuit de %d semaines, puis l'abonnement commence";
+"paywall.trial_info.months" = "Essai gratuit de %d mois, puis l'abonnement commence";
+"paywall.trial_info.years" = "Essai gratuit de %d ans, puis l'abonnement commence";
+// Purchase Button - Dynamic
+"paywall.purchase_button.trial_days" = "Essayer %d jours gratuitement";
+"paywall.purchase_button.trial_weeks" = "Essayer %d semaines gratuitement";
+"paywall.purchase_button.trial_months" = "Essayer %d mois gratuitement";
+"paywall.purchase_button.trial_generic" = "Essayer gratuitement";
+"paywall.purchase_button_regular" = "S'abonner maintenant";
+// Onboarding Legal Links
+"onboarding.privacy_policy" = "Politique de confidentialité";
+"onboarding.terms_of_use" = "Conditions d'utilisation";
+// Settings Info Section
+"settings.privacy_policy" = "Politique de confidentialité";
+"settings.terms_of_use" = "Conditions d'utilisation";
+"settings.support" = "Assistance";
+"settings.rate_app" = "Évaluer l'application";

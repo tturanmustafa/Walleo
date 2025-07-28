@@ -93,6 +93,7 @@ struct WalleoApp: App {
                     // YENİ: Onboarding için de ekleyin
                     .task {
                         await setupNotificationManager()
+                        await checkAndUpdateSystemCategories()
                     }
             }
         }
@@ -101,6 +102,83 @@ struct WalleoApp: App {
             if newPhase == .background {
                 scheduleBudgetRenewalTask()
             }
+        }
+    }
+    
+    @MainActor
+    private func checkAndUpdateSystemCategories() async {
+        let context = modelContainer.mainContext
+        
+        do {
+            // Metadata kontrolü
+            let metadataDescriptor = FetchDescriptor<AppMetadata>()
+            let existingMetadata = try context.fetch(metadataDescriptor).first
+            
+            // Mevcut kategorileri kontrol et
+            let categoryDescriptor = FetchDescriptor<Kategori>()
+            let existingCategories = try context.fetch(categoryDescriptor)
+            
+            // Sistem kategorilerini tanımla (OnboardingView'daki ile aynı)
+            let systemCategories: [(isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String)] = [
+                ("Maaş", "dollarsign.circle.fill", .gelir, "#34C759", "category.salary"),
+                ("Ek Gelir", "chart.pie.fill", .gelir, "#007AFF", "category.extra_income"),
+                ("Yatırım", "chart.line.uptrend.xyaxis", .gelir, "#AF52DE", "category.investment"),
+                ("Market", "cart.fill", .gider, "#FF9500", "category.groceries"),
+                ("Restoran", "fork.knife", .gider, "#FF3B30", "category.restaurant"),
+                ("Ulaşım", "car.fill", .gider, "#5E5CE6", "category.transport"),
+                ("Faturalar", "bolt.fill", .gider, "#FFCC00", "category.bills"),
+                ("Eğlence", "film.fill", .gider, "#32ADE6", "category.entertainment"),
+                ("Sağlık", "pills.fill", .gider, "#64D2FF", "category.health"),
+                ("Giyim", "tshirt.fill", .gider, "#FF2D55", "category.clothing"),
+                ("Ev", "house.fill", .gider, "#A2845E", "category.home"),
+                ("Hediye", "gift.fill", .gider, "#BF5AF2", "category.gift"),
+                ("Kredi Ödemesi", "creditcard.and.123", .gider, "#8E8E93", "category.loan_payment"),
+                ("Diğer", "ellipsis.circle.fill", .gider, "#30B0C7", "category.other")
+            ]
+            
+            // Mevcut sistem kategorilerinin localizationKey'lerini topla
+            var existingSystemKeys = Set<String>()
+            for category in existingCategories {
+                if let locKey = category.localizationKey {
+                    existingSystemKeys.insert(locKey)
+                }
+            }
+            
+            // Eksik sistem kategorilerini ekle
+            var kategorilerEklendi = false
+            for systemCat in systemCategories {
+                if !existingSystemKeys.contains(systemCat.localizationKey) {
+                    let newCategory = Kategori(
+                        isim: systemCat.isim,
+                        ikonAdi: systemCat.ikonAdi,
+                        tur: systemCat.tur,
+                        renkHex: systemCat.renkHex,
+                        localizationKey: systemCat.localizationKey
+                    )
+                    context.insert(newCategory)
+                    kategorilerEklendi = true
+                    Logger.log("Güncelleme sonrası eksik kategori eklendi: \(systemCat.isim)", log: Logger.data)
+                }
+            }
+            
+            // Metadata güncelle veya oluştur
+            if existingMetadata == nil {
+                let newMetadata = AppMetadata(defaultCategoriesAdded: true)
+                context.insert(newMetadata)
+                kategorilerEklendi = true
+            } else if !existingMetadata!.defaultCategoriesAdded {
+                existingMetadata!.defaultCategoriesAdded = true
+                kategorilerEklendi = true
+            }
+            
+            // Değişiklik varsa kaydet
+            if kategorilerEklendi {
+                try context.save()
+                Logger.log("Sistem kategorileri güncelleme kontrolü tamamlandı", log: Logger.data)
+            }
+            
+        } catch {
+            Logger.log("Sistem kategorileri kontrol hatası: \(error)", log: Logger.data, type: .error)
         }
     }
     

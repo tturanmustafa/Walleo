@@ -1190,3 +1190,33 @@
 /* Balance Info */
 "accounts.balance_info.title" = "Tentang Saldo Saat Ini";
 "accounts.balance_info.message" = "Dihitung berdasarkan transaksi hari ini dan sebelumnya.";
+
+// Indonesian
+
+"paywall.auto_renewal_info" = "Langganan diperpanjang secara otomatis kecuali dibatalkan setidaknya 24 jam sebelum akhir periode berjalan. Anda dapat mengelola langganan Anda di pengaturan App Store.";
+// Subscription Info
+"paywall.subscription.monthly_title" = "Walleo Premium Bulanan";
+"paywall.subscription.yearly_title" = "Walleo Premium Tahunan";
+"paywall.subscription.default_title" = "Walleo Premium";
+"paywall.subscription.monthly_duration" = "1 Bulan";
+"paywall.subscription.yearly_duration" = "12 Bulan";
+"paywall.trial_info" = "Uji coba gratis 3 hari, lalu langganan dimulai";
+// Trial info - dynamic
+"paywall.trial_info.days" = "Uji coba gratis %d hari, lalu langganan dimulai";
+"paywall.trial_info.weeks" = "Uji coba gratis %d minggu, lalu langganan dimulai";
+"paywall.trial_info.months" = "Uji coba gratis %d bulan, lalu langganan dimulai";
+"paywall.trial_info.years" = "Uji coba gratis %d tahun, lalu langganan dimulai";
+// Purchase Button - Dynamic
+"paywall.purchase_button.trial_days" = "Coba Gratis %d Hari";
+"paywall.purchase_button.trial_weeks" = "Coba Gratis %d Minggu";
+"paywall.purchase_button.trial_months" = "Coba Gratis %d Bulan";
+"paywall.purchase_button.trial_generic" = "Coba Gratis";
+"paywall.purchase_button_regular" = "Berlangganan Sekarang";
+// Onboarding Legal Links
+"onboarding.privacy_policy" = "Kebijakan Privasi";
+"onboarding.terms_of_use" = "Ketentuan Penggunaan";
+// Settings Info Section
+"settings.privacy_policy" = "Kebijakan Privasi";
+"settings.terms_of_use" = "Ketentuan Penggunaan";
+"settings.support" = "Dukungan";
+"settings.rate_app" = "Beri Nilai Aplikasi";

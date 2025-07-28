@@ -1242,3 +1242,31 @@
 /* Balance Info */
 "accounts.balance_info.title" = "Güncel Bakiye Hakkında";
 "accounts.balance_info.message" = "Bugün ve öncesine ait işlemler baz alınarak hesaplanmaktadır.";
+
+"paywall.auto_renewal_info" = "Abonelik, mevcut dönemin bitiminden en az 24 saat önce iptal edilmediği sürece otomatik olarak yenilenir. Aboneliğinizi App Store ayarlarından yönetebilirsiniz.";
+// Subscription Info
+"paywall.subscription.monthly_title" = "Walleo Premium Aylık";
+"paywall.subscription.yearly_title" = "Walleo Premium Yıllık";
+"paywall.subscription.default_title" = "Walleo Premium";
+"paywall.subscription.monthly_duration" = "1 Aylık";
+"paywall.subscription.yearly_duration" = "12 Aylık";
+"paywall.trial_info" = "3 günlük ücretsiz deneme, sonra abonelik başlar";
+// Trial info - dinamik
+"paywall.trial_info.days" = "%d günlük ücretsiz deneme, sonra abonelik başlar";
+"paywall.trial_info.weeks" = "%d haftalık ücretsiz deneme, sonra abonelik başlar";
+"paywall.trial_info.months" = "%d aylık ücretsiz deneme, sonra abonelik başlar";
+"paywall.trial_info.years" = "%d yıllık ücretsiz deneme, sonra abonelik başlar";
+// Purchase Button - Dinamik
+"paywall.purchase_button.trial_days" = "%d Gün Ücretsiz Dene";
+"paywall.purchase_button.trial_weeks" = "%d Hafta Ücretsiz Dene";
+"paywall.purchase_button.trial_months" = "%d Ay Ücretsiz Dene";
+"paywall.purchase_button.trial_generic" = "Ücretsiz Dene";
+"paywall.purchase_button_regular" = "Abone Ol";
+// Onboarding Legal Links
+"onboarding.privacy_policy" = "Gizlilik Politikası";
+"onboarding.terms_of_use" = "Kullanım Koşulları";
+// Settings Info Section
+"settings.privacy_policy" = "Gizlilik Politikası";
+"settings.terms_of_use" = "Kullanım Koşulları";
+"settings.support" = "Destek";
+"settings.rate_app" = "Uygulamayı Değerlendir";
