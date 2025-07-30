@@ -195,22 +195,21 @@ struct OnboardingView: View {
     
     private func seedInitialData() {
         do {
-            // GÜVENLİK 1: Transaction başlat
-            try modelContext.save() // Pending değişiklikleri kaydet
+            // Transaction başlat
+            try modelContext.save()
             
-            // Önce metadata kontrolü yap
+            // ÇÖZÜM 1: CloudKit senkronizasyonunun tamamlanmasını bekle
+            Thread.sleep(forTimeInterval: 0.5)
+            
+            // Metadata kontrolü
             let metadataDescriptor = FetchDescriptor<AppMetadata>()
             let existingMetadata = try modelContext.fetch(metadataDescriptor).first
-            
-            // GÜVENLİK 2: Metadata varsa ve işaretliyse, hiçbir şey yapma
-            if existingMetadata?.defaultCategoriesAdded == true {
-                Logger.log("Sistem kategorileri zaten eklenmiş, işlem iptal edildi", log: Logger.data)
-                return
-            }
             
             // Mevcut kategorileri kontrol et
             let categoryDescriptor = FetchDescriptor<Kategori>()
             let existingCategories = try modelContext.fetch(categoryDescriptor)
+            
+            Logger.log("Mevcut kategori sayısı: \(existingCategories.count)", log: Logger.data)
             
             // Sistem kategorilerini tanımla
             let systemCategories: [(isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String)] = [
@@ -230,35 +229,33 @@ struct OnboardingView: View {
                 ("Diğer", "ellipsis.circle.fill", .gider, "#30B0C7", "category.other")
             ]
             
-            // Mevcut SISTEM kategorilerinin localizationKey'lerini topla
-            var existingSystemKeys = Set<String>()
-            for category in existingCategories {
-                if let locKey = category.localizationKey {
-                    existingSystemKeys.insert(locKey)
-                }
-            }
-            
-            // GÜVENLİK 3: Ekleme öncesi tekrar kontrol
-            let totalSystemCategoriesNeeded = systemCategories.count
-            let existingSystemCategoriesCount = existingSystemKeys.count
-            
-            if existingSystemCategoriesCount >= totalSystemCategoriesNeeded {
-                Logger.log("Tüm sistem kategorileri mevcut, ekleme yapılmadı", log: Logger.data)
-                // Metadata'yı güncelle
-                if let metadata = existingMetadata {
-                    metadata.defaultCategoriesAdded = true
-                } else {
-                    let newMetadata = AppMetadata(defaultCategoriesAdded: true)
-                    modelContext.insert(newMetadata)
-                }
-                try modelContext.save()
-                return
-            }
-            
-            // Eksik sistem kategorilerini ekle
+            // ÇÖZÜM 2: Daha güvenli kategori kontrolü
             var kategorilerEklendi = false
+            
             for systemCat in systemCategories {
-                if !existingSystemKeys.contains(systemCat.localizationKey) {
+                // Önce localizationKey ile kontrol et
+                let existsWithKey = existingCategories.contains { cat in
+                    cat.localizationKey == systemCat.localizationKey
+                }
+                
+                // Sonra isim + tür kombinasyonu ile kontrol et (CloudKit'ten gelen eski veriler için)
+                let existsWithNameAndType = existingCategories.contains { cat in
+                    cat.isim == systemCat.isim && cat.tur == systemCat.tur
+                }
+                
+                if existsWithKey {
+                    Logger.log("Sistem kategorisi zaten var (key ile): \(systemCat.localizationKey)", log: Logger.data)
+                } else if existsWithNameAndType {
+                    // İsim ve tür aynı ama localizationKey yok - güncelle
+                    if let existingCat = existingCategories.first(where: {
+                        $0.isim == systemCat.isim && $0.tur == systemCat.tur && $0.localizationKey == nil
+                    }) {
+                        existingCat.localizationKey = systemCat.localizationKey
+                        kategorilerEklendi = true
+                        Logger.log("Mevcut kategoriye localizationKey eklendi: \(systemCat.isim)", log: Logger.data)
+                    }
+                } else {
+                    // Kategori hiç yok, ekle
                     let newCategory = Kategori(
                         isim: systemCat.isim,
                         ikonAdi: systemCat.ikonAdi,
@@ -268,19 +265,22 @@ struct OnboardingView: View {
                     )
                     modelContext.insert(newCategory)
                     kategorilerEklendi = true
-                    Logger.log("Eksik sistem kategorisi eklendi: \(systemCat.isim) (\(systemCat.localizationKey))", log: Logger.data)
+                    Logger.log("Yeni sistem kategorisi eklendi: \(systemCat.isim)", log: Logger.data)
                 }
             }
             
-            // Metadata'yı güncelle veya oluştur
+            // ÇÖZÜM 3: Duplike kategorileri temizle
+            cleanupDuplicateCategories(existingCategories: existingCategories)
+            
+            // Metadata güncelle
             if existingMetadata == nil {
                 let newMetadata = AppMetadata(defaultCategoriesAdded: true)
                 modelContext.insert(newMetadata)
+                kategorilerEklendi = true
             } else {
                 existingMetadata!.defaultCategoriesAdded = true
             }
             
-            // Sadece değişiklik varsa kaydet
             if kategorilerEklendi || existingMetadata == nil {
                 try modelContext.save()
                 Logger.log("Initial data setup tamamlandı", log: Logger.data)
@@ -290,7 +290,39 @@ struct OnboardingView: View {
             Logger.log("Initial data setup error: \(error.localizedDescription)", log: Logger.data, type: .fault)
         }
     }
-}
+
+    // Yeni yardımcı fonksiyon - duplike kategorileri temizle
+    private func cleanupDuplicateCategories(existingCategories: [Kategori]) {
+        var seenCategories: [String: Kategori] = [:]
+        var duplicatesToDelete: [Kategori] = []
+        
+        for category in existingCategories {
+            // Sistem kategorileri için localizationKey'i kontrol et
+            if let locKey = category.localizationKey, !locKey.isEmpty {
+                if let existing = seenCategories[locKey] {
+                    // Duplike bulundu - eskisini sil
+                    Logger.log("Duplike sistem kategorisi bulundu: \(locKey)", log: Logger.data)
+                    duplicatesToDelete.append(existing)
+                }
+                seenCategories[locKey] = category
+            } else {
+                // Kullanıcı kategorileri için isim + tür kombinasyonunu kontrol et
+                let key = "\(category.isim)-\(category.turRawValue)"
+                if let existing = seenCategories[key] {
+                    // Duplike bulundu - eskisini sil
+                    Logger.log("Duplike kullanıcı kategorisi bulundu: \(key)", log: Logger.data)
+                    duplicatesToDelete.append(existing)
+                }
+                seenCategories[key] = category
+            }
+        }
+        
+        // Duplikleri sil
+        for duplicate in duplicatesToDelete {
+            modelContext.delete(duplicate)
+            Logger.log("Duplike kategori silindi: \(duplicate.isim)", log: Logger.data)
+        }
+    }}
 
 // MARK: - Welcome Page
 struct WelcomePage: View {

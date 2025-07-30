@@ -83,7 +83,9 @@ struct WalleoApp: App {
                     }
                     // YENİ: NotificationManager'ı burada başlatın
                     .task {
+                        // NotificationManager'ı kur
                         await setupNotificationManager()
+                        await checkAndUpdateSystemCategories()
                     }
             } else {
                 OnboardingView()
@@ -92,7 +94,11 @@ struct WalleoApp: App {
                     .modelContainer(modelContainer)
                     // YENİ: Onboarding için de ekleyin
                     .task {
+                        // Önce NotificationManager'ı kur
                         await setupNotificationManager()
+                        
+                        // Sonra sistem kategorilerini kontrol et
+                        // (checkAndUpdateSystemCategories içinde zaten delay var)
                         await checkAndUpdateSystemCategories()
                     }
             }
@@ -105,11 +111,16 @@ struct WalleoApp: App {
         }
     }
     
+    // WalleoApp.swift içindeki checkAndUpdateSystemCategories fonksiyonu
+    // WalleoApp.swift içindeki checkAndUpdateSystemCategories fonksiyonu
     @MainActor
     private func checkAndUpdateSystemCategories() async {
         let context = modelContainer.mainContext
         
         do {
+            // CloudKit senkronizasyonunun tamamlanması için bekle
+            try await Task.sleep(nanoseconds: 500_000_000) // 0.5 saniye
+            
             // Metadata kontrolü
             let metadataDescriptor = FetchDescriptor<AppMetadata>()
             let existingMetadata = try context.fetch(metadataDescriptor).first
@@ -118,7 +129,9 @@ struct WalleoApp: App {
             let categoryDescriptor = FetchDescriptor<Kategori>()
             let existingCategories = try context.fetch(categoryDescriptor)
             
-            // Sistem kategorilerini tanımla (OnboardingView'daki ile aynı)
+            Logger.log("App başlatıldı - Mevcut kategori sayısı: \(existingCategories.count)", log: Logger.data)
+            
+            // Sistem kategorilerini tanımla
             let systemCategories: [(isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String)] = [
                 ("Maaş", "dollarsign.circle.fill", .gelir, "#34C759", "category.salary"),
                 ("Ek Gelir", "chart.pie.fill", .gelir, "#007AFF", "category.extra_income"),
@@ -136,18 +149,33 @@ struct WalleoApp: App {
                 ("Diğer", "ellipsis.circle.fill", .gider, "#30B0C7", "category.other")
             ]
             
-            // Mevcut sistem kategorilerinin localizationKey'lerini topla
-            var existingSystemKeys = Set<String>()
-            for category in existingCategories {
-                if let locKey = category.localizationKey {
-                    existingSystemKeys.insert(locKey)
-                }
-            }
-            
-            // Eksik sistem kategorilerini ekle
+            // Daha güvenli kategori kontrolü
             var kategorilerEklendi = false
+            
             for systemCat in systemCategories {
-                if !existingSystemKeys.contains(systemCat.localizationKey) {
+                // Önce localizationKey ile kontrol et
+                let existsWithKey = existingCategories.contains { cat in
+                    cat.localizationKey == systemCat.localizationKey
+                }
+                
+                // Sonra isim + tür kombinasyonu ile kontrol et
+                let existsWithNameAndType = existingCategories.contains { cat in
+                    cat.isim == systemCat.isim && cat.tur == systemCat.tur
+                }
+                
+                if existsWithKey {
+                    Logger.log("Sistem kategorisi zaten var (key ile): \(systemCat.localizationKey)", log: Logger.data)
+                } else if existsWithNameAndType {
+                    // İsim ve tür aynı ama localizationKey yok - güncelle
+                    if let existingCat = existingCategories.first(where: {
+                        $0.isim == systemCat.isim && $0.tur == systemCat.tur && $0.localizationKey == nil
+                    }) {
+                        existingCat.localizationKey = systemCat.localizationKey
+                        kategorilerEklendi = true
+                        Logger.log("Mevcut kategoriye localizationKey eklendi: \(systemCat.isim)", log: Logger.data)
+                    }
+                } else {
+                    // Kategori hiç yok, ekle
                     let newCategory = Kategori(
                         isim: systemCat.isim,
                         ikonAdi: systemCat.ikonAdi,
@@ -157,11 +185,14 @@ struct WalleoApp: App {
                     )
                     context.insert(newCategory)
                     kategorilerEklendi = true
-                    Logger.log("Güncelleme sonrası eksik kategori eklendi: \(systemCat.isim)", log: Logger.data)
+                    Logger.log("Yeni sistem kategorisi eklendi: \(systemCat.isim)", log: Logger.data)
                 }
             }
             
-            // Metadata güncelle veya oluştur
+            // Duplike kategorileri temizle
+            await cleanupDuplicateCategories(in: context)
+            
+            // Metadata güncelle
             if existingMetadata == nil {
                 let newMetadata = AppMetadata(defaultCategoriesAdded: true)
                 context.insert(newMetadata)
@@ -179,6 +210,50 @@ struct WalleoApp: App {
             
         } catch {
             Logger.log("Sistem kategorileri kontrol hatası: \(error)", log: Logger.data, type: .error)
+        }
+    }
+
+    // Yardımcı fonksiyon - duplike kategorileri temizle
+    @MainActor
+    private func cleanupDuplicateCategories(in context: ModelContext) async {
+        do {
+            let categoryDescriptor = FetchDescriptor<Kategori>()
+            let allCategories = try context.fetch(categoryDescriptor)
+            
+            var seenCategories: [String: Kategori] = [:]
+            var duplicatesToDelete: [Kategori] = []
+            
+            for category in allCategories {
+                // Sistem kategorileri için localizationKey'i kontrol et
+                if let locKey = category.localizationKey, !locKey.isEmpty {
+                    if let existing = seenCategories[locKey] {
+                        // Hangisi daha eski? Eski olanı sil
+                        if existing.olusturmaTarihi < category.olusturmaTarihi {
+                            duplicatesToDelete.append(existing)
+                            seenCategories[locKey] = category
+                        } else {
+                            duplicatesToDelete.append(category)
+                        }
+                        Logger.log("Duplike sistem kategorisi bulundu: \(locKey)", log: Logger.data)
+                    } else {
+                        seenCategories[locKey] = category
+                    }
+                }
+            }
+            
+            // Duplikleri sil
+            for duplicate in duplicatesToDelete {
+                context.delete(duplicate)
+                Logger.log("Duplike kategori silindi: \(duplicate.isim)", log: Logger.data)
+            }
+            
+            if !duplicatesToDelete.isEmpty {
+                try context.save()
+                Logger.log("\(duplicatesToDelete.count) duplike kategori temizlendi", log: Logger.data)
+            }
+            
+        } catch {
+            Logger.log("Duplike temizleme hatası: \(error)", log: Logger.data, type: .error)
         }
     }
     

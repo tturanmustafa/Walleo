@@ -1,17 +1,17 @@
+// Walleo/Core/Data/Kategori.swift
 import Foundation
 import SwiftData
 import SwiftUI
 
 @Model
 class Kategori {
-    // ... diğer özellikler aynı kalıyor ...
     var id: UUID = UUID()
     var isim: String = ""
     var ikonAdi: String = ""
     var renkHex: String = ""
     var localizationKey: String?
     var turRawValue: String = IslemTuru.gider.rawValue
-    var olusturmaTarihi: Date = Date() // YENİ: Eğer yoksa ekleyin
+    var olusturmaTarihi: Date = Date()
 
     @Relationship(deleteRule: .nullify, inverse: \Islem.kategori)
     var islemler: [Islem]?
@@ -26,7 +26,6 @@ class Kategori {
     
     var renk: Color { Color(hex: renkHex) }
     
-    // Dolu olan init fonksiyonu kalacak
     init(id: UUID = UUID(), isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String? = nil) {
         self.id = id
         self.isim = isim
@@ -34,6 +33,11 @@ class Kategori {
         self.renkHex = renkHex
         self.localizationKey = localizationKey
         self.turRawValue = tur.rawValue
-        self.olusturmaTarihi = Date() // YENİ
+        self.olusturmaTarihi = Date()
+        
+        // DEBUG LOG
+        if let locKey = localizationKey {
+            Logger.log("Kategori oluşturuluyor - İsim: \(isim), LocalizationKey: \(locKey)", log: Logger.data)
+        }
     }
 }
