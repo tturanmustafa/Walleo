@@ -1,5 +1,4 @@
 import SwiftUI
-import AuthenticationServices
 import SwiftData
 
 // MARK: - Ana Onboarding View
@@ -12,7 +11,6 @@ struct OnboardingView: View {
     @State private var selectedLanguage: String = ""
     @State private var selectedCurrency: String = ""
     @State private var showContent = false
-    @State private var isSigningIn = false
     
     // Animasyon state'leri
     @State private var logoScale: CGFloat = 0.8
@@ -24,6 +22,7 @@ struct OnboardingView: View {
     let totalPages = 7
     
     init() {
+        // Dil seçimi - Kullanıcının tercih ettiği dillerden ilkini al
         let preferredLanguage = Locale.preferredLanguages.first ?? "en"
         let languageCode = String(preferredLanguage.prefix(2))
         
@@ -36,23 +35,157 @@ struct OnboardingView: View {
             _selectedLanguage = State(initialValue: "en")
         }
         
-        // Para birimi seçimi
-        switch languageCode {
-        case "tr": _selectedCurrency = State(initialValue: "TRY")
-        case "de": _selectedCurrency = State(initialValue: "EUR")
-        case "fr": _selectedCurrency = State(initialValue: "EUR")
-        case "es": _selectedCurrency = State(initialValue: "EUR")
-        case "it": _selectedCurrency = State(initialValue: "EUR")
-        case "ja": _selectedCurrency = State(initialValue: "JPY")
-        case "zh": _selectedCurrency = State(initialValue: "CNY")
-        case "id": _selectedCurrency = State(initialValue: "IDR")
-        case "hi": _selectedCurrency = State(initialValue: "INR")
-        case "vi": _selectedCurrency = State(initialValue: "VND")
-        case "th": _selectedCurrency = State(initialValue: "THB")
-        case "ms": _selectedCurrency = State(initialValue: "MYR")
-        default: _selectedCurrency = State(initialValue: "USD")
+        // Para birimi seçimi - Ülke koduna göre
+        let locale = Locale.current
+        let regionCode = locale.region?.identifier ?? ""
+        
+        let defaultCurrency: String = switch regionCode {
+            // Europe - Euro Zone
+            case "AT", "BE", "CY", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PT", "SK", "SI", "ES": "EUR"
+            
+            // Americas
+            case "US": "USD"
+            case "CA": "CAD"
+            case "MX": "MXN"
+            case "BR": "BRL"
+            case "AR": "ARS"
+            case "CL": "CLP"
+            case "CO": "COP"
+            case "PE": "PEN"
+            case "UY": "UYU"
+            case "PY": "PYG"
+            case "BO": "BOB"
+            case "VE": "VES"
+            case "CR": "CRC"
+            case "GT": "GTQ"
+            case "HN": "HNL"
+            case "NI": "NIO"
+            case "PA": "PAB"
+            case "DO": "DOP"
+            case "JM": "JMD"
+            case "TT": "TTD"
+            case "BB": "BBD"
+            case "BS": "BSD"
+            case "HT": "HTG"
+            
+            // Asia
+            case "JP": "JPY"
+            case "CN": "CNY"
+            case "IN": "INR"
+            case "ID": "IDR"
+            case "MY": "MYR"
+            case "SG": "SGD"
+            case "TH": "THB"
+            case "VN": "VND"
+            case "PH": "PHP"
+            case "KR": "KRW"
+            case "HK": "HKD"
+            case "TW": "TWD"
+            case "PK": "PKR"
+            case "BD": "BDT"
+            case "LK": "LKR"
+            case "NP": "NPR"
+            case "MM": "MMK"
+            case "LA": "LAK"
+            case "KH": "KHR"
+            case "BN": "BND"
+            
+            // Middle East & Africa
+            case "AE": "AED"
+            case "SA": "SAR"
+            case "QA": "QAR"
+            case "OM": "OMR"
+            case "BH": "BHD"
+            case "KW": "KWD"
+            case "JO": "JOD"
+            case "IL": "ILS"
+            case "EG": "EGP"
+            case "MA": "MAD"
+            case "TN": "TND"
+            case "DZ": "DZD"
+            case "ZA": "ZAR"
+            case "KE": "KES"
+            case "UG": "UGX"
+            case "TZ": "TZS"
+            case "ET": "ETB"
+            case "GH": "GHS"
+            case "NG": "NGN"
+            
+            // Europe (Non-Euro)
+            case "GB": "GBP"
+            case "CH": "CHF"
+            case "SE": "SEK"
+            case "NO": "NOK"
+            case "DK": "DKK"
+            case "IS": "ISK"
+            case "PL": "PLN"
+            case "CZ": "CZK"
+            case "HU": "HUF"
+            case "RO": "RON"
+            case "BG": "BGN"
+            case "HR": "HRK"
+            case "RS": "RSD"
+            case "MK": "MKD"
+            case "AL": "ALL"
+            case "BA": "BAM"
+            case "UA": "UAH"
+            case "BY": "BYN"
+            case "MD": "MDL"
+            case "GE": "GEL"
+            case "AM": "AMD"
+            case "AZ": "AZN"
+            
+            // Turkey & Central Asia
+            case "TR": "TRY"
+            case "KZ": "KZT"
+            case "UZ": "UZS"
+            case "KG": "KGS"
+            case "TJ": "TJS"
+            case "TM": "TMT"
+            case "AF": "AFN"
+            case "MN": "MNT"
+            
+            // Pacific
+            case "AU": "AUD"
+            case "NZ": "NZD"
+            case "FJ": "FJD"
+            case "PG": "PGK"
+            case "SB": "SBD"
+            case "TO": "TOP"
+            case "VU": "VUV"
+            case "WS": "WST"
+            
+            // Others
+            case "RU": "RUB"
+            case "IR": "IRR"
+            case "IQ": "IQD"
+            case "SY": "SYP"
+            case "YE": "YER"
+            case "LB": "LBP"
+            case "MZ": "MZN"
+            case "AO": "AOA"
+            case "MG": "MGA"
+            case "MU": "MUR"
+            case "SC": "SCR"
+            case "MV": "MVR"
+            case "BT": "BTN"
+            
+            // West & Central Africa CFA zones
+            case "BJ", "BF", "CI", "GW", "ML", "NE", "SN", "TG": "XOF"
+            case "CM", "CF", "TD", "CG", "GQ", "GA": "XAF"
+            
+            // East Caribbean Dollar zone
+            case "AG", "DM", "GD", "KN", "LC", "VC": "XCD"
+            
+            // French Pacific territories
+            case "NC", "PF", "WF": "XPF"
+            
+            default: "USD"
         }
+        
+        _selectedCurrency = State(initialValue: defaultCurrency)
     }
+    
     var body: some View {
         ZStack {
             // Gradient arka plan
@@ -117,11 +250,12 @@ struct OnboardingView: View {
                     SecureBackupFeaturePage()
                         .tag(5)
                     
-                    PersonalizationWithSignInPage(
+                    PersonalizationPage(
                         selectedLanguage: $selectedLanguage,
                         selectedCurrency: $selectedCurrency,
-                        isSigningIn: $isSigningIn,
-                        handleSignIn: handleSignIn
+                        onComplete: {
+                            seedInitialData()
+                        }
                     )
                     .tag(6)
                 }
@@ -166,30 +300,6 @@ struct OnboardingView: View {
     private func nextPage() {
         withAnimation(.spring()) {
             currentPage += 1
-        }
-    }
-    
-    private func handleSignIn(result: Result<ASAuthorization, Error>) {
-        isSigningIn = true
-        
-        switch result {
-        case .success(let authorization):
-            if let _ = authorization.credential as? ASAuthorizationAppleIDCredential {
-                // Seçilen ayarları uygula
-                appSettings.languageCode = selectedLanguage
-                appSettings.currencyCode = selectedCurrency
-                
-                // İlk verileri oluştur
-                seedInitialData()
-                
-                // Ana ekrana geç
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    appSettings.hasCompletedOnboarding = true
-                }
-            }
-        case .failure(let error):
-            isSigningIn = false
-            Logger.log("Sign in with Apple failed: \(error.localizedDescription)", log: Logger.service, type: .error)
         }
     }
     
@@ -290,7 +400,7 @@ struct OnboardingView: View {
             Logger.log("Initial data setup error: \(error.localizedDescription)", log: Logger.data, type: .fault)
         }
     }
-
+    
     // Yeni yardımcı fonksiyon - duplike kategorileri temizle
     private func cleanupDuplicateCategories(existingCategories: [Kategori]) {
         var seenCategories: [String: Kategori] = [:]
@@ -322,7 +432,8 @@ struct OnboardingView: View {
             modelContext.delete(duplicate)
             Logger.log("Duplike kategori silindi: \(duplicate.isim)", log: Logger.data)
         }
-    }}
+    }
+}
 
 // MARK: - Welcome Page
 struct WelcomePage: View {
@@ -1202,16 +1313,19 @@ struct FeaturePage: View {
 }
 
 // MARK: - Personalization with Sign In Page
-struct PersonalizationWithSignInPage: View {
+struct PersonalizationPage: View {
     @Binding var selectedLanguage: String
     @Binding var selectedCurrency: String
-    @Binding var isSigningIn: Bool
-    let handleSignIn: (Result<ASAuthorization, Error>) -> Void
+    let onComplete: () -> Void
     
+    @EnvironmentObject var appSettings: AppSettings
     @State private var animateContent = false
     @Environment(\.colorScheme) private var colorScheme
     
-    // Desteklenen diller - uygulamadaki ayarlardan
+    // Currency arama için
+    @State private var showCurrencySearch = false
+    
+    // Desteklenen diller listesi
     let supportedLanguages = [
         ("tr", "🇹🇷", "Türkçe"),
         ("en", "🇬🇧", "English"),
@@ -1243,49 +1357,100 @@ struct PersonalizationWithSignInPage: View {
                             .padding(.top, 10)
                         
                         VStack(spacing: 30) {
-                            // Dil seçimi
+                            // Dil seçimi - DROPDOWN
                             VStack(alignment: .leading, spacing: 15) {
                                 Text(LocalizedStringKey("onboarding.select_language"))
                                     .font(.headline)
                                     .foregroundColor(.secondary)
                                 
-                                VStack(spacing: 12) {
+                                Menu {
                                     ForEach(supportedLanguages, id: \.0) { lang in
-                                        LanguageOption(
-                                            flag: lang.1,
-                                            name: lang.2,
-                                            isSelected: selectedLanguage == lang.0
-                                        ) {
+                                        Button(action: {
                                             withAnimation(.spring()) {
                                                 selectedLanguage = lang.0
                                             }
+                                        }) {
+                                            HStack {
+                                                Text("\(lang.1) \(lang.2)")
+                                                if selectedLanguage == lang.0 {
+                                                    Spacer()
+                                                    Image(systemName: "checkmark")
+                                                }
+                                            }
                                         }
                                     }
+                                } label: {
+                                    HStack {
+                                        if let selected = supportedLanguages.first(where: { $0.0 == selectedLanguage }) {
+                                            Text("\(selected.1)")
+                                                .font(.title2)
+                                            Text(selected.2)
+                                                .font(.body)
+                                                .foregroundColor(.primary)
+                                        }
+                                        Spacer()
+                                        Image(systemName: "chevron.down")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color(.systemGray6))
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(Color.accentColor.opacity(0.3), lineWidth: 1)
+                                    )
                                 }
                             }
                             
-                            // Para birimi seçimi
+                            // Para birimi seçimi - ARAMA ÖZELLİKLİ
                             VStack(alignment: .leading, spacing: 15) {
                                 Text(LocalizedStringKey("onboarding.select_currency"))
                                     .font(.headline)
                                     .foregroundColor(.secondary)
                                 
-                                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                                    ForEach(Currency.allCases) { currency in
-                                        CurrencyOption(
-                                            currency: currency,
-                                            isSelected: selectedCurrency == currency.rawValue
-                                        ) {
-                                            withAnimation(.spring()) {
-                                                selectedCurrency = currency.rawValue
+                                Button(action: {
+                                    showCurrencySearch = true
+                                }) {
+                                    HStack {
+                                        if let currency = Currency(rawValue: selectedCurrency) {
+                                            Text(currency.symbol)
+                                                .font(.title2)
+                                                .frame(width: 30)
+                                            
+                                            VStack(alignment: .leading, spacing: 2) {
+                                                Text(currency.rawValue)
+                                                    .font(.body)
+                                                    .fontWeight(.medium)
+                                                Text(LocalizedStringKey(currency.localizedNameKey))
+                                                    .font(.caption)
+                                                    .foregroundColor(.secondary)
                                             }
                                         }
+                                        
+                                        Spacer()
+                                        
+                                        Image(systemName: "magnifyingglass")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
                                     }
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color(.systemGray6))
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .stroke(Color.accentColor.opacity(0.3), lineWidth: 1)
+                                    )
                                 }
+                                .foregroundColor(.primary)
                             }
                         }
                         .padding(.horizontal, 30)
-                        .padding(.bottom, 220) // Sign in button ve linkler için boşluk artırıldı
+                        .padding(.bottom, 220) // Sign in button ve linkler için boşluk
                     }
                 }
                 .scaleEffect(animateContent ? 1 : 0.9)
@@ -1300,73 +1465,202 @@ struct PersonalizationWithSignInPage: View {
                     )
                 )
                 
-                // Sabit Sign in with Apple bölümü - GÜNCELLENDİ
-                VStack(spacing: 12) { // spacing azaltıldı
-                    if isSigningIn {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle())
-                            .scaleEffect(1.5)
-                            .padding()
-                    } else {
-                        SignInWithAppleButton(
-                            .signIn,
-                            onRequest: { request in
-                                request.requestedScopes = [.fullName, .email]
-                            },
-                            onCompletion: handleSignIn
-                        )
-                        .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
-                        .frame(height: 55)
-                        .cornerRadius(16)
-                        .shadow(radius: 5)
-                        .padding(.horizontal, 30)
+                // Sabit alt bölüm - Başla Butonu
+                VStack(spacing: 12) {
+                    Button(action: {
+                        // Seçilen ayarları uygula
+                        appSettings.languageCode = selectedLanguage
+                        appSettings.currencyCode = selectedCurrency
                         
-                        // Privacy Notice with Links - YENİ
-                        VStack(spacing: 8) {
-                            Text(LocalizedStringKey("onboarding.privacy_notice"))
+                        // İlk verileri oluştur
+                        onComplete()
+                        
+                        // Ana ekrana geç
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            appSettings.hasCompletedOnboarding = true
+                        }
+                    }) {
+                        Text(LocalizedStringKey("onboarding.start_button"))
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.accentColor)
+                            .cornerRadius(16)
+                            .shadow(radius: 5)
+                    }
+                    .padding(.horizontal, 30)
+                    
+                    // Privacy Notice with Links
+                    VStack(spacing: 8) {
+                        Text(LocalizedStringKey("onboarding.privacy_notice"))
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 40)
+                        
+                        // Terms and Privacy Links
+                        HStack(spacing: 15) {
+                            Link(destination: URL(string: "https://walleo.app/#privacy")!) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "lock.shield")
+                                        .font(.caption2)
+                                    Text(LocalizedStringKey("onboarding.privacy_policy"))
+                                        .font(.caption2)
+                                        .underline()
+                                }
+                            }
+                            .foregroundColor(.accentColor)
+                            
+                            Text("•")
                                 .font(.caption2)
                                 .foregroundColor(.secondary)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, 40)
                             
-                            // Terms and Privacy Links - YENİ
-                            HStack(spacing: 15) {
-                                Link(destination: URL(string: "https://walleo.app/#privacy")!) {
-                                    HStack(spacing: 4) {
-                                        Image(systemName: "lock.shield")
-                                            .font(.caption2)
-                                        Text(LocalizedStringKey("onboarding.privacy_policy"))
-                                            .font(.caption2)
-                                            .underline()
-                                    }
+                            Link(destination: URL(string: "https://walleo.app/#terms")!) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "doc.text")
+                                        .font(.caption2)
+                                    Text(LocalizedStringKey("onboarding.terms_of_use"))
+                                        .font(.caption2)
+                                        .underline()
                                 }
-                                .foregroundColor(.accentColor)
-                                
-                                Text("•")
-                                    .font(.caption2)
-                                    .foregroundColor(.secondary)
-                                
-                                Link(destination: URL(string: "https://walleo.app/#terms")!) {
-                                    HStack(spacing: 4) {
-                                        Image(systemName: "doc.text")
-                                            .font(.caption2)
-                                        Text(LocalizedStringKey("onboarding.terms_of_use"))
-                                            .font(.caption2)
-                                            .underline()
-                                    }
-                                }
-                                .foregroundColor(.accentColor)
                             }
+                            .foregroundColor(.accentColor)
                         }
                     }
                 }
-                .padding(.top, 15) // azaltıldı
+                .padding(.top, 15)
                 .padding(.bottom, 10)
             }
+        }
+        .sheet(isPresented: $showCurrencySearch) {
+            CurrencySearchView(
+                selectedCurrency: $selectedCurrency,
+                isPresented: $showCurrencySearch
+            )
+            .environmentObject(appSettings)
         }
         .onAppear {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1)) {
                 animateContent = true
+            }
+        }
+    }
+}
+
+// Para birimi arama view'ı - GÜZEL VE TEMİZ
+struct CurrencySearchView: View {
+    @Binding var selectedCurrency: String
+    @Binding var isPresented: Bool
+    @EnvironmentObject var appSettings: AppSettings
+    
+    @State private var searchText = ""
+    @FocusState private var isSearchFocused: Bool
+    
+    var filteredCurrencies: [Currency] {
+        if searchText.isEmpty {
+            return Currency.allCases
+        } else {
+            return Currency.allCases.filter { currency in
+                // ISO kodunda ara
+                currency.rawValue.localizedCaseInsensitiveContains(searchText) ||
+                // Sembolde ara
+                currency.symbol.localizedCaseInsensitiveContains(searchText) ||
+                // Lokalize edilmiş isimde ara (basit yaklaşım)
+                NSLocalizedString(currency.localizedNameKey, comment: "")
+                    .localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 0) {
+                // Arama alanı
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.secondary)
+                    
+                    TextField(LocalizedStringKey("search.currency"), text: $searchText)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .focused($isSearchFocused)
+                    
+                    if !searchText.isEmpty {
+                        Button(action: { searchText = "" }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.secondary)
+                                .font(.system(size: 16))
+                        }
+                    }
+                }
+                .padding(12)
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding()
+                
+                // Para birimi listesi
+                List {
+                    ForEach(filteredCurrencies, id: \.self) { currency in
+                        Button(action: {
+                            withAnimation(.spring()) {
+                                selectedCurrency = currency.rawValue
+                            }
+                            isPresented = false
+                        }) {
+                            HStack(spacing: 16) {
+                                Text(currency.symbol)
+                                    .font(.title2)
+                                    .fontWeight(.medium)
+                                    .frame(width: 40)
+                                    .foregroundColor(currency.rawValue == selectedCurrency ? .white : .primary)
+                                
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(currency.rawValue)
+                                        .font(.headline)
+                                        .foregroundColor(currency.rawValue == selectedCurrency ? .white : .primary)
+                                    Text(LocalizedStringKey(currency.localizedNameKey))
+                                        .font(.caption)
+                                        .foregroundColor(currency.rawValue == selectedCurrency ? .white.opacity(0.8) : .secondary)
+                                }
+                                
+                                Spacer()
+                                
+                                if selectedCurrency == currency.rawValue {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .foregroundColor(.white)
+                                        .font(.title3)
+                                }
+                            }
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 12)
+                            .background(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .fill(currency.rawValue == selectedCurrency ? Color.accentColor : Color.clear)
+                            )
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .listRowInsets(EdgeInsets(top: 2, leading: 16, bottom: 2, trailing: 16))
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
+                    }
+                }
+                .listStyle(PlainListStyle())
+                .scrollContentBackground(.hidden)
+            }
+            .navigationTitle(LocalizedStringKey("onboarding.select_currency"))
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(LocalizedStringKey("common.done")) {
+                        isPresented = false
+                    }
+                    .fontWeight(.medium)
+                }
+            }
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isSearchFocused = true
             }
         }
     }
