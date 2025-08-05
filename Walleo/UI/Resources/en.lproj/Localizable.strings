@@ -262,29 +262,142 @@
 "enum.date_range.custom" = "Custom";
 
 // MARK: - Currencies
-"currency.name.TRY" = "Turkish Lira";
+"onboarding.start_button" = "Start";
+"onboarding.personalize.subtitle" = "Choose your preferred language and currency";
+"search.currency" = "Search currency...";
+// English - currency.name keys
 "currency.name.USD" = "US Dollar";
 "currency.name.EUR" = "Euro";
 "currency.name.GBP" = "British Pound";
 "currency.name.JPY" = "Japanese Yen";
-"currency.name.CAD" = "Canadian Dollar";
-"currency.name.AUD" = "Australian Dollar";
-"currency.name.CHF" = "Swiss Franc";
 "currency.name.CNY" = "Chinese Yuan";
-"currency.name.SEK" = "Swedish Krona";
-"currency.name.NOK" = "Norwegian Krone";
-"currency.name.RUB" = "Russian Ruble";
+"currency.name.CHF" = "Swiss Franc";
+
+// Asia-Pacific
+"currency.name.AUD" = "Australian Dollar";
+"currency.name.NZD" = "New Zealand Dollar";
+"currency.name.HKD" = "Hong Kong Dollar";
+"currency.name.SGD" = "Singapore Dollar";
+"currency.name.TWD" = "Taiwan Dollar";
+"currency.name.KRW" = "South Korean Won";
 "currency.name.INR" = "Indian Rupee";
-"currency.name.BRL" = "Brazilian Real";
-"currency.name.ZAR" = "South African Rand";
+"currency.name.PKR" = "Pakistani Rupee";
+"currency.name.BDT" = "Bangladeshi Taka";
+"currency.name.LKR" = "Sri Lankan Rupee";
+"currency.name.NPR" = "Nepalese Rupee";
+"currency.name.MMK" = "Myanmar Kyat";
+"currency.name.LAK" = "Lao Kip";
+"currency.name.KHR" = "Cambodian Riel";
+"currency.name.THB" = "Thai Baht";
+"currency.name.VND" = "Vietnamese Dong";
+"currency.name.IDR" = "Indonesian Rupiah";
+"currency.name.MYR" = "Malaysian Ringgit";
+"currency.name.PHP" = "Philippine Peso";
+"currency.name.BND" = "Brunei Dollar";
+
+// Middle East & Africa
 "currency.name.AED" = "UAE Dirham";
 "currency.name.SAR" = "Saudi Riyal";
-"currency.name.KRW" = "South Korean Won";
-"currency.name.SGD" = "Singapore Dollar";
-"currency.name.IDR" = "Indonesian Rupiah";
-"currency.name.VND" = "Vietnamese Dong";
-"currency.name.THB" = "Thai Baht";
-"currency.name.MYR" = "Malaysian Ringgit";
+"currency.name.QAR" = "Qatari Riyal";
+"currency.name.OMR" = "Omani Rial";
+"currency.name.BHD" = "Bahraini Dinar";
+"currency.name.KWD" = "Kuwaiti Dinar";
+"currency.name.JOD" = "Jordanian Dinar";
+"currency.name.ILS" = "Israeli Shekel";
+"currency.name.EGP" = "Egyptian Pound";
+"currency.name.MAD" = "Moroccan Dirham";
+"currency.name.TND" = "Tunisian Dinar";
+"currency.name.DZD" = "Algerian Dinar";
+"currency.name.ZAR" = "South African Rand";
+"currency.name.KES" = "Kenyan Shilling";
+"currency.name.UGX" = "Ugandan Shilling";
+"currency.name.TZS" = "Tanzanian Shilling";
+"currency.name.ETB" = "Ethiopian Birr";
+"currency.name.GHS" = "Ghanaian Cedi";
+"currency.name.NGN" = "Nigerian Naira";
+"currency.name.XOF" = "West African CFA";
+"currency.name.XAF" = "Central African CFA";
+
+// Europe
+"currency.name.SEK" = "Swedish Krona";
+"currency.name.NOK" = "Norwegian Krone";
+"currency.name.DKK" = "Danish Krone";
+"currency.name.ISK" = "Icelandic Krona";
+"currency.name.PLN" = "Polish Zloty";
+"currency.name.CZK" = "Czech Koruna";
+"currency.name.HUF" = "Hungarian Forint";
+"currency.name.RON" = "Romanian Leu";
+"currency.name.BGN" = "Bulgarian Lev";
+"currency.name.HRK" = "Croatian Kuna";
+"currency.name.RSD" = "Serbian Dinar";
+"currency.name.MKD" = "Macedonian Denar";
+"currency.name.ALL" = "Albanian Lek";
+"currency.name.BAM" = "Bosnia Mark";
+"currency.name.UAH" = "Ukrainian Hryvnia";
+"currency.name.BYN" = "Belarusian Ruble";
+"currency.name.MDL" = "Moldovan Leu";
+"currency.name.GEL" = "Georgian Lari";
+"currency.name.AMD" = "Armenian Dram";
+"currency.name.AZN" = "Azerbaijani Manat";
+
+// Americas
+"currency.name.CAD" = "Canadian Dollar";
+"currency.name.MXN" = "Mexican Peso";
+"currency.name.BRL" = "Brazilian Real";
+"currency.name.ARS" = "Argentine Peso";
+"currency.name.CLP" = "Chilean Peso";
+"currency.name.COP" = "Colombian Peso";
+"currency.name.PEN" = "Peruvian Sol";
+"currency.name.UYU" = "Uruguayan Peso";
+"currency.name.PYG" = "Paraguayan Guarani";
+"currency.name.BOB" = "Bolivian Boliviano";
+"currency.name.VES" = "Venezuelan Bolivar";
+"currency.name.CRC" = "Costa Rican Colon";
+"currency.name.GTQ" = "Guatemalan Quetzal";
+"currency.name.HNL" = "Honduran Lempira";
+"currency.name.NIO" = "Nicaraguan Cordoba";
+"currency.name.PAB" = "Panamanian Balboa";
+"currency.name.DOP" = "Dominican Peso";
+"currency.name.JMD" = "Jamaican Dollar";
+"currency.name.TTD" = "Trinidad Dollar";
+"currency.name.BBD" = "Barbados Dollar";
+"currency.name.BSD" = "Bahamian Dollar";
+"currency.name.HTG" = "Haitian Gourde";
+"currency.name.XCD" = "East Caribbean Dollar";
+
+// Turkey & Central Asia
+"currency.name.TRY" = "Turkish Lira";
+"currency.name.KZT" = "Kazakh Tenge";
+"currency.name.UZS" = "Uzbek Som";
+"currency.name.KGS" = "Kyrgyz Som";
+"currency.name.TJS" = "Tajik Somoni";
+"currency.name.TMT" = "Turkmen Manat";
+"currency.name.AFN" = "Afghan Afghani";
+"currency.name.MNT" = "Mongolian Tugrik";
+
+// Pacific Islands
+"currency.name.FJD" = "Fiji Dollar";
+"currency.name.PGK" = "Papua New Guinea Kina";
+"currency.name.SBD" = "Solomon Islands Dollar";
+"currency.name.TOP" = "Tongan Paʻanga";
+"currency.name.VUV" = "Vanuatu Vatu";
+"currency.name.WST" = "Samoan Tala";
+"currency.name.XPF" = "CFP Franc";
+
+// Others
+"currency.name.RUB" = "Russian Ruble";
+"currency.name.IRR" = "Iranian Rial";
+"currency.name.IQD" = "Iraqi Dinar";
+"currency.name.SYP" = "Syrian Pound";
+"currency.name.YER" = "Yemeni Rial";
+"currency.name.LBP" = "Lebanese Pound";
+"currency.name.MZN" = "Mozambican Metical";
+"currency.name.AOA" = "Angolan Kwanza";
+"currency.name.MGA" = "Malagasy Ariary";
+"currency.name.MUR" = "Mauritian Rupee";
+"currency.name.SCR" = "Seychelles Rupee";
+"currency.name.MVR" = "Maldivian Rufiyaa";
+"currency.name.BTN" = "Bhutanese Ngultrum";
 
 "settings.section.data_management" = "Data Management";
 "settings.data.export" = "Export Data (.csv)";

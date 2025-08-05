@@ -8,10 +8,6 @@
 	</array>
 	<key>CFBundleURLName</key>
 	<string>com.mustafamt.walleo</string>
-	<key>CFBundleURLSchemes</key>
-	<array>
-		<string>walleo</string>
-	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

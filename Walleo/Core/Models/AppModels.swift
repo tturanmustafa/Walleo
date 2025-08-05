@@ -8,36 +8,173 @@ public enum Sekme {
 
 // YENİ: Desteklenen para birimlerini tanımlayan genişletilmiş enum
 public enum Currency: String, CaseIterable, Identifiable {
-    case TRY, USD, EUR, GBP, JPY, CAD, AUD, CHF, CNY, SEK, NOK, RUB, INR, BRL, ZAR, AED, SAR, KRW, SGD
-    case IDR, VND, THB, MYR // Yeni para birimleri
+    // Major Currencies
+    case USD, EUR, GBP, JPY, CNY, CHF
+    
+    // Asia-Pacific
+    case AUD, NZD, HKD, SGD, TWD, KRW, INR, PKR, BDT, LKR, NPR, MMK, LAK, KHR
+    case THB, VND, IDR, MYR, PHP, BND
+    
+    // Middle East & Africa
+    case AED, SAR, QAR, OMR, BHD, KWD, JOD, ILS, EGP, MAD, TND, DZD
+    case ZAR, KES, UGX, TZS, ETB, GHS, NGN, XOF, XAF
+    
+    // Europe
+    case SEK, NOK, DKK, ISK, PLN, CZK, HUF, RON, BGN, HRK, RSD, MKD, ALL, BAM
+    case UAH, BYN, MDL, GEL, AMD, AZN
+    
+    // Americas
+    case CAD, MXN, BRL, ARS, CLP, COP, PEN, UYU, PYG, BOB, VES
+    case CRC, GTQ, HNL, NIO, PAB, DOP, JMD, TTD, BBD, BSD, HTG, XCD
+    
+    // Turkey & Central Asia
+    case TRY, KZT, UZS, KGS, TJS, TMT, AFN, MNT
+    
+    // Pacific Islands
+    case FJD, PGK, SBD, TOP, VUV, WST, XPF
+    
+    // Others
+    case RUB, IRR, IQD, SYP, YER, LBP, MZN, AOA, MGA, MUR, SCR, MVR, BTN
 
     public var id: String { self.rawValue }
 
     var symbol: String {
         switch self {
-        case .TRY: return "₺"
+        // Major
         case .USD: return "$"
         case .EUR: return "€"
         case .GBP: return "£"
         case .JPY: return "¥"
-        case .CAD: return "CA$"
+        case .CNY: return "¥"
+        case .CHF: return "Fr"
+        
+        // Dollar variants
         case .AUD: return "A$"
-        case .CHF: return "CHF"
-        case .CNY: return "CN¥"
-        case .SEK: return "kr"
-        case .NOK: return "kr"
-        case .RUB: return "₽"
+        case .CAD: return "C$"
+        case .HKD: return "HK$"
+        case .NZD: return "NZ$"
+        case .SGD: return "S$"
+        case .TWD: return "NT$"
+        case .MXN: return "Mex$"
+        case .BBD: return "Bds$"
+        case .BSD: return "B$"
+        case .JMD: return "J$"
+        case .TTD: return "TT$"
+        case .XCD: return "EC$"
+        case .FJD: return "FJ$"
+        case .SBD: return "SI$"
+        
+        // Unique symbols
+        case .TRY: return "₺"
         case .INR: return "₹"
-        case .BRL: return "R$"
-        case .ZAR: return "R"
+        case .PKR: return "₨"
+        case .NPR: return "रू"
+        case .LKR: return "රු"
+        case .BDT: return "৳"
+        case .THB: return "฿"
+        case .KRW: return "₩"
+        case .VND: return "₫"
+        case .PHP: return "₱"
+        case .IDR: return "Rp"
+        case .MYR: return "RM"
+        case .LAK: return "₭"
+        case .KHR: return "៛"
+        case .MMK: return "K"
+        case .BND: return "B$"
+        
+        // Middle East
         case .AED: return "د.إ"
         case .SAR: return "﷼"
-        case .KRW: return "₩"
-        case .SGD: return "S$"
-        case .IDR: return "Rp"
-        case .VND: return "₫"
-        case .THB: return "฿"
-        case .MYR: return "RM"
+        case .QAR: return "ر.ق"
+        case .OMR: return "ر.ع"
+        case .BHD: return "د.ب"
+        case .KWD: return "د.ك"
+        case .JOD: return "د.أ"
+        case .ILS: return "₪"
+        case .EGP: return "E£"
+        case .LBP: return "ل.ل"
+        case .SYP: return "£S"
+        case .IQD: return "ع.د"
+        case .YER: return "﷼"
+        case .IRR: return "﷼"
+        
+        // Africa
+        case .ZAR: return "R"
+        case .MAD: return "د.م"
+        case .TND: return "د.ت"
+        case .DZD: return "د.ج"
+        case .NGN: return "₦"
+        case .GHS: return "₵"
+        case .KES: return "Ksh"
+        case .UGX: return "USh"
+        case .TZS: return "TSh"
+        case .ETB: return "Br"
+        case .XOF: return "CFA"
+        case .XAF: return "FCFA"
+        case .MZN: return "MT"
+        case .AOA: return "Kz"
+        case .MGA: return "Ar"
+        case .MUR: return "₨"
+        case .SCR: return "₨"
+        case .MVR: return "Rf"
+        
+        // Europe
+        case .PLN: return "zł"
+        case .CZK: return "Kč"
+        case .HUF: return "Ft"
+        case .RON: return "lei"
+        case .BGN: return "лв"
+        case .HRK: return "kn"
+        case .RSD: return "дин"
+        case .MKD: return "ден"
+        case .ALL: return "L"
+        case .BAM: return "KM"
+        case .UAH: return "₴"
+        case .BYN: return "Br"
+        case .MDL: return "L"
+        case .GEL: return "₾"
+        case .AMD: return "֏"
+        case .AZN: return "₼"
+        case .RUB: return "₽"
+        case .SEK: return "kr"
+        case .NOK: return "kr"
+        case .DKK: return "kr"
+        case .ISK: return "kr"
+        
+        // Americas
+        case .BRL: return "R$"
+        case .ARS: return "$"
+        case .CLP: return "$"
+        case .COP: return "$"
+        case .PEN: return "S/"
+        case .UYU: return "$U"
+        case .PYG: return "₲"
+        case .BOB: return "Bs"
+        case .VES: return "Bs"
+        case .CRC: return "₡"
+        case .GTQ: return "Q"
+        case .HNL: return "L"
+        case .NIO: return "C$"
+        case .PAB: return "B/"
+        case .DOP: return "RD$"
+        case .HTG: return "G"
+        
+        // Central Asia
+        case .KZT: return "₸"
+        case .UZS: return "сўм"
+        case .KGS: return "с"
+        case .TJS: return "ЅМ"
+        case .TMT: return "m"
+        case .AFN: return "؋"
+        case .MNT: return "₮"
+        case .BTN: return "Nu."
+        
+        // Pacific
+        case .PGK: return "K"
+        case .TOP: return "T$"
+        case .VUV: return "Vt"
+        case .WST: return "T"
+        case .XPF: return "₣"
         }
     }
     

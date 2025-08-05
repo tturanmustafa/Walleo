@@ -261,30 +261,144 @@
 "filter.presets_header" = "Hazır Aralıklar";
 "enum.date_range.custom" = "Özel";
 
-// MARK: - Para Birimleri
-"currency.name.TRY" = "Türk Lirası";
+// MARK: - Currencies
+"onboarding.start_button" = "Başla";
+"onboarding.personalize.subtitle" = "Tercih ettiğiniz dili ve para birimini seçin";
+"search.currency" = "Para birimi ara...";
+
+// Ana Para Birimleri
 "currency.name.USD" = "ABD Doları";
 "currency.name.EUR" = "Euro";
 "currency.name.GBP" = "İngiliz Sterlini";
 "currency.name.JPY" = "Japon Yeni";
-"currency.name.CAD" = "Kanada Doları";
-"currency.name.AUD" = "Avustralya Doları";
-"currency.name.CHF" = "İsviçre Frangı";
 "currency.name.CNY" = "Çin Yuanı";
-"currency.name.SEK" = "İsveç Kronu";
-"currency.name.NOK" = "Norveç Kronu";
-"currency.name.RUB" = "Rus Rublesi";
+"currency.name.CHF" = "İsviçre Frangı";
+
+// Asya-Pasifik
+"currency.name.AUD" = "Avustralya Doları";
+"currency.name.NZD" = "Yeni Zelanda Doları";
+"currency.name.HKD" = "Hong Kong Doları";
+"currency.name.SGD" = "Singapur Doları";
+"currency.name.TWD" = "Tayvan Doları";
+"currency.name.KRW" = "Güney Kore Wonu";
 "currency.name.INR" = "Hindistan Rupisi";
-"currency.name.BRL" = "Brezilya Reali";
-"currency.name.ZAR" = "Güney Afrika Randı";
+"currency.name.PKR" = "Pakistan Rupisi";
+"currency.name.BDT" = "Bangladeş Takası";
+"currency.name.LKR" = "Sri Lanka Rupisi";
+"currency.name.NPR" = "Nepal Rupisi";
+"currency.name.MMK" = "Myanmar Kyatı";
+"currency.name.LAK" = "Laos Kipi";
+"currency.name.KHR" = "Kamboçya Rieli";
+"currency.name.THB" = "Tayland Bahtı";
+"currency.name.VND" = "Vietnam Dongu";
+"currency.name.IDR" = "Endonezya Rupisi";
+"currency.name.MYR" = "Malezya Ringgiti";
+"currency.name.PHP" = "Filipin Pesosu";
+"currency.name.BND" = "Brunei Doları";
+
+// Orta Doğu & Afrika
 "currency.name.AED" = "BAE Dirhemi";
 "currency.name.SAR" = "Suudi Arabistan Riyali";
-"currency.name.KRW" = "Güney Kore Wonu";
-"currency.name.SGD" = "Singapur Doları";
-"currency.name.IDR" = "Endonezya Rupisi";
-"currency.name.VND" = "Vietnam Dongu";
-"currency.name.THB" = "Tayland Bahtı";
-"currency.name.MYR" = "Malezya Ringgiti";
+"currency.name.QAR" = "Katar Riyali";
+"currency.name.OMR" = "Umman Riyali";
+"currency.name.BHD" = "Bahreyn Dinarı";
+"currency.name.KWD" = "Kuveyt Dinarı";
+"currency.name.JOD" = "Ürdün Dinarı";
+"currency.name.ILS" = "İsrail Şekeli";
+"currency.name.EGP" = "Mısır Lirası";
+"currency.name.MAD" = "Fas Dirhemi";
+"currency.name.TND" = "Tunus Dinarı";
+"currency.name.DZD" = "Cezayir Dinarı";
+"currency.name.ZAR" = "Güney Afrika Randı";
+"currency.name.KES" = "Kenya Şilini";
+"currency.name.UGX" = "Uganda Şilini";
+"currency.name.TZS" = "Tanzanya Şilini";
+"currency.name.ETB" = "Etiyopya Birri";
+"currency.name.GHS" = "Gana Sedisi";
+"currency.name.NGN" = "Nijerya Nairası";
+"currency.name.XOF" = "Batı Afrika CFA Frangı";
+"currency.name.XAF" = "Orta Afrika CFA Frangı";
+
+// Avrupa
+"currency.name.SEK" = "İsveç Kronu";
+"currency.name.NOK" = "Norveç Kronu";
+"currency.name.DKK" = "Danimarka Kronu";
+"currency.name.ISK" = "İzlanda Kronu";
+"currency.name.PLN" = "Polonya Zlotisi";
+"currency.name.CZK" = "Çek Korunası";
+"currency.name.HUF" = "Macar Forinti";
+"currency.name.RON" = "Romen Leyi";
+"currency.name.BGN" = "Bulgar Levası";
+"currency.name.HRK" = "Hırvat Kunası";
+"currency.name.RSD" = "Sırp Dinarı";
+"currency.name.MKD" = "Makedon Dinarı";
+"currency.name.ALL" = "Arnavut Leki";
+"currency.name.BAM" = "Bosna Hersek Markı";
+"currency.name.UAH" = "Ukrayna Grivnası";
+"currency.name.BYN" = "Belarus Rublesi";
+"currency.name.MDL" = "Moldova Leyi";
+"currency.name.GEL" = "Gürcistan Larisi";
+"currency.name.AMD" = "Ermenistan Dramı";
+"currency.name.AZN" = "Azerbaycan Manatı";
+
+// Amerika
+"currency.name.CAD" = "Kanada Doları";
+"currency.name.MXN" = "Meksika Pesosu";
+"currency.name.BRL" = "Brezilya Reali";
+"currency.name.ARS" = "Arjantin Pesosu";
+"currency.name.CLP" = "Şili Pesosu";
+"currency.name.COP" = "Kolombiya Pesosu";
+"currency.name.PEN" = "Peru Solu";
+"currency.name.UYU" = "Uruguay Pesosu";
+"currency.name.PYG" = "Paraguay Guaranisi";
+"currency.name.BOB" = "Bolivya Bolivyanosu";
+"currency.name.VES" = "Venezuela Bolivarı";
+"currency.name.CRC" = "Kosta Rika Kolonu";
+"currency.name.GTQ" = "Guatemala Quetzali";
+"currency.name.HNL" = "Honduras Lempirası";
+"currency.name.NIO" = "Nikaragua Kordobası";
+"currency.name.PAB" = "Panama Balboası";
+"currency.name.DOP" = "Dominik Pesosu";
+"currency.name.JMD" = "Jamaika Doları";
+"currency.name.TTD" = "Trinidad ve Tobago Doları";
+"currency.name.BBD" = "Barbados Doları";
+"currency.name.BSD" = "Bahama Doları";
+"currency.name.HTG" = "Haiti Gurdu";
+"currency.name.XCD" = "Doğu Karayip Doları";
+
+// Türkiye & Orta Asya
+"currency.name.TRY" = "Türk Lirası";
+"currency.name.KZT" = "Kazakistan Tengesi";
+"currency.name.UZS" = "Özbekistan Somu";
+"currency.name.KGS" = "Kırgızistan Somu";
+"currency.name.TJS" = "Tacikistan Somonisi";
+"currency.name.TMT" = "Türkmenistan Manatı";
+"currency.name.AFN" = "Afganistan Afganisi";
+"currency.name.MNT" = "Moğolistan Tugriki";
+
+// Pasifik Adaları
+"currency.name.FJD" = "Fiji Doları";
+"currency.name.PGK" = "Papua Yeni Gine Kinası";
+"currency.name.SBD" = "Solomon Adaları Doları";
+"currency.name.TOP" = "Tonga Paʻangası";
+"currency.name.VUV" = "Vanuatu Vatusu";
+"currency.name.WST" = "Samoa Talası";
+"currency.name.XPF" = "CFP Frangı";
+
+// Diğerleri
+"currency.name.RUB" = "Rus Rublesi";
+"currency.name.IRR" = "İran Riyali";
+"currency.name.IQD" = "Irak Dinarı";
+"currency.name.SYP" = "Suriye Lirası";
+"currency.name.YER" = "Yemen Riyali";
+"currency.name.LBP" = "Lübnan Lirası";
+"currency.name.MZN" = "Mozambik Metikali";
+"currency.name.AOA" = "Angola Kvanzası";
+"currency.name.MGA" = "Madagaskar Ariarisi";
+"currency.name.MUR" = "Mauritius Rupisi";
+"currency.name.SCR" = "Seyşeller Rupisi";
+"currency.name.MVR" = "Maldiv Rufiyası";
+"currency.name.BTN" = "Butan Ngultrumu";
 
 "settings.section.data_management" = "Veri Yönetimi";
 "settings.data.export" = "Verileri Dışa Aktar (.csv)";
