@@ -10,28 +10,77 @@
 
 import SwiftUI
 
+// Yeni enum ekle
+enum LimitTuru {
+    case hesap(HesapTuru)
+    case butce
+}
+
 struct PremiumLimitPopup: View {
     @Binding var isPresented: Bool
-    let hesapTuru: HesapTuru?
+    let hesapTuru: HesapTuru? // Geriye uyumluluk için tut
+    var limitTuru: LimitTuru? // Yeni parametre
     let onContinue: () -> Void
     
     @State private var animateIcon = false
     @State private var animateContent = false
     @State private var pulseAnimation = false
     
-    private var hesapTuruAdi: LocalizedStringKey {
-        switch hesapTuru {
-        case .cuzdan:
-            return "accounts.type.wallet"
-        case .krediKarti:
-            return "accounts.type.credit_card"
-        case .kredi:
-            return "accounts.type.loan"
-        case .none:
-            return "accounts.type.account"
+    // Geriye uyumluluk için computed property
+    private var effectiveLimitTuru: LimitTuru {
+        if let limitTuru = limitTuru {
+            return limitTuru
+        } else if let hesapTuru = hesapTuru {
+            return .hesap(hesapTuru)
+        } else {
+            return .hesap(.cuzdan) // Varsayılan
         }
     }
     
+    private var hesapTuruAdi: LocalizedStringKey {
+        switch effectiveLimitTuru {
+        case .hesap(let hesapTuru):
+            switch hesapTuru {
+            case .cuzdan:
+                return "accounts.type.wallet"
+            case .krediKarti:
+                return "accounts.type.credit_card"
+            case .kredi:
+                return "accounts.type.loan"
+            }
+        case .butce:
+            return "common.budget"
+        }
+    }
+    
+    private var limitBaslik: LocalizedStringKey {
+        switch effectiveLimitTuru {
+        case .hesap:
+            return "premium.limit.title"
+        case .butce:
+            return "premium.limit.budget.title"
+        }
+    }
+    
+    private var limitAltBaslik: LocalizedStringKey {
+        switch effectiveLimitTuru {
+        case .hesap:
+            return "premium.limit.subtitle"
+        case .butce:
+            return "premium.limit.budget.subtitle"
+        }
+    }
+    
+    private var limitBilgi: LocalizedStringKey {
+        switch effectiveLimitTuru {
+        case .hesap:
+            return "premium.limit.info"
+        case .butce:
+            return "premium.limit.budget.info"
+        }
+    }
+    
+    // Body aynı kalacak, sadece metinler değişecek
     var body: some View {
         ZStack {
             // Arka plan blur efekti
@@ -87,14 +136,14 @@ struct PremiumLimitPopup: View {
                 // İçerik
                 VStack(spacing: 16) {
                     // Başlık
-                    Text("premium.limit.title")
+                    Text(limitBaslik)
                         .font(.title2)
                         .fontWeight(.bold)
                         .multilineTextAlignment(.center)
                     
                     // Açıklama
                     VStack(spacing: 12) {
-                        Text("premium.limit.subtitle")
+                        Text(limitAltBaslik)
                             .font(.body)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
@@ -104,7 +153,7 @@ struct PremiumLimitPopup: View {
                             Image(systemName: "exclamationmark.circle.fill")
                                 .foregroundColor(.orange)
                             
-                            Text("premium.limit.info")
+                            Text(limitBilgi)
                                 .font(.callout)
                                 .foregroundColor(.secondary)
                         }
@@ -173,6 +222,7 @@ struct PremiumLimitPopup: View {
         }
     }
     
+    // Animasyon fonksiyonları aynı kalacak
     private func startAnimations() {
         // İkon animasyonu
         withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
