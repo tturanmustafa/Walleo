@@ -263,6 +263,10 @@
 
 //Bu Satır
 "categories.add_new" = "Add New Category";
+"premium.limit.budget.title" = "Premium Feature";
+"premium.limit.budget.subtitle" = "Upgrade to Walleo Premium to create multiple budgets";
+"premium.limit.budget.info" = "Free users can create only 1 active budget per month";
+"common.budget" = "Budget";
 // Currency Search
 "search.currency" = "Search currency";
 "search.no_results" = "No Results";

@@ -263,6 +263,10 @@
 
 //Bu Satır
 "categories.add_new" = "Yeni Kategori Ekle";
+"premium.limit.budget.title" = "Premium Özellik";
+"premium.limit.budget.subtitle" = "Birden fazla bütçe oluşturmak için Walleo Premium'a geçin";
+"premium.limit.budget.info" = "Premium olmayan kullanıcılar her ay için sadece 1 aktif bütçe oluşturabilir";
+"common.budget" = "Bütçe";
 // Para Birimi Arama
 "search.currency" = "Para birimi ara";
 "search.no_results" = "Sonuç Bulunamadı";
