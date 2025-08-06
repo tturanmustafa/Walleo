@@ -63,24 +63,12 @@ struct FloatingActionMenu: View {
             
             // Bütçeler - Premium özellik
             Button(action: {
-                if entitlementManager.hasPremiumAccess {
-                    seciliSekme = .butceler
-                    isShowing = false
-                } else {
-                    isShowing = false
-                    showPaywall = true
-                }
+                seciliSekme = .butceler
+                isShowing = false
             }) {
-                HStack {
-                    Label("tab.budgets", systemImage: "chart.pie.fill")
-                    if !entitlementManager.hasPremiumAccess {
-                        Image(systemName: "crown.fill")
-                            .foregroundColor(.yellow)
-                            .font(.caption)
-                    }
-                }
+                Label("tab.budgets", systemImage: "chart.pie.fill")
             }
-            .buttonStyle(FloatingActionButtonStyle(isPremium: !entitlementManager.hasPremiumAccess))
+            .buttonStyle(FloatingActionButtonStyle())
             .opacity(showButtons[2] ? 1 : 0)
             .offset(y: showButtons[2] ? 0 : 20)
         }
