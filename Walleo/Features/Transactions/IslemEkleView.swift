@@ -35,6 +35,10 @@ struct IslemEkleView: View {
 
     @State private var isTutarGecersiz = false
     @State private var isSaving = false
+    
+    @State private var yeniKategoriEkleGoster = false
+    @State private var yeniEklenenKategoriID: UUID? = nil // YENİ: Eklenen kategoriyi takip et
+
 
     private var isFormValid: Bool {
         !isim.trimmingCharacters(in: .whitespaces).isEmpty &&
@@ -145,20 +149,77 @@ struct IslemEkleView: View {
                     }
                 }
                 
+                // IslemEkleView.swift'te kategori seçim bölümünü güncelleyin
+
                 Section {
-                    Picker(LocalizedStringKey("common.category"), selection: $secilenKategoriID) {
-                        Text(LocalizedStringKey("transaction.select_category")).tag(nil as Kategori.ID?)
-                        ForEach(filtrelenmisKategoriler) { kategori in
-                            Label { Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim)) } icon: { Image(systemName: kategori.ikonAdi) }.tag(kategori.id as Kategori.ID?)
+                    // DÜZELTME: Menu kullanarak daha temiz bir çözüm
+                    HStack {
+                        Text(LocalizedStringKey("common.category"))
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                        
+                        Menu {
+                            // Mevcut kategoriler
+                            ForEach(filtrelenmisKategoriler) { kategori in
+                                Button(action: {
+                                    secilenKategoriID = kategori.id
+                                }) {
+                                    Label {
+                                        Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim))
+                                    } icon: {
+                                        Image(systemName: kategori.ikonAdi)
+                                            .foregroundColor(kategori.renk)
+                                    }
+                                }
+                            }
+                            
+                            Divider()
+                            
+                            // Yeni Kategori Ekle butonu
+                            Button(action: {
+                                yeniKategoriEkleGoster = true
+                            }) {
+                                Label {
+                                    Text(LocalizedStringKey("categories.add_new"))
+                                        .fontWeight(.medium)
+                                } icon: {
+                                    Image(systemName: "plus.circle.fill")
+                                        .foregroundColor(.accentColor)
+                                }
+                            }
+                            
+                        } label: {
+                            HStack(spacing: 6) {
+                                if let kategoriID = secilenKategoriID,
+                                   let kategori = filtrelenmisKategoriler.first(where: { $0.id == kategoriID }) {
+                                    // Seçili kategori gösterimi
+                                    Image(systemName: kategori.ikonAdi)
+                                        .foregroundColor(kategori.renk)
+                                        .font(.system(size: 16))
+                                    Text(LocalizedStringKey(kategori.localizationKey ?? kategori.isim))
+                                        .foregroundColor(.primary)
+                                } else {
+                                    // Placeholder
+                                    Text(LocalizedStringKey("transaction.select_category"))
+                                        .foregroundColor(.secondary)
+                                }
+                                
+                                Image(systemName: "chevron.up.chevron.down")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.secondary)
+                            }
                         }
                     }
+
+                    // Hesap picker'ı ve diğerleri aynı kalacak...
                     Picker(LocalizedStringKey("common.account"), selection: $secilenHesapID) {
                         Text(LocalizedStringKey("common.select_account")).tag(nil as Hesap.ID?)
                         ForEach(filtrelenmisHesaplar) { hesap in
                             Label(hesap.isim, systemImage: hesap.ikonAdi).tag(hesap.id as Hesap.ID?)
                         }
                     }
-                    .disabled(isDuzenlemeModuTaksitli) // Taksitli işlem düzenlemede hesap değiştirilemez
+                    .disabled(isDuzenlemeModuTaksitli)
                     
                     DatePicker(LocalizedStringKey("common.date"), selection: $tarih, displayedComponents: .date)
                         .onChange(of: tarih) {
@@ -167,7 +228,6 @@ struct IslemEkleView: View {
                             }
                         }
                 }
-                
                 // YENİ: Taksitli işlem bölümü - DÜZENLEME MODUNDA DA GÖSTER
                 if secilenTur == .gider && isKrediKartiSecili {
                     Section {
@@ -232,6 +292,18 @@ struct IslemEkleView: View {
                     }
                 }
             }
+            .sheet(isPresented: $yeniKategoriEkleGoster) {
+                KategoriEklemeWrapper(
+                    varsayilanTur: secilenTur,
+                    onKategoriEklendi: { yeniKategori in
+                        // Yeni kategori eklendiğinde
+                        secilenKategoriID = yeniKategori.id
+                        
+                        // İşlem türünü kategori türüne göre güncelle
+                        secilenTur = yeniKategori.tur
+                    }
+                )
+            }
             .onChange(of: secilenTur) {
                 if !filtrelenmisKategoriler.contains(where: { $0.id == secilenKategoriID }) { secilenKategoriID = nil }
                 if !filtrelenmisHesaplar.contains(where: { $0.id == secilenHesapID }) { secilenHesapID = nil }
@@ -255,6 +327,10 @@ struct IslemEkleView: View {
                 Button(LocalizedStringKey("common.cancel"), role: .cancel) { }
             } message: {
                 Text(LocalizedStringKey("transaction.installment.edit_warning"))
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .categoriesDidChange)) { _ in
+                // Kategoriler güncellendiğinde SwiftUI otomatik olarak Query'yi yeniler
+                // Bu sayede filtrelenmisKategoriler güncellenmiş olur
             }
         }
     }
@@ -665,6 +741,41 @@ struct IslemEkleView: View {
             }
         } catch {
             Logger.log("TransactionMemory güncellenirken hata oluştu: \(error.localizedDescription)", log: Logger.data, type: .error)
+        }
+    }
+}
+
+struct KategoriEklemeWrapper: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    
+    let varsayilanTur: IslemTuru
+    let onKategoriEklendi: (Kategori) -> Void
+    
+    @State private var yeniKategori: Kategori?
+    
+    var body: some View {
+        KategoriDuzenleView(varsayilanTur: varsayilanTur)
+            .onReceive(NotificationCenter.default.publisher(for: .categoriesDidChange)) { _ in
+                // Kategoriler değiştiğinde en son eklenen kategoriyi bul
+                if let sonEklenenKategori = bulSonEklenenKategori() {
+                    onKategoriEklendi(sonEklenenKategori)
+                    dismiss()
+                }
+            }
+    }
+    
+    private func bulSonEklenenKategori() -> Kategori? {
+        // En son eklenen kategoriyi bul
+        let descriptor = FetchDescriptor<Kategori>(
+            sortBy: [SortDescriptor(\.olusturmaTarihi, order: .reverse)]
+        )
+        
+        do {
+            let kategoriler = try modelContext.fetch(descriptor)
+            return kategoriler.first
+        } catch {
+            return nil
         }
     }
 }

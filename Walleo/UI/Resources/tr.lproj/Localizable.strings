@@ -261,6 +261,9 @@
 "filter.presets_header" = "Hazır Aralıklar";
 "enum.date_range.custom" = "Özel";
 
+"categories.add_new" = "Yeni Kategori Ekle";
+"search.currency" = "Para birimi ara...";
+"settings.select_currency" = "Para Birimi Seç";
 // MARK: - Currencies
 "onboarding.start_button" = "Başla";
 "onboarding.personalize.subtitle" = "Tercih ettiğiniz dili ve para birimini seçin";
