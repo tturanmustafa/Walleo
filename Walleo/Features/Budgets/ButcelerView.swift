@@ -8,7 +8,6 @@ import SwiftData
 struct ButcelerView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var appSettings: AppSettings
-    @EnvironmentObject var entitlementManager: EntitlementManager
     
     // ViewModel, tüm hesaplama ve veri çekme mantığını yönetir.
     @State private var viewModel: ButcelerViewModel?
@@ -17,8 +16,6 @@ struct ButcelerView: View {
     @State private var yeniButceEkleGoster = false
     @State private var duzenlenecekButce: Butce?
     @State private var silinecekButce: Butce?
-    @State private var showPremiumLimit = false
-    @State private var showPaywall = false
 
     var body: some View {
         NavigationStack {
@@ -39,33 +36,22 @@ struct ButcelerView: View {
         .task {
             if viewModel == nil {
                 viewModel = ButcelerViewModel(modelContext: modelContext)
+                // --- DÜZELTME: Gereksiz 'await' kaldırıldı ---
                 viewModel?.hesaplamalariTetikle()
             }
         }
         // Yeni bütçe eklendiğinde veya bir bütçe düzenlendiğinde listeyi yenile.
         .sheet(isPresented: $yeniButceEkleGoster, onDismiss: {
+            // --- DÜZELTME: Gereksiz 'Task' ve 'await' kaldırıldı ---
             viewModel?.hesaplamalariTetikle()
         }) {
             ButceEkleDuzenleView()
         }
         .sheet(item: $duzenlenecekButce, onDismiss: {
+            // --- DÜZELTME: Gereksiz 'Task' ve 'await' kaldırıldı ---
             viewModel?.hesaplamalariTetikle()
         }) { butce in
             ButceEkleDuzenleView(duzenlenecekButce: butce)
-        }
-        // Premium limit popup
-        .sheet(isPresented: $showPremiumLimit) {
-            PremiumLimitPopup(
-                isPresented: $showPremiumLimit,
-                limitTuru: .butce,
-                onContinue: {
-                    showPaywall = true
-                }
-            )
-        }
-        // Paywall
-        .sheet(isPresented: $showPaywall) {
-            PaywallView()
         }
         // Bütçe silme uyarısı
         .alert(
@@ -79,7 +65,13 @@ struct ButcelerView: View {
                 Text("common.delete")
             }
         } message: { butce in
-            Text(getDeleteMessage(for: butce))
+            let dilKodu = appSettings.languageCode
+            guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+                  let languageBundle = Bundle(path: path) else {
+                return Text(butce.isim)
+            }
+            let formatString = languageBundle.localizedString(forKey: "alert.delete_budget.message_format", value: "", table: nil)
+            return Text(String(format: formatString, butce.isim))
         }
     }
 
@@ -119,42 +111,12 @@ struct ButcelerView: View {
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: {
-                kontrolEtVeButceEkle()
-            }) {
+            Button(action: { yeniButceEkleGoster = true }) {
                 HStack(spacing: 4) {
                     Image(systemName: "plus")
                     Text(LocalizedStringKey("button.add_budget"))
                 }
             }
-        }
-    }
-    
-    /// Premium limit kontrolü yapan fonksiyon
-    private func kontrolEtVeButceEkle() {
-        // Premium kullanıcılar sınırsız bütçe ekleyebilir
-        if entitlementManager.hasPremiumAccess {
-            yeniButceEkleGoster = true
-            return
-        }
-        
-        // Free kullanıcılar için aktif bütçe sayısını kontrol et
-        let buAy = Calendar.current.startOfDay(for: Date())
-        guard let ayBaslangici = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: buAy)) else {
-            yeniButceEkleGoster = true
-            return
-        }
-        
-        // Bu aya ait bütçe sayısını kontrol et
-        let aktifButceSayisi = viewModel?.gosterilecekButceler.filter { butce in
-            let butceAyBaslangici = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: butce.butce.periyot)) ?? Date()
-            return butceAyBaslangici == ayBaslangici
-        }.count ?? 0
-        
-        if aktifButceSayisi >= 1 {
-            showPremiumLimit = true
-        } else {
-            yeniButceEkleGoster = true
         }
     }
     
@@ -164,17 +126,6 @@ struct ButcelerView: View {
             .font(.headline)
             .fontWeight(.bold)
             .padding(.vertical, 4)
-    }
-    
-    /// Silme mesajını oluşturan yardımcı fonksiyon
-    private func getDeleteMessage(for butce: Butce) -> String {
-        let dilKodu = appSettings.languageCode
-        guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
-              let languageBundle = Bundle(path: path) else {
-            return butce.isim
-        }
-        let formatString = languageBundle.localizedString(forKey: "alert.delete_budget.message_format", value: "", table: nil)
-        return String(format: formatString, butce.isim)
     }
 }
 
@@ -247,6 +198,8 @@ struct ButceKartLinkView: View {
 // MARK: - Bütçeler ViewModel (ButcelerViewModel)
 //================================================================
 
+// ButcelerView.swift dosyasının en altındaki ViewModel extension'ını bununla değiştir.
+
 extension ButcelerView {
     @MainActor
     @Observable
@@ -306,6 +259,7 @@ extension ButcelerView {
         
         /// "Hızlı Yol": Sadece belirli bir kategoriyi içeren bütçelerin harcamalarını yeniden hesaplar.
         private func updateTargetedBudgets(for categoryID: UUID) async {
+            // 🔥 BU FONKSİYONUN İÇERİĞİNİ MainActor.run İÇİNE ALIN
             await MainActor.run {
                 // 1. Sadece etkilenen bütçeleri mevcut listemizden bul.
                 let etkilenenButceIDleri = gosterilecekButceler
@@ -339,6 +293,7 @@ extension ButcelerView {
         
         /// "Güvenli Yol": Tüm bütçelerin harcamalarını en baştan, veritabanından okuyarak hesaplar.
         private func updateAllBudgets() async {
+            // 🔥 BU FONKSİYONUN İÇERİĞİNİ DE MainActor.run İÇİNE ALIN
             await MainActor.run {
                 do {
                     let butceDescriptor = FetchDescriptor<Butce>(sortBy: [SortDescriptor(\.periyot, order: .reverse)])
@@ -364,7 +319,6 @@ extension ButcelerView {
                 }
             }
         }
-        
         // MARK: - Yardımcı Fonksiyonlar
         
         /// Tek bir bütçenin harcamasını, önceden çekilmiş işlem listesini kullanarak hesaplar.
