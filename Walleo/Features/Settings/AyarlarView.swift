@@ -22,6 +22,7 @@ struct AyarlarView: View {
     @State private var shareableURL: ShareableURL?
 
     @State private var showPaywall = false
+    @State private var showCurrencySearch = false
 
     var body: some View {
         Form {
@@ -38,7 +39,8 @@ struct AyarlarView: View {
             GenelAyarlarBolumu(
                 seciliDilKodu: $seciliDilKodu,
                 cloudKitToggleAcik: $cloudKitToggleAcik,
-                showPaywall: $showPaywall
+                showPaywall: $showPaywall,
+                showCurrencySearch: $showCurrencySearch  // YENİ: Binding olarak geçir
             )
             
             VeriYonetimiBolumu(
@@ -65,6 +67,13 @@ struct AyarlarView: View {
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView()
+        }
+        .sheet(isPresented: $showCurrencySearch) {
+            SettingsCurrencySearchView(
+                selectedCurrency: $appSettings.currencyCode,
+                isPresented: $showCurrencySearch
+            )
+            .environmentObject(appSettings)
         }
         // CHANGE HANDLERS
         .onChange(of: entitlementManager.hasPremiumAccess) { _, yeniDurum in
@@ -129,7 +138,9 @@ struct GenelAyarlarBolumu: View {
     @Binding var seciliDilKodu: String
     @Binding var cloudKitToggleAcik: Bool
     @Binding var showPaywall: Bool
-
+    
+    @Binding var showCurrencySearch: Bool  // YENİ: State yerine Binding
+    
     var body: some View {
         Section(LocalizedStringKey("settings.section_general")) {
             // Tema
@@ -173,19 +184,30 @@ struct GenelAyarlarBolumu: View {
             .padding(.vertical, 4)
 
             // Para Birimi
-            HStack {
-                AyarIkonu(iconName: "coloncurrencysign.circle.fill", color: .green)
-                Text(LocalizedStringKey("settings.currency"))
-                Spacer()
-                Picker("settings.currency", selection: $appSettings.currencyCode) {
-                    ForEach(Currency.allCases) { currency in
-                        (Text(currency.symbol) + Text("  ") + Text(LocalizedStringKey(currency.localizedNameKey)))
-                            .tag(currency.rawValue)
+            Button(action: {
+                showCurrencySearch = true
+            }) {
+                HStack {
+                    AyarIkonu(iconName: "coloncurrencysign.circle.fill", color: .green)
+                    Text(LocalizedStringKey("settings.currency"))
+                    Spacer()
+                    
+                    // Seçili currency gösterimi
+                    if let currency = Currency(rawValue: appSettings.currencyCode) {
+                        HStack(spacing: 4) {
+                            Text(currency.symbol)
+                                .fontWeight(.medium)
+                            Text(LocalizedStringKey(currency.localizedNameKey))
+                                .foregroundColor(.secondary)
+                        }
                     }
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 14))
+                        .foregroundColor(.secondary)
                 }
-                .pickerStyle(.menu)
-                .labelsHidden()
             }
+            .foregroundColor(.primary)
             .padding(.vertical, 4)
 
             // Kategori Yönetimi

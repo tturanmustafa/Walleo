@@ -261,9 +261,23 @@
 "filter.presets_header" = "Presets";
 "enum.date_range.custom" = "Custom";
 
+//Bu Satır
 "categories.add_new" = "Add New Category";
-"search.currency" = "Search currency...";
+// Currency Search
+"search.currency" = "Search currency";
+"search.no_results" = "No Results";
+"search.no_results.description" = "No currencies found matching your search.";
 "settings.select_currency" = "Select Currency";
+
+// Currency Regions
+"currency.region.major" = "Major Currencies";
+"currency.region.americas" = "Americas";
+"currency.region.europe" = "Europe";
+"currency.region.asia" = "Asia Pacific";
+"currency.region.middle_east" = "Middle East";
+"currency.region.africa" = "Africa";
+"currency.region.oceania" = "Oceania";
+"currency.region.others" = "Other Currencies";
 // MARK: - Currencies
 "onboarding.start_button" = "Start";
 "onboarding.personalize.subtitle" = "Choose your preferred language and currency";

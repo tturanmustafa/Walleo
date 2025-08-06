@@ -261,9 +261,23 @@
 "filter.presets_header" = "Hazır Aralıklar";
 "enum.date_range.custom" = "Özel";
 
+//Bu Satır
 "categories.add_new" = "Yeni Kategori Ekle";
-"search.currency" = "Para birimi ara...";
+// Para Birimi Arama
+"search.currency" = "Para birimi ara";
+"search.no_results" = "Sonuç Bulunamadı";
+"search.no_results.description" = "Aramanızla eşleşen para birimi bulunamadı.";
 "settings.select_currency" = "Para Birimi Seç";
+
+// Para Birimi Bölgeleri
+"currency.region.major" = "Başlıca Para Birimleri";
+"currency.region.americas" = "Amerika Kıtası";
+"currency.region.europe" = "Avrupa";
+"currency.region.asia" = "Asya Pasifik";
+"currency.region.middle_east" = "Orta Doğu";
+"currency.region.africa" = "Afrika";
+"currency.region.oceania" = "Okyanusya";
+"currency.region.others" = "Diğer Para Birimleri";
 // MARK: - Currencies
 "onboarding.start_button" = "Başla";
 "onboarding.personalize.subtitle" = "Tercih ettiğiniz dili ve para birimini seçin";
