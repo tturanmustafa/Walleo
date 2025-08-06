@@ -8,6 +8,7 @@ struct KategoriDuzenleView: View {
 
     // Bu özellik, dışarıdan bir kategori gelip gelmediğini tutar.
     var kategori: Kategori?
+    var varsayilanTur: IslemTuru? // Başlangıç türü
 
     // @State değişkenleri artık init içinde ayarlanacak.
     @State private var isim: String
@@ -17,26 +18,22 @@ struct KategoriDuzenleView: View {
     
     // --- YENİ VE DOĞRU YAKLAŞIM: INIT METODU ---
     // Bu başlatıcı, view oluşturulurken SADECE BİR KEZ çalışır.
-    init(kategori: Kategori? = nil) {
+    init(kategori: Kategori? = nil, varsayilanTur: IslemTuru? = nil) {
         self.kategori = kategori
+        self.varsayilanTur = varsayilanTur
         
         if let k = kategori {
-            // EĞER DÜZENLEME MODUNDAYSAK:
-            // State'i mevcut kategorinin verileriyle başlat.
             _isim = State(initialValue: k.isim)
             _ikonAdi = State(initialValue: k.ikonAdi)
             _secilenTur = State(initialValue: k.tur)
             _secilenRenk = State(initialValue: k.renk)
         } else {
-            // EĞER EKLEME MODUNDAYSAK:
-            // State'i varsayılan değerlerle başlat.
             _isim = State(initialValue: "")
             _ikonAdi = State(initialValue: "tag.fill")
-            _secilenTur = State(initialValue: .gider)
+            _secilenTur = State(initialValue: varsayilanTur ?? .gider)
             _secilenRenk = State(initialValue: Color(red: 0, green: 0.478, blue: 1))
         }
     }
-    
     private var isSystemCategory: Bool {
         kategori?.localizationKey != nil
     }
@@ -82,9 +79,10 @@ struct KategoriDuzenleView: View {
                             Text(LocalizedStringKey("common.income")).tag(IslemTuru.gelir)
                         }
                         .pickerStyle(.segmented)
+                        // DÜZELTME: Disabled'ı kaldırıyoruz
+                        // .disabled(varsayilanTur != nil) // BU SATIRI KALDIR
                     }
                 }
-                
                 Section {
                     TextField("categories.name", text: $isim)
                         .disabled(isSystemCategory)

@@ -261,6 +261,9 @@
 "filter.presets_header" = "Presets";
 "enum.date_range.custom" = "Custom";
 
+"categories.add_new" = "Add New Category";
+"search.currency" = "Search currency...";
+"settings.select_currency" = "Select Currency";
 // MARK: - Currencies
 "onboarding.start_button" = "Start";
 "onboarding.personalize.subtitle" = "Choose your preferred language and currency";
