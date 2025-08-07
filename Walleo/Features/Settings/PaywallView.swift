@@ -1,4 +1,4 @@
-// MARK: - Bundle Extension for Language Support
+// PaywallView.swift
 import SwiftUI
 import RevenueCat
 
@@ -19,8 +19,8 @@ struct PaywallView: View {
     // Animation States
     @State private var logoRotation: Double = 0
     @State private var pulseAnimation: Bool = false
-    @State private var selectedFeatureIndex: Int = 0
     @State private var floatingAnimation: Bool = false
+    @State private var showFeatures: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -37,8 +37,8 @@ struct PaywallView: View {
                             .padding(.top, 10)
                             .padding(.bottom, 5)
                         
-                        // Feature Carousel - No ScrollView
-                        featureCarousel
+                        // YENİ: Feature comparison yerine carousel
+                        featuresComparisonSection
                             .padding(.vertical, 10)
                             .frame(maxHeight: .infinity)
                         
@@ -54,7 +54,7 @@ struct PaywallView: View {
                                 compactPackagesGrid(offerings)
                             }
                             
-                            // SUBSCRIPTION INFO - YENİ EKLENEN BÖLÜM
+                            // SUBSCRIPTION INFO
                             if let package = selectedPackage {
                                 subscriptionInfoView(for: package)
                                     .padding(.horizontal)
@@ -104,7 +104,293 @@ struct PaywallView: View {
         }
     }
     
-    // MARK: - Subscription Info View (YENİ)
+    // MARK: - Ultra Compact Header
+    private var ultraCompactHeader: some View {
+        HStack(spacing: 12) {
+            // Small Crown Icon
+            ZStack {
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            gradient: Gradient(colors: [
+                                Color.yellow.opacity(0.2),
+                                Color.clear
+                            ]),
+                            center: .center,
+                            startRadius: 5,
+                            endRadius: 20
+                        )
+                    )
+                    .frame(width: 40, height: 40)
+                    .blur(radius: 5)
+                    .scaleEffect(pulseAnimation ? 1.2 : 1)
+                
+                Image(systemName: "crown.fill")
+                    .font(.system(size: 20))
+                    .foregroundStyle(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.yellow, .orange]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .shadow(color: .yellow.opacity(0.3), radius: 5)
+                    .scaleEffect(pulseAnimation ? 1.1 : 1)
+            }
+            
+            // Title & Subtitle
+            VStack(alignment: .leading, spacing: 2) {
+                Text(LocalizedStringKey("paywall.title"))
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundStyle(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.purple, Color.pink]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                
+                Text(LocalizedStringKey("paywall.subtitle"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+        }
+        .padding(.horizontal)
+    }
+    
+    // MARK: - YENİ: Features Comparison Section
+    private var featuresComparisonSection: some View {
+        VStack(spacing: 12) {
+            // Header
+            HStack {
+                Text(LocalizedStringKey("paywall.whats_included"))
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                HStack(spacing: 20) {
+                    Text("Free")
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .foregroundColor(.secondary)
+                    
+                    Text("Premium")
+                        .font(.caption)
+                        .fontWeight(.bold)
+                        .foregroundStyle(
+                            LinearGradient(
+                                gradient: Gradient(colors: [.purple, .pink]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                }
+            }
+            .padding(.horizontal)
+            
+            // Features List
+            ScrollView {
+                VStack(spacing: 0) {
+                    FeatureComparisonRow(
+                        icon: "wallet.pass.fill",
+                        iconColor: .blue,
+                        title: "paywall.feature.accounts",
+                        description: "paywall.feature.accounts.desc",
+                        freeValue: "3",
+                        premiumValue: "∞"
+                    )
+                    
+                    Divider().padding(.leading, 60)
+                    
+                    FeatureComparisonRow(
+                        icon: "folder.fill.badge.plus",
+                        iconColor: .purple,
+                        title: "paywall.feature.categories",
+                        description: "paywall.feature.categories.desc",
+                        freeValue: "5",
+                        premiumValue: "∞"
+                    )
+                    
+                    Divider().padding(.leading, 60)
+                    
+                    FeatureComparisonRow(
+                        icon: "chart.pie.fill",
+                        iconColor: .orange,
+                        title: "paywall.feature.budgets",
+                        description: "paywall.feature.budgets.desc",
+                        freeValue: "1",
+                        premiumValue: "∞"
+                    )
+                    
+                    Divider().padding(.leading, 60)
+                    
+                    FeatureComparisonRow(
+                        icon: "square.and.arrow.up.fill",
+                        iconColor: .green,
+                        title: "paywall.feature.export.title",
+                        description: "paywall.feature.export.description",
+                        freeValue: "—",
+                        premiumValue: "✓"
+                    )
+                }
+                .padding(.vertical, 0)
+            }
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemBackground))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [
+                                        Color.purple.opacity(0.2),
+                                        Color.pink.opacity(0.2)
+                                    ]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: 1
+                            )
+                    )
+            )
+            .padding(.horizontal)
+            .opacity(showFeatures ? 1 : 0)
+            .scaleEffect(showFeatures ? 1 : 0.95)
+        }
+    }
+    
+    // MARK: - Compact Packages Grid (Side by Side)
+    private func compactPackagesGrid(_ offerings: Offerings) -> some View {
+        HStack(spacing: 10) {
+            if let packages = offerings.current?.availablePackages {
+                ForEach(packages, id: \.identifier) { package in
+                    MiniPackageCard(
+                        package: package,
+                        packages: packages,
+                        isSelected: selectedPackage?.identifier == package.identifier,
+                        onTap: {
+                            withAnimation(.spring()) {
+                                selectedPackage = package
+                            }
+                        }
+                    )
+                }
+            }
+        }
+        .frame(maxHeight: 80)
+    }
+    
+    // MARK: - Compact Purchase Button
+    private var compactPurchaseButton: some View {
+        Button(action: purchase) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.purple, Color.pink]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(height: 44)
+                
+                if isPurchasing {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(0.8)
+                } else {
+                    HStack(spacing: 8) {
+                        Image(systemName: "crown.fill")
+                            .font(.system(size: 16))
+                        Text(purchaseButtonText)
+                            .font(.system(size: 15, weight: .semibold))
+                    }
+                    .foregroundColor(.white)
+                }
+            }
+        }
+        .disabled(selectedPackage == nil || isPurchasing)
+        .opacity(selectedPackage == nil ? 0.6 : 1)
+    }
+
+    private var purchaseButtonText: String {
+        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
+        
+        if isEligibleForIntro,
+           let intro = selectedPackage?.storeProduct.introductoryDiscount,
+           intro.paymentMode == .freeTrial {
+            let period = intro.subscriptionPeriod
+            switch period.unit {
+            case .day:
+                let format = languageBundle.localizedString(forKey: "paywall.purchase_button.trial_days", value: "", table: nil)
+                return String(format: format, period.value)
+            case .week:
+                let format = languageBundle.localizedString(forKey: "paywall.purchase_button.trial_weeks", value: "", table: nil)
+                return String(format: format, period.value)
+            case .month:
+                let format = languageBundle.localizedString(forKey: "paywall.purchase_button.trial_months", value: "", table: nil)
+                return String(format: format, period.value)
+            default:
+                return languageBundle.localizedString(forKey: "paywall.purchase_button.trial_generic", value: "", table: nil)
+            }
+        } else {
+            return languageBundle.localizedString(forKey: "paywall.purchase_button_regular", value: "", table: nil)
+        }
+    }
+    
+    // MARK: - Enhanced Footer (GÜNCELLENDİ - auto_renewal_info KALDIRILDI)
+    private var enhancedFooter: some View {
+        VStack(spacing: 8) {
+            // Restore button
+            Button(LocalizedStringKey("paywall.restore")) {
+                restorePurchases()
+            }
+            .font(.caption)
+            .foregroundColor(.secondary)
+            
+            // Links with clear labels
+            HStack(spacing: 12) {
+                Link(destination: URL(string: "https://walleo.app/#privacy")!) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "lock.shield")
+                            .font(.caption2)
+                        Text(LocalizedStringKey("paywall.privacy"))
+                            .font(.caption2)
+                    }
+                }
+                
+                Text("•")
+                    .font(.caption2)
+                
+                Link(destination: URL(string: "https://walleo.app/#terms")!) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "doc.text")
+                            .font(.caption2)
+                        Text(LocalizedStringKey("paywall.terms"))
+                            .font(.caption2)
+                    }
+                }
+            }
+            .foregroundColor(.secondary)
+            
+            // YENİ: Sadece subscription info (auto_renewal KALDIRILDI)
+            VStack(spacing: 4) {
+                Text(LocalizedStringKey("paywall.subscription_info"))
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(nil)
+            }
+            .padding(.horizontal)
+        }
+        .padding(.bottom, 5)
+    }
+    
+    // MARK: - Subscription Info View
     private func subscriptionInfoView(for package: Package) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             // Subscription Title
@@ -186,259 +472,6 @@ struct PaywallView: View {
         return ""
     }
     
-    // MARK: - Enhanced Footer (GÜNCELLENDİ)
-    private var enhancedFooter: some View {
-        VStack(spacing: 8) {
-            // Restore button
-            Button(LocalizedStringKey("paywall.restore")) {
-                restorePurchases()
-            }
-            .font(.caption)
-            .foregroundColor(.secondary)
-            
-            // Links with clear labels
-            HStack(spacing: 12) {
-                Link(destination: URL(string: "https://walleo.app/#privacy")!) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "lock.shield")
-                            .font(.caption2)
-                        Text(LocalizedStringKey("paywall.privacy"))
-                            .font(.caption2)
-                    }
-                }
-                
-                Text("•")
-                    .font(.caption2)
-                
-                Link(destination: URL(string: "https://walleo.app/#terms")!) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "doc.text")
-                            .font(.caption2)
-                        Text(LocalizedStringKey("paywall.terms"))
-                            .font(.caption2)
-                    }
-                }
-            }
-            .foregroundColor(.secondary)
-            
-            // Detailed subscription info
-            VStack(spacing: 4) {
-                Text(LocalizedStringKey("paywall.subscription_info"))
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true) // Metnin tam yüksekliğini al
-                
-                // Additional info about auto-renewal
-                Text(LocalizedStringKey("paywall.auto_renewal_info"))
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true) // Metnin tam yüksekliğini al
-                    .lineLimit(nil) // Sınırsız satır
-            }
-            .padding(.horizontal)
-        }
-        .padding(.bottom, 5)
-    }
-    
-    // MARK: - Ultra Compact Header
-    private var ultraCompactHeader: some View {
-        HStack(spacing: 12) {
-            // Small Crown Icon
-            ZStack {
-                Circle()
-                    .fill(
-                        RadialGradient(
-                            gradient: Gradient(colors: [
-                                Color.yellow.opacity(0.2),
-                                Color.clear
-                            ]),
-                            center: .center,
-                            startRadius: 5,
-                            endRadius: 20
-                        )
-                    )
-                    .frame(width: 40, height: 40)
-                    .blur(radius: 5)
-                    .scaleEffect(pulseAnimation ? 1.2 : 1)
-                
-                Image(systemName: "crown.fill")
-                    .font(.system(size: 20))
-                    .foregroundStyle(
-                        LinearGradient(
-                            gradient: Gradient(colors: [.yellow, .orange]),
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    .shadow(color: .yellow.opacity(0.3), radius: 5)
-                    .scaleEffect(pulseAnimation ? 1.1 : 1)
-            }
-            
-            // Title & Subtitle
-            VStack(alignment: .leading, spacing: 2) {
-                Text(LocalizedStringKey("paywall.title"))
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(
-                        LinearGradient(
-                            gradient: Gradient(colors: [Color.purple, Color.pink]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                
-                Text(LocalizedStringKey("paywall.subtitle"))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-            
-            Spacer()
-        }
-        .padding(.horizontal)
-    }
-    
-    // MARK: - Optimized Feature Carousel
-    private var featureCarousel: some View {
-        VStack(spacing: 8) {
-            // Smaller Feature Cards
-            TabView(selection: $selectedFeatureIndex) {
-                ForEach(0..<4, id: \.self) { index in
-                    CompactFeatureCard(feature: features[index])
-                        .tag(index)
-                        .padding(.horizontal)
-                }
-            }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            .frame(maxHeight: 250)
-            
-            // Smaller Page Indicator
-            HStack(spacing: 6) {
-                ForEach(0..<4, id: \.self) { index in
-                    Circle()
-                        .fill(selectedFeatureIndex == index ? Color.accentColor : Color.gray.opacity(0.3))
-                        .frame(width: selectedFeatureIndex == index ? 8 : 6,
-                               height: selectedFeatureIndex == index ? 8 : 6)
-                        .animation(.spring(), value: selectedFeatureIndex)
-                }
-            }
-        }
-    }
-    
-    // MARK: - Compact Packages Grid (Side by Side)
-    private func compactPackagesGrid(_ offerings: Offerings) -> some View {
-        HStack(spacing: 10) {
-            if let packages = offerings.current?.availablePackages {
-                ForEach(packages, id: \.identifier) { package in
-                    MiniPackageCard(
-                        package: package,
-                        packages: packages,
-                        isSelected: selectedPackage?.identifier == package.identifier,
-                        onTap: {
-                            withAnimation(.spring()) {
-                                selectedPackage = package
-                            }
-                        }
-                    )
-                }
-            }
-        }
-        .frame(maxHeight: 80)
-    }
-    
-    // MARK: - Compact Purchase Button
-    private var compactPurchaseButton: some View {
-        Button(action: purchase) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(
-                        LinearGradient(
-                            gradient: Gradient(colors: [Color.purple, Color.pink]),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(height: 44)
-                
-                if isPurchasing {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        .scaleEffect(0.8)
-                } else {
-                    HStack(spacing: 8) {
-                        Image(systemName: "crown.fill")
-                            .font(.system(size: 16))
-                        Text(purchaseButtonText)
-                            .font(.system(size: 15, weight: .semibold))
-                    }
-                    .foregroundColor(.white)
-                }
-            }
-        }
-        .disabled(selectedPackage == nil || isPurchasing)
-        .opacity(selectedPackage == nil ? 0.6 : 1)
-    }
-
-    private var purchaseButtonText: String {
-        let languageBundle = Bundle.getLanguageBundle(for: appSettings.languageCode)
-        
-        if isEligibleForIntro,
-           let intro = selectedPackage?.storeProduct.introductoryDiscount,
-           intro.paymentMode == .freeTrial {
-            // Dinamik deneme süresi metni
-            let period = intro.subscriptionPeriod
-            switch period.unit {
-            case .day:
-                let format = languageBundle.localizedString(forKey: "paywall.purchase_button.trial_days", value: "", table: nil)
-                return String(format: format, period.value)
-            case .week:
-                let format = languageBundle.localizedString(forKey: "paywall.purchase_button.trial_weeks", value: "", table: nil)
-                return String(format: format, period.value)
-            case .month:
-                let format = languageBundle.localizedString(forKey: "paywall.purchase_button.trial_months", value: "", table: nil)
-                return String(format: format, period.value)
-            default:
-                return languageBundle.localizedString(forKey: "paywall.purchase_button.trial_generic", value: "", table: nil)
-            }
-        } else {
-            return languageBundle.localizedString(forKey: "paywall.purchase_button_regular", value: "", table: nil)
-        }
-    }
-    
-    // MARK: - Features Data
-    private var features: [PremiumFeature] {
-        [
-            PremiumFeature(
-                icon: "infinity",
-                iconColor: .blue,
-                titleKey: "paywall.feature.unlimited_accounts.title",
-                descriptionKey: "paywall.feature.unlimited_accounts.description",
-                detailKey: "paywall.feature.unlimited_accounts.detail"
-            ),
-            PremiumFeature(
-                icon: "square.and.arrow.up.fill",
-                iconColor: .green,
-                titleKey: "paywall.feature.export.title",
-                descriptionKey: "paywall.feature.export.description",
-                detailKey: "paywall.feature.export.detail"
-            ),
-            PremiumFeature(
-                icon: "chart.pie.fill",
-                iconColor: .orange,
-                titleKey: "paywall.feature.budgets.title",
-                descriptionKey: "paywall.feature.budgets.description",
-                detailKey: "paywall.feature.budgets.detail"
-            ),
-            PremiumFeature(
-                icon: "magnifyingglass.circle.fill",
-                iconColor: .purple,
-                titleKey: "paywall.feature.reports.title",
-                descriptionKey: "paywall.feature.reports.description",
-                detailKey: "paywall.feature.reports.detail"
-            )
-        ]
-    }
-    
     // MARK: - Animations
     private func startAnimations() {
         withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
@@ -447,6 +480,10 @@ struct PaywallView: View {
         
         withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
             floatingAnimation = true
+        }
+        
+        withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.3)) {
+            showFeatures = true
         }
     }
     
@@ -517,57 +554,78 @@ struct PaywallView: View {
     }
 }
 
-// MARK: - Feature Model
-struct PremiumFeature {
+// MARK: - YENİ: Feature Comparison Row
+struct FeatureComparisonRow: View {
     let icon: String
     let iconColor: Color
-    let titleKey: String
-    let descriptionKey: String
-    let detailKey: String
-}
-
-// MARK: - Compact Feature Card
-struct CompactFeatureCard: View {
-    let feature: PremiumFeature
-    @State private var isAnimating = false
+    let title: String
+    let description: String
+    let freeValue: String
+    let premiumValue: String
     
     var body: some View {
-        VStack(spacing: 12) {
-            // Smaller Icon
+        HStack(spacing: 16) {
+            // Icon
             ZStack {
                 Circle()
-                    .fill(feature.iconColor.opacity(0.15))
-                    .frame(width: 56, height: 56)
+                    .fill(iconColor.opacity(0.1))
+                    .frame(width: 40, height: 40)
                 
-                Image(systemName: feature.icon)
-                    .font(.system(size: 28))
-                    .foregroundColor(feature.iconColor)
+                Image(systemName: icon)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(iconColor)
             }
             
-            // Compact Content
-            VStack(spacing: 6) {
-                Text(LocalizedStringKey(feature.titleKey))
-                    .font(.system(size: 25, weight: .semibold))
+            // Content
+            VStack(alignment: .leading, spacing: 2) {
+                Text(LocalizedStringKey(title))
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundColor(.primary)
                 
-                Text(LocalizedStringKey(feature.descriptionKey))
-                    .font(.system(size: 20, weight: .medium))
+                Text(LocalizedStringKey(description))
+                    .font(.caption2)
                     .foregroundColor(.secondary)
-                    .lineLimit(2)
+                    .lineLimit(1)
+            }
+            
+            Spacer()
+            
+            // Values
+            HStack(spacing: 20) {
+                // Free value
+                Text(freeValue)
+                    .font(.footnote)
+                    .fontWeight(.medium)
+                    .foregroundColor(freeValue == "—" ? .secondary.opacity(0.5) : .secondary)
+                    .frame(width: 30)
                 
-                Text(LocalizedStringKey(feature.detailKey))
-                    .font(.system(size: 15))
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(3)
-                    .padding(.horizontal, 10)
+                // Premium value
+                if premiumValue == "✓" {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(.green)
+                        .frame(width: 30)
+                } else {
+                    Text(premiumValue)
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundStyle(
+                            LinearGradient(
+                                gradient: Gradient(colors: [.purple, .pink]),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: 30)
+                }
             }
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 10)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }
 
-// MARK: - Mini Package Card
+// MARK: - Mini Package Card (AYNI KALIYOR)
 struct MiniPackageCard: View {
     let package: Package
     let packages: [Package]
@@ -673,7 +731,7 @@ struct MiniPackageCard: View {
     }
 }
 
-// MARK: - Supporting Views
+// MARK: - Supporting Views (AYNI KALIYOR)
 struct AnimatedGradientBackground: View {
     @State private var animateGradient = false
     

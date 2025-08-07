@@ -263,6 +263,14 @@
 
 //Bu Satır
 "categories.add_new" = "Yeni Kategori Ekle";
+// Yeni eklenen anahtarlar
+"paywall.whats_included" = "Neler Dahil";
+"paywall.feature.accounts" = "Hesaplar";
+"paywall.feature.accounts.desc" = "Cüzdan, kredi kartı ve kredi hesapları";
+"paywall.feature.categories" = "Kategoriler";
+"paywall.feature.categories.desc" = "Özel harcama kategorileri ekleyin";
+"paywall.feature.budgets" = "Bütçeler";
+"paywall.feature.budgets.desc" = "Kategorilere özel bütçe limitleri";
 // Para Birimi Arama
 "search.currency" = "Para birimi ara";
 "search.no_results" = "Sonuç Bulunamadı";
