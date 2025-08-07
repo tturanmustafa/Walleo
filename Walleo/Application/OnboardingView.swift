@@ -304,70 +304,44 @@ struct OnboardingView: View {
         }
     }
     
+    // OnboardingView.swift içindeki seedInitialData fonksiyonunu KOMPLE DEĞİŞTİR
     private func seedInitialData() {
         do {
-            // Transaction başlat
-            try modelContext.save()
-            
-            // ÇÖZÜM 1: CloudKit senkronizasyonunun tamamlanmasını bekle
-            Thread.sleep(forTimeInterval: 0.5)
-            
-            // Metadata kontrolü
-            let metadataDescriptor = FetchDescriptor<AppMetadata>()
-            let existingMetadata = try modelContext.fetch(metadataDescriptor).first
+            // Sistem kategorilerini tanımla
+            let systemCategories: [(id: UUID, isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String)] = [
+                (SystemCategoryIDs.salary, "Maaş", "dollarsign.circle.fill", .gelir, "#34C759", "category.salary"),
+                (SystemCategoryIDs.extraIncome, "Ek Gelir", "chart.pie.fill", .gelir, "#007AFF", "category.extra_income"),
+                (SystemCategoryIDs.investment, "Yatırım", "chart.line.uptrend.xyaxis", .gelir, "#AF52DE", "category.investment"),
+                (SystemCategoryIDs.groceries, "Market", "cart.fill", .gider, "#FF9500", "category.groceries"),
+                (SystemCategoryIDs.restaurant, "Restoran", "fork.knife", .gider, "#FF3B30", "category.restaurant"),
+                (SystemCategoryIDs.transport, "Ulaşım", "car.fill", .gider, "#5E5CE6", "category.transport"),
+                (SystemCategoryIDs.bills, "Faturalar", "bolt.fill", .gider, "#FFCC00", "category.bills"),
+                (SystemCategoryIDs.entertainment, "Eğlence", "film.fill", .gider, "#32ADE6", "category.entertainment"),
+                (SystemCategoryIDs.health, "Sağlık", "pills.fill", .gider, "#64D2FF", "category.health"),
+                (SystemCategoryIDs.clothing, "Giyim", "tshirt.fill", .gider, "#FF2D55", "category.clothing"),
+                (SystemCategoryIDs.home, "Ev", "house.fill", .gider, "#A2845E", "category.home"),
+                (SystemCategoryIDs.gift, "Hediye", "gift.fill", .gider, "#BF5AF2", "category.gift"),
+                (SystemCategoryIDs.loanPayment, "Kredi Ödemesi", "creditcard.and.123", .gider, "#8E8E93", "category.loan_payment"),
+                (SystemCategoryIDs.other, "Diğer", "ellipsis.circle.fill", .gider, "#30B0C7", "category.other")
+            ]
             
             // Mevcut kategorileri kontrol et
             let categoryDescriptor = FetchDescriptor<Kategori>()
             let existingCategories = try modelContext.fetch(categoryDescriptor)
             
-            Logger.log("Mevcut kategori sayısı: \(existingCategories.count)", log: Logger.data)
-            
-            // Sistem kategorilerini tanımla
-            let systemCategories: [(isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String)] = [
-                ("Maaş", "dollarsign.circle.fill", .gelir, "#34C759", "category.salary"),
-                ("Ek Gelir", "chart.pie.fill", .gelir, "#007AFF", "category.extra_income"),
-                ("Yatırım", "chart.line.uptrend.xyaxis", .gelir, "#AF52DE", "category.investment"),
-                ("Market", "cart.fill", .gider, "#FF9500", "category.groceries"),
-                ("Restoran", "fork.knife", .gider, "#FF3B30", "category.restaurant"),
-                ("Ulaşım", "car.fill", .gider, "#5E5CE6", "category.transport"),
-                ("Faturalar", "bolt.fill", .gider, "#FFCC00", "category.bills"),
-                ("Eğlence", "film.fill", .gider, "#32ADE6", "category.entertainment"),
-                ("Sağlık", "pills.fill", .gider, "#64D2FF", "category.health"),
-                ("Giyim", "tshirt.fill", .gider, "#FF2D55", "category.clothing"),
-                ("Ev", "house.fill", .gider, "#A2845E", "category.home"),
-                ("Hediye", "gift.fill", .gider, "#BF5AF2", "category.gift"),
-                ("Kredi Ödemesi", "creditcard.and.123", .gider, "#8E8E93", "category.loan_payment"),
-                ("Diğer", "ellipsis.circle.fill", .gider, "#30B0C7", "category.other")
-            ]
-            
-            // ÇÖZÜM 2: Daha güvenli kategori kontrolü
             var kategorilerEklendi = false
             
             for systemCat in systemCategories {
-                // Önce localizationKey ile kontrol et
-                let existsWithKey = existingCategories.contains { cat in
-                    cat.localizationKey == systemCat.localizationKey
+                // ÖNEMLİ: Hem ID hem de localizationKey ile kontrol et (duplikasyonu önle)
+                let categoryExists = existingCategories.contains { cat in
+                    cat.id == systemCat.id || // Yeni ID'li kategori
+                    cat.localizationKey == systemCat.localizationKey // Eski sistem kategorisi
                 }
                 
-                // Sonra isim + tür kombinasyonu ile kontrol et (CloudKit'ten gelen eski veriler için)
-                let existsWithNameAndType = existingCategories.contains { cat in
-                    cat.isim == systemCat.isim && cat.tur == systemCat.tur
-                }
-                
-                if existsWithKey {
-                    Logger.log("Sistem kategorisi zaten var (key ile): \(systemCat.localizationKey)", log: Logger.data)
-                } else if existsWithNameAndType {
-                    // İsim ve tür aynı ama localizationKey yok - güncelle
-                    if let existingCat = existingCategories.first(where: {
-                        $0.isim == systemCat.isim && $0.tur == systemCat.tur && $0.localizationKey == nil
-                    }) {
-                        existingCat.localizationKey = systemCat.localizationKey
-                        kategorilerEklendi = true
-                        Logger.log("Mevcut kategoriye localizationKey eklendi: \(systemCat.isim)", log: Logger.data)
-                    }
-                } else {
-                    // Kategori hiç yok, ekle
+                if !categoryExists {
+                    // Kategori hiç yoksa oluştur
                     let newCategory = Kategori(
+                        id: systemCat.id,
                         isim: systemCat.isim,
                         ikonAdi: systemCat.ikonAdi,
                         tur: systemCat.tur,
@@ -376,25 +350,28 @@ struct OnboardingView: View {
                     )
                     modelContext.insert(newCategory)
                     kategorilerEklendi = true
-                    Logger.log("Yeni sistem kategorisi eklendi: \(systemCat.isim)", log: Logger.data)
+                    Logger.log("Onboarding - Sistem kategorisi eklendi: \(systemCat.isim)", log: Logger.data)
                 }
             }
             
-            // ÇÖZÜM 3: Duplike kategorileri temizle
-            cleanupDuplicateCategories(existingCategories: existingCategories)
-            
             // Metadata güncelle
-            if existingMetadata == nil {
+            let metadataDescriptor = FetchDescriptor<AppMetadata>()
+            if let metadata = try modelContext.fetch(metadataDescriptor).first {
+                metadata.defaultCategoriesAdded = true
+            } else {
                 let newMetadata = AppMetadata(defaultCategoriesAdded: true)
                 modelContext.insert(newMetadata)
                 kategorilerEklendi = true
-            } else {
-                existingMetadata!.defaultCategoriesAdded = true
             }
             
-            if kategorilerEklendi || existingMetadata == nil {
+            if kategorilerEklendi {
                 try modelContext.save()
-                Logger.log("Initial data setup tamamlandı", log: Logger.data)
+                Logger.log("Onboarding - Initial data setup tamamlandı", log: Logger.data)
+            }
+            
+            // Kategorisiz işlemleri düzelt
+            Task {
+                await fixOrphanedTransactions()
             }
             
         } catch {
@@ -402,36 +379,44 @@ struct OnboardingView: View {
         }
     }
     
-    // Yeni yardımcı fonksiyon - duplike kategorileri temizle
-    private func cleanupDuplicateCategories(existingCategories: [Kategori]) {
-        var seenCategories: [String: Kategori] = [:]
-        var duplicatesToDelete: [Kategori] = []
-        
-        for category in existingCategories {
-            // Sistem kategorileri için localizationKey'i kontrol et
-            if let locKey = category.localizationKey, !locKey.isEmpty {
-                if let existing = seenCategories[locKey] {
-                    // Duplike bulundu - eskisini sil
-                    Logger.log("Duplike sistem kategorisi bulundu: \(locKey)", log: Logger.data)
-                    duplicatesToDelete.append(existing)
+    // YENİ FONKSİYON - OnboardingView.swift'e EKLE
+    // OnboardingView.swift içindeki fixOrphanedTransactions fonksiyonunu DÜZELT
+    @MainActor
+    private func fixOrphanedTransactions() async {
+        do {
+            // Biraz bekle - CloudKit senkronizasyonu için
+            try await Task.sleep(nanoseconds: 2_000_000_000) // 2 saniye
+            
+            let orphanedTransactionDescriptor = FetchDescriptor<Islem>(
+                predicate: #Predicate { islem in
+                    islem.kategori == nil
                 }
-                seenCategories[locKey] = category
-            } else {
-                // Kullanıcı kategorileri için isim + tür kombinasyonunu kontrol et
-                let key = "\(category.isim)-\(category.turRawValue)"
-                if let existing = seenCategories[key] {
-                    // Duplike bulundu - eskisini sil
-                    Logger.log("Duplike kullanıcı kategorisi bulundu: \(key)", log: Logger.data)
-                    duplicatesToDelete.append(existing)
+            )
+            
+            let orphanedTransactions = try modelContext.fetch(orphanedTransactionDescriptor)
+            
+            if !orphanedTransactions.isEmpty {
+                Logger.log("Onboarding - Kategorisiz işlem sayısı: \(orphanedTransactions.count)", log: Logger.data)
+                
+                // "Diğer" kategorisini bul - ÖNEMLİ: UUID'yi önce bir değişkene ata
+                let otherCategoryID = SystemCategoryIDs.other
+                let otherCategoryDescriptor = FetchDescriptor<Kategori>(
+                    predicate: #Predicate { kategori in
+                        kategori.id == otherCategoryID
+                    }
+                )
+                
+                if let otherCategory = try modelContext.fetch(otherCategoryDescriptor).first {
+                    for transaction in orphanedTransactions {
+                        transaction.kategori = otherCategory
+                    }
+                    
+                    try modelContext.save()
+                    Logger.log("Onboarding - Kategorisiz işlemler düzeltildi", log: Logger.data)
                 }
-                seenCategories[key] = category
             }
-        }
-        
-        // Duplikleri sil
-        for duplicate in duplicatesToDelete {
-            modelContext.delete(duplicate)
-            Logger.log("Duplike kategori silindi: \(duplicate.isim)", log: Logger.data)
+        } catch {
+            Logger.log("Onboarding - Kategorisiz işlemleri düzeltme hatası: \(error)", log: Logger.data, type: .error)
         }
     }
 }
