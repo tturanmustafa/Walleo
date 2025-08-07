@@ -61,9 +61,12 @@ class Kategori {
         self.turRawValue = tur.rawValue
         self.olusturmaTarihi = Date()
         
-        // Logger satırını sadeleştir (decode hatasını önlemek için)
+        // SORUNLU SATIR:
+        // Logger.log("Kategori oluşturuluyor: \(isim)", log: Logger.data)
+        
+        // DÜZELTME - Logger satırını tamamen kaldırın veya basitleştirin:
         if localizationKey != nil {
-            Logger.log("Kategori oluşturuluyor: \(isim)", log: Logger.data)
+            Logger.log("Sistem kategorisi oluşturuluyor", log: Logger.data)
         }
     }
 }
