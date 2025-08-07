@@ -7,6 +7,7 @@ struct IslemEkleView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var entitlementManager: EntitlementManager // YENİ SATIR EKLE
     
     var duzenlenecekIslem: Islem?
     
@@ -38,6 +39,7 @@ struct IslemEkleView: View {
     
     @State private var yeniKategoriEkleGoster = false
     @State private var yeniEklenenKategoriID: UUID? = nil // YENİ: Eklenen kategoriyi takip et
+    @State private var showPaywall = false // YENİ SATIR
 
 
     private var isFormValid: Bool {
@@ -46,6 +48,36 @@ struct IslemEkleView: View {
         !isTutarGecersiz &&
         secilenKategoriID != nil &&
         secilenHesapID != nil
+    }
+    
+    // YENİ: Kategori ekleme limiti kontrolü
+    private func canAddMoreCategories() -> Bool {
+        // Premium kullanıcılar sınırsız ekleyebilir
+        if entitlementManager.hasPremiumAccess {
+            return true
+        }
+        
+        // Kullanıcı kategorilerini say
+        let userCategories = kategoriler.filter { $0.localizationKey == nil }
+        let userCategoryCount = userCategories.count
+        
+        // Metadata'yı kontrol et
+        let metadataDescriptor = FetchDescriptor<AppMetadata>()
+        guard let metadata = try? modelContext.fetch(metadataDescriptor).first else {
+            return userCategoryCount < 5 // Metadata yoksa varsayılan limit
+        }
+        
+        // İlk kez kontrol ediliyorsa, mevcut sayıyı kaydet
+        if metadata.initialUserCategoryCount == -1 {
+            metadata.initialUserCategoryCount = userCategoryCount
+            try? modelContext.save()
+        }
+        
+        // Kullanıcı başlangıçtaki sayı + 5'ten fazla ekleyebilir mi?
+        let allowedNewCategories = 5
+        let maxAllowed = metadata.initialUserCategoryCount + allowedNewCategories
+        
+        return userCategoryCount < maxAllowed
     }
     
     // YENİ: Seçilen hesabın kredi kartı olup olmadığını kontrol
@@ -177,8 +209,13 @@ struct IslemEkleView: View {
                             Divider()
                             
                             // Yeni Kategori Ekle butonu
+                            // Yeni Kategori Ekle butonu
                             Button(action: {
-                                yeniKategoriEkleGoster = true
+                                if canAddMoreCategories() {
+                                    yeniKategoriEkleGoster = true
+                                } else {
+                                    showPaywall = true
+                                }
                             }) {
                                 Label {
                                     Text(LocalizedStringKey("categories.add_new"))
@@ -303,6 +340,10 @@ struct IslemEkleView: View {
                         secilenTur = yeniKategori.tur
                     }
                 )
+            }
+            // YENİ SHEET EKLE
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
             }
             .onChange(of: secilenTur) {
                 if !filtrelenmisKategoriler.contains(where: { $0.id == secilenKategoriID }) { secilenKategoriID = nil }
@@ -748,6 +789,7 @@ struct IslemEkleView: View {
 struct KategoriEklemeWrapper: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var entitlementManager: EntitlementManager // YENİ SATIR
     
     let varsayilanTur: IslemTuru
     let onKategoriEklendi: (Kategori) -> Void
@@ -756,6 +798,7 @@ struct KategoriEklemeWrapper: View {
     
     var body: some View {
         KategoriDuzenleView(varsayilanTur: varsayilanTur)
+            .environmentObject(entitlementManager) // YENİ SATIR
             .onReceive(NotificationCenter.default.publisher(for: .categoriesDidChange)) { _ in
                 // Kategoriler değiştiğinde en son eklenen kategoriyi bul
                 if let sonEklenenKategori = bulSonEklenenKategori() {

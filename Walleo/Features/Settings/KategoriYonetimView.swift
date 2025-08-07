@@ -4,16 +4,52 @@ import SwiftData
 struct KategoriYonetimView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var entitlementManager: EntitlementManager // YENİ
     @Query(sort: \Kategori.isim) private var kategoriler: [Kategori]
     @State private var yeniKategoriEkleGoster = false
     @State private var silinecekKategori: Kategori?
-    @State private var sistemKategoriUyarisi = false  // YENİ EKLE
+    @State private var sistemKategoriUyarisi = false
+    @State private var showPaywall = false // YENİ
 
     private var gelirKategorileri: [Kategori] {
         kategoriler.filter { $0.tur == .gelir }
     }
+    
     private var giderKategorileri: [Kategori] {
         kategoriler.filter { $0.tur == .gider }
+    }
+    
+    // YENİ: Kullanıcı kategorilerini hesapla
+    private var kullaniciKategorileri: [Kategori] {
+        kategoriler.filter { $0.localizationKey == nil }
+    }
+    
+    // YENİ: Kategori ekleme limiti kontrolü
+    private func canAddMoreCategories() -> Bool {
+        // Premium kullanıcılar sınırsız ekleyebilir
+        if entitlementManager.hasPremiumAccess {
+            return true
+        }
+        
+        // Metadata'yı kontrol et
+        let metadataDescriptor = FetchDescriptor<AppMetadata>()
+        guard let metadata = try? modelContext.fetch(metadataDescriptor).first else {
+            return kullaniciKategorileri.count < 5 // Metadata yoksa varsayılan limit
+        }
+        
+        let currentUserCategoryCount = kullaniciKategorileri.count
+        
+        // İlk kez kontrol ediliyorsa, mevcut sayıyı kaydet
+        if metadata.initialUserCategoryCount == -1 {
+            metadata.initialUserCategoryCount = currentUserCategoryCount
+            try? modelContext.save()
+        }
+        
+        // Kullanıcı başlangıçtaki sayı + 5'ten fazla ekleyebilir mi?
+        let allowedNewCategories = 5
+        let maxAllowed = metadata.initialUserCategoryCount + allowedNewCategories
+        
+        return currentUserCategoryCount < maxAllowed
     }
 
     var body: some View {
@@ -57,7 +93,14 @@ struct KategoriYonetimView: View {
         .navigationTitle(LocalizedStringKey("categories.title"))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: { yeniKategoriEkleGoster = true }) {
+                Button(action: {
+                    // YENİ: Limit kontrolü
+                    if canAddMoreCategories() {
+                        yeniKategoriEkleGoster = true
+                    } else {
+                        showPaywall = true
+                    }
+                }) {
                     HStack(spacing: 4) {
                         Image(systemName: "plus")
                         Text(LocalizedStringKey("button.add_category"))
@@ -65,7 +108,14 @@ struct KategoriYonetimView: View {
                 }
             }
         }
-        .sheet(isPresented: $yeniKategoriEkleGoster) { KategoriDuzenleView() }
+        .sheet(isPresented: $yeniKategoriEkleGoster) {
+            KategoriDuzenleView()
+                .environmentObject(entitlementManager) // YENİ: EntitlementManager'ı geçir
+        }
+        // YENİ: Paywall sheet
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
+        }
         .alert(
             LocalizedStringKey("alert.delete_confirmation.title"),
             isPresented: Binding(isPresented: $silinecekKategori),
@@ -86,7 +136,6 @@ struct KategoriYonetimView: View {
             let formatString = languageBundle.localizedString(forKey: "alert.delete_category.message_format", value: "", table: nil)
             return Text(String(format: formatString, kategoriAdi))
         }
-        // YENİ ALERT EKLE
         .alert(
             LocalizedStringKey("alert.system_category.title"),
             isPresented: $sistemKategoriUyarisi
@@ -112,7 +161,7 @@ struct KategoriYonetimView: View {
         .opacity(isSystemCategory ? 0.7 : 1.0)
         .overlay(alignment: .trailing) {
             // Sistem kategorileri için de NavigationLink aktif
-            NavigationLink(destination: KategoriDuzenleView(kategori: kategori)) {
+            NavigationLink(destination: KategoriDuzenleView(kategori: kategori).environmentObject(entitlementManager)) { // YENİ: EntitlementManager'ı geçir
                 EmptyView()
             }.opacity(0)
         }

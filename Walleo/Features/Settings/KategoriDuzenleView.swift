@@ -5,6 +5,7 @@ struct KategoriDuzenleView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var entitlementManager: EntitlementManager // YENİ
 
     // Bu özellik, dışarıdan bir kategori gelip gelmediğini tutar.
     var kategori: Kategori?
@@ -15,6 +16,7 @@ struct KategoriDuzenleView: View {
     @State private var ikonAdi: String
     @State private var secilenTur: IslemTuru
     @State private var secilenRenk: Color
+    @State private var showPaywall = false // YENİ
     
     // --- YENİ VE DOĞRU YAKLAŞIM: INIT METODU ---
     // Bu başlatıcı, view oluşturulurken SADECE BİR KEZ çalışır.
@@ -34,6 +36,7 @@ struct KategoriDuzenleView: View {
             _secilenRenk = State(initialValue: Color(red: 0, green: 0.478, blue: 1))
         }
     }
+    
     private var isSystemCategory: Bool {
         kategori?.localizationKey != nil
     }
@@ -67,11 +70,47 @@ struct KategoriDuzenleView: View {
     private var navigationTitleKey: LocalizedStringKey {
         kategori == nil ? "categories.new" : "categories.edit"
     }
+    
+    // YENİ: Kategori ekleme limiti kontrolü
+    private func canAddCategory() -> Bool {
+        // Düzenleme modundaysa izin ver
+        if kategori != nil {
+            return true
+        }
+        
+        // Premium kullanıcılar sınırsız ekleyebilir
+        if entitlementManager.hasPremiumAccess {
+            return true
+        }
+        
+        // Kullanıcı kategorilerini say
+        let categoryDescriptor = FetchDescriptor<Kategori>(
+            predicate: #Predicate { $0.localizationKey == nil }
+        )
+        let userCategoryCount = (try? modelContext.fetchCount(categoryDescriptor)) ?? 0
+        
+        // Metadata'yı kontrol et
+        let metadataDescriptor = FetchDescriptor<AppMetadata>()
+        guard let metadata = try? modelContext.fetch(metadataDescriptor).first else {
+            return userCategoryCount < 5 // Metadata yoksa varsayılan limit
+        }
+        
+        // İlk kez kontrol ediliyorsa, mevcut sayıyı kaydet
+        if metadata.initialUserCategoryCount == -1 {
+            metadata.initialUserCategoryCount = userCategoryCount
+            try? modelContext.save()
+        }
+        
+        // Kullanıcı başlangıçtaki sayı + 5'ten fazla ekleyebilir mi?
+        let allowedNewCategories = 5
+        let maxAllowed = metadata.initialUserCategoryCount + allowedNewCategories
+        
+        return userCategoryCount < maxAllowed
+    }
 
     var body: some View {
         NavigationStack {
             Form {
-                // ... Form'un içeriği tamamen aynı kalıyor ...
                 if kategori == nil {
                     Section {
                         Picker("common.type", selection: $secilenTur) {
@@ -79,10 +118,9 @@ struct KategoriDuzenleView: View {
                             Text(LocalizedStringKey("common.income")).tag(IslemTuru.gelir)
                         }
                         .pickerStyle(.segmented)
-                        // DÜZELTME: Disabled'ı kaldırıyoruz
-                        // .disabled(varsayilanTur != nil) // BU SATIRI KALDIR
                     }
                 }
+                
                 Section {
                     TextField("categories.name", text: $isim)
                         .disabled(isSystemCategory)
@@ -111,7 +149,6 @@ struct KategoriDuzenleView: View {
             .navigationTitle(navigationTitleKey)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                // Toolbar da tamamen aynı kalıyor
                 if kategori == nil {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("common.cancel") { dismiss() }
@@ -125,25 +162,25 @@ struct KategoriDuzenleView: View {
                     .disabled(isim.trimmingCharacters(in: .whitespaces).isEmpty && !isSystemCategory)
                 }
             }
-            // ARTIK .onAppear ve formuDoldur'a İHTİYACIMIZ YOK.
-            // .onAppear(perform: formuDoldur) satırını siliyoruz.
+            // YENİ: Paywall sheet
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
+            }
         }
     }
     
-    // ARTIK BU FONKSİYONA İHTİYACIMIZ YOK, SİLİNEBİLİR.
-    /*
-    private func formuDoldur() {
-        //...
-    }
-    */
-    
-    // Kaydet fonksiyonu daha önce düzelttiğimiz doğru haliyle kalıyor.
     private func kaydet() {
         let trimmedIsim = isim.trimmingCharacters(in: .whitespaces)
         
         // Validasyon
         guard !trimmedIsim.isEmpty || isSystemCategory else {
             Logger.log("Kategori adı boş olamaz", log: Logger.view, type: .error)
+            return
+        }
+        
+        // YENİ: Yeni kategori eklenirken limit kontrolü
+        if kategori == nil && !canAddCategory() {
+            showPaywall = true
             return
         }
         
