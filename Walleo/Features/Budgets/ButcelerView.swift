@@ -8,18 +8,19 @@ import SwiftData
 struct ButcelerView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var appSettings: AppSettings
+    @EnvironmentObject var entitlementManager: EntitlementManager // YENİ
     
-    // ViewModel, tüm hesaplama ve veri çekme mantığını yönetir.
+    // ViewModel
     @State private var viewModel: ButcelerViewModel?
 
-    // Sheet'leri kontrol etmek için kullanılan state'ler.
+    // Sheet'ler
     @State private var yeniButceEkleGoster = false
     @State private var duzenlenecekButce: Butce?
     @State private var silinecekButce: Butce?
+    @State private var showPaywall = false // YENİ
 
     var body: some View {
         NavigationStack {
-            // ViewModel yüklendiğinde ana içeriği göster, yükleniyorsa ProgressView göster.
             Group {
                 if let viewModel = viewModel {
                     mainContentView(viewModel: viewModel)
@@ -32,26 +33,25 @@ struct ButcelerView: View {
                 toolbarContent()
             }
         }
-        // ViewModel'ı ilk açılışta bir kez oluştur ve veriyi çek.
         .task {
             if viewModel == nil {
                 viewModel = ButcelerViewModel(modelContext: modelContext)
-                // --- DÜZELTME: Gereksiz 'await' kaldırıldı ---
                 viewModel?.hesaplamalariTetikle()
             }
         }
-        // Yeni bütçe eklendiğinde veya bir bütçe düzenlendiğinde listeyi yenile.
         .sheet(isPresented: $yeniButceEkleGoster, onDismiss: {
-            // --- DÜZELTME: Gereksiz 'Task' ve 'await' kaldırıldı ---
             viewModel?.hesaplamalariTetikle()
         }) {
             ButceEkleDuzenleView()
         }
         .sheet(item: $duzenlenecekButce, onDismiss: {
-            // --- DÜZELTME: Gereksiz 'Task' ve 'await' kaldırıldı ---
             viewModel?.hesaplamalariTetikle()
         }) { butce in
             ButceEkleDuzenleView(duzenlenecekButce: butce)
+        }
+        // Paywall
+        .sheet(isPresented: $showPaywall) {
+            PaywallView()
         }
         // Bütçe silme uyarısı
         .alert(
@@ -65,17 +65,21 @@ struct ButcelerView: View {
                 Text("common.delete")
             }
         } message: { butce in
-            let dilKodu = appSettings.languageCode
-            guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
-                  let languageBundle = Bundle(path: path) else {
-                return Text(butce.isim)
-            }
-            let formatString = languageBundle.localizedString(forKey: "alert.delete_budget.message_format", value: "", table: nil)
-            return Text(String(format: formatString, butce.isim))
+            Text(getDeleteMessage(for: butce))
         }
     }
+    
+    // Alert mesajı için yardımcı fonksiyon
+    private func getDeleteMessage(for butce: Butce) -> String {
+        let dilKodu = appSettings.languageCode
+        guard let path = Bundle.main.path(forResource: dilKodu, ofType: "lproj"),
+              let languageBundle = Bundle(path: path) else {
+            return butce.isim
+        }
+        let formatString = languageBundle.localizedString(forKey: "alert.delete_budget.message_format", value: "", table: nil)
+        return String(format: formatString, butce.isim)
+    }
 
-    /// Ana içeriği (liste veya boş ekran) oluşturan yardımcı bileşen.
     @ViewBuilder
     private func mainContentView(viewModel: ButcelerViewModel) -> some View {
         if viewModel.gosterilecekButceler.isEmpty {
@@ -89,7 +93,6 @@ struct ButcelerView: View {
         }
     }
 
-    /// Aylık gruplanmış bütçe listesini oluşturan bileşen.
     private func budgetListView(viewModel: ButcelerViewModel) -> some View {
         List {
             ForEach(viewModel.siraliAylar, id: \.self) { ay in
@@ -107,11 +110,16 @@ struct ButcelerView: View {
         .listStyle(.insetGrouped)
     }
 
-    /// Toolbar içeriğini oluşturan fonksiyon.
     @ToolbarContentBuilder
     private func toolbarContent() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button(action: { yeniButceEkleGoster = true }) {
+            Button(action: {
+                if entitlementManager.hasPremiumAccess {
+                    yeniButceEkleGoster = true
+                } else {
+                    checkBudgetLimitAndShowAlert()
+                }
+            }) {
                 HStack(spacing: 4) {
                     Image(systemName: "plus")
                     Text(LocalizedStringKey("button.add_budget"))
@@ -120,7 +128,21 @@ struct ButcelerView: View {
         }
     }
     
-    /// Ay başlığını formatlayan yardımcı fonksiyon.
+    private func checkBudgetLimitAndShowAlert() {
+        let currentMonth = Calendar.current.dateInterval(of: .month, for: Date())!
+        let activeCurrentMonthBudgets = viewModel?.gosterilecekButceler.filter { gosterilecekButce in
+            let budgetMonth = Calendar.current.dateInterval(of: .month, for: gosterilecekButce.butce.periyot)!
+            return budgetMonth.start == currentMonth.start && budgetMonth.end == currentMonth.end
+        }.count ?? 0
+        
+        if activeCurrentMonthBudgets >= 1 {
+            // Direkt paywall'ı aç
+            showPaywall = true
+        } else {
+            yeniButceEkleGoster = true
+        }
+    }
+    
     private func ayBasligi(for date: Date) -> some View {
         Text(monthYearString(from: date, localeIdentifier: appSettings.languageCode))
             .font(.headline)
