@@ -258,6 +258,7 @@ struct OnboardingView: View {
                         }
                     )
                     .tag(6)
+                    .environment(\.locale, Locale(identifier: selectedLanguage))  // <-- YENİ SATIR
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .opacity(contentOpacity)
@@ -1325,6 +1326,15 @@ struct PersonalizationPage: View {
     // Currency arama için
     @State private var showCurrencySearch = false
     
+    // YENİ: Helper fonksiyon
+    private func getLocalizedText(_ key: String) -> String {
+        guard let path = Bundle.main.path(forResource: selectedLanguage, ofType: "lproj"),
+              let languageBundle = Bundle(path: path) else {
+            return NSLocalizedString(key, comment: "")
+        }
+        return languageBundle.localizedString(forKey: key, value: key, table: nil)
+    }
+    
     // Desteklenen diller listesi
     let supportedLanguages = [
         ("tr", "🇹🇷", "Türkçe"),
@@ -1348,7 +1358,7 @@ struct PersonalizationPage: View {
                 // Kaydırılabilir içerik
                 ScrollView {
                     VStack(spacing: 40) {
-                        Text(LocalizedStringKey("onboarding.personalize.title"))
+                        Text(getLocalizedText("onboarding.personalize.title"))  // <-- DEĞİŞTİ
                             .font(.title)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
@@ -1359,7 +1369,7 @@ struct PersonalizationPage: View {
                         VStack(spacing: 30) {
                             // Dil seçimi - DROPDOWN
                             VStack(alignment: .leading, spacing: 15) {
-                                Text(LocalizedStringKey("onboarding.select_language"))
+                                Text(getLocalizedText("onboarding.select_language"))  // <-- DEĞİŞTİ
                                     .font(.headline)
                                     .foregroundColor(.secondary)
                                 
@@ -1407,7 +1417,7 @@ struct PersonalizationPage: View {
                             
                             // Para birimi seçimi - ARAMA ÖZELLİKLİ
                             VStack(alignment: .leading, spacing: 15) {
-                                Text(LocalizedStringKey("onboarding.select_currency"))
+                                Text(getLocalizedText("onboarding.select_currency"))  // <-- DEĞİŞTİ
                                     .font(.headline)
                                     .foregroundColor(.secondary)
                                 
@@ -1480,7 +1490,7 @@ struct PersonalizationPage: View {
                             appSettings.hasCompletedOnboarding = true
                         }
                     }) {
-                        Text(LocalizedStringKey("onboarding.start_button"))
+                        Text(getLocalizedText("onboarding.start_button"))  // <-- DEĞİŞTİ
                             .font(.headline)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -1493,7 +1503,7 @@ struct PersonalizationPage: View {
                     
                     // Privacy Notice with Links
                     VStack(spacing: 8) {
-                        Text(LocalizedStringKey("onboarding.privacy_notice"))
+                        Text(getLocalizedText("onboarding.privacy_notice"))  // <-- DEĞİŞTİ
                             .font(.caption2)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)
@@ -1505,7 +1515,7 @@ struct PersonalizationPage: View {
                                 HStack(spacing: 4) {
                                     Image(systemName: "lock.shield")
                                         .font(.caption2)
-                                    Text(LocalizedStringKey("onboarding.privacy_policy"))
+                                    Text(getLocalizedText("onboarding.privacy_policy"))  // <-- DEĞİŞTİ
                                         .font(.caption2)
                                         .underline()
                                 }
@@ -1520,7 +1530,7 @@ struct PersonalizationPage: View {
                                 HStack(spacing: 4) {
                                     Image(systemName: "doc.text")
                                         .font(.caption2)
-                                    Text(LocalizedStringKey("onboarding.terms_of_use"))
+                                    Text(getLocalizedText("onboarding.terms_of_use"))  // <-- DEĞİŞTİ
                                         .font(.caption2)
                                         .underline()
                                 }
@@ -1539,6 +1549,7 @@ struct PersonalizationPage: View {
                 isPresented: $showCurrencySearch
             )
             .environmentObject(appSettings)
+            .environment(\.locale, Locale(identifier: selectedLanguage))  // <-- EKLE
         }
         .onAppear {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.1)) {
@@ -1553,6 +1564,7 @@ struct CurrencySearchView: View {
     @Binding var selectedCurrency: String
     @Binding var isPresented: Bool
     @EnvironmentObject var appSettings: AppSettings
+    @Environment(\.locale) private var locale  // <-- YENİ SATIR
     
     @State private var searchText = ""
     @FocusState private var isSearchFocused: Bool
@@ -1566,13 +1578,21 @@ struct CurrencySearchView: View {
                 currency.rawValue.localizedCaseInsensitiveContains(searchText) ||
                 // Sembolde ara
                 currency.symbol.localizedCaseInsensitiveContains(searchText) ||
-                // Lokalize edilmiş isimde ara (basit yaklaşım)
-                NSLocalizedString(currency.localizedNameKey, comment: "")
-                    .localizedCaseInsensitiveContains(searchText)
+                // Lokalize edilmiş isimde ara - GÜNCELLEME
+                getLocalizedName(for: currency).localizedCaseInsensitiveContains(searchText)
             }
         }
     }
     
+    // YENİ: Helper fonksiyon güncellendi
+    private func getLocalizedName(for currency: Currency) -> String {
+        let languageCode = locale.identifier  // appSettings yerine locale kullan
+        guard let path = Bundle.main.path(forResource: languageCode, ofType: "lproj"),
+              let languageBundle = Bundle(path: path) else {
+            return NSLocalizedString(currency.localizedNameKey, comment: "")
+        }
+        return languageBundle.localizedString(forKey: currency.localizedNameKey, value: currency.localizedNameKey, table: nil)
+    }
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
