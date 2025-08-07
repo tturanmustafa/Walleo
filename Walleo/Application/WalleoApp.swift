@@ -117,20 +117,11 @@ struct WalleoApp: App {
         let context = modelContainer.mainContext
         
         do {
-            // CloudKit senkronizasyonunun tamamlanması için bekle
-            try await Task.sleep(nanoseconds: 1_000_000_000) // 1 saniye bekle
+            // CloudKit senkronizasyonunun tamamlanması için DAHA UZUN bekle
+            Logger.log("CloudKit senkronizasyonu bekleniyor...", log: Logger.data)
+            try await Task.sleep(nanoseconds: 5_000_000_000) // 5 saniye bekle
             
-            // Metadata kontrolü
-            let metadataDescriptor = FetchDescriptor<AppMetadata>()
-            let existingMetadata = try context.fetch(metadataDescriptor).first
-            
-            // Mevcut kategorileri kontrol et
-            let categoryDescriptor = FetchDescriptor<Kategori>()
-            let existingCategories = try context.fetch(categoryDescriptor)
-            
-            Logger.log("App başlatıldı - Mevcut kategori sayısı: \(existingCategories.count)", log: Logger.data)
-            
-            // Sistem kategorilerini tanımla - SABİT UUID'lerle
+            // Sistem kategorilerini tanımla
             let systemCategories: [(id: UUID, isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String)] = [
                 (SystemCategoryIDs.salary, "Maaş", "dollarsign.circle.fill", .gelir, "#34C759", "category.salary"),
                 (SystemCategoryIDs.extraIncome, "Ek Gelir", "chart.pie.fill", .gelir, "#007AFF", "category.extra_income"),
@@ -148,214 +139,201 @@ struct WalleoApp: App {
                 (SystemCategoryIDs.other, "Diğer", "ellipsis.circle.fill", .gider, "#30B0C7", "category.other")
             ]
             
-            var kategorilerEklendi = false
+            // ÖNCE: Tüm işlemleri ve mevcut kategori bağlantılarını kaydet
+            let allTransactionsDescriptor = FetchDescriptor<Islem>()
+            let allTransactions = try context.fetch(allTransactionsDescriptor)
             
-            // ÖNEMLİ: Önce eski sistem kategorilerini temizle/migrate et
+            // İşlemlerin orijinal kategori ID'lerini sakla
+            var transactionCategoryMap: [UUID: UUID] = [:]
+            for transaction in allTransactions {
+                if let categoryID = transaction.kategori?.id {
+                    transactionCategoryMap[transaction.id] = categoryID
+                    Logger.log("İşlem '\(transaction.isim)' kategori ID: \(categoryID)", log: Logger.data)
+                }
+            }
+            
+            // Tüm kategorileri çek
+            let categoryDescriptor = FetchDescriptor<Kategori>()
+            let existingCategories = try context.fetch(categoryDescriptor)
+            
+            Logger.log("Mevcut kategori sayısı: \(existingCategories.count)", log: Logger.data)
+            
+            // Kategori ID eşleştirme tablosu (eski ID -> yeni ID)
+            var categoryIDMapping: [UUID: UUID] = [:]
+            
+            // Her sistem kategorisi için kontrol yap
             for systemCat in systemCategories {
-                // Yeni ID'li kategori var mı?
-                let existsWithNewID = existingCategories.first { $0.id == systemCat.id }
+                let correctID = systemCat.id
+                let locKey = systemCat.localizationKey
                 
-                // Eski sistem kategorisi var mı? (localizationKey ile kontrol)
-                let oldSystemCategory = existingCategories.first { cat in
-                    cat.id != systemCat.id && // Farklı ID
-                    cat.localizationKey == systemCat.localizationKey // Aynı localizationKey
+                // Bu kategorinin tüm varyasyonlarını bul
+                let variants = existingCategories.filter { cat in
+                    cat.localizationKey == locKey || cat.id == correctID
                 }
                 
-                if let oldCategory = oldSystemCategory {
-                    // ESKİ SİSTEM KATEGORİSİ VAR - MIGRATE ET
-                    Logger.log("Eski sistem kategorisi bulundu, migrate ediliyor: \(systemCat.isim)", log: Logger.data)
-                    
-                    if existsWithNewID != nil {
-                        // Hem eski hem yeni var - eskiyi sil
-                        let transactions = oldCategory.islemler ?? []
-                        for transaction in transactions {
-                            transaction.kategori = existsWithNewID
-                        }
-                        context.delete(oldCategory)
-                        Logger.log("Duplike eski kategori silindi: \(systemCat.isim)", log: Logger.data)
-                    } else {
-                        // Sadece eski var - ID'sini güncelle (yeniden oluşturma yöntemi)
-                        let transactions = oldCategory.islemler ?? []
-                        let budgets = oldCategory.butceler ?? []
-                        let userIcon = oldCategory.ikonAdi
-                        let userColor = oldCategory.renkHex
-                        
-                        // Eski kategoriyi sil
-                        context.delete(oldCategory)
-                        
-                        // Yeni ID'li kategori oluştur
-                        let newCategory = Kategori(
-                            id: systemCat.id,
-                            isim: systemCat.isim,
-                            ikonAdi: userIcon, // Kullanıcı özelleştirmelerini koru
-                            tur: systemCat.tur,
-                            renkHex: userColor, // Kullanıcı özelleştirmelerini koru
-                            localizationKey: systemCat.localizationKey
-                        )
-                        context.insert(newCategory)
-                        
-                        // İlişkileri aktar
-                        for transaction in transactions {
-                            transaction.kategori = newCategory
-                        }
-                        newCategory.butceler = budgets
-                        
-                        Logger.log("Kategori migrate edildi: \(systemCat.isim)", log: Logger.data)
-                    }
-                    kategorilerEklendi = true
-                    
-                } else if existsWithNewID == nil {
-                    // Hiç kategori yok - yeni oluştur
+                if variants.isEmpty {
+                    // Kategori yok, ekle
                     let newCategory = Kategori(
-                        id: systemCat.id,
+                        id: correctID,
                         isim: systemCat.isim,
                         ikonAdi: systemCat.ikonAdi,
                         tur: systemCat.tur,
                         renkHex: systemCat.renkHex,
-                        localizationKey: systemCat.localizationKey
+                        localizationKey: locKey
                     )
                     context.insert(newCategory)
-                    kategorilerEklendi = true
-                    Logger.log("Yeni sistem kategorisi eklendi: \(systemCat.isim)", log: Logger.data)
+                    Logger.log("Eksik kategori eklendi: \(systemCat.isim)", log: Logger.data)
                     
-                } else if let existingCat = existsWithNewID {
-                    // Yeni ID'li kategori zaten var - sadece kritik alanları kontrol et
-                    var needsUpdate = false
+                } else if variants.count == 1 {
+                    // Tek kategori var
+                    let existingCat = variants[0]
                     
-                    if existingCat.localizationKey != systemCat.localizationKey {
-                        existingCat.localizationKey = systemCat.localizationKey
-                        needsUpdate = true
+                    if existingCat.id != correctID {
+                        // ID yanlış, düzelt
+                        Logger.log("Kategori ID düzeltiliyor: \(existingCat.isim)", log: Logger.data)
+                        
+                        // Eski ID'yi kaydet
+                        categoryIDMapping[existingCat.id] = correctID
+                        
+                        // İşlemleri geçici olarak ayır
+                        let transactions = existingCat.islemler ?? []
+                        let budgets = existingCat.butceler ?? []
+                        
+                        // Eski kategoriyi sil
+                        context.delete(existingCat)
+                        
+                        // Yeni kategori oluştur
+                        let newCategory = Kategori(
+                            id: correctID,
+                            isim: systemCat.isim,
+                            ikonAdi: existingCat.ikonAdi, // Özelleştirmeleri koru
+                            tur: systemCat.tur,
+                            renkHex: existingCat.renkHex, // Özelleştirmeleri koru
+                            localizationKey: locKey
+                        )
+                        context.insert(newCategory)
+                        
+                        // İlişkileri geri bağla
+                        for transaction in transactions {
+                            transaction.kategori = newCategory
+                        }
+                        newCategory.butceler = budgets
+                    } else {
+                        // ID doğru, sadece localizationKey kontrolü
+                        if existingCat.localizationKey != locKey {
+                            existingCat.localizationKey = locKey
+                        }
                     }
                     
-                    if existingCat.isim.isEmpty {
-                        existingCat.isim = systemCat.isim
-                        needsUpdate = true
+                } else {
+                    // Birden fazla varyasyon var (duplike)
+                    Logger.log("\(variants.count) duplike bulundu: \(systemCat.isim)", log: Logger.data)
+                    
+                    // Doğru ID'li olanı bul veya ilkini seç
+                    let keeper = variants.first { $0.id == correctID } ?? variants[0]
+                    
+                    // Diğerlerini sil
+                    for variant in variants where variant !== keeper {
+                        // İşlemleri ana kategoriye aktar
+                        let transactions = variant.islemler ?? []
+                        let budgets = variant.butceler ?? []
+                        
+                        for transaction in transactions {
+                            transaction.kategori = keeper
+                        }
+                        keeper.butceler = (keeper.butceler ?? []) + budgets
+                        
+                        // Eski ID'yi mapping'e ekle
+                        if variant.id != correctID {
+                            categoryIDMapping[variant.id] = keeper.id
+                        }
+                        
+                        context.delete(variant)
+                        Logger.log("Duplike kategori silindi: \(variant.isim)", log: Logger.data)
                     }
                     
-                    if needsUpdate {
-                        kategorilerEklendi = true
-                        Logger.log("Kategori güncellendi: \(systemCat.isim)", log: Logger.data)
+                    // Keeper'ın ID'si yanlışsa düzelt
+                    if keeper.id != correctID {
+                        categoryIDMapping[keeper.id] = correctID
+                        
+                        let transactions = keeper.islemler ?? []
+                        let budgets = keeper.butceler ?? []
+                        
+                        context.delete(keeper)
+                        
+                        let newCategory = Kategori(
+                            id: correctID,
+                            isim: systemCat.isim,
+                            ikonAdi: keeper.ikonAdi,
+                            tur: systemCat.tur,
+                            renkHex: keeper.renkHex,
+                            localizationKey: locKey
+                        )
+                        context.insert(newCategory)
+                        
+                        for transaction in transactions {
+                            transaction.kategori = newCategory
+                        }
+                        newCategory.butceler = budgets
+                    }
+                }
+            }
+            
+            // İşlemleri düzelt - orijinal kategori ID'lerine göre
+            Logger.log("İşlemler düzeltiliyor...", log: Logger.data)
+            
+            for transaction in allTransactions {
+                // Bu işlemin orijinal kategori ID'si var mı?
+                if let originalCategoryID = transactionCategoryMap[transaction.id] {
+                    // Bu ID için yeni bir ID var mı?
+                    let targetID = categoryIDMapping[originalCategoryID] ?? originalCategoryID
+                    
+                    // Hedef kategoriyi bul
+                    let targetCategoryDescriptor = FetchDescriptor<Kategori>(
+                        predicate: #Predicate { $0.id == targetID }
+                    )
+                    
+                    if let targetCategory = try context.fetch(targetCategoryDescriptor).first {
+                        if transaction.kategori?.id != targetCategory.id {
+                            transaction.kategori = targetCategory
+                            Logger.log("İşlem '\(transaction.isim)' kategorisi düzeltildi: \(targetCategory.isim)", log: Logger.data)
+                        }
+                    } else {
+                        Logger.log("UYARI: İşlem '\(transaction.isim)' için kategori bulunamadı (ID: \(targetID))", log: Logger.data, type: .error)
+                    }
+                } else if transaction.kategori == nil {
+                    // Kategorisiz işlem - "Diğer"e ata
+                    let otherID = SystemCategoryIDs.other
+                    let otherDescriptor = FetchDescriptor<Kategori>(
+                        predicate: #Predicate { $0.id == otherID }
+                    )
+                    
+                    if let otherCategory = try context.fetch(otherDescriptor).first {
+                        transaction.kategori = otherCategory
+                        Logger.log("Kategorisiz işlem '\(transaction.isim)' 'Diğer' kategorisine atandı", log: Logger.data)
                     }
                 }
             }
             
             // Metadata güncelle
-            if existingMetadata == nil {
+            let metadataDescriptor = FetchDescriptor<AppMetadata>()
+            if let metadata = try context.fetch(metadataDescriptor).first {
+                metadata.defaultCategoriesAdded = true
+            } else {
                 let newMetadata = AppMetadata(defaultCategoriesAdded: true)
                 context.insert(newMetadata)
-                kategorilerEklendi = true
-            } else if !existingMetadata!.defaultCategoriesAdded {
-                existingMetadata!.defaultCategoriesAdded = true
-                kategorilerEklendi = true
             }
             
-            // Değişiklik varsa kaydet
-            if kategorilerEklendi {
-                try context.save()
-                Logger.log("Sistem kategorileri güncelleme kontrolü tamamlandı", log: Logger.data)
-            }
+            // Kaydet
+            try context.save()
+            Logger.log("Kategori kontrolü tamamlandı", log: Logger.data)
             
-            // Kategorisiz işlemleri düzelt
-            await fixOrphanedTransactions(in: context)
+            // UI'ı güncelle
+            NotificationCenter.default.post(name: .categoriesDidChange, object: nil)
+            NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
             
         } catch {
-            Logger.log("Sistem kategorileri kontrol hatası: \(error.localizedDescription)", log: Logger.data, type: .error)
-        }
-    }
-    
-    // YENİ FONKSİYON - WalleoApp.swift'e EKLE
-    @MainActor
-    private func fixOrphanedTransactions(in context: ModelContext) async {
-        do {
-            // Kategorisiz işlemleri bul
-            let orphanedTransactionDescriptor = FetchDescriptor<Islem>(
-                predicate: #Predicate { islem in
-                    islem.kategori == nil
-                }
-            )
-            
-            let orphanedTransactions = try context.fetch(orphanedTransactionDescriptor)
-            
-            if !orphanedTransactions.isEmpty {
-                Logger.log("Kategorisiz işlem bulundu: \(orphanedTransactions.count) adet", log: Logger.data)
-                
-                // "Diğer" kategorisini bul - ÖNEMLİ: UUID'yi önce bir değişkene ata
-                let otherCategoryID = SystemCategoryIDs.other
-                let otherCategoryDescriptor = FetchDescriptor<Kategori>(
-                    predicate: #Predicate { kategori in
-                        kategori.id == otherCategoryID
-                    }
-                )
-                
-                if let otherCategory = try context.fetch(otherCategoryDescriptor).first {
-                    for transaction in orphanedTransactions {
-                        transaction.kategori = otherCategory
-                        Logger.log("İşlem '\(transaction.isim)' 'Diğer' kategorisine atandı", log: Logger.data)
-                    }
-                    
-                    try context.save()
-                    Logger.log("Kategorisiz işlemler düzeltildi", log: Logger.data)
-                    
-                    // UI'ı güncelle
-                    NotificationCenter.default.post(name: .transactionsDidChange, object: nil)
-                } else {
-                    Logger.log("UYARI: 'Diğer' kategorisi bulunamadı!", log: Logger.data, type: .error)
-                }
-            }
-        } catch {
-            Logger.log("Kategorisiz işlemleri düzeltme hatası: \(error)", log: Logger.data, type: .error)
-        }
-    }    // Yardımcı fonksiyon - duplike kategorileri temizle
-    @MainActor
-    private func cleanupDuplicateCategories(in context: ModelContext) async {
-        do {
-            let categoryDescriptor = FetchDescriptor<Kategori>()
-            let allCategories = try context.fetch(categoryDescriptor)
-            
-            var seenSystemCategories: [UUID: Kategori] = [:]
-            var duplicatesToDelete: [Kategori] = []
-            
-            for category in allCategories {
-                // Sistem kategorileri için ID kontrolü
-                if SystemCategoryIDs.allIDs.contains(category.id) {
-                    if let existing = seenSystemCategories[category.id] {
-                        // Hangisi daha eski? Yenisini tut, eskiyi sil
-                        if existing.olusturmaTarihi < category.olusturmaTarihi {
-                            // Eski kategoriyi kullanan işlemleri yeniye aktar
-                            let oldTransactions = existing.islemler ?? []
-                            for transaction in oldTransactions {
-                                transaction.kategori = category
-                            }
-                            duplicatesToDelete.append(existing)
-                            seenSystemCategories[category.id] = category
-                        } else {
-                            // Yeni kategoriyi kullanan işlemleri eskiye aktar
-                            let newTransactions = category.islemler ?? []
-                            for transaction in newTransactions {
-                                transaction.kategori = existing
-                            }
-                            duplicatesToDelete.append(category)
-                        }
-                        Logger.log("Duplike sistem kategorisi bulundu: \(category.isim)", log: Logger.data)
-                    } else {
-                        seenSystemCategories[category.id] = category
-                    }
-                }
-            }
-            
-            // Duplikleri sil
-            for duplicate in duplicatesToDelete {
-                context.delete(duplicate)
-                Logger.log("Duplike kategori silindi: \(duplicate.isim)", log: Logger.data)
-            }
-            
-            if !duplicatesToDelete.isEmpty {
-                try context.save()
-                Logger.log("\(duplicatesToDelete.count) duplike kategori temizlendi", log: Logger.data)
-            }
-            
-        } catch {
-            Logger.log("Duplike temizleme hatası: \(error)", log: Logger.data, type: .error)
+            Logger.log("Sistem kategorileri kontrol hatası: \(error)", log: Logger.data, type: .error)
         }
     }
     

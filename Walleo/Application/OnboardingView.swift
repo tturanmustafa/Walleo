@@ -305,118 +305,23 @@ struct OnboardingView: View {
     }
     
     // OnboardingView.swift içindeki seedInitialData fonksiyonunu KOMPLE DEĞİŞTİR
+    // OnboardingView.swift içindeki seedInitialData fonksiyonunu KOMPLE DEĞİŞTİR
     private func seedInitialData() {
+        // SADECE metadata'yı güncelle, kategori ekleme WalleoApp'e bırak
         do {
-            // Sistem kategorilerini tanımla
-            let systemCategories: [(id: UUID, isim: String, ikonAdi: String, tur: IslemTuru, renkHex: String, localizationKey: String)] = [
-                (SystemCategoryIDs.salary, "Maaş", "dollarsign.circle.fill", .gelir, "#34C759", "category.salary"),
-                (SystemCategoryIDs.extraIncome, "Ek Gelir", "chart.pie.fill", .gelir, "#007AFF", "category.extra_income"),
-                (SystemCategoryIDs.investment, "Yatırım", "chart.line.uptrend.xyaxis", .gelir, "#AF52DE", "category.investment"),
-                (SystemCategoryIDs.groceries, "Market", "cart.fill", .gider, "#FF9500", "category.groceries"),
-                (SystemCategoryIDs.restaurant, "Restoran", "fork.knife", .gider, "#FF3B30", "category.restaurant"),
-                (SystemCategoryIDs.transport, "Ulaşım", "car.fill", .gider, "#5E5CE6", "category.transport"),
-                (SystemCategoryIDs.bills, "Faturalar", "bolt.fill", .gider, "#FFCC00", "category.bills"),
-                (SystemCategoryIDs.entertainment, "Eğlence", "film.fill", .gider, "#32ADE6", "category.entertainment"),
-                (SystemCategoryIDs.health, "Sağlık", "pills.fill", .gider, "#64D2FF", "category.health"),
-                (SystemCategoryIDs.clothing, "Giyim", "tshirt.fill", .gider, "#FF2D55", "category.clothing"),
-                (SystemCategoryIDs.home, "Ev", "house.fill", .gider, "#A2845E", "category.home"),
-                (SystemCategoryIDs.gift, "Hediye", "gift.fill", .gider, "#BF5AF2", "category.gift"),
-                (SystemCategoryIDs.loanPayment, "Kredi Ödemesi", "creditcard.and.123", .gider, "#8E8E93", "category.loan_payment"),
-                (SystemCategoryIDs.other, "Diğer", "ellipsis.circle.fill", .gider, "#30B0C7", "category.other")
-            ]
-            
-            // Mevcut kategorileri kontrol et
-            let categoryDescriptor = FetchDescriptor<Kategori>()
-            let existingCategories = try modelContext.fetch(categoryDescriptor)
-            
-            var kategorilerEklendi = false
-            
-            for systemCat in systemCategories {
-                // ÖNEMLİ: Hem ID hem de localizationKey ile kontrol et (duplikasyonu önle)
-                let categoryExists = existingCategories.contains { cat in
-                    cat.id == systemCat.id || // Yeni ID'li kategori
-                    cat.localizationKey == systemCat.localizationKey // Eski sistem kategorisi
-                }
-                
-                if !categoryExists {
-                    // Kategori hiç yoksa oluştur
-                    let newCategory = Kategori(
-                        id: systemCat.id,
-                        isim: systemCat.isim,
-                        ikonAdi: systemCat.ikonAdi,
-                        tur: systemCat.tur,
-                        renkHex: systemCat.renkHex,
-                        localizationKey: systemCat.localizationKey
-                    )
-                    modelContext.insert(newCategory)
-                    kategorilerEklendi = true
-                    Logger.log("Onboarding - Sistem kategorisi eklendi: \(systemCat.isim)", log: Logger.data)
-                }
-            }
-            
-            // Metadata güncelle
             let metadataDescriptor = FetchDescriptor<AppMetadata>()
             if let metadata = try modelContext.fetch(metadataDescriptor).first {
                 metadata.defaultCategoriesAdded = true
             } else {
                 let newMetadata = AppMetadata(defaultCategoriesAdded: true)
                 modelContext.insert(newMetadata)
-                kategorilerEklendi = true
             }
             
-            if kategorilerEklendi {
-                try modelContext.save()
-                Logger.log("Onboarding - Initial data setup tamamlandı", log: Logger.data)
-            }
-            
-            // Kategorisiz işlemleri düzelt
-            Task {
-                await fixOrphanedTransactions()
-            }
+            try modelContext.save()
+            Logger.log("Onboarding tamamlandı - Metadata güncellendi", log: Logger.data)
             
         } catch {
-            Logger.log("Initial data setup error: \(error.localizedDescription)", log: Logger.data, type: .fault)
-        }
-    }
-    
-    // YENİ FONKSİYON - OnboardingView.swift'e EKLE
-    // OnboardingView.swift içindeki fixOrphanedTransactions fonksiyonunu DÜZELT
-    @MainActor
-    private func fixOrphanedTransactions() async {
-        do {
-            // Biraz bekle - CloudKit senkronizasyonu için
-            try await Task.sleep(nanoseconds: 2_000_000_000) // 2 saniye
-            
-            let orphanedTransactionDescriptor = FetchDescriptor<Islem>(
-                predicate: #Predicate { islem in
-                    islem.kategori == nil
-                }
-            )
-            
-            let orphanedTransactions = try modelContext.fetch(orphanedTransactionDescriptor)
-            
-            if !orphanedTransactions.isEmpty {
-                Logger.log("Onboarding - Kategorisiz işlem sayısı: \(orphanedTransactions.count)", log: Logger.data)
-                
-                // "Diğer" kategorisini bul - ÖNEMLİ: UUID'yi önce bir değişkene ata
-                let otherCategoryID = SystemCategoryIDs.other
-                let otherCategoryDescriptor = FetchDescriptor<Kategori>(
-                    predicate: #Predicate { kategori in
-                        kategori.id == otherCategoryID
-                    }
-                )
-                
-                if let otherCategory = try modelContext.fetch(otherCategoryDescriptor).first {
-                    for transaction in orphanedTransactions {
-                        transaction.kategori = otherCategory
-                    }
-                    
-                    try modelContext.save()
-                    Logger.log("Onboarding - Kategorisiz işlemler düzeltildi", log: Logger.data)
-                }
-            }
-        } catch {
-            Logger.log("Onboarding - Kategorisiz işlemleri düzeltme hatası: \(error)", log: Logger.data, type: .error)
+            Logger.log("Onboarding metadata hatası: \(error)", log: Logger.data, type: .error)
         }
     }
 }
