@@ -263,6 +263,15 @@
 
 //Bu Satır
 "categories.add_new" = "Add New Category";
+"paywall.plan.free" = "Free";
+// English localization keys
+"paywall.whats_included" = "What's Included";
+"paywall.feature.accounts" = "Accounts";
+"paywall.feature.accounts.desc" = "Create wallet, credit card and loan accounts without any number limits";
+"paywall.feature.categories" = "Categories";
+"paywall.feature.categories.desc" = "Add unlimited custom income or expense categories";
+"paywall.feature.budgets" = "Budgets";
+"paywall.feature.budgets.desc" = "Set as many category-specific budget limits as you need";
 // Currency Search
 "search.currency" = "Search currency";
 "search.no_results" = "No Results";

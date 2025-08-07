@@ -40,24 +40,12 @@ struct FloatingActionMenu: View {
             
             // Detaylı Raporlar - Premium özellik
             Button(action: {
-                if entitlementManager.hasPremiumAccess {
-                    seciliSekme = .detayliRaporlar
-                    isShowing = false
-                } else {
-                    isShowing = false
-                    showPaywall = true
-                }
+                seciliSekme = .detayliRaporlar
+                isShowing = false
             }) {
-                HStack {
-                    Label("reports.detailed.title", systemImage: "magnifyingglass")
-                    if !entitlementManager.hasPremiumAccess {
-                        Image(systemName: "crown.fill")
-                            .foregroundColor(.yellow)
-                            .font(.caption)
-                    }
-                }
+                Label("reports.detailed.title", systemImage: "magnifyingglass")
             }
-            .buttonStyle(FloatingActionButtonStyle(isPremium: !entitlementManager.hasPremiumAccess))
+            .buttonStyle(FloatingActionButtonStyle())
             .opacity(showButtons[0] ? 1 : 0)
             .offset(y: showButtons[0] ? 0 : 20)
             

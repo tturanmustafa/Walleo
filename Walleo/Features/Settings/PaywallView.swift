@@ -172,7 +172,7 @@ struct PaywallView: View {
                 Spacer()
                 
                 HStack(spacing: 20) {
-                    Text("Free")
+                    Text(LocalizedStringKey("paywall.plan.free"))
                         .font(.caption)
                         .fontWeight(.medium)
                         .foregroundColor(.secondary)
@@ -564,7 +564,7 @@ struct FeatureComparisonRow: View {
     let premiumValue: String
     
     var body: some View {
-        HStack(spacing: 16) {
+        HStack(alignment: .center, spacing: 16) {
             // Icon
             ZStack {
                 Circle()
@@ -582,14 +582,15 @@ struct FeatureComparisonRow: View {
                     .font(.subheadline)
                     .fontWeight(.medium)
                     .foregroundColor(.primary)
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 Text(LocalizedStringKey(description))
                     .font(.caption2)
                     .foregroundColor(.secondary)
-                    .lineLimit(1)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .multilineTextAlignment(.leading)
             }
-            
-            Spacer()
+            .frame(maxWidth: .infinity, alignment: .leading)
             
             // Values
             HStack(spacing: 20) {
@@ -622,6 +623,7 @@ struct FeatureComparisonRow: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
+        .frame(minHeight: 65)
     }
 }
 
