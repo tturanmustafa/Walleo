@@ -98,23 +98,6 @@ struct HesaplarView: View {
         .sheet(isPresented: $showPaywall) {
             PaywallView()
         }
-        // YENİ: Premium limit popup
-        .overlay(
-            ZStack {
-                if viewModel.premiumLimitUyarisiGoster {
-                    PremiumLimitPopup(
-                        isPresented: $viewModel.premiumLimitUyarisiGoster,
-                        hesapTuru: viewModel.limitAsilanHesapTuru,
-                        onContinue: {
-                            showPaywall = true
-                        }
-                    )
-                    .transition(.opacity.combined(with: .scale))
-                    .zIndex(999)
-                }
-            }
-            .animation(.spring(), value: viewModel.premiumLimitUyarisiGoster)
-        )
         // Mevcut alert'ler aynı kalacak...
         .alert(
             LocalizedStringKey("alert.delete_confirmation.title"),
@@ -202,24 +185,30 @@ struct HesaplarView: View {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
             Menu {
                 Button(action: {
-                    // YENİ: Limit kontrolü
-                    if !viewModel.checkAndShowLimitWarning(for: .cuzdan, isPremium: entitlementManager.hasPremiumAccess) {
+                    // Limit kontrolü
+                    if viewModel.checkAndShowLimitWarning(for: .cuzdan, isPremium: entitlementManager.hasPremiumAccess) {
+                        showPaywall = true // Limit aşıldıysa doğrudan paywall göster
+                    } else {
                         gosterilecekSheet = .cuzdanEkle
                     }
                 }) {
                     Label(LocalizedStringKey("accounts.add.wallet"), systemImage: "wallet.pass.fill")
                 }
                 Button(action: {
-                    // YENİ: Limit kontrolü
-                    if !viewModel.checkAndShowLimitWarning(for: .krediKarti, isPremium: entitlementManager.hasPremiumAccess) {
+                    // Limit kontrolü
+                    if viewModel.checkAndShowLimitWarning(for: .krediKarti, isPremium: entitlementManager.hasPremiumAccess) {
+                        showPaywall = true // Limit aşıldıysa doğrudan paywall göster
+                    } else {
                         gosterilecekSheet = .krediKartiEkle
                     }
                 }) {
                     Label(LocalizedStringKey("accounts.add.credit_card"), systemImage: "creditcard.fill")
                 }
                 Button(action: {
-                    // YENİ: Limit kontrolü
-                    if !viewModel.checkAndShowLimitWarning(for: .kredi, isPremium: entitlementManager.hasPremiumAccess) {
+                    // Limit kontrolü
+                    if viewModel.checkAndShowLimitWarning(for: .kredi, isPremium: entitlementManager.hasPremiumAccess) {
+                        showPaywall = true // Limit aşıldıysa doğrudan paywall göster
+                    } else {
                         gosterilecekSheet = .krediEkle
                     }
                 }) {

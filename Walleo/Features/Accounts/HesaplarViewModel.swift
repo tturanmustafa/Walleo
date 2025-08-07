@@ -19,7 +19,6 @@ class HesaplarViewModel {
     var sadeceCuzdanGerekliUyarisiGoster = false
     
     // YENİ: Premium kontrolü için
-    var premiumLimitUyarisiGoster = false
     var limitAsilanHesapTuru: HesapTuru?
     
     init(modelContext: ModelContext) {
@@ -62,8 +61,6 @@ class HesaplarViewModel {
     // YENİ: Limit aşımı kontrolü
     func checkAndShowLimitWarning(for type: HesapTuru, isPremium: Bool) -> Bool {
         if !canCreateAccountType(type, isPremium: isPremium) {
-            limitAsilanHesapTuru = type
-            premiumLimitUyarisiGoster = true
             return true // Limit aşıldı
         }
         return false // Limit aşılmadı
